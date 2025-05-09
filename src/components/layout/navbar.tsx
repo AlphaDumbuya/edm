@@ -153,24 +153,31 @@ export default function Navbar() {
                     <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" /> My Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                  <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" /> Log Out
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <>
-                <Link href="/auth/login">
-                  <Button variant="outline">
-                    <LogIn className="mr-2 h-4 w-4" /> Login
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="icon" aria-label="User account options">
+                    <UserCircle className="h-6 w-6" />
                   </Button>
-                </Link>
-                <Link href="/auth/signup">
-                  <Button>
-                    <UserPlus className="mr-2 h-4 w-4" /> Sign Up
-                  </Button>
-                </Link>
-              </>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/login" className="flex items-center cursor-pointer">
+                      <LogIn className="mr-2 h-4 w-4" /> Login
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/signup" className="flex items-center cursor-pointer">
+                      <UserPlus className="mr-2 h-4 w-4" /> Sign Up
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
           </div>
 
@@ -192,7 +199,7 @@ export default function Navbar() {
                   </SheetClose>
                   <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
                 </SheetHeader>
-                <ScrollArea className="flex-1"> {/* Added ScrollArea here */}
+                <ScrollArea className="flex-1">
                   <div className="p-4">
                     <nav className="flex flex-col gap-2">
                       {dynamicNavItems.map((item) => (
@@ -252,7 +259,7 @@ export default function Navbar() {
                       )}
                     </div>
                   </div>
-                </ScrollArea> {/* Closed ScrollArea here */}
+                </ScrollArea>
               </SheetContent>
             </Sheet>
           </div>
