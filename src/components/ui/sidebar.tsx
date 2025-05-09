@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -18,6 +19,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
+import { ScrollArea } from "@/components/ui/scroll-area" // Added import for ScrollArea
 
 const SIDEBAR_COOKIE_NAME = "sidebar_state"
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7
@@ -396,22 +398,29 @@ const SidebarSeparator = React.forwardRef<
 SidebarSeparator.displayName = "SidebarSeparator"
 
 const SidebarContent = React.forwardRef<
-  HTMLDivElement,
-  React.ComponentProps<"div">
->(({ className, ...props }, ref) => {
+  React.ElementRef<typeof ScrollArea>,
+  React.ComponentProps<typeof ScrollArea>
+>(({ className, children, ...props }, ref) => {
   return (
-    <div
+    <ScrollArea
       ref={ref}
       data-sidebar="content"
       className={cn(
-        "flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden",
+        "flex-1 min-h-0", // Ensures ScrollArea takes available space and can shrink
+        "group-data-[collapsible=icon]:overflow-hidden", // Hides scrollbars/content if in icon mode and it still overflows (though ideally content is minimal then)
         className
       )}
       {...props}
-    />
+    >
+      {/* This inner div maintains the flex-col and gap for direct children of SidebarContent */}
+      <div className="flex flex-col gap-2 p-0">
+        {children}
+      </div>
+    </ScrollArea>
   )
 })
 SidebarContent.displayName = "SidebarContent"
+
 
 const SidebarGroup = React.forwardRef<
   HTMLDivElement,
