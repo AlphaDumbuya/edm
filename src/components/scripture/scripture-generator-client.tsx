@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { scriptureMessageGenerator, type ScriptureMessageGeneratorOutput } from '@/ai/flows/scripture-message-generator';
-import { Loader2, Wand2, BookMarked } from 'lucide-react';
+import { Loader2, Wand2, BookMarked, Sparkles } from 'lucide-react'; // Added Sparkles here
 import { useToast } from '@/hooks/use-toast';
 
 export default function ScriptureGeneratorClient() {
