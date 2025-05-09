@@ -10,7 +10,7 @@ interface AppProvidersProps {
 }
 
 export function AppProviders({ children }: AppProvidersProps) {
-  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  const googleMapsApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Corrected variable name
 
   // If API key is available, wrap with APIProvider. Otherwise, just return children.
   // This allows the app to run without a Maps API key, degrading gracefully.

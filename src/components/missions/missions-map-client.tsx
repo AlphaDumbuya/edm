@@ -1,3 +1,4 @@
+// src/components/missions/missions-map-client.tsx
 'use client';
 
 import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
@@ -33,7 +34,8 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
 
   useEffect(() => {
     // Ensure this runs only on the client
-    setApiKey(process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Corrected variable name
+    setApiKey(key);
     setMapReady(true); // Assume map is ready to try rendering
   }, []);
 
