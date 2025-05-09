@@ -1,47 +1,32 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Handshake, Users, Building, Heart, Mail, ArrowRight, Award, Lightbulb, Briefcase } from 'lucide-react';
+import { Handshake, Users, Building, Briefcase, Mail, ArrowRight, Award, Lightbulb, Heart } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const partnershipOpportunities = [
+const partnershipTypes = [
   {
     title: 'For Individuals',
     icon: Users,
-    description: 'Join our mission personally through prayer, volunteering your unique skills, becoming an ambassador for EDM, or providing financial support.',
-    points: [
-      'Prayer Partnership: Commit to praying regularly for our missionaries and projects.',
-      'Volunteer: Offer your time and talents for local events or remote tasks.',
-      'Ambassador Program: Share our stories and impact within your network.',
-      'Financial Giving: Support our general fund or specific initiatives.',
-    ],
-    cta: { text: 'Get Involved', href: '/contact' }, // Link to a general contact or specific volunteer page
+    description: 'Join our mission personally through prayer, volunteering, advocacy, or financial support. Discover how your unique gifts can make a difference.',
+    href: '/partnership/individuals',
+    dataAiHint: 'person volunteering community',
   },
   {
     title: 'For Churches',
-    icon: Building, // Lucide doesn't have a distinct "Church" icon that's not the main logo. Using Building or Users again.
-    description: 'Partner your congregation with EDM to expand your missions footprint and engage your members in global and local outreach.',
-    points: [
-      'Mission Support: Adopt a project or support our missionaries.',
-      'Joint Outreach Events: Collaborate on local or short-term mission trips.',
-      'Speaker Invitations: Host an EDM representative to share about our work.',
-      'Resource Sharing: Access and contribute to discipleship and evangelism materials.',
-    ],
-    cta: { text: 'Connect Your Church', href: 'mailto:churches@edm.org' },
+    icon: Building, // Using Building as a generic representation for a church or institution
+    description: 'Partner your congregation with EDM to expand your missions footprint and engage your members in meaningful global and local outreach.',
+    href: '/partnership/churches',
+    dataAiHint: 'church congregation worship',
   },
   {
     title: 'For Organizations & Businesses',
     icon: Briefcase,
-    description: 'Align your organization with a cause that brings hope and transformation. Explore corporate sponsorships, in-kind donations, and employee engagement programs.',
-    points: [
-      'Corporate Sponsorships: Support key events, programs, or mission regions.',
-      'In-Kind Donations: Provide valuable goods or services to aid our operations.',
-      'Employee Giving & Volunteering: Engage your team in meaningful ways.',
-      'Cause Marketing Initiatives: Collaborate on campaigns that benefit both our missions.',
-    ],
-    cta: { text: 'Explore Corporate Partnerships', href: 'mailto:corporate@edm.org' },
+    description: 'Align your organization with a cause that brings hope and transformation. Explore corporate sponsorships, in-kind donations, and employee engagement.',
+    href: '/partnership/organizations',
+    dataAiHint: 'business team meeting',
   },
 ];
 
@@ -66,7 +51,7 @@ export default function PartnershipPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl">
           <Image
-            src="https://picsum.photos/seed/partnership/600/400"
+            src="https://picsum.photos/seed/partnershipmain/600/400"
             alt="Diverse hands collaborating"
             width={600}
             height={400}
@@ -77,9 +62,9 @@ export default function PartnershipPage() {
       </section>
 
       <section>
-        <SectionTitle title="Ways to Partner" subtitle="Find the best fit for you or your organization" className="text-center" />
+        <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization" className="text-center" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {partnershipOpportunities.map((opportunity) => (
+          {partnershipTypes.map((opportunity) => (
             <Card key={opportunity.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
               <CardHeader className="items-center text-center">
                 <div className="p-3 bg-primary/10 rounded-full mb-3 w-fit">
@@ -89,16 +74,11 @@ export default function PartnershipPage() {
               </CardHeader>
               <CardContent className="flex-grow">
                 <p className="text-muted-foreground text-sm mb-4">{opportunity.description}</p>
-                <ul className="space-y-2 text-sm text-muted-foreground list-disc pl-5">
-                  {opportunity.points.map((point, index) => (
-                    <li key={index}>{point}</li>
-                  ))}
-                </ul>
               </CardContent>
               <CardContent className="pt-4"> 
-                <Link href={opportunity.cta.href}>
+                <Link href={opportunity.href}>
                   <Button className="w-full" variant="outline">
-                    {opportunity.cta.text} <ArrowRight className="ml-2 h-4 w-4" />
+                    Learn More <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </CardContent>
@@ -110,7 +90,7 @@ export default function PartnershipPage() {
       <section className="grid md:grid-cols-2 gap-12 items-center bg-card p-8 md:p-12 rounded-lg shadow-lg">
          <div className="rounded-lg overflow-hidden shadow-md">
           <Image
-            src="https://picsum.photos/seed/impactshared/600/400"
+            src="https://picsum.photos/seed/impactshared2/600/400"
             alt="Community benefiting from partnership"
             width={600}
             height={400}
