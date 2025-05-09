@@ -1,10 +1,11 @@
+
 'use client';
 
 import Link from 'next/link';
 import { Menu, X, Church, Handshake, Globe, Users, BookOpen, Video, DollarSign, MessageCircle, Sparkles, Search } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -121,7 +122,10 @@ export default function Navbar() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card">
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0">
+                <SheetHeader className="p-4 border-b">
+                  <SheetTitle className="text-xl font-bold text-primary text-left">Menu</SheetTitle>
+                </SheetHeader>
                 <div className="p-4">
                   <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-6" onClick={() => setMobileMenuOpen(false)}>
                     <Church className="h-7 w-7" />
@@ -185,3 +189,4 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
+

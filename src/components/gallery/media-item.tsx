@@ -1,13 +1,17 @@
+
 'use client';
 
 import Image from 'next/image';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription as CardDesc } from '@/components/ui/card'; // Aliased CardDescription to avoid conflict
 import { Button } from '@/components/ui/button';
 import { PlayCircle, Maximize, CalendarDays } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription
 } from "@/components/ui/dialog";
 import { useState } from 'react';
 
@@ -75,18 +79,19 @@ export default function MediaItem({ item }: MediaItemProps) {
               ></iframe>
             </div>
           )}
-           <div className="p-4">
-            <h3 className="text-lg font-semibold text-primary">{item.title}</h3>
-            <p className="text-sm text-muted-foreground">{item.date}</p>
-          </div>
+           <DialogHeader className="p-4 border-t">
+            <DialogTitle className="text-lg font-semibold text-primary">{item.title}</DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground">{item.date}</DialogDescription>
+          </DialogHeader>
         </DialogContent>
       </Dialog>
       <CardHeader className="p-3">
         <CardTitle className="text-md truncate">{item.title}</CardTitle>
-        <CardDescription className="text-xs text-muted-foreground flex items-center">
+        <CardDesc className="text-xs text-muted-foreground flex items-center"> {/* Used aliased CardDesc */}
           <CalendarDays className="mr-1 h-3 w-3" /> {item.date}
-        </CardDescription>
+        </CardDesc>
       </CardHeader>
     </Card>
   );
 }
+
