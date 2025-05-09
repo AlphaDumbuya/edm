@@ -1,6 +1,8 @@
+// src/components/layout/app-providers.tsx
 'use client';
 
 import React from 'react';
+import { AuthProvider } from '@/contexts/auth-context';
 // import { APIProvider } from '@vis.gl/react-google-maps'; // This will be uncommented once API key is handled
 
 interface AppProvidersProps {
@@ -13,10 +15,10 @@ export function AppProviders({ children }: AppProvidersProps) {
   // If API key is available, wrap with APIProvider. Otherwise, just return children.
   // This allows the app to run without a Maps API key, degrading gracefully.
   // if (googleMapsApiKey) {
-  //   return <APIProvider apiKey={googleMapsApiKey}>{children}</APIProvider>;
+  //   return <AuthProvider><APIProvider apiKey={googleMapsApiKey}>{children}</APIProvider></AuthProvider>;
   // }
 
   // For now, always return children to avoid build issues if key is not set.
   // The map component itself will handle the API key check.
-  return <>{children}</>;
+  return <AuthProvider>{children}</AuthProvider>;
 }

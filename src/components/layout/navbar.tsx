@@ -1,8 +1,8 @@
-
+// src/components/layout/navbar.tsx
 'use client';
 
 import Link from 'next/link';
-import { Menu, X, Church, Handshake, Globe, Users, BookOpen, Video, DollarSign, MessageCircle, Sparkles, Search } from 'lucide-react';
+import { Menu, X, Church, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -15,10 +15,20 @@ import {
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { cn } from '@/lib/utils';
 import * as React from 'react';
+import { useAuth } from '@/contexts/auth-context';
 
-const navItems = [
+const mainNavItems = [
   {
     title: 'About',
     icon: Handshake,
@@ -46,19 +56,29 @@ const navItems = [
     ],
   },
   {
-    title: 'Get Involved',
-    icon: DollarSign,
-    href: '/donate',
-  },
-  {
     title: 'Tools',
     icon: Sparkles,
     href: '/scripture-generator',
   },
 ];
 
+
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, signOutAuth, loading } = useAuth();
+
+  const getInitials = (name?: string | null) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
+  
+  const dynamicNavItems = user 
+  ? [
+      ...mainNavItems,
+      { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+    ]
+  : mainNavItems;
+
 
   return (
     <header className="bg-card shadow-md sticky top-0 z-50">
@@ -72,7 +92,7 @@ export default function Navbar() {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList>
-              {navItems.map((item) => (
+              {dynamicNavItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   {item.links ? (
                     <>
@@ -104,43 +124,81 @@ export default function Navbar() {
           </NavigationMenu>
           
           <div className="hidden lg:flex items-center gap-2">
-            <Button variant="ghost" size="icon">
+            <Button variant="ghost" size="icon" aria-label="Search">
               <Search className="h-5 w-5" />
             </Button>
-            <Link href="/donate">
-              <Button>
-                <DollarSign className="mr-2 h-4 w-4" /> Donate
-              </Button>
-            </Link>
+            {loading ? (
+              <Button variant="outline" disabled>Loading...</Button>
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage src={user.photoURL || undefined} alt={user.displayName || user.email || "User Avatar"} data-ai-hint="user avatar"/>
+                      <AvatarFallback>{getInitials(user.displayName || user.email)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel>
+                    <p className="font-medium truncate">{user.displayName || 'User Profile'}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" /> My Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
+                    <LogOut className="mr-2 h-4 w-4" /> Log Out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <>
+                <Link href="/auth/login">
+                  <Button variant="outline">
+                    <LogIn className="mr-2 h-4 w-4" /> Login
+                  </Button>
+                </Link>
+                <Link href="/auth/signup">
+                  <Button>
+                    <UserPlus className="mr-2 h-4 w-4" /> Sign Up
+                  </Button>
+                </Link>
+              </>
+            )}
           </div>
 
           {/* Mobile Navigation Trigger */}
           <div className="lg:hidden">
             <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" aria-label="Open menu">
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0">
                 <SheetHeader className="p-4 border-b">
-                  <SheetTitle className="text-xl font-bold text-primary text-left">Menu</SheetTitle>
-                </SheetHeader>
-                <div className="p-4">
-                  <SheetClose asChild>
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-6" onClick={() => setMobileMenuOpen(false)}>
+                   <SheetClose asChild>
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setMobileMenuOpen(false)}>
                       <Church className="h-7 w-7" />
                       <span>EDM Connect</span>
                     </Link>
                   </SheetClose>
-                  <nav className="flex flex-col gap-4">
-                    {navItems.map((item) => (
+                </SheetHeader>
+                <div className="p-4">
+                  <nav className="flex flex-col gap-2">
+                    {dynamicNavItems.map((item) => (
                       item.links ? (
                         <div key={item.title}>
-                          <h3 className="font-semibold text-muted-foreground mb-2 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
+                          <h3 className="font-semibold text-muted-foreground mb-1 mt-3 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
                           {item.links.map((link) => (
                             <SheetClose asChild key={link.href}>
-                             <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                             <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm" onClick={() => setMobileMenuOpen(false)}>
                                {link.title}
                              </Link>
                             </SheetClose>
@@ -154,14 +212,42 @@ export default function Navbar() {
                         </SheetClose>
                       )
                     ))}
-                    <SheetClose asChild>
-                      <Link href="/donate" className="mt-4" onClick={() => setMobileMenuOpen(false)}>
-                         <Button className="w-full">
-                           <DollarSign className="mr-2 h-4 w-4" /> Donate
-                         </Button>
-                      </Link>
-                    </SheetClose>
                   </nav>
+                  <div className="mt-6 border-t pt-6">
+                    {loading ? (
+                       <Button variant="outline" disabled className="w-full">Loading...</Button>
+                    ): user ? (
+                      <>
+                        <SheetClose asChild>
+                          <Link href="/dashboard/profile" className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2" onClick={() => setMobileMenuOpen(false)}>
+                            <UserCircle className="mr-2 h-4 w-4" /> My Profile
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Button variant="outline" className="w-full text-destructive hover:bg-destructive/10" onClick={() => { signOutAuth(); setMobileMenuOpen(false); }}>
+                            <LogOut className="mr-2 h-4 w-4" /> Log Out
+                          </Button>
+                        </SheetClose>
+                      </>
+                    ) : (
+                      <div className="space-y-2">
+                        <SheetClose asChild>
+                          <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                            <Button variant="outline" className="w-full">
+                              <LogIn className="mr-2 h-4 w-4" /> Login
+                            </Button>
+                          </Link>
+                        </SheetClose>
+                        <SheetClose asChild>
+                          <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
+                            <Button className="w-full">
+                              <UserPlus className="mr-2 h-4 w-4" /> Sign Up
+                            </Button>
+                          </Link>
+                        </SheetClose>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </SheetContent>
             </Sheet>
