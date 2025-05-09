@@ -44,6 +44,12 @@ export default function Footer() {
             </div>
             <p className="text-sm text-muted-foreground">contact@edm.org</p>
             <p className="text-sm text-muted-foreground">(123) 456-7890</p>
+            <address className="text-sm text-muted-foreground not-italic mt-2">
+              EDM Headquarters<br />
+              66 Main Grafton Road<br />
+              Kossoh Town, Freetown<br />
+              Sierra Leone
+            </address>
           </div>
         </div>
         <div className="mt-12 border-t border-border pt-8 text-center">
@@ -55,4 +61,3 @@ export default function Footer() {
     </footer>
   );
 }
-

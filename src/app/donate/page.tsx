@@ -57,11 +57,12 @@ export default function DonatePage() {
               <p className="text-muted-foreground mb-2">
                 If you prefer to donate by check, please make it payable to "EDM" and mail to:
               </p>
-              <div className="space-y-1 text-foreground font-medium bg-muted p-3 rounded-md">
+              <address className="space-y-1 text-foreground font-medium bg-muted p-3 rounded-md not-italic">
                 <p>EDM</p>
-                <p>123 Mission Lane</p>
-                <p>Faith City, FC 54321</p>
-              </div>
+                <p>66 Main Grafton Road</p>
+                <p>Kossoh Town, Freetown</p>
+                <p>Sierra Leone</p>
+              </address>
             </div>
             <div>
               <h4 className="text-xl font-semibold text-foreground mb-2 flex items-center">
@@ -108,4 +109,3 @@ export default function DonatePage() {
     </div>
   );
 }
-
