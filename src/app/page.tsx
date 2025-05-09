@@ -40,14 +40,14 @@ export default function Home() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, Ohio, and beyond.
           </p>
-          <div className="space-x-4">
+          <div className="flex flex-nowrap justify-center space-x-4">
             <Link href="/about/mission">
-              <Button size="lg" variant="default">
+              <Button size="lg" variant="default" className="whitespace-nowrap">
                 Learn More <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="whitespace-nowrap">
                 Support Our Mission <HelpingHand className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -143,14 +143,14 @@ export default function Home() {
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
-          <div className="space-x-4">
+          <div className="flex flex-nowrap justify-center space-x-4">
             <Link href="/donate">
-              <Button size="lg" variant="default">
+              <Button size="lg" variant="default" className="whitespace-nowrap">
                 Donate Now <HelpingHand className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/partnership"> 
-              <Button size="lg" variant="outline">
+              <Button size="lg" variant="outline" className="whitespace-nowrap">
                 Get Involved <Users className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -160,4 +160,3 @@ export default function Home() {
     </div>
   );
 }
-
