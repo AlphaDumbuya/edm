@@ -3,7 +3,15 @@
 
 import type { User as FirebaseUser } from 'firebase/auth';
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { onAuthStateChanged, signUpWithEmailAndPassword, signInWithEmail, signOutUser, updateUserProfile as firebaseUpdateUserProfile, getCurrentUser as firebaseGetCurrentUser } from '@/lib/firebase/auth';
+import { 
+  onAuthStateChanged, 
+  signUpWithEmailAndPassword, 
+  signInWithEmail, 
+  signOutUser, 
+  updateUserProfile as firebaseUpdateUserProfile, 
+  getCurrentUser as firebaseGetCurrentUser,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail
+} from '@/lib/firebase/auth';
 import { useRouter } from 'next/navigation';
 
 interface User extends FirebaseUser {}
@@ -16,7 +24,8 @@ interface AuthContextType {
   signIn: (email: string, password_1: string) => Promise<{ user: User | null; error: string | null }>;
   signOutAuth: () => Promise<{ error: string | null }>;
   updateUserProfile: (profileData: { displayName?: string; photoURL?: string }) => Promise<{ error: string | null }>;
-  refreshUser: () => void;
+  sendPasswordReset: (email: string) => Promise<{ error: string | null }>;
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -84,21 +93,32 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setError(result.error);
     } else {
       // Refresh user state to reflect changes
-      const updatedUser = firebaseGetCurrentUser();
+      const updatedUser = await firebaseGetCurrentUser();
       setUser(updatedUser as User | null);
     }
     setLoading(false);
     return result;
   };
   
-  const refreshUser = () => {
-    const currentUser = firebaseGetCurrentUser();
+  const refreshUser = async () => {
+    const currentUser = await firebaseGetCurrentUser();
     setUser(currentUser as User | null);
   };
 
+  const sendPasswordReset = async (email: string) => {
+    setLoading(true);
+    setError(null);
+    const result = await firebaseSendPasswordResetEmail(email);
+     if (result.error) {
+      setError(result.error);
+    }
+    setLoading(false);
+    return result;
+  }
+
 
   return (
-    <AuthContext.Provider value={{ user, loading, error, signUp, signIn, signOutAuth, updateUserProfile, refreshUser }}>
+    <AuthContext.Provider value={{ user, loading, error, signUp, signIn, signOutAuth, updateUserProfile, refreshUser, sendPasswordReset }}>
       {children}
     </AuthContext.Provider>
   );

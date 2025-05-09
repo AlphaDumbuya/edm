@@ -1,5 +1,5 @@
 // src/lib/firebase/auth.ts
-'use server'; // For potential use in Server Actions if needed, though primarily client-side for now
+// Removed 'use server'; directive as onAuthStateChanged is client-side and other functions are called from client context.
 
 import type { User } from 'firebase/auth';
 import {
@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged as firebaseOnAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
 } from 'firebase/auth';
 import { auth } from './config';
 
@@ -56,6 +57,16 @@ export async function updateUserProfile(user: User, profileData: { displayName?:
   }
 }
 
-export function getCurrentUser(): User | null {
+// Send Password Reset Email
+export async function sendPasswordResetEmail(email: string) {
+  try {
+    await firebaseSendPasswordResetEmail(auth, email);
+    return { error: null };
+  } catch (error: any) {
+    return { error: error.message };
+  }
+}
+
+export async function getCurrentUser(): Promise<User | null> {
   return auth.currentUser;
 }

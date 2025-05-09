@@ -12,9 +12,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useToast } from '@/hooks/use-toast';
 import Link from 'next/link';
 import { Loader2, MailQuestion, ArrowLeft } from 'lucide-react';
-import { sendPasswordResetEmail } from 'firebase/auth';
-import { auth } from '@/lib/firebase/config';
 import PageHeader from '@/components/shared/page-header';
+import { useAuth } from '@/contexts/auth-context';
 
 const forgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Invalid email address' }),
@@ -26,6 +25,7 @@ export default function ForgotPasswordPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const { toast } = useToast();
+  const { sendPasswordReset } = useAuth();
 
   const form = useForm<ForgotPasswordFormValues>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -36,32 +36,23 @@ export default function ForgotPasswordPage() {
 
   const onSubmit = async (data: ForgotPasswordFormValues) => {
     setIsLoading(true);
-    try {
-      await sendPasswordResetEmail(auth, data.email);
-      setEmailSent(true);
+    const { error } = await sendPasswordReset(data.email);
+    
+    if (error) {
+      // Firebase's sendPasswordResetEmail doesn't typically reveal if an email exists for security.
+      // So, we'll show a generic success message regardless of specific errors like 'auth/user-not-found'.
+      // Log the actual error for debugging if needed.
+      console.warn("Password reset attempt info/error:", error);
       toast({
         title: 'Password Reset Email Sent',
         description: 'If an account exists for this email, a password reset link has been sent.',
       });
-    } catch (error: any) {
-      let errorMessage = 'Failed to send password reset email. Please try again.';
-      if (error.code === 'auth/user-not-found') {
-        // Still show generic message for security, but log specific error
-        console.warn("Attempt to reset password for non-existent user:", data.email);
-         toast({
-            title: 'Password Reset Email Sent',
-            description: 'If an account exists for this email, a password reset link has been sent.',
-        });
-        setEmailSent(true); // Pretend it was successful to not reveal user existence
-        setIsLoading(false);
-        return;
-      } else {
-        console.error("Password reset error:", error);
-      }
+      setEmailSent(true); // Always set to true to not reveal user existence
+    } else {
+      setEmailSent(true);
       toast({
-        title: 'Error',
-        description: errorMessage,
-        variant: 'destructive',
+        title: 'Password Reset Email Sent',
+        description: 'If an account exists for this email, a password reset link has been sent.',
       });
     }
     setIsLoading(false);

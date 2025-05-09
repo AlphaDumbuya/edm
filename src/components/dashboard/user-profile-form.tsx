@@ -62,7 +62,7 @@ export default function UserProfileForm() {
         title: 'Profile Updated',
         description: 'Your profile information has been saved.',
       });
-      refreshUser(); // Refresh user data in context
+      await refreshUser(); // Refresh user data in context
     }
   };
 
