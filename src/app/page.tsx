@@ -8,13 +8,13 @@ import { ArrowRight, CalendarDays, Users, BookOpenText, HeartHandshake, MapPin, 
 
 // Dummy data for previews
 const upcomingEvents = [
-  { id: 1, title: 'Global Mission Conference', date: 'October 15-17, 2024', location: 'Online', image: 'https://picsum.photos/seed/event1/400/250', dataAiHint: 'conference crowd' },
-  { id: 2, title: 'Local Outreach Program', date: 'November 5, 2024', location: 'City Park', image: 'https://picsum.photos/seed/event2/400/250', dataAiHint: 'community volunteering' },
+  { id: 1, title: 'EDM Annual Conference', date: 'October 15-17, 2024', location: 'Freetown & Online', image: 'https://picsum.photos/seed/event1/400/250', dataAiHint: 'conference crowd sierra leone' },
+  { id: 2, title: 'Ohio Community Outreach', date: 'November 5, 2024', location: 'Columbus, OH', image: 'https://picsum.photos/seed/event2/400/250', dataAiHint: 'community volunteering ohio' },
 ];
 
 const recentBlogPosts = [
-  { id: 1, title: 'The Heart of Evangelism', excerpt: 'Exploring the core principles of sharing faith effectively...', slug: 'the-heart-of-evangelism', image: 'https://picsum.photos/seed/blog1/400/250', dataAiHint: 'open bible' },
-  { id: 2, title: 'Discipleship in the Modern Age', excerpt: 'Navigating the challenges and opportunities of mentorship today...', slug: 'discipleship-modern-age', image: 'https://picsum.photos/seed/blog2/400/250', dataAiHint: 'mentor silhouette' },
+  { id: 1, title: 'The Heart of Evangelism in Sierra Leone', excerpt: 'Exploring core principles of sharing faith effectively in our local context...', slug: 'the-heart-of-evangelism', image: 'https://picsum.photos/seed/blog1/400/250', dataAiHint: 'open bible african context' },
+  { id: 2, title: 'Discipleship: Bridging Freetown and Ohio', excerpt: 'Navigating mentorship challenges and opportunities across continents...', slug: 'discipleship-modern-age', image: 'https://picsum.photos/seed/blog2/400/250', dataAiHint: 'mentor diverse background' },
 ];
 
 export default function Home() {
@@ -24,12 +24,12 @@ export default function Home() {
       <section className="relative bg-gradient-to-r from-primary/10 to-secondary/10 py-20 md:py-32 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://picsum.photos/seed/hero/1200/800"
-            alt="Mission work"
+            src="https://picsum.photos/seed/heroSL/1200/800"
+            alt="Mission work in Sierra Leone"
             layout="fill"
             objectFit="cover"
             className="opacity-20"
-            data-ai-hint="diverse people community"
+            data-ai-hint="sierra leone community"
           />
           <div className="absolute inset-0 bg-background/30"></div>
         </div>
@@ -38,7 +38,7 @@ export default function Home() {
             Welcome to <span className="text-primary">EDM</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives across the globe.
+            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, Ohio, and beyond.
           </p>
           <div className="space-x-4">
             <Link href="/about/mission">
@@ -57,12 +57,12 @@ export default function Home() {
 
       {/* Core Pillars Section */}
       <section>
-        <SectionTitle title="Our Core Pillars" subtitle="The foundation of our ministry" />
+        <SectionTitle title="Our Core Pillars" subtitle="The foundation of our ministry in Sierra Leone and Ohio" />
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { title: 'Evangelism', description: 'Sharing the good news of Jesus Christ with love and conviction.', icon: BookOpenText },
-            { title: 'Discipleship', description: 'Nurturing believers to grow in their faith and become like Christ.', icon: Users },
-            { title: 'Missions', description: 'Reaching out to communities near and far with compassion and service.', icon: HeartHandshake },
+            { title: 'Evangelism', description: 'Sharing the good news of Jesus Christ with communities in Sierra Leone and our partners in Ohio.', icon: BookOpenText },
+            { title: 'Discipleship', description: 'Nurturing believers in Freetown, Bo, Columbus, and beyond to grow in their faith.', icon: Users },
+            { title: 'Missions', description: 'Reaching out with compassion and service, from local projects in Sierra Leone to collaborative efforts in the US.', icon: HeartHandshake },
           ].map((pillar) => (
             <Card key={pillar.title} className="text-center shadow-md hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
@@ -110,7 +110,7 @@ export default function Home() {
 
       {/* Recent Blog Posts Preview */}
       <section>
-        <SectionTitle title="From Our Blog" subtitle="Insights, stories, and updates" />
+        <SectionTitle title="From Our Blog" subtitle="Insights, stories, and updates from Sierra Leone & Ohio" />
         <div className="grid md:grid-cols-2 gap-8">
           {recentBlogPosts.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
@@ -139,7 +139,7 @@ export default function Home() {
       {/* Call to Action - Donate / Get Involved */}
       <section className="bg-card py-16 rounded-lg shadow-lg">
         <div className="container mx-auto px-4 text-center">
-          <SectionTitle title="Partner With Us" subtitle="Your support makes a difference" className="text-center" />
+          <SectionTitle title="Partner With Us" subtitle="Your support makes a difference in Sierra Leone and Ohio" className="text-center" />
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
@@ -160,3 +160,4 @@ export default function Home() {
     </div>
   );
 }
+

@@ -7,24 +7,24 @@ const articles = [
   {
     id: 'article1',
     type: 'Article',
-    title: 'The Urgency of the Great Commission',
+    title: 'The Great Commission: Our Call in Sierra Leone',
     author: 'Dr. Evelyn Reed',
     date: 'September 10, 2024',
-    excerpt: 'Understanding why the call to make disciples is more relevant today than ever before. A deep dive into Matthew 28.',
-    imageUrl: 'https://picsum.photos/seed/article1/400/300',
-    dataAiHint: 'open bible map',
-    slug: '/content/articles/urgency-great-commission',
+    excerpt: 'Understanding why the call to make disciples is deeply relevant to our context in Sierra Leone. A look at Matthew 28.',
+    imageUrl: 'https://picsum.photos/seed/articleSL1/400/300',
+    dataAiHint: 'sierra leone bible map',
+    slug: '/content/articles/urgency-great-commission', // Slug can remain general
   },
   {
     id: 'article2',
     type: 'Article',
-    title: 'Principles of Effective Discipleship',
+    title: 'Discipleship: Ohio to Freetown & Back',
     author: 'Maria Rodriguez',
     date: 'September 15, 2024',
-    excerpt: 'Learn key strategies for mentoring and guiding new believers in their faith journey. Practical tips and biblical foundations.',
-    imageUrl: 'https://picsum.photos/seed/article2/400/300',
-    dataAiHint: 'mentor teaching group',
-    slug: '/content/articles/effective-discipleship',
+    excerpt: 'Key strategies for mentoring across cultures, guiding believers in Sierra Leone with support from our Ohio partners.',
+    imageUrl: 'https://picsum.photos/seed/articleOH1/400/300',
+    dataAiHint: 'mentor teaching diverse group',
+    slug: '/content/articles/effective-discipleship', // Slug can remain general
   },
 ];
 
@@ -32,24 +32,24 @@ const testimonies = [
   {
     id: 'testimony1',
     type: 'Testimony',
-    title: 'From Darkness to Light: My Journey to Christ',
-    author: 'John B.',
+    title: 'Finding Light in Freetown: John\'s Story',
+    author: 'John B. (Sierra Leone)',
     date: 'August 5, 2024',
-    excerpt: 'Read how John found hope and new life after encountering missionaries from EDM Connect during a difficult time.',
-    imageUrl: 'https://picsum.photos/seed/testimony1/400/300',
-    dataAiHint: 'man sunrise silhouette',
+    excerpt: 'Read how John found hope after encountering EDM missionaries in Freetown during a challenging time in his life.',
+    imageUrl: 'https://picsum.photos/seed/testimonySL1/400/300',
+    dataAiHint: 'man freetown sunrise',
     slug: '/content/testimonies/johns-story',
   },
   {
     id: 'testimony2',
     type: 'Testimony',
-    title: 'A Community Transformed in Rural Kenya',
-    author: 'EDM Mission Team',
+    title: 'A Village Transformed in Rural Sierra Leone',
+    author: 'EDM Mission Team (SL)',
     date: 'August 20, 2024',
-    excerpt: 'A powerful account of how a water well project opened doors for the Gospel, leading to lasting change in a village.',
-    imageUrl: 'https://picsum.photos/seed/testimony2/400/300',
-    dataAiHint: 'african village children',
-    slug: '/content/testimonies/kenya-transformation',
+    excerpt: 'A powerful account of how a clean water project in Sierra Leone opened doors for the Gospel, leading to lasting change.',
+    imageUrl: 'https://picsum.photos/seed/testimonySL2/400/300',
+    dataAiHint: 'sierra leone village children water',
+    slug: '/content/testimonies/sierraleone-transformation', // Updated slug
   },
 ];
 
@@ -58,7 +58,7 @@ export default function ContentPage() {
     <div className="space-y-12">
       <PageHeader
         title="Content Hub"
-        subtitle="Explore inspiring articles and powerful testimonies from our mission."
+        subtitle="Explore inspiring articles and powerful testimonies from our mission in Sierra Leone and Ohio."
         icon={BookOpenText}
       />
 
@@ -89,3 +89,4 @@ export default function ContentPage() {
     </div>
   );
 }
+

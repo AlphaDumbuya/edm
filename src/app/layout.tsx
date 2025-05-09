@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'EDM',
-  description: 'Evangelism Discipleship Missions - Transforming lives.',
+  description: 'Evangelism Discipleship Missions - Transforming lives in Sierra Leone, Ohio, and beyond.',
 };
 
 export default function RootLayout({
@@ -42,3 +42,4 @@ export default function RootLayout({
     </html>
   );
 }
+

@@ -5,42 +5,42 @@ import { BookOpen } from 'lucide-react';
 const blogPosts = [
   {
     slug: 'the-heart-of-evangelism',
-    title: 'The Heart of Evangelism: More Than Just Words',
+    title: 'The Heart of Evangelism: A Sierra Leonean Perspective',
     date: 'October 1, 2024',
     author: 'Pastor Samuel Green',
-    excerpt: 'Exploring the core principles of sharing faith effectively and with genuine love. It\'s about connecting, not just converting.',
-    imageUrl: 'https://picsum.photos/seed/blogpost1/400/250',
-    dataAiHint: 'open bible heart',
-    tags: ['Evangelism', 'Faith', 'Ministry'],
+    excerpt: 'Exploring the core principles of sharing faith effectively within the cultural context of Sierra Leone, with love and genuine connection.',
+    imageUrl: 'https://picsum.photos/seed/blogpostSL1/400/250',
+    dataAiHint: 'sierra leone faith sharing',
+    tags: ['Evangelism', 'Faith', 'Sierra Leone'],
   },
   {
     slug: 'discipleship-in-the-modern-age',
-    title: 'Discipleship in the Modern Age: Challenges & Opportunities',
+    title: 'Discipleship Across Continents: Connecting Freetown and Ohio',
     date: 'October 5, 2024',
     author: 'Maria Rodriguez',
-    excerpt: 'Navigating the complexities of mentorship in a fast-paced, digital world. How to build meaningful discipleship relationships.',
-    imageUrl: 'https://picsum.photos/seed/blogpost2/400/250',
-    dataAiHint: 'people talking technology',
-    tags: ['Discipleship', 'Mentorship', 'Community'],
+    excerpt: 'Navigating mentorship in a digital world, building meaningful discipleship between our Sierra Leonean communities and Ohio partners.',
+    imageUrl: 'https://picsum.photos/seed/blogpostOH1/400/250',
+    dataAiHint: 'people video call diverse',
+    tags: ['Discipleship', 'Mentorship', 'Global Church'],
   },
   {
-    slug: 'mission-report-east-africa',
-    title: 'Mission Report: Hope and Healing in East Africa',
+    slug: 'mission-report-sierra-leone',
+    title: 'Mission Report: Hope and Healing in Rural Sierra Leone',
     date: 'October 12, 2024',
     author: 'EDM Mission Team',
-    excerpt: 'An update from our recent mission trip, sharing stories of lives touched and communities transformed by God\'s grace.',
-    imageUrl: 'https://picsum.photos/seed/blogpost3/400/250',
-    dataAiHint: 'african children smiling',
-    tags: ['Missions', 'Field Report', 'Global Impact'],
+    excerpt: 'An update from our recent outreach in Sierra Leone, sharing stories of lives touched and communities transformed by God\'s grace.',
+    imageUrl: 'https://picsum.photos/seed/blogpostSL2/400/250',
+    dataAiHint: 'sierra leone children smiling',
+    tags: ['Missions', 'Sierra Leone', 'Field Report'],
   },
   {
     slug: 'power-of-prayer-in-missions',
-    title: 'The Unseen Power: Prayer in Missions',
+    title: 'The Unseen Power: Prayer for Sierra Leone and Ohio',
     date: 'October 18, 2024',
     author: 'Dr. Evelyn Reed',
-    excerpt: 'Delving into the critical role of prayer as the backbone of all successful mission endeavors. Your prayers matter!',
-    imageUrl: 'https://picsum.photos/seed/blogpost4/400/250',
-    dataAiHint: 'hands praying light',
+    excerpt: 'Delving into the critical role of prayer as the backbone of our mission endeavors in Sierra Leone and our partnerships in Ohio.',
+    imageUrl: 'https://picsum.photos/seed/blogpostprayer/400/250',
+    dataAiHint: 'hands praying light map',
     tags: ['Prayer', 'Missions', 'Spiritual Warfare'],
   },
 ];
@@ -50,7 +50,7 @@ export default function BlogPage() {
     <div className="space-y-12">
       <PageHeader
         title="Our Blog"
-        subtitle="Advice, insights, and updates related to our mission and work."
+        subtitle="Advice, insights, and updates from our work in Sierra Leone and Ohio."
         icon={BookOpen}
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,3 +61,4 @@ export default function BlogPage() {
     </div>
   );
 }
+

@@ -6,39 +6,39 @@ import { CalendarDays } from 'lucide-react';
 const events = [
   {
     id: '1',
-    title: 'Global Mission Conference 2024',
+    title: 'EDM Annual Conference (Freetown & Online)',
     date: 'October 15-17, 2024',
-    location: 'Online Event',
-    description: 'Join mission leaders from around the world to discuss strategies, share testimonies, and pray for global revival. Keynote speakers, workshops, and networking opportunities.',
-    imageUrl: 'https://picsum.photos/seed/eventconf/600/400',
-    dataAiHint: 'conference people listening',
+    location: 'Freetown, Sierra Leone & Online',
+    description: 'Join mission leaders from Sierra Leone, Ohio, and beyond to discuss strategies, share testimonies, and pray for revival. Keynotes, workshops, and networking.',
+    imageUrl: 'https://picsum.photos/seed/eventconfSL/600/400',
+    dataAiHint: 'conference sierra leone',
   },
   {
     id: '2',
-    title: 'Community Outreach Day - City Serve',
+    title: 'Freetown Community Impact Day',
     date: 'November 5, 2024',
-    location: 'Downtown Community Center',
-    description: 'Partner with local churches to serve our city. Projects include park cleanup, food bank support, and visiting elderly homes. A great way to show Christ\'s love in action.',
-    imageUrl: 'https://picsum.photos/seed/eventcomm/600/400',
-    dataAiHint: 'volunteers group smiling',
+    location: 'Various locations, Freetown',
+    description: 'Partner with local churches to serve Freetown. Projects include neighborhood cleanup, supporting local schools, and visiting healthcare facilities. Show Christ\'s love in action.',
+    imageUrl: 'https://picsum.photos/seed/eventcommSL/600/400',
+    dataAiHint: 'volunteers freetown smiling',
   },
   {
     id: '3',
-    title: 'Youth Evangelism Training',
+    title: 'Youth Leadership Training (Ohio)',
     date: 'December 2-3, 2024',
-    location: 'EDM Headquarters',
-    description: 'Equipping young people (ages 15-25) with tools and confidence to share their faith effectively. Interactive sessions and practical outreach experience.',
-    imageUrl: 'https://picsum.photos/seed/eventyouth/600/400',
-    dataAiHint: 'young people discussion',
+    location: 'Columbus, Ohio (Partner Venue)',
+    description: 'Equipping young leaders from our Ohio partner network (ages 15-25) with tools for effective ministry and cross-cultural engagement.',
+    imageUrl: 'https://picsum.photos/seed/eventyouthOH/600/400',
+    dataAiHint: 'young people ohio discussion',
   },
   {
     id: '4',
-    title: 'Discipleship Intensive Weekend',
+    title: 'Discipleship Retreat (Bo, Sierra Leone)',
     date: 'January 10-12, 2025',
-    location: 'Mountain Retreat Center',
-    description: 'A weekend dedicated to deepening your relationship with Christ and learning how to disciple others. Teaching, small groups, and personal reflection time.',
-    imageUrl: 'https://picsum.photos/seed/eventretreat/600/400',
-    dataAiHint: 'nature serene landscape',
+    location: 'Bo Retreat Center, Sierra Leone',
+    description: 'A weekend for believers in Sierra Leone dedicated to deepening their relationship with Christ and learning how to disciple others. Teaching, small groups, and personal reflection.',
+    imageUrl: 'https://picsum.photos/seed/eventretreatSL/600/400',
+    dataAiHint: 'sierra leone nature serene',
   },
 ];
 
@@ -47,7 +47,7 @@ export default function EventsPage() {
     <div className="space-y-12">
       <PageHeader
         title="Upcoming Events"
-        subtitle="Join us for fellowship, growth, and service opportunities."
+        subtitle="Join us for fellowship, growth, and service in Sierra Leone and Ohio."
         icon={CalendarDays}
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -58,3 +58,4 @@ export default function EventsPage() {
     </div>
   );
 }
+

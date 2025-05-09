@@ -8,7 +8,7 @@ export default function TermsAndConditionsPage() {
     <div className="space-y-12">
       <PageHeader
         title="Terms and Conditions"
-        subtitle="Please read these terms and conditions carefully before using Our Service."
+        subtitle="Please read these terms and conditions carefully before using Our Service for our mission based in Sierra Leone with Ohio partnerships."
         icon={FileText}
       />
 
@@ -75,7 +75,7 @@ export default function TermsAndConditionsPage() {
           The Service and its original content (excluding Content provided by You or other users), features and functionality are and will remain the exclusive property of the Organization and its licensors.
         </p>
         <p>
-          The Service is protected by copyright, trademark, and other laws of both the Country and foreign countries.
+          The Service is protected by copyright, trademark, and other laws of both the Country (Sierra Leone) and foreign countries.
         </p>
         <p>
           Our trademarks and trade dress may not be used in connection with any product or service without the prior written consent of the Organization.
@@ -105,10 +105,10 @@ export default function TermsAndConditionsPage() {
           Notwithstanding any damages that You might incur, the entire liability of the Organization and any of its suppliers under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the Service.
         </p>
         <p>
-          To the maximum extent permitted by applicable law, in no event shall the Organization or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Organization or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
+          To the maximum extent permitted by applicable law in Sierra Leone, in no event shall the Organization or its suppliers be liable for any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages for loss of profits, loss of data or other information, for business interruption, for personal injury, loss of privacy arising out of or in any way related to the use of or inability to use the Service, third-party software and/or third-party hardware used with the Service, or otherwise in connection with any provision of this Terms), even if the Organization or any supplier has been advised of the possibility of such damages and even if the remedy fails of its essential purpose.
         </p>
         <p>
-          Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these states, each party's liability will be limited to the greatest extent permitted by law.
+          Some jurisdictions (like certain states in the USA, which may be relevant for our Ohio partnerships) do not allow the exclusion of implied warranties or limitation of liability for incidental or consequential damages, which means that some of the above limitations may not apply. In these jurisdictions, each party's liability will be limited to the greatest extent permitted by law.
         </p>
 
         <SectionTitle title="&quot;AS IS&quot; and &quot;AS AVAILABLE&quot; Disclaimer" />
@@ -124,7 +124,7 @@ export default function TermsAndConditionsPage() {
 
         <SectionTitle title="Governing Law" />
         <p>
-          The laws of the Country, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws.
+          The laws of Sierra Leone, excluding its conflicts of law rules, shall govern this Terms and Your use of the Service. Your use of the Application may also be subject to other local, state, national, or international laws, including those of Ohio, USA, where relevant to specific partnership activities.
         </p>
 
         <SectionTitle title="Disputes Resolution" />
@@ -139,7 +139,7 @@ export default function TermsAndConditionsPage() {
 
         <SectionTitle title="United States Legal Compliance" />
         <p>
-          You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a "terrorist supporting" country, and (ii) You are not listed on any United States government list of prohibited or restricted parties.
+          You represent and warrant that (i) You are not located in a country that is subject to the United States government embargo, or that has been designated by the United States government as a "terrorist supporting" country, and (ii) You are not listed on any United States government list of prohibited or restricted parties. This is particularly relevant given our partnerships in Ohio, USA.
         </p>
 
         <SectionTitle title="Severability and Waiver" />
@@ -177,4 +177,5 @@ export default function TermsAndConditionsPage() {
     </div>
   );
 }
+
 

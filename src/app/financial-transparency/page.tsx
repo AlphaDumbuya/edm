@@ -10,22 +10,22 @@ import Image from 'next/image';
 const financialPrinciples = [
   {
     title: 'Responsible Stewardship',
-    description: 'We are committed to using every donation wisely and efficiently to maximize its impact for God\'s Kingdom. Our financial decisions are guided by prayer and strategic planning.',
-    icon: Landmark, // Represents stability and sound foundation
+    description: 'We are committed to using every donation wisely and efficiently to maximize its impact for God\'s Kingdom in Sierra Leone and through our Ohio partnerships.',
+    icon: Landmark, 
   },
   {
     title: 'Accountability & Oversight',
-    description: 'EDM operates under the diligent oversight of an independent Board of Directors. We conduct regular internal reviews and are committed to undergoing annual independent audits to ensure compliance and best practices.',
-    icon: Users, // Represents board oversight
+    description: 'EDM operates under the diligent oversight of an independent Board of Directors. We conduct regular internal reviews and are committed to best practices in financial management.',
+    icon: Users, 
   },
   {
     title: 'Clear Reporting',
-    description: 'We believe in providing clear and accessible information about our financial activities. We strive to regularly share how donations are utilized and the outcomes achieved.',
+    description: 'We believe in providing clear and accessible information about our financial activities, particularly concerning our work in Sierra Leone and collaborations with Ohio partners.',
     icon: FileText,
   },
   {
     title: 'Ethical Practices',
-    description: 'All our financial dealings are conducted with the highest level of integrity, adhering to ethical standards and legal requirements for non-profit organizations.',
+    description: 'All our financial dealings are conducted with the highest level of integrity, adhering to ethical standards and legal requirements for non-profit organizations in Sierra Leone.',
     icon: ShieldCheck,
   },
 ];
@@ -35,7 +35,7 @@ export default function FinancialTransparencyPage() {
     <div className="space-y-16">
       <PageHeader
         title="Financial Transparency"
-        subtitle="Our Commitment to Accountability and Stewardship"
+        subtitle="Our Commitment to Accountability and Stewardship for work in Sierra Leone and Ohio"
         icon={ShieldCheck}
       />
 
@@ -43,20 +43,20 @@ export default function FinancialTransparencyPage() {
         <div className="space-y-4">
           <SectionTitle title="Our Pledge to You" />
           <p className="text-lg text-muted-foreground">
-            At EDM, we believe that financial transparency is a cornerstone of trust and faithful stewardship. We are deeply grateful for every gift entrusted to us and are committed to managing these resources with the utmost integrity and effectiveness. 
+            At EDM, we believe that financial transparency is a cornerstone of trust and faithful stewardship. We are deeply grateful for every gift entrusted to us for our work, primarily based in Sierra Leone with key partnerships in Ohio, USA. 
           </p>
           <p className="text-lg text-muted-foreground">
-            This page outlines our policies and practices regarding the financial management of your generous contributions, ensuring they are used to advance our mission of evangelism, discipleship, and missions worldwide.
+            This page outlines our policies and practices regarding the financial management of your generous contributions, ensuring they are used to advance our mission of evangelism, discipleship, and missions.
           </p>
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl">
           <Image
-            src="https://picsum.photos/seed/financialdocs/600/400"
-            alt="Financial documents and a calculator"
+            src="https://picsum.photos/seed/financialsl/600/400"
+            alt="Financial documents related to Sierra Leone mission"
             width={600}
             height={400}
             className="object-cover w-full h-full"
-            data-ai-hint="financial integrity trust"
+            data-ai-hint="financial integrity sierra leone"
           />
         </div>
       </section>
@@ -85,26 +85,25 @@ export default function FinancialTransparencyPage() {
         <div className="grid md:grid-cols-2 gap-8 items-center">
             <div>
                 <p className="text-muted-foreground mb-4">
-                    We strive to ensure that a significant majority of every donation goes directly to program services that fulfill our mission. Our allocation model prioritizes:
+                    We strive to ensure that a significant majority of every donation goes directly to program services that fulfill our mission in Sierra Leone and support our Ohio partnerships. Our allocation model prioritizes:
                 </p>
                 <ul className="space-y-3 text-muted-foreground list-disc pl-5 mb-6">
-                    <li><strong>Evangelism & Outreach Initiatives:</strong> Funding for conferences, mission trips, resource distribution, and local church support.</li>
-                    <li><strong>Discipleship Programs:</strong> Developing materials, training leaders, and establishing mentorship networks.</li>
-                    <li><strong>Mission Support & Logistics:</strong> Equipping and caring for our field missionaries and project teams.</li>
-                    <li><strong>Community Development:</strong> Projects that meet physical needs while sharing the Gospel, such as clean water initiatives or educational support where applicable.</li>
-                    <li><strong>Administrative & Fundraising:</strong> Necessary operational costs to support our ministry effectively and ensure sustainable growth. We work to keep these costs as low as possible.</li>
+                    <li><strong>Sierra Leone Evangelism & Outreach:</strong> Funding for conferences in Freetown, mission trips within Sierra Leone, resource distribution, and local church support.</li>
+                    <li><strong>Discipleship Programs (SL & OH):</strong> Developing materials, training leaders in Sierra Leone, and fostering discipleship networks with Ohio partners.</li>
+                    <li><strong>Mission Support (Sierra Leone):</strong> Equipping and caring for our field missionaries and project teams in Sierra Leone.</li>
+                    <li><strong>Community Development (Sierra Leone):</strong> Projects such as clean water initiatives, educational support, and healthcare assistance in Sierra Leonean communities.</li>
+                    <li><strong>Administrative & Fundraising:</strong> Necessary operational costs for our Freetown HQ and Ohio coordination to support our ministry effectively and ensure sustainable growth. We work to keep these costs as low as possible.</li>
                 </ul>
                 <p className="text-muted-foreground">
                     A detailed breakdown of our fund allocation is provided in our annual financial reports.
                 </p>
             </div>
             <div className="flex justify-center items-center">
-                {/* Placeholder for a simple chart or illustrative graphic */}
                 <div className="w-full max-w-sm p-6 border rounded-lg bg-background text-center">
                     <BarChart3 className="h-16 w-16 text-primary mx-auto mb-4" />
-                    <p className="text-lg font-semibold text-foreground">High Impact Allocation</p>
+                    <p className="text-lg font-semibold text-foreground">Focused Impact Allocation</p>
                     <p className="text-sm text-muted-foreground">
-                        (Illustrative: 85% Program Services, 10% Admin, 5% Fundraising)
+                        (Illustrative: 85% Program Services for SL/OH, 10% Admin, 5% Fundraising)
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">Actual figures in annual report.</p>
                 </div>
@@ -115,7 +114,7 @@ export default function FinancialTransparencyPage() {
       <section>
         <SectionTitle title="Access to Financial Information" />
         <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto text-center">
-          EDM is committed to providing our partners with access to our financial information. We believe this transparency builds trust and demonstrates our accountability.
+          EDM is committed to providing our partners with access to our financial information for our Sierra Leone operations and Ohio collaborations. We believe this transparency builds trust and demonstrates our accountability.
         </p>
         <div className="grid md:grid-cols-2 gap-8">
           <Card className="shadow-md">
@@ -124,7 +123,7 @@ export default function FinancialTransparencyPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                Our annual reports provide a comprehensive overview of our activities, impact, and financial performance for the preceding fiscal year.
+                Our annual reports provide a comprehensive overview of our activities, impact, and financial performance for the preceding fiscal year, focusing on Sierra Leone and Ohio.
               </p>
               <Button variant="outline" disabled>
                 View 2023 Annual Report (PDF - Coming Soon)
@@ -137,7 +136,7 @@ export default function FinancialTransparencyPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                If you have specific questions about our finances or how donations are used, please don't hesitate to contact our finance department.
+                If you have specific questions about our finances or how donations are used for our Sierra Leone and Ohio work, please contact our finance department.
               </p>
               <Link href="mailto:finance@edm.org">
                 <Button variant="default">Contact Finance Team</Button>
@@ -146,13 +145,13 @@ export default function FinancialTransparencyPage() {
           </Card>
         </div>
          <p className="text-sm text-muted-foreground mt-8 text-center">
-            EDM is a registered non-profit organization. All financial information is managed in accordance with applicable laws and regulations.
+            EDM is a registered non-profit organization in Sierra Leone. All financial information is managed in accordance with applicable laws and regulations.
         </p>
       </section>
 
       <section className="text-center py-8">
         <p className="text-lg text-muted-foreground mb-6">
-          Your trust and partnership are invaluable to us. Thank you for supporting the mission of EDM.
+          Your trust and partnership are invaluable to us. Thank you for supporting the mission of EDM in Sierra Leone and Ohio.
         </p>
         <Link href="/donate">
           <Button size="lg" variant="default">
@@ -163,4 +162,5 @@ export default function FinancialTransparencyPage() {
     </div>
   );
 }
+
 

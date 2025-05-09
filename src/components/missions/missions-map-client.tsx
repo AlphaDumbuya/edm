@@ -15,12 +15,13 @@ interface MissionLocation {
   country: string;
 }
 
+// Updated mission locations for Sierra Leone and Ohio
 const missionLocations: MissionLocation[] = [
-  { id: '1', position: { lat: -1.2921, lng: 36.8219 }, name: 'Nairobi, Kenya Hub', description: 'Coordinating East Africa initiatives, leadership training center.', country: 'Kenya' },
-  { id: '2', position: { lat: 13.7563, lng: 100.5018 }, name: 'Bangkok, Thailand Outreach', description: 'Urban evangelism and support for local church planters.', country: 'Thailand' },
-  { id: '3', position: { lat: -12.0464, lng: -77.0428 }, name: 'Lima, Peru Project', description: 'Community development and children\'s ministry programs.', country: 'Peru' },
-  { id: '4', position: { lat: 6.5244, lng: 3.3792 }, name: 'Lagos, Nigeria Mission', description: 'Church planting and discipleship programs in urban areas.', country: 'Nigeria' },
-  { id: '5', position: { lat: 23.6345, lng: -102.5528 }, name: 'Mexico Rural Support', description: 'Supporting indigenous pastors and providing resources.', country: 'Mexico' },
+  { id: '1', position: { lat: 8.4844, lng: -13.2344 }, name: 'EDM Headquarters - Freetown', description: 'Main operations center, coordinating all Sierra Leonean initiatives and international partnerships.', country: 'Sierra Leone' },
+  { id: '2', position: { lat: 7.9503, lng: -11.8378 }, name: 'Bo District Project', description: 'Community development, agricultural support, and church planting in Bo District.', country: 'Sierra Leone' },
+  { id: '3', position: { lat: 39.9612, lng: -82.9988 }, name: 'Columbus, Ohio Partnership Hub', description: 'Coordinating US partner engagement, resource mobilization, and awareness campaigns.', country: 'USA' },
+  { id: '4', position: { lat: 8.6200, lng: -12.5700 }, name: 'Makeni Education Initiative', description: 'Supporting schools and providing educational resources in the Makeni area.', country: 'Sierra Leone' },
+  { id: '5', position: { lat: 41.4993, lng: -81.6944 }, name: 'Cleveland, Ohio Outreach Support', description: 'Collaborating with local churches in Cleveland for joint outreach programs and discipleship training.', country: 'USA' },
 ];
 
 interface MissionsMapClientProps {
@@ -33,10 +34,9 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
-    // Ensure this runs only on the client
-    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY; // Corrected variable name
+    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     setApiKey(key);
-    setMapReady(true); // Assume map is ready to try rendering
+    setMapReady(true);
   }, []);
 
   if (!mapReady) {
@@ -63,11 +63,11 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
     <APIProvider apiKey={apiKey}>
       <div style={{ height: '100%', width: '100%', position: 'relative' }}>
         <Map
-          defaultCenter={{ lat: 10, lng: 0 }}
-          defaultZoom={2}
+          defaultCenter={{ lat: 15.0, lng: -45.0 }} // Centered more broadly in the Atlantic, adjust as needed
+          defaultZoom={3} // Adjusted zoom level
           mapId={mapId}
           gestureHandling={'greedy'}
-          disableDefaultUI={true}
+          disableDefaultUI={false} // Re-enabled default UI for better navigation
           className="rounded-lg"
         >
           {missionLocations.map((location) => (
@@ -106,3 +106,4 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
     </APIProvider>
   );
 }
+

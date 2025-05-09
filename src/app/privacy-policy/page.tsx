@@ -8,14 +8,14 @@ export default function PrivacyPolicyPage() {
     <div className="space-y-12">
       <PageHeader
         title="Privacy Policy"
-        subtitle="Your privacy is important to us. This policy outlines how we collect, use, and protect your information."
+        subtitle="Your privacy is important to us. This policy outlines how we collect, use, and protect your information related to our work in Sierra Leone and partnerships in Ohio, USA."
         icon={ShieldAlert}
       />
 
       <section className="prose prose-lg max-w-none dark:prose-invert">
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         <p>
-          EDM ("us", "we", or "our") operates the [Your Website URL] website (the "Service").
+          EDM ("us", "we", or "our") operates the [Your Website URL] website (the "Service"), with primary operations based in Sierra Leone and partnerships extending to Ohio, USA.
         </p>
         <p>
           This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. Our Privacy Policy for EDM is created with the help of the Privacy Policy Generator.
@@ -26,20 +26,20 @@ export default function PrivacyPolicyPage() {
 
         <SectionTitle title="Information Collection and Use" />
         <p>
-          We collect several different types of information for various purposes to provide and improve our Service to you.
+          We collect several different types of information for various purposes to provide and improve our Service to you, relevant to our activities in Sierra Leone and Ohio.
         </p>
 
         <h3>Types of Data Collected</h3>
 
         <h4>Personal Data</h4>
         <p>
-          While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:
+          While using our Service, particularly when engaging with our Sierra Leonean operations or Ohio-based partnerships, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:
         </p>
         <ul>
           <li>Email address</li>
           <li>First name and last name</li>
           <li>Phone number</li>
-          <li>Address, State, Province, ZIP/Postal code, City</li>
+          <li>Address, State, Province, ZIP/Postal code, City (relevant to Sierra Leone or Ohio as applicable)</li>
           <li>Cookies and Usage Data</li>
         </ul>
 
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
         <SectionTitle title="Use of Data" />
         <p>EDM uses the collected data for various purposes:</p>
         <ul>
-          <li>To provide and maintain the Service</li>
+          <li>To provide and maintain the Service, supporting our mission in Sierra Leone and Ohio</li>
           <li>To notify you about changes to our Service</li>
           <li>To allow you to participate in interactive features of our Service when you choose to do so</li>
           <li>To provide customer care and support</li>
@@ -79,10 +79,10 @@ export default function PrivacyPolicyPage() {
 
         <SectionTitle title="Transfer of Data" />
         <p>
-          Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction.
+          Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from your jurisdiction. Our primary data processing occurs in Sierra Leone, with some data related to US partnerships potentially processed or stored in the USA.
         </p>
         <p>
-          If you are located outside Sierra Leone and choose to provide information to us, please note that we transfer the data, including Personal Data, to Sierra Leone and process it there.
+          If you are located outside Sierra Leone or the USA and choose to provide information to us, please note that we transfer the data, including Personal Data, to Sierra Leone and/or the USA and process it there.
         </p>
         <p>
           Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer.
@@ -97,7 +97,7 @@ export default function PrivacyPolicyPage() {
           EDM may disclose your Personal Data in the good faith belief that such action is necessary to:
         </p>
         <ul>
-          <li>To comply with a legal obligation</li>
+          <li>To comply with a legal obligation in Sierra Leone or other relevant jurisdictions like the USA</li>
           <li>To protect and defend the rights or property of EDM</li>
           <li>To prevent or investigate possible wrongdoing in connection with the Service</li>
           <li>To protect the personal safety of users of the Service or the public</li>
@@ -111,7 +111,7 @@ export default function PrivacyPolicyPage() {
 
         <SectionTitle title="Service Providers" />
         <p>
-          We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used.
+          We may employ third party companies and individuals to facilitate our Service ("Service Providers"), to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used. These providers may operate in Sierra Leone, the USA, or other locations.
         </p>
         <p>
           These third parties have access to your Personal Data only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.
@@ -155,3 +155,4 @@ export default function PrivacyPolicyPage() {
     </div>
   );
 }
+
