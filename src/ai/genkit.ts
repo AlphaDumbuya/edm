@@ -23,7 +23,7 @@ if (apiKeyPresent) {
   );
   // Add noop plugin so Genkit can initialize and define flows without crashing.
   // Actual AI calls relying on Google AI will fail (e.g., model not found) or do nothing.
-  activePlugins.push(noopPlugin()); // Use the aliased noopPlugin
+  activePlugins.push(noopPlugin); // Use the aliased noopPlugin directly as it's an instance
   // configuredModel remains undefined. Prompts/generate calls will need to specify models,
   // or they will fail if they expect a default Google AI model that isn't available.
 }
