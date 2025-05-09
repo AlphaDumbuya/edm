@@ -172,8 +172,9 @@ export default function TermsAndConditionsPage() {
           <li>By visiting this page on our website: [Your Contact Page URL]</li>
           <li>By mail: 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</li>
         </ul>
-        <p class="mt-6 text-sm text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+        <p className="mt-6 text-sm text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
       </section>
     </div>
   );
 }
+
