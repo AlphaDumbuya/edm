@@ -41,15 +41,15 @@ export default function Home() {
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, Ohio, and beyond.
           </p>
-          <div className="flex flex-nowrap justify-center space-x-4">
+          <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
             <Link href="/about/mission">
-              <Button size="sm" variant="default" className="whitespace-nowrap md:px-4">
-                Learn More <ArrowRight className="ml-2 h-4 w-4" />
+              <Button size="sm" variant="default" className="whitespace-nowrap text-xs sm:text-sm">
+                Learn More <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-4">
-                Support Our Mission <HelpingHand className="ml-2 h-4 w-4" />
+              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
+                Support Us <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
           </div>
@@ -144,15 +144,15 @@ export default function Home() {
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
-          <div className="flex flex-nowrap justify-center space-x-4">
+          <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
             <Link href="/donate">
-              <Button size="sm" variant="default" className="whitespace-nowrap md:px-6">
-                Donate Now <HelpingHand className="ml-2 h-5 w-5" />
+              <Button size="sm" variant="default" className="whitespace-nowrap text-xs sm:text-sm">
+                Donate Now <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
             <Link href="/partnership"> 
-              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-6">
-                Get Involved <Users className="ml-2 h-5 w-5" />
+              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
+                Get Involved <Users className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
           </div>
