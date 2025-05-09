@@ -1,5 +1,5 @@
 
-import {genkit, noop} from 'genkit'; // Import noop directly from genkit
+import {genkit, noop as noopPlugin} from 'genkit'; // Import and alias noop
 import {googleAI} from '@genkit-ai/googleai';
 import type {Plugin} from 'genkit'; // For type safety
 
@@ -23,7 +23,7 @@ if (apiKeyPresent) {
   );
   // Add noop plugin so Genkit can initialize and define flows without crashing.
   // Actual AI calls relying on Google AI will fail (e.g., model not found) or do nothing.
-  activePlugins.push(noop());
+  activePlugins.push(noopPlugin()); // Use the aliased noopPlugin
   // configuredModel remains undefined. Prompts/generate calls will need to specify models,
   // or they will fail if they expect a default Google AI model that isn't available.
 }
