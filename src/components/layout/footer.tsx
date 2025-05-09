@@ -1,5 +1,6 @@
+
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, Church, ShieldCheck } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Youtube, Church, ShieldCheck, FileText, ShieldAlert } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -7,7 +8,7 @@ export default function Footer() {
   return (
     <footer className="bg-card text-card-foreground border-t">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-4">
               <Church className="h-7 w-7" />
@@ -53,6 +54,15 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-12 border-t border-border pt-8 text-center">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-2">
+            <Link href="/terms-and-conditions" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center">
+              <FileText size={16} className="mr-1" /> Terms & Conditions
+            </Link>
+            <span className="hidden sm:inline text-muted-foreground">|</span>
+            <Link href="/privacy-policy" className="text-sm text-muted-foreground hover:text-primary transition-colors flex items-center">
+              <ShieldAlert size={16} className="mr-1" /> Privacy Policy
+            </Link>
+          </div>
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} EDM. All rights reserved.
           </p>
