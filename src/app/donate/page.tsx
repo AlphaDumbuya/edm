@@ -99,7 +99,7 @@ export default function DonatePage() {
         <p className="text-muted-foreground mb-4">
           EDM is a registered non-profit organization. All donations are tax-deductible to the extent allowed by law.
         </p>
-        <Link href="/financial-transparency"> {/* Placeholder link */}
+        <Link href="/financial-transparency">
           <Button variant="link" className="text-primary">
             View Our Financial Transparency Policy
           </Button>
@@ -108,3 +108,4 @@ export default function DonatePage() {
     </div>
   );
 }
+
