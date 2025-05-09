@@ -149,7 +149,7 @@ export default function Home() {
                 Donate Now <HelpingHand className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/contact"> {/* Assuming a contact page might exist or be added */}
+            <Link href="/partnership"> 
               <Button size="lg" variant="outline">
                 Get Involved <Users className="ml-2 h-5 w-5" />
               </Button>
