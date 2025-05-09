@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -42,12 +43,12 @@ export default function Home() {
           </p>
           <div className="flex flex-nowrap justify-center space-x-4">
             <Link href="/about/mission">
-              <Button size="default" variant="default" className="whitespace-nowrap md:px-6">
+              <Button size="sm" variant="default" className="whitespace-nowrap md:px-6">
                 Learn More <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="default" variant="outline" className="whitespace-nowrap md:px-6">
+              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-6">
                 Support Our Mission <HelpingHand className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -145,12 +146,12 @@ export default function Home() {
           </p>
           <div className="flex flex-nowrap justify-center space-x-4">
             <Link href="/donate">
-              <Button size="default" variant="default" className="whitespace-nowrap md:px-6">
+              <Button size="sm" variant="default" className="whitespace-nowrap md:px-6">
                 Donate Now <HelpingHand className="ml-2 h-5 w-5" />
               </Button>
             </Link>
             <Link href="/partnership"> 
-              <Button size="default" variant="outline" className="whitespace-nowrap md:px-6">
+              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-6">
                 Get Involved <Users className="ml-2 h-5 w-5" />
               </Button>
             </Link>
@@ -160,3 +161,4 @@ export default function Home() {
     </div>
   );
 }
+
