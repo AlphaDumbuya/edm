@@ -28,7 +28,7 @@ const getBlogPostData = async (slug: string) => {
         <p class="mb-4 text-lg text-muted-foreground">This means taking the time to build relationships, understand different perspectives, and be present in people's lives. It's about living out our faith authentically, allowing Christ's love to shine through us.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">It's a Journey, Not a Transaction</h2>
         <p class="mb-4 text-lg text-muted-foreground">Evangelism isn't a one-time event or a sales pitch. It's often a journey of walking alongside someone as they explore faith. This requires patience, prayer, and a willingness to answer tough questions with grace. Our role is to plant seeds and water them; God brings the growth.</p>
-        <p class="text-lg text-muted-foreground">At EDM Connect, we equip believers to share their faith naturally and lovingly, emphasizing the importance of authentic relationships and compassionate outreach. Let's redefine evangelism by leading with love.</p>
+        <p class="text-lg text-muted-foreground">At EDM, we equip believers to share their faith naturally and lovingly, emphasizing the importance of authentic relationships and compassionate outreach. Let's redefine evangelism by leading with love.</p>
       `,
     },
     // Add other blog posts here if needed for testing

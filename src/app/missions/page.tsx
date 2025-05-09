@@ -37,7 +37,7 @@ export default function MissionsPage() {
     <div className="space-y-12">
       <PageHeader
         title="Our Global Missions"
-        subtitle="Showcasing the countries and regions where EDM Connect is actively involved."
+        subtitle="Showcasing the countries and regions where EDM is actively involved."
         icon={Globe2}
       />
 
@@ -50,7 +50,7 @@ export default function MissionsPage() {
         <Card className="shadow-xl">
           <CardContent className="p-0">
             <div className="aspect-video bg-muted rounded-lg overflow-hidden">
-              <MissionsMapClient />
+              <MissionsMapClient mapId="edm_missions_map" />
             </div>
           </CardContent>
         </Card>

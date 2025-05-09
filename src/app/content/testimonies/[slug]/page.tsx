@@ -16,15 +16,15 @@ const getTestimonyData = async (slug: string) => {
       content: `
         <p class="mb-4 text-lg text-muted-foreground">My life was a mess. I felt lost, alone, and without purpose. I had tried everything to fill the void in my heart, but nothing worked. Addiction had taken over, and I had pushed away everyone who cared about me.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">A Glimmer of Hope</h2>
-        <p class="mb-4 text-lg text-muted-foreground">One evening, at my lowest point, I wandered into a community event hosted by EDM Connect missionaries. I didn't know what to expect, but I was desperate. They welcomed me with open arms, offering food and a listening ear without judgment.</p>
+        <p class="mb-4 text-lg text-muted-foreground">One evening, at my lowest point, I wandered into a community event hosted by EDM missionaries. I didn't know what to expect, but I was desperate. They welcomed me with open arms, offering food and a listening ear without judgment.</p>
         <figure class="my-6">
            <img src="https://picsum.photos/seed/testimony1detail/700/350" alt="Hands reaching out" class="rounded-lg shadow-md mx-auto" data-ai-hint="hands reaching out"/>
            <figcaption class="text-center text-sm text-muted-foreground mt-2">A hand of friendship changed everything.</figcaption>
         </figure>
         <p class="mb-4 text-lg text-muted-foreground">That night, I heard the Gospel message for the first time in a way that resonated deep within me. It wasn't about rules or religion; it was about a loving God who offered forgiveness and a new beginning. For the first time in years, I felt a glimmer of hope.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">A New Life</h2>
-        <p class="mb-4 text-lg text-muted-foreground">I decided to give my life to Christ that night. The journey hasn't been easy, but with the support of the EDM Connect team and my new church family, I've found freedom from addiction, reconciliation with my family, and a profound sense of purpose. God's love has truly transformed me from darkness to light.</p>
-        <p class="text-lg text-muted-foreground">I am now actively involved in ministry, sharing my story to help others find the same hope I found. My life is a testament to God's amazing grace and the incredible work of EDM Connect.</p>
+        <p class="mb-4 text-lg text-muted-foreground">I decided to give my life to Christ that night. The journey hasn't been easy, but with the support of the EDM team and my new church family, I've found freedom from addiction, reconciliation with my family, and a profound sense of purpose. God's love has truly transformed me from darkness to light.</p>
+        <p class="text-lg text-muted-foreground">I am now actively involved in ministry, sharing my story to help others find the same hope I found. My life is a testament to God's amazing grace and the incredible work of EDM.</p>
       `,
     };
   }

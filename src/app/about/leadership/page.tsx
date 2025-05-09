@@ -10,7 +10,7 @@ const leaders = [
     bio: 'Dr. Reed has over 20 years of experience in global missions and leadership. Her passion is to see communities transformed by the Gospel.',
     imageUrl: 'https://picsum.photos/seed/leader1/300/300',
     dataAiHint: 'professional woman portrait',
-    contact: 'ereed@edmconnect.org',
+    contact: 'ereed@edm.org', // Assuming email domain might also change if it was based on "edmconnect"
   },
   {
     name: 'Pastor Samuel Green',
@@ -18,7 +18,7 @@ const leaders = [
     bio: 'Pastor Green is a dynamic speaker and evangelist, dedicated to sharing God\'s love and training others to do the same.',
     imageUrl: 'https://picsum.photos/seed/leader2/300/300',
     dataAiHint: 'smiling man portrait',
-    contact: 'sgreen@edmconnect.org',
+    contact: 'sgreen@edm.org',
   },
   {
     name: 'Maria Rodriguez',
@@ -26,7 +26,7 @@ const leaders = [
     bio: 'Maria has a heart for mentoring and equipping believers to grow deep in their faith. She develops resources and training programs.',
     imageUrl: 'https://picsum.photos/seed/leader3/300/300',
     dataAiHint: 'woman teaching group',
-    contact: 'mrodriguez@edmconnect.org',
+    contact: 'mrodriguez@edm.org',
   },
   {
     name: 'David Chen',
@@ -34,7 +34,7 @@ const leaders = [
     bio: 'David oversees the logistical and operational aspects of our global mission projects, ensuring effectiveness and stewardship.',
     imageUrl: 'https://picsum.photos/seed/leader4/300/300',
     dataAiHint: 'man office desk',
-    contact: 'dchen@edmconnect.org',
+    contact: 'dchen@edm.org',
   },
 ];
 
@@ -43,7 +43,7 @@ export default function LeadershipPage() {
     <div className="space-y-12">
       <PageHeader
         title="Our Leadership"
-        subtitle="Meet the dedicated team guiding EDM Connect's mission."
+        subtitle="Meet the dedicated team guiding EDM's mission."
         icon={Users}
       />
 

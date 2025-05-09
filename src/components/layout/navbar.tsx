@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { Menu, X, Church, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import {
@@ -87,7 +87,7 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary hover:text-primary/90 transition-colors">
             <Church className="h-8 w-8" />
-            <span>EDM Connect</span>
+            <span>EDM</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -187,13 +187,12 @@ export default function Navbar() {
                    <SheetClose asChild>
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setMobileMenuOpen(false)}>
                       <Church className="h-7 w-7" />
-                      <span>EDM Connect</span>
+                      <span>EDM</span>
                     </Link>
                   </SheetClose>
-                  {/* Added DialogTitle for accessibility */}
-                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
+                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
                 </SheetHeader>
-                <ScrollArea className="flex-1">
+                <ScrollArea className="flex-1"> {/* Added ScrollArea here */}
                   <div className="p-4">
                     <nav className="flex flex-col gap-2">
                       {dynamicNavItems.map((item) => (
@@ -253,7 +252,7 @@ export default function Navbar() {
                       )}
                     </div>
                   </div>
-                </ScrollArea>
+                </ScrollArea> {/* Closed ScrollArea here */}
               </SheetContent>
             </Sheet>
           </div>

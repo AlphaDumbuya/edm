@@ -26,7 +26,7 @@ const getArticleData = async (slug: string) => {
         <p class="mb-4 text-lg text-muted-foreground">Furthermore, the current global landscape, with its rapid changes, conflicts, and spiritual hunger, presents both challenges and unprecedented opportunities for evangelism. The message of hope, peace, and redemption found in Jesus is desperately needed.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">Our Role in Fulfilling It</h2>
         <p class="mb-4 text-lg text-muted-foreground">Every believer has a role to play. This might involve direct evangelism, supporting missionaries, praying for unreached people groups, or using one's unique gifts and resources to advance the Kingdom. The urgency should compel us not to complacency but to active participation.</p>
-        <p class="text-lg text-muted-foreground">At EDM Connect, we are passionately committed to equipping and mobilizing believers for this vital task. We believe that by working together, under the guidance of the Holy Spirit, we can make a significant impact for God's glory.</p>
+        <p class="text-lg text-muted-foreground">At EDM, we are passionately committed to equipping and mobilizing believers for this vital task. We believe that by working together, under the guidance of the Holy Spirit, we can make a significant impact for God's glory.</p>
       `,
     };
   }

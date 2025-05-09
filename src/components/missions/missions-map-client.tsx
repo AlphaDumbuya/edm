@@ -22,7 +22,11 @@ const missionLocations: MissionLocation[] = [
   { id: '5', position: { lat: 23.6345, lng: -102.5528 }, name: 'Mexico Rural Support', description: 'Supporting indigenous pastors and providing resources.', country: 'Mexico' },
 ];
 
-export default function MissionsMapClient() {
+interface MissionsMapClientProps {
+  mapId?: string;
+}
+
+export default function MissionsMapClient({ mapId = "default_missions_map" }: MissionsMapClientProps) {
   const [selectedLocation, setSelectedLocation] = useState<MissionLocation | null>(null);
   const [apiKey, setApiKey] = useState<string | undefined>(undefined);
   const [mapReady, setMapReady] = useState(false);
@@ -59,7 +63,7 @@ export default function MissionsMapClient() {
         <Map
           defaultCenter={{ lat: 10, lng: 0 }}
           defaultZoom={2}
-          mapId="edm_connect_missions_map"
+          mapId={mapId}
           gestureHandling={'greedy'}
           disableDefaultUI={true}
           className="rounded-lg"

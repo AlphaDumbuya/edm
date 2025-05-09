@@ -26,7 +26,7 @@ const events = [
     id: '3',
     title: 'Youth Evangelism Training',
     date: 'December 2-3, 2024',
-    location: 'EDM Connect Headquarters',
+    location: 'EDM Headquarters',
     description: 'Equipping young people (ages 15-25) with tools and confidence to share their faith effectively. Interactive sessions and practical outreach experience.',
     imageUrl: 'https://picsum.photos/seed/eventyouth/600/400',
     dataAiHint: 'young people discussion',

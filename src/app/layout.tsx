@@ -18,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'EDM Connect',
-  description: 'Evangelism Discipleship Missions - Connecting hearts, transforming lives.',
+  title: 'EDM',
+  description: 'Evangelism Discipleship Missions - Transforming lives.',
 };
 
 export default function RootLayout({

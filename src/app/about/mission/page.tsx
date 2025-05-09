@@ -3,6 +3,7 @@ import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Target, Users, Globe, HeartHandshake, BookOpenText } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function OurMissionPage() {
   return (
@@ -17,7 +18,7 @@ export default function OurMissionPage() {
         <div>
           <SectionTitle title="Who We Are" />
           <p className="text-lg text-muted-foreground mb-4">
-            EDM Connect is a global Christian organization committed to fulfilling the Great Commission. We believe in the transformative power of the Gospel to change lives, build communities, and bring hope to a world in need.
+            EDM is a global Christian organization committed to fulfilling the Great Commission. We believe in the transformative power of the Gospel to change lives, build communities, and bring hope to a world in need.
           </p>
           <p className="text-lg text-muted-foreground">
             Our work is rooted in three core pillars: dynamic Evangelism, intentional Discipleship, and impactful Missions. We strive to equip believers, empower leaders, and engage in compassionate outreach across diverse cultures and contexts.
@@ -64,7 +65,7 @@ export default function OurMissionPage() {
       <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Join Us on Our Journey" className="text-center" />
         <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-          We invite you to partner with EDM Connect. Whether through prayer, financial support, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference in the lives of individuals and communities around the world.
+          We invite you to partner with EDM. Whether through prayer, financial support, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference in the lives of individuals and communities around the world.
         </p>
         <div className="text-center mt-8">
           <Link href="/donate" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-md text-lg font-medium transition-colors">
@@ -75,6 +76,3 @@ export default function OurMissionPage() {
     </div>
   );
 }
-
-// Added a simple Link import for the donate button
-import Link from 'next/link';

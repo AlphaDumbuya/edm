@@ -35,7 +35,7 @@ export default function Home() {
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
-            Welcome to <span className="text-primary">EDM Connect</span>
+            Welcome to <span className="text-primary">EDM</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives across the globe.

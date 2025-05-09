@@ -11,7 +11,7 @@ export default function Footer() {
           <div>
             <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-4">
               <Church className="h-7 w-7" />
-              <span>EDM Connect</span>
+              <span>EDM</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Spreading the Gospel, making disciples, and reaching nations for Christ.
@@ -34,13 +34,13 @@ export default function Footer() {
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={24} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={24} /></a>
             </div>
-            <p className="text-sm text-muted-foreground">contact@edmconnect.org</p>
+            <p className="text-sm text-muted-foreground">contact@edm.org</p> {/* Assuming email domain changes */}
             <p className="text-sm text-muted-foreground">(123) 456-7890</p>
           </div>
         </div>
         <div className="mt-12 border-t border-border pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} EDM Connect. All rights reserved.
+            &copy; {currentYear} EDM. All rights reserved.
           </p>
         </div>
       </div>
