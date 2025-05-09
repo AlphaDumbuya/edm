@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -87,9 +88,9 @@ export default function EventCard({ event }: EventCardProps) {
                 <Info className="mr-2 h-5 w-5" /> {event.title}
               </DialogTitle>
               <DialogDescription>
-                <p className="mt-2 text-sm text-muted-foreground"><CalendarDays className="inline mr-1 h-4 w-4" /> {event.date}</p>
-                <p className="text-sm text-muted-foreground"><MapPin className="inline mr-1 h-4 w-4" /> {event.location}</p>
-                <p className="mt-4">{event.description}</p>
+                <div className="mt-2 text-sm text-muted-foreground"><CalendarDays className="inline mr-1 h-4 w-4" /> {event.date}</div>
+                <div className="text-sm text-muted-foreground"><MapPin className="inline mr-1 h-4 w-4" /> {event.location}</div>
+                <div className="mt-4">{event.description}</div>
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSignup}>

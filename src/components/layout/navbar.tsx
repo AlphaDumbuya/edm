@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Menu, X, Church, Handshake, Globe, Users, BookOpen, Video, DollarSign, MessageCircle, Sparkles, Search } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -127,32 +127,40 @@ export default function Navbar() {
                   <SheetTitle className="text-xl font-bold text-primary text-left">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="p-4">
-                  <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-6" onClick={() => setMobileMenuOpen(false)}>
-                    <Church className="h-7 w-7" />
-                    <span>EDM Connect</span>
-                  </Link>
+                  <SheetClose asChild>
+                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-6" onClick={() => setMobileMenuOpen(false)}>
+                      <Church className="h-7 w-7" />
+                      <span>EDM Connect</span>
+                    </Link>
+                  </SheetClose>
                   <nav className="flex flex-col gap-4">
                     {navItems.map((item) => (
                       item.links ? (
                         <div key={item.title}>
                           <h3 className="font-semibold text-muted-foreground mb-2 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
                           {item.links.map((link) => (
-                             <Link key={link.href} href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                            <SheetClose asChild key={link.href}>
+                             <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
                                {link.title}
                              </Link>
+                            </SheetClose>
                           ))}
                         </div>
                       ) : (
-                        <Link key={item.title} href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
-                           <item.icon className="h-4 w-4 mr-2" />{item.title}
-                        </Link>
+                        <SheetClose asChild key={item.title}>
+                          <Link href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                             <item.icon className="h-4 w-4 mr-2" />{item.title}
+                          </Link>
+                        </SheetClose>
                       )
                     ))}
-                    <Link href="/donate" className="mt-4" onClick={() => setMobileMenuOpen(false)}>
-                       <Button className="w-full">
-                         <DollarSign className="mr-2 h-4 w-4" /> Donate
-                       </Button>
-                    </Link>
+                    <SheetClose asChild>
+                      <Link href="/donate" className="mt-4" onClick={() => setMobileMenuOpen(false)}>
+                         <Button className="w-full">
+                           <DollarSign className="mr-2 h-4 w-4" /> Donate
+                         </Button>
+                      </Link>
+                    </SheetClose>
                   </nav>
                 </div>
               </SheetContent>
@@ -189,4 +197,3 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
-
