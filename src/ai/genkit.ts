@@ -1,19 +1,19 @@
 
 import { genkit, noopPlugin as importedNoopPlugin } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
-import type { Plugin } from 'genkit';
+import type { Plugin, GenkitConfig } from 'genkit'; // Import GenkitConfig for better typing
 
-const activePlugins: (Plugin<any> | (() => Plugin<any>))[] = [];
+const apiKeyPresent = !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
 let configuredModel: string | undefined = undefined;
 
-// Check for API key presence
-const apiKeyPresent = !!(process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY);
+// Use the more specific type for plugins array based on GenkitConfig
+const pluginsForGenkit: GenkitConfig['plugins'] = [];
 
 if (apiKeyPresent) {
-  activePlugins.push(googleAI());
+  pluginsForGenkit.push(googleAI()); // googleAI() returns a Plugin object
   configuredModel = 'googleai/gemini-2.0-flash'; // The model used by the app
 } else {
-  // Log a prominent warning to the server console. This will be visible during development.
+  // Log a prominent warning to the server console.
   console.warn(
     "***********************************************************************************\n" +
     "CRITICAL WARNING: GEMINI_API_KEY or GOOGLE_API_KEY is not set in the environment.\n" +
@@ -22,36 +22,30 @@ if (apiKeyPresent) {
     "***********************************************************************************"
   );
 
-  let resolvedPluginForNoop: Plugin<any>;
-
   // Check if the imported noopPlugin appears to be a valid plugin object.
-  // A valid plugin should at least have a 'name' (string) and 'configure' (function) property.
   if (
     importedNoopPlugin &&
     typeof importedNoopPlugin.name === 'string' &&
     typeof importedNoopPlugin.configure === 'function'
   ) {
-    resolvedPluginForNoop = importedNoopPlugin;
+    // Add importedNoopPlugin as a factory
+    pluginsForGenkit.push(() => importedNoopPlugin);
   } else {
     console.warn(
       "Imported `noopPlugin` from 'genkit' is undefined or not a valid plugin object. " +
       "Using a minimal fallback no-op plugin. This might affect Genkit's intended behavior if it relies on its specific noopPlugin."
     );
-    // Define a minimal fallback no-op plugin that Genkit can initialize.
-    resolvedPluginForNoop = {
+    // Add the fallback plugin as a factory
+    pluginsForGenkit.push(() => ({
       name: 'fallback-noop-plugin',
       configure: async () => {
         // This plugin does nothing, as intended for a no-op.
       },
-    };
+    } as Plugin<any>)); // Cast to Plugin<any> to satisfy the factory return type
   }
-  
-  // Add the chosen plugin (either importedNoopPlugin or fallback) as a factory,
-  // as per the guideline: "Add noop plugin as a factory that returns the plugin object."
-  activePlugins.push(() => resolvedPluginForNoop);
 }
 
 export const ai = genkit({
-  plugins: activePlugins as Plugin<any>[], // Cast as Plugin[] as Genkit internals will resolve factories
+  plugins: pluginsForGenkit, // Pass the correctly typed array
   model: configuredModel, // Set model conditionally
 });
