@@ -24,6 +24,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
 import * as React from 'react';
 import { useAuth } from '@/contexts/auth-context';
@@ -181,7 +182,7 @@ export default function Navbar() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0">
+              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0 flex flex-col">
                 <SheetHeader className="p-4 border-b">
                    <SheetClose asChild>
                     <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setMobileMenuOpen(false)}>
@@ -189,66 +190,70 @@ export default function Navbar() {
                       <span>EDM Connect</span>
                     </Link>
                   </SheetClose>
+                  {/* Added DialogTitle for accessibility */}
+                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
                 </SheetHeader>
-                <div className="p-4">
-                  <nav className="flex flex-col gap-2">
-                    {dynamicNavItems.map((item) => (
-                      item.links ? (
-                        <div key={item.title}>
-                          <h3 className="font-semibold text-muted-foreground mb-1 mt-3 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
-                          {item.links.map((link) => (
-                            <SheetClose asChild key={link.href}>
-                             <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm" onClick={() => setMobileMenuOpen(false)}>
-                               {link.title}
-                             </Link>
-                            </SheetClose>
-                          ))}
-                        </div>
+                <ScrollArea className="flex-1">
+                  <div className="p-4">
+                    <nav className="flex flex-col gap-2">
+                      {dynamicNavItems.map((item) => (
+                        item.links ? (
+                          <div key={item.title}>
+                            <h3 className="font-semibold text-muted-foreground mb-1 mt-3 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
+                            {item.links.map((link) => (
+                              <SheetClose asChild key={link.href}>
+                              <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm" onClick={() => setMobileMenuOpen(false)}>
+                                {link.title}
+                              </Link>
+                              </SheetClose>
+                            ))}
+                          </div>
+                        ) : (
+                          <SheetClose asChild key={item.title}>
+                            <Link href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                              <item.icon className="h-4 w-4 mr-2" />{item.title}
+                            </Link>
+                          </SheetClose>
+                        )
+                      ))}
+                    </nav>
+                    <div className="mt-6 border-t pt-6">
+                      {loading ? (
+                        <Button variant="outline" disabled className="w-full">Loading...</Button>
+                      ): user ? (
+                        <>
+                          <SheetClose asChild>
+                            <Link href="/dashboard/profile" className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2" onClick={() => setMobileMenuOpen(false)}>
+                              <UserCircle className="mr-2 h-4 w-4" /> My Profile
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Button variant="outline" className="w-full text-destructive hover:bg-destructive/10" onClick={() => { signOutAuth(); setMobileMenuOpen(false); }}>
+                              <LogOut className="mr-2 h-4 w-4" /> Log Out
+                            </Button>
+                          </SheetClose>
+                        </>
                       ) : (
-                        <SheetClose asChild key={item.title}>
-                          <Link href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
-                             <item.icon className="h-4 w-4 mr-2" />{item.title}
-                          </Link>
-                        </SheetClose>
-                      )
-                    ))}
-                  </nav>
-                  <div className="mt-6 border-t pt-6">
-                    {loading ? (
-                       <Button variant="outline" disabled className="w-full">Loading...</Button>
-                    ): user ? (
-                      <>
-                        <SheetClose asChild>
-                          <Link href="/dashboard/profile" className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2" onClick={() => setMobileMenuOpen(false)}>
-                            <UserCircle className="mr-2 h-4 w-4" /> My Profile
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Button variant="outline" className="w-full text-destructive hover:bg-destructive/10" onClick={() => { signOutAuth(); setMobileMenuOpen(false); }}>
-                            <LogOut className="mr-2 h-4 w-4" /> Log Out
-                          </Button>
-                        </SheetClose>
-                      </>
-                    ) : (
-                      <div className="space-y-2">
-                        <SheetClose asChild>
-                          <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                            <Button variant="outline" className="w-full">
-                              <LogIn className="mr-2 h-4 w-4" /> Login
-                            </Button>
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
-                            <Button className="w-full">
-                              <UserPlus className="mr-2 h-4 w-4" /> Sign Up
-                            </Button>
-                          </Link>
-                        </SheetClose>
-                      </div>
-                    )}
+                        <div className="space-y-2">
+                          <SheetClose asChild>
+                            <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                              <Button variant="outline" className="w-full">
+                                <LogIn className="mr-2 h-4 w-4" /> Login
+                              </Button>
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
+                              <Button className="w-full">
+                                <UserPlus className="mr-2 h-4 w-4" /> Sign Up
+                              </Button>
+                            </Link>
+                          </SheetClose>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                </div>
+                </ScrollArea>
               </SheetContent>
             </Sheet>
           </div>
