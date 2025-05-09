@@ -43,13 +43,13 @@ export default function Home() {
           </p>
           <div className="flex flex-nowrap justify-center space-x-4">
             <Link href="/about/mission">
-              <Button size="sm" variant="default" className="whitespace-nowrap md:px-6">
-                Learn More <ArrowRight className="ml-2 h-5 w-5" />
+              <Button size="sm" variant="default" className="whitespace-nowrap md:px-4">
+                Learn More <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-6">
-                Support Our Mission <HelpingHand className="ml-2 h-5 w-5" />
+              <Button size="sm" variant="outline" className="whitespace-nowrap md:px-4">
+                Support Our Mission <HelpingHand className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
