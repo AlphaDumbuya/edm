@@ -1,9 +1,9 @@
 
-import {genkit, noopPlugin} from 'genkit'; // Correctly import noopPlugin
+import { genkit, noopPlugin} from 'genkit'; // Correctly import noopPlugin
 import {googleAI} from '@genkit-ai/googleai';
 import type {Plugin} from 'genkit'; // For type safety
 
-const activePlugins: Plugin<any>[] = [];
+const activePlugins: (Plugin<any> | (() => Plugin<any>))[] = [];
 let configuredModel: string | undefined = undefined;
 
 // Check for API key presence
@@ -21,15 +21,15 @@ if (apiKeyPresent) {
     "Please set the API key in your .env file (e.g., GEMINI_API_KEY=your_api_key_here).\n" +
     "***********************************************************************************"
   );
-  // Add noop plugin so Genkit can initialize and define flows without crashing.
-  // Actual AI calls relying on Google AI will fail (e.g., model not found) or do nothing.
-  activePlugins.push(noopPlugin); // Use the directly imported noopPlugin
+  // Add noop plugin as a factory that returns the plugin object.
+  // This can help if Genkit's internal handling of direct plugin objects vs factories is causing issues.
+  activePlugins.push(() => noopPlugin); 
   // configuredModel remains undefined. Prompts/generate calls will need to specify models,
   // or they will fail if they expect a default Google AI model that isn't available.
 }
 
 export const ai = genkit({
-  plugins: activePlugins,
+  plugins: activePlugins as Plugin<any>[], // Cast as Plugin[] as Genkit internals will resolve factories
   model: configuredModel, // Set model conditionally
 });
 
