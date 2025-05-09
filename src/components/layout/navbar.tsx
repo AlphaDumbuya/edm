@@ -92,7 +92,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
+            <NavigationMenuList className="space-x-4"> {/* Increased spacing here */}
               {dynamicNavItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   {item.links ? (
