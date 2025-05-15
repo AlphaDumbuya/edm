@@ -12,8 +12,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 text-primary mb-4">
-              <Image src="/logo.png" alt="EDM Logo" width={48} height={48} className="h-12 w-12" />
-              {/* <span className="text-xl font-bold">EDM</span> Removed as logo contains EDM */}
+              <Image src="/assets/images/logo.png" alt="EDM Logo" width={48} height={48} className="h-12 w-12" />
             </Link>
             <p className="text-sm text-muted-foreground">
               EDM: Evangelism, Discipleship, Missions in Sierra Leone, West Africa and beyond.

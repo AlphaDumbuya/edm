@@ -87,8 +87,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/90 transition-colors">
-            <Image src="/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
-            {/* <span className="text-2xl font-bold">EDM</span> Removed as logo contains EDM */}
+            <Image src="/assets/images/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -194,8 +193,7 @@ export default function Navbar() {
                 <SheetHeader className="p-4 border-b">
                    <SheetClose asChild>
                     <Link href="/" className="flex items-center gap-2 text-primary" onClick={() => setMobileMenuOpen(false)}>
-                       <Image src="/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
-                      {/* <span className="text-xl font-bold">EDM</span> Removed as logo contains EDM */}
+                       <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
                     </Link>
                   </SheetClose>
                   <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
