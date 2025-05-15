@@ -1,29 +1,30 @@
+
 import PageHeader from '@/components/shared/page-header';
 import MediaItem from '@/components/gallery/media-item';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Camera, Video } from 'lucide-react';
 
 const photos = [
-  { id: 'photo1', type: 'photo', title: 'Community baptism in Sierra Leone River', date: 'July 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoSL1/600/400', dataAiHint: 'baptism river sierra leone' },
-  { id: 'photo2', type: 'photo', title: 'Children\'s Bible Club in Freetown', date: 'June 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoSL2/600/400', dataAiHint: 'children playing freetown' },
-  { id: 'photo3', type: 'photo', title: 'Leadership training in Columbus, Ohio', date: 'May 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoOH1/600/400', dataAiHint: 'conference group ohio' },
-  { id: 'photo4', type: 'photo', title: 'Local outreach event in Bo, SL', date: 'April 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoSL3/600/400', dataAiHint: 'sierra leone community event' },
-  { id: 'photo5', type: 'photo', title: 'Mission team prayer - Freetown & Ohio Link', date: 'March 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoPrayer/600/400', dataAiHint: 'people praying video call' },
-  { id: 'photo6', type: 'photo', title: 'Construction of a new church, Kono District', date: 'February 2024', imageUrl: 'https://picsum.photos/seed/galleryphotoSL4/600/400', dataAiHint: 'sierra leone building construction' },
+  { id: 'photo1', type: 'photo', title: 'EDM Evangelism Outreach in Freetown', date: 'July 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'sierra leone evangelism crowd' },
+  { id: 'photo2', type: 'photo', title: 'Discipleship Group - Kossoh Town', date: 'June 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'bible study group africa' },
+  { id: 'photo3', type: 'photo', title: 'Ohio Partners Meeting for Sierra Leone', date: 'May 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'meeting planning ohio' },
+  { id: 'photo4', type: 'photo', title: 'Future Site of EDM Campus, Sierra Leone', date: 'April 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'land plot construction africa' },
+  { id: 'photo5', type: 'photo', title: 'Prayer Meeting for EDM Missions', date: 'March 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'people praying group' },
+  { id: 'photo6', type: 'photo', title: 'Children\'s Ministry after "Jesus" Film', date: 'February 2024', imageUrl: 'https://placehold.co/600x400.png', dataAiHint: 'african children smiling' },
 ];
 
 const videos = [
-  { id: 'video1', type: 'video', title: 'Testimonies from Sierra Leone Mission', date: 'August 2024', videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', thumbnailUrl: 'https://picsum.photos/seed/galleryvideoSL1/600/400', dataAiHint: 'sierra leone landscape drone' }, 
-  { id: 'video2', type: 'video', title: 'A Day with an EDM Missionary in Freetown', date: 'July 2024', videoUrl: 'https://www.youtube.com/embed/L_LUpnjgPso', thumbnailUrl: 'https://picsum.photos/seed/galleryvideoSL2/600/400', dataAiHint: 'freetown person journaling sunrise' }, 
-  { id: 'video3', type: 'video', title: 'EDM Sierra Leone & Ohio Impact Review', date: 'January 2024', videoUrl: 'https://www.youtube.com/embed/3JZ_D3ELwOQ', thumbnailUrl: 'https://picsum.photos/seed/galleryvideoImpact/600/400', dataAiHint: 'montage sierra leone ohio people' },
+  { id: 'video1', type: 'video', title: 'Testimonies from EDM\'s Sierra Leone Mission', date: 'August 2024', videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ', thumbnailUrl: 'https://placehold.co/600x400.png', dataAiHint: 'sierra leone people interview' }, 
+  { id: 'video2', type: 'video', title: 'A Day with an EDM Missionary in Freetown', date: 'July 2024', videoUrl: 'https://www.youtube.com/embed/L_LUpnjgPso', thumbnailUrl: 'https://placehold.co/600x400.png', dataAiHint: 'freetown daily life missionary' }, 
+  { id: 'video3', type: 'video', title: 'EDM Vision: The Future Campus in Sierra Leone', date: 'January 2024', videoUrl: 'https://www.youtube.com/embed/3JZ_D3ELwOQ', thumbnailUrl: 'https://placehold.co/600x400.png', dataAiHint: 'architectural rendering building africa' },
 ];
 
 export default function GalleryPage() {
   return (
     <div className="space-y-12">
       <PageHeader
-        title="Media Gallery"
-        subtitle="See the impact of our mission in Sierra Leone and Ohio through photos and videos."
+        title="EDM Media Gallery"
+        subtitle="See the impact of Evangelism, Discipleship, and Missions in Sierra Leone through photos and videos."
         icon={Camera}
       />
 
@@ -54,4 +55,3 @@ export default function GalleryPage() {
     </div>
   );
 }
-

@@ -15,11 +15,11 @@ export default function Footer() {
               <span>EDM</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Spreading the Gospel, making disciples, and reaching nations for Christ.
+              EDM: Evangelism, Discipleship, Missions in Sierra Leone, West Africa and beyond.
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4">About Us</h3>
+            <h3 className="text-lg font-semibold mb-4">About EDM</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/about/mission" className="hover:text-primary transition-colors">Our Mission</Link></li>
               <li><Link href="/about/leadership" className="hover:text-primary transition-colors">Leadership</Link></li>
@@ -27,12 +27,12 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold mb-4">Get Involved</h3>
+            <h3 className="text-lg font-semibold mb-4">Get Involved with EDM</h3>
             <ul className="space-y-2 text-sm">
               <li><Link href="/events" className="hover:text-primary transition-colors">Events</Link></li>
               <li><Link href="/blog" className="hover:text-primary transition-colors">Blog</Link></li>
-              <li><Link href="/donate" className="hover:text-primary transition-colors">Donate</Link></li>
-              <li><Link href="/partnership" className="hover:text-primary transition-colors">Partner With Us</Link></li>
+              <li><Link href="/donate" className="hover:text-primary transition-colors">Donate to EDM</Link></li>
+              <li><Link href="/partnership" className="hover:text-primary transition-colors">Partner With EDM</Link></li>
             </ul>
           </div>
           <div>
@@ -44,7 +44,7 @@ export default function Footer() {
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={24} /></a>
             </div>
             <p className="text-sm text-muted-foreground">contact@edm.org</p>
-            <p className="text-sm text-muted-foreground">(123) 456-7890</p>
+            <p className="text-sm text-muted-foreground">(+232) XX-XXX-XXX</p>
             <address className="text-sm text-muted-foreground not-italic mt-2">
               EDM Headquarters<br />
               66 Main Grafton Road<br />

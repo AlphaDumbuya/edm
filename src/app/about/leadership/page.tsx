@@ -1,3 +1,4 @@
+
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import LeaderProfile from '@/components/about/leader-profile';
@@ -5,36 +6,36 @@ import { Users } from 'lucide-react';
 
 const leaders = [
   {
-    name: 'Dr. Evelyn Reed',
-    role: 'President & CEO (Freetown Office)',
-    bio: 'Dr. Reed has over 20 years of experience in mission leadership, focusing on community transformation in Sierra Leone. Her passion is to see the Gospel bring tangible hope and change.',
-    imageUrl: 'https://picsum.photos/seed/leader1/300/300',
-    dataAiHint: 'professional woman portrait african',
-    contact: 'ereed@edm.org',
+    name: 'Rev. [Founder\'s Name]', // Placeholder - replace with actual founder's name
+    role: 'Founder & Director, EDM Sierra Leone',
+    bio: 'Driven by a divine burden for the church in Sierra Leone, Rev. [Founder\'s Name] established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. His vision is to see Sierra Leone transformed by the Gospel.',
+    imageUrl: 'https://placehold.co/300x300.png',
+    dataAiHint: 'african pastor leader',
+    contact: 'founder@edm.org', // Placeholder
   },
   {
-    name: 'Pastor Samuel Green',
-    role: 'Vice President, Evangelism & Ohio Partnerships',
-    bio: 'Pastor Green is a dynamic speaker, dedicated to sharing God\'s love in Sierra Leone and fostering strong ministry partnerships with churches and organizations in Ohio, USA.',
-    imageUrl: 'https://picsum.photos/seed/leader2/300/300',
-    dataAiHint: 'smiling man portrait african american',
-    contact: 'sgreen@edm.org',
+    name: '[Ohio Partnership Lead Name]', // Placeholder
+    role: 'Director, Ohio Partnerships & International Support',
+    bio: 'Facilitates crucial support from US-based partners in Ohio, connecting resources, prayer, and collaborative efforts to empower EDM\'s work in Sierra Leone. Passionate about global missions and the unity of the Body of Christ.',
+    imageUrl: 'https://placehold.co/300x300.png',
+    dataAiHint: 'professional person office',
+    contact: 'ohiopartners@edm.org', // Placeholder
   },
   {
-    name: 'Maria Rodriguez',
-    role: 'Director of Discipleship (Sierra Leone Focus)',
-    bio: 'Maria has a heart for mentoring and equipping believers in Sierra Leone to grow deep in their faith. She develops local resources and training programs.',
-    imageUrl: 'https://picsum.photos/seed/leader3/300/300',
-    dataAiHint: 'woman teaching group sierra leone',
-    contact: 'mrodriguez@edm.org',
+    name: '[Head of Discipleship Name]', // Placeholder
+    role: 'Head of Discipleship & Training, EDM Sierra Leone',
+    bio: 'Oversees the development and implementation of discipleship programs in Sierra Leone, ensuring new believers are nurtured to maturity and equipped to train others, fulfilling Matthew 28:18-20.',
+    imageUrl: 'https://placehold.co/300x300.png',
+    dataAiHint: 'teacher africa classroom',
+    contact: 'discipleship@edm.org', // Placeholder
   },
   {
-    name: 'David Chen',
-    role: 'Director of Operations (Freetown & Ohio Coordination)',
-    bio: 'David oversees the logistical and operational aspects of our mission projects in Sierra Leone and coordinates efforts with our Ohio partners, ensuring effectiveness and stewardship.',
-    imageUrl: 'https://picsum.photos/seed/leader4/300/300',
-    dataAiHint: 'man office desk planning',
-    contact: 'dchen@edm.org',
+    name: '[Missions Coordinator Name]', // Placeholder
+    role: 'Missions & Outreach Coordinator, EDM Sierra Leone',
+    bio: 'Leads EDM\'s mission projects and evangelistic outreaches across Sierra Leone, including coordinating the "Jesus" film showings and managing the development of the EDM campus.',
+    imageUrl: 'https://placehold.co/300x300.png',
+    dataAiHint: 'project manager africa',
+    contact: 'missions@edm.org', // Placeholder
   },
 ];
 
@@ -42,13 +43,13 @@ export default function LeadershipPage() {
   return (
     <div className="space-y-12">
       <PageHeader
-        title="Our Leadership"
-        subtitle="Meet the dedicated team guiding EDM's mission in Sierra Leone and Ohio."
+        title="EDM Leadership Team"
+        subtitle="Meet the dedicated individuals guiding EDM's mission of Evangelism, Discipleship, and Missions in Sierra Leone, supported by our Ohio partners."
         icon={Users}
       />
 
       <section>
-        <SectionTitle title="Guiding Our Vision" subtitle="Committed individuals leading with faith and integrity across our focus regions." />
+        <SectionTitle title="Guiding Our Vision" subtitle="Committed individuals leading with faith and integrity to fulfill God's call for EDM." />
         <div className="grid md:grid-cols-2 lg:grid-cols-2 gap-8">
           {leaders.map((leader) => (
             <LeaderProfile
@@ -66,4 +67,3 @@ export default function LeadershipPage() {
     </div>
   );
 }
-

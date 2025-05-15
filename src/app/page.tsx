@@ -7,15 +7,15 @@ import SectionTitle from '@/components/shared/section-title';
 import PageHeader from '@/components/shared/page-header';
 import { ArrowRight, CalendarDays, Users, BookOpenText, HeartHandshake, MapPin, Images, HelpingHand } from 'lucide-react';
 
-// Dummy data for previews
+// Dummy data for previews - to be updated to reflect EDM specific content
 const upcomingEvents = [
-  { id: 1, title: 'EDM Annual Conference', date: 'October 15-17, 2024', location: 'Freetown & Online', image: 'https://picsum.photos/seed/event1/400/250', dataAiHint: 'conference crowd sierra leone' },
-  { id: 2, title: 'Ohio Community Outreach', date: 'November 5, 2024', location: 'Columbus, OH', image: 'https://picsum.photos/seed/event2/400/250', dataAiHint: 'community volunteering ohio' },
+  { id: 1, title: 'Freetown Evangelism Training', date: 'November 10-12, 2024', location: 'EDM Center, Freetown', image: 'https://placehold.co/400x250.png', dataAiHint: 'training workshop sierra leone' },
+  { id: 2, title: 'Ohio Partnership Summit', date: 'December 5, 2024', location: 'Online & Columbus, OH', image: 'https://placehold.co/400x250.png', dataAiHint: 'people meeting ohio' },
 ];
 
 const recentBlogPosts = [
-  { id: 1, title: 'The Heart of Evangelism in Sierra Leone', excerpt: 'Exploring core principles of sharing faith effectively in our local context...', slug: 'the-heart-of-evangelism', image: 'https://picsum.photos/seed/blog1/400/250', dataAiHint: 'open bible african context' },
-  { id: 2, title: 'Discipleship: Bridging Freetown and Ohio', excerpt: 'Navigating mentorship challenges and opportunities across continents...', slug: 'discipleship-modern-age', image: 'https://picsum.photos/seed/blog2/400/250', dataAiHint: 'mentor diverse background' },
+  { id: 1, title: 'The Call to Evangelism in Sierra Leone', excerpt: 'Understanding our mandate to share the Good News in every community...', slug: 'the-heart-of-evangelism', image: 'https://placehold.co/400x250.png', dataAiHint: 'sierra leone preaching' },
+  { id: 2, title: 'Building Mature Disciples: Our Approach', excerpt: 'How EDM is nurturing new believers to become trainers of others...', slug: 'discipleship-in-the-modern-age', image: 'https://placehold.co/400x250.png', dataAiHint: 'mentoring group teaching' },
 ];
 
 export default function Home() {
@@ -25,12 +25,12 @@ export default function Home() {
       <section className="relative bg-gradient-to-r from-primary/10 to-secondary/10 py-20 md:py-32 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://picsum.photos/seed/heroSL/1200/800"
+            src="https://placehold.co/1200x800.png"
             alt="Mission work in Sierra Leone"
             layout="fill"
             objectFit="cover"
             className="opacity-20"
-            data-ai-hint="sierra leone community"
+            data-ai-hint="sierra leone community outreach"
           />
           <div className="absolute inset-0 bg-background/30"></div>
         </div>
@@ -39,17 +39,17 @@ export default function Home() {
             Welcome to <span className="text-primary">EDM</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, Ohio, and beyond.
+            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa.
           </p>
           <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
             <Link href="/about/mission">
               <Button size="sm" variant="default" className="whitespace-nowrap text-xs sm:text-sm">
-                Learn More <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                Our Mission <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
             <Link href="/donate">
               <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
-                Support Us <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
+                Support EDM <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
           </div>
@@ -58,12 +58,12 @@ export default function Home() {
 
       {/* Core Pillars Section */}
       <section>
-        <SectionTitle title="Our Core Pillars" subtitle="The foundation of our ministry in Sierra Leone and Ohio" />
+        <SectionTitle title="Our Core Pillars" subtitle="The foundation of our ministry in Sierra Leone" />
         <div className="grid md:grid-cols-3 gap-8">
           {[
-            { title: 'Evangelism', description: 'Sharing the good news of Jesus Christ with communities in Sierra Leone and our partners in Ohio.', icon: BookOpenText },
-            { title: 'Discipleship', description: 'Nurturing believers in Freetown, Bo, Columbus, and beyond to grow in their faith.', icon: Users },
-            { title: 'Missions', description: 'Reaching out with compassion and service, from local projects in Sierra Leone to collaborative efforts in the US.', icon: HeartHandshake },
+            { title: 'Evangelism', description: 'Actively sharing the good news of Jesus Christ with unbelievers throughout Sierra Leone.', icon: BookOpenText },
+            { title: 'Discipleship', description: 'Training believers to maturity in faith, equipping them to disciple others effectively.', icon: Users },
+            { title: 'Missions', description: 'Reaching out with compassion and service, fulfilling God\'s call through tangible actions and outreach.', icon: HeartHandshake },
           ].map((pillar) => (
             <Card key={pillar.title} className="text-center shadow-md hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
@@ -111,7 +111,7 @@ export default function Home() {
 
       {/* Recent Blog Posts Preview */}
       <section>
-        <SectionTitle title="From Our Blog" subtitle="Insights, stories, and updates from Sierra Leone & Ohio" />
+        <SectionTitle title="From Our Blog" subtitle="Insights, stories, and updates from EDM" />
         <div className="grid md:grid-cols-2 gap-8">
           {recentBlogPosts.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
@@ -140,9 +140,9 @@ export default function Home() {
       {/* Call to Action - Donate / Get Involved */}
       <section className="bg-card py-16 rounded-lg shadow-lg">
         <div className="container mx-auto px-4 text-center">
-          <SectionTitle title="Partner With Us" subtitle="Your support makes a difference in Sierra Leone and Ohio" className="text-center" />
+          <SectionTitle title="Partner With EDM" subtitle="Your support makes a difference in Sierra Leone" className="text-center" />
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
+            Join us in our mission to spread the Gospel and make a lasting impact in Sierra Leone. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
           <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
             <Link href="/donate">
@@ -150,7 +150,7 @@ export default function Home() {
                 Donate Now <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
-            <Link href="/partnership"> 
+            <Link href="/partnership">
               <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
                 Get Involved <Users className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
@@ -161,4 +161,3 @@ export default function Home() {
     </div>
   );
 }
-

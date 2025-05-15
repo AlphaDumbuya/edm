@@ -1,3 +1,4 @@
+
 import PageHeader from '@/components/shared/page-header';
 import MissionsMapClient from '@/components/missions/missions-map-client';
 import { Globe2 } from 'lucide-react';
@@ -7,28 +8,28 @@ import Image from 'next/image';
 
 const missionRegions = [
   {
-    name: 'Sierra Leone Operations',
-    description: 'Our primary hub, focused on community development, church planting, and leadership training across Sierra Leone. Projects range from Freetown urban centers to rural villages.',
-    imageUrl: 'https://picsum.photos/seed/sierraleoneops/400/250',
-    dataAiHint: 'sierra leone village people',
-    focusAreas: ['Water Wells & Sanitation', 'Education Support', 'Healthcare Clinics', 'Church Planting'],
+    name: 'Sierra Leone Operations (EDM HQ)',
+    description: 'Our primary hub in Freetown, focused on evangelism, discipleship training, church planting, and community development across Sierra Leone. Home to our future EDM Campus project.',
+    imageUrl: 'https://placehold.co/400x250.png',
+    dataAiHint: 'sierra leone freetown cityscape',
+    focusAreas: ['Evangelism & Outreach', 'Discipleship & Leadership Training', 'Church Planting Support', 'EDM Campus Development (School, Retreat Center)'],
     countryFlags: ['🇸🇱']
   },
   {
     name: 'Ohio, USA Partnership Hub',
-    description: 'Coordinating with US churches and organizations in Ohio to support our Sierra Leonean initiatives and foster cross-cultural discipleship and evangelism efforts.',
-    imageUrl: 'https://picsum.photos/seed/ohiousa/400/250',
-    dataAiHint: 'ohio city skyline',
-    focusAreas: ['Partner Mobilization', 'Resource Development', 'Advocacy & Awareness', 'US-based Training'],
+    description: 'Coordinating with US churches and organizations in Ohio to support EDM\'s Sierra Leonean initiatives through prayer, resources, and fostering cross-cultural discipleship.',
+    imageUrl: 'https://placehold.co/400x250.png',
+    dataAiHint: 'ohio state house columbus',
+    focusAreas: ['Partner Mobilization & Support', 'Resource Development for SL', 'Advocacy & Awareness for EDM', 'US-based Training Coordination'],
     countryFlags: ['🇺🇸']
   },
   {
     name: 'Regional Evangelism (West Africa)',
-    description: 'Extending our evangelistic reach into neighboring West African countries through short-term missions and partnerships with local leaders, supported by our Freetown base.',
-    imageUrl: 'https://picsum.photos/seed/westafrica/400/250',
-    dataAiHint: 'west african market scene',
-    focusAreas: ['Leadership Conferences', 'Gospel Crusades', 'Resource Distribution'],
-    countryFlags: ['🇬🇳', '🇱🇷'] // Example: Guinea, Liberia
+    description: 'Extending EDM\'s evangelistic reach into neighboring West African countries through short-term missions, leadership conferences, and partnerships with local leaders, supported by our Freetown base.',
+    imageUrl: 'https://placehold.co/400x250.png',
+    dataAiHint: 'west africa village scene',
+    focusAreas: ['Leadership Conferences', 'Gospel Crusades & "Jesus" Film Showings', 'Resource Distribution', 'Pioneer Missions'],
+    countryFlags: ['🇬🇳', '🇱🇷', '🇨🇮'] // Example: Guinea, Liberia, Ivory Coast
   },
 ];
 
@@ -36,15 +37,15 @@ export default function MissionsPage() {
   return (
     <div className="space-y-12">
       <PageHeader
-        title="Our Mission Fields"
-        subtitle="Showcasing our work in Sierra Leone and our collaborative efforts with partners in Ohio, USA."
+        title="EDM Mission Fields"
+        subtitle="Showcasing our work of Evangelism, Discipleship, and Missions in Sierra Leone and our collaborative efforts with partners in Ohio, USA."
         icon={Globe2}
       />
 
       <section>
-        <SectionTitle title="Interactive Missions Map" subtitle="Explore our reach and impact in Sierra Leone and Ohio" />
+        <SectionTitle title="Interactive Missions Map" subtitle="Explore EDM's reach and impact in Sierra Leone and Ohio" />
         <p className="text-muted-foreground mb-6 text-center">
-          Use the map below to see where our teams are working. Click on markers for more information about specific projects and regions.
+          Use the map below to see where EDM teams are working and where our key partnerships are located. Click on markers for more information.
           (Note: Map functionality requires a Google Maps API key to be configured.)
         </p>
         <Card className="shadow-xl">
@@ -57,7 +58,7 @@ export default function MissionsPage() {
       </section>
 
       <section>
-        <SectionTitle title="Featured Mission Regions" subtitle="Highlights of our key areas of focus in Sierra Leone and Ohio" />
+        <SectionTitle title="Featured Mission Regions" subtitle="Highlights of EDM's key areas of focus" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {missionRegions.map(region => (
             <Card key={region.name} className="shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
@@ -81,4 +82,3 @@ export default function MissionsPage() {
     </div>
   );
 }
-
