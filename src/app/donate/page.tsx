@@ -1,11 +1,13 @@
+
 // src/app/donate/page.tsx
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
-import { HelpingHand, Mail, Phone, Users, ArrowRight } from 'lucide-react';
+import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function DonatePage() {
   return (
@@ -24,7 +26,7 @@ export default function DonatePage() {
               At EDM, we rely on the faithful support of partners like you to carry out our work of evangelism, discipleship, and missions, primarily focused in Sierra Leone with collaborative efforts in Ohio. Your donations enable us to send missionaries, provide resources for communities in Sierra Leone, run local programs, and bring hope to those in need.
             </p>
             <p>
-              We are committed to financial integrity and stewardship, ensuring that your gifts are used effectively to maximize impact for God's Kingdom in these regions.
+              We are committed to financial integrity and stewardship, ensuring that your gifts are used effectively to maximize impact for God's Kingdom in these regions. We want to take this opportunity to thank all those who have generously contributed toward this venture.
             </p>
           </div>
         </div>
@@ -39,8 +41,50 @@ export default function DonatePage() {
         </div>
       </section>
 
+      <section>
+        <SectionTitle title="Current Needs &amp; Updates" subtitle="Help us move forward with these critical projects" />
+        <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+          <Card className="shadow-md hover:shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+                <LandPlot className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-center">Land Acquisition &amp; School</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">We have acquired land to build a school and a retreat center for the Body of Christ. Your support helps us finalize this and begin construction.</p>
+            </CardContent>
+          </Card>
+          <Card className="shadow-md hover:shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+                <Package className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-center">Van &amp; Equipment</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">A van and musical instruments were shipped in August and are due to arrive the first week of October. These are vital for our outreach efforts.</p>
+            </CardContent>
+          </Card>
+          <Card className="shadow-md hover:shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+                <DollarSign className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-center">Customs Clearance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">There is an outstanding balance of $3,500.00 to pay the customs in Freetown for the van and equipment. Your contribution can help us clear this.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       <section className="max-w-2xl mx-auto">
-        <SectionTitle title="Make a Secure Donation" subtitle="Empower our work in Sierra Leone & Ohio today" className="text-center" />
+        <SectionTitle title="Make a Secure Donation" subtitle="Empower our work in Sierra Leone &amp; Ohio today" className="text-center" />
+        <p className="text-center text-muted-foreground mb-4">
+          Please consider donating one time, monthly, or quarterly to support our ongoing mission and specific needs.
+        </p>
         <DonationFormWrapper />
       </section>
 
@@ -72,7 +116,7 @@ export default function DonatePage() {
                 For questions about stock donations, planned giving, or other types of financial contributions, please contact our finance department:
               </p>
               <p className="text-foreground">Email: <a href="mailto:finance@edm.org" className="text-primary hover:underline">finance@edm.org</a></p>
-              <p className="text-foreground">Phone: <a href="tel:123-456-7891" className="text-primary hover:underline">(+232) XX-XXX-XXX (SL)</a></p>
+              <p className="text-foreground">Phone: <a href="tel:+23200000000" className="text-primary hover:underline">(+232) XX-XXX-XXX (SL)</a></p>
             </div>
           </div>
 
@@ -91,6 +135,14 @@ export default function DonatePage() {
                   Explore Partnerships <ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
               </Link>
+            </div>
+             <div className="mt-8">
+                <h4 className="text-xl font-semibold text-foreground mb-2 flex items-center">
+                    <Info className="mr-3 h-6 w-6 text-primary"/> General Support
+                </h4>
+                <p className="text-muted-foreground">
+                    Beyond specific financial contributions, your prayers, advocacy, and willingness to share our story are invaluable. Learn more about how you can be involved in non-monetary ways.
+                </p>
             </div>
           </div>
         </div>
