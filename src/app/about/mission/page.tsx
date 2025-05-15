@@ -1,7 +1,7 @@
 
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
