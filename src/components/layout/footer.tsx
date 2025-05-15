@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
-import { Facebook, Twitter, Instagram, Youtube, Church, ShieldCheck, FileText, ShieldAlert } from 'lucide-react';
+import Image from 'next/image'; // Added Image import
+import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, FileText, ShieldAlert } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -10,9 +11,9 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
-            <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary mb-4">
-              <Church className="h-7 w-7" />
-              <span>EDM</span>
+            <Link href="/" className="flex items-center gap-2 text-primary mb-4">
+              <Image src="/logo.png" alt="EDM Logo" width={48} height={48} className="h-12 w-12" />
+              {/* <span className="text-xl font-bold">EDM</span> Removed as logo contains EDM */}
             </Link>
             <p className="text-sm text-muted-foreground">
               EDM: Evangelism, Discipleship, Missions in Sierra Leone, West Africa and beyond.

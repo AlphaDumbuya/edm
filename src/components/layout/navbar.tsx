@@ -2,7 +2,8 @@
 'use client';
 
 import Link from 'next/link';
-import { Menu, X, Church, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
+import Image from 'next/image'; // Added Image import
+import { Menu, X, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -85,9 +86,9 @@ export default function Navbar() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary hover:text-primary/90 transition-colors">
-            <Church className="h-8 w-8" />
-            <span>EDM</span>
+          <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/90 transition-colors">
+            <Image src="/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+            {/* <span className="text-2xl font-bold">EDM</span> Removed as logo contains EDM */}
           </Link>
 
           {/* Desktop Navigation */}
@@ -192,9 +193,9 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0 flex flex-col">
                 <SheetHeader className="p-4 border-b">
                    <SheetClose asChild>
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setMobileMenuOpen(false)}>
-                      <Church className="h-7 w-7" />
-                      <span>EDM</span>
+                    <Link href="/" className="flex items-center gap-2 text-primary" onClick={() => setMobileMenuOpen(false)}>
+                       <Image src="/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
+                      {/* <span className="text-xl font-bold">EDM</span> Removed as logo contains EDM */}
                     </Link>
                   </SheetClose>
                   <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
