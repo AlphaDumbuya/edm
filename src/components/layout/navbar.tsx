@@ -2,7 +2,7 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image'; // Added Image import
+import Image from 'next/image'; 
 import { Menu, X, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';

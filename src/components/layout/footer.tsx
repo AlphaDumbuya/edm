@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import Image from 'next/image'; // Added Image import
+import Image from 'next/image'; 
 import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, FileText, ShieldAlert } from 'lucide-react';
 
 export default function Footer() {
