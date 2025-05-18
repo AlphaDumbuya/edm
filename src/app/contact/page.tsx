@@ -15,7 +15,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import MissionsMapClient from '@/components/missions/missions-map-client'; // Re-using this for contact map
+import MissionsMapClient from '@/components/missions/missions-map-client'; 
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -51,7 +51,7 @@ export default function ContactPage() {
     <div className="space-y-16">
       <PageHeader
         title="Contact EDM"
-        subtitle="We'd love to hear from you. Reach out with questions, partnership inquiries, or to learn more."
+        subtitle="We'd love to hear from you. Reach out with questions, partnership inquiries, or to learn more about our work in Sierra Leone and Oregon."
         icon={Mail}
       />
 
@@ -105,12 +105,12 @@ export default function ContactPage() {
           </Card>
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center text-primary"><Users className="mr-2 h-6 w-6" /> Ohio, USA Partnership Office</CardTitle>
+              <CardTitle className="flex items-center text-primary"><Users className="mr-2 h-6 w-6" /> Oregon, USA Partnership Office</CardTitle>
             </CardHeader>
             <CardContent className="space-y-2 text-muted-foreground">
-              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary" /> 12301 South East Stephens Street, Portland, Ohio 97233</p>
+              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary" /> 12301 South East Stephens Street, Portland, Oregon 97233</p>
               <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary" /> (USA Contact Number Placeholder)</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary" /> <a href="mailto:contact.oh@edm.org" className="hover:underline">contact.oh@edm.org</a></p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary" /> <a href="mailto:contact.us@edm.org" className="hover:underline">contact.us@edm.org</a></p>
             </CardContent>
           </Card>
         </div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
          <Card className="shadow-xl">
           <CardContent className="p-0">
             <div className="aspect-[16/9] md:aspect-[2/1] bg-muted rounded-lg overflow-hidden">
-              {/* The map will show both Sierra Leone and Ohio locations */}
+              {/* The map will show both Sierra Leone and Oregon locations */}
               <MissionsMapClient mapId="edm_contact_map" />
             </div>
           </CardContent>

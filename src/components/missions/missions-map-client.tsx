@@ -20,7 +20,7 @@ interface MissionLocation {
 const missionLocations: MissionLocation[] = [
   { id: '1', position: { lat: 8.4844, lng: -13.2344 }, name: 'EDM Headquarters - Freetown', description: 'Main operations center for EDM in Sierra Leone, coordinating evangelism, discipleship, and mission projects. Future site of the EDM Campus.', country: 'Sierra Leone', type: 'EDM Hub' },
   { id: '2', position: { lat: 7.9503, lng: -11.8378 }, name: 'Bo District Ministry Focus', description: 'Focus area for church planting, community development, and evangelistic outreach in Bo District.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
-  { id: '3', position: { lat: 39.9612, lng: -82.9988 }, name: 'Portland, Ohio Partnership Hub', description: 'Coordinating US partner engagement, resource mobilization, and awareness campaigns from our office at 12301 South East Stephens Street, Portland, Ohio 97233.', country: 'USA', type: 'Partnership Hub' },
+  { id: '3', position: { lat: 45.5231, lng: -122.6765 }, name: 'Portland, Oregon Partnership Hub', description: 'Coordinating US partner engagement, resource mobilization, and awareness campaigns from our office at 12301 South East Stephens Street, Portland, Oregon 97233.', country: 'USA', type: 'Partnership Hub' },
   { id: '4', position: { lat: 8.6200, lng: -12.5700 }, name: 'Makeni Education & Outreach', description: 'Supporting schools, providing educational resources, and conducting outreach in the Makeni area.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
   { id: '5', position: { lat: 8.7832, lng: -11.3300 }, name: 'Kenema District Evangelism', description: 'Active evangelism and discipleship programs in Kenema District, expanding EDM\'s reach.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
 ];
@@ -35,14 +35,12 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
-    // Ensure this runs only on the client
     const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     setApiKey(key);
-    setMapReady(true); // Indicate that we are ready to attempt rendering the map
+    setMapReady(true); 
   }, []);
 
   if (!mapReady) {
-    // Still determining if API key is present or not
     return <div className="flex items-center justify-center h-full bg-muted"><p>Loading map...</p></div>;
   }
   
@@ -56,7 +54,7 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
           Please set the <code className="bg-destructive/20 px-1 rounded">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> environment variable.
         </p>
         <p className="text-sm text-muted-foreground mt-2">
-          For now, mission locations cannot be displayed visually. Key locations include Freetown, Sierra Leone and Portland, Ohio, USA.
+          For now, mission locations cannot be displayed visually. Key locations include Freetown, Sierra Leone and Portland, Oregon, USA.
         </p>
       </div>
     );
@@ -66,7 +64,7 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
     <APIProvider apiKey={apiKey}>
       <div style={{ height: '100%', width: '100%', position: 'relative' }}>
         <Map
-          defaultCenter={{ lat: 24, lng: -48 }} // Adjusted to center better between SL (8.5, -13.2) and Ohio (40, -83)
+          defaultCenter={{ lat: 26, lng: -68 }} // Centered between SL (8.5, -13.2) and Oregon (45.5, -122.6)
           defaultZoom={3} 
           mapId={mapId}
           gestureHandling={'greedy'}
@@ -80,9 +78,9 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
               onClick={() => setSelectedLocation(location)}
             >
               <Pin
-                background={location.type === 'EDM Hub' ? 'hsl(var(--primary))' : location.type === 'Partnership Hub' ? 'hsl(var(--secondary))' : 'hsl(var(--accent))'}
+                background={location.type === 'EDM Hub' ? 'hsl(var(--primary))' : location.type === 'Partnership Hub' ? 'hsl(var(--accent))' : 'hsl(var(--secondary))'}
                 borderColor={'hsl(var(--background))'}
-                glyphColor={location.type === 'EDM Hub' ? 'hsl(var(--primary-foreground))' : location.type === 'Partnership Hub' ? 'hsl(var(--secondary-foreground))' : 'hsl(var(--accent-foreground))'}
+                glyphColor={location.type === 'EDM Hub' ? 'hsl(var(--primary-foreground))' : location.type === 'Partnership Hub' ? 'hsl(var(--accent-foreground))' : 'hsl(var(--secondary-foreground))'}
               />
             </AdvancedMarker>
           ))}

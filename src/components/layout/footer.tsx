@@ -16,7 +16,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-primary">EDM</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Evangelism, Discipleship, Missions in Sierra Leone, West Africa and with our partners in Ohio, USA.
+              Evangelism, Discipleship, Missions in Sierra Leone, West Africa and with our partners in Oregon, USA.
             </p>
           </div>
           <div>
@@ -53,9 +53,9 @@ export default function Footer() {
               <div className="flex items-start">
                  <MapPin size={16} className="mr-2 mt-1 text-primary shrink-0" />
                 <div>
-                  <strong>USA (Ohio Partner Office):</strong><br />
+                  <strong>USA (Oregon Partner Office):</strong><br />
                   12301 South East Stephens Street<br />
-                  Portland, Ohio 97233
+                  Portland, Oregon 97233
                 </div>
               </div>
               <div className="flex items-center">
