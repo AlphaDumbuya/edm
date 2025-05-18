@@ -4,7 +4,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, School, Target } from 'lucide-react'; // Added Target
+import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, Target } from 'lucide-react'; // Added Target
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -54,7 +54,7 @@ const mainNavItems = [
       { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches.' },
       { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity.' },
       { href: '/ministries/missions-outreach', title: 'Missions Outreach', description: 'Church planting and community projects.' },
-      { href: '/ministries/education', title: 'Education', description: 'Our school project at Rosortta Village and Bible training.' },
+      { href: '/ministries/education', title: 'Education', description: 'EDM Marifa School and future Bible training.' },
     ],
   },
   {
@@ -105,7 +105,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/assets/images/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
             <span className="text-2xl font-bold text-primary">EDM</span>
           </Link>
 
@@ -211,7 +211,7 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[320px] bg-card p-0 flex flex-col">
                 <SheetHeader className="p-4 border-b flex flex-row justify-between items-center">
                    <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                       <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
+                       <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
                        <SheetTitle className="text-lg font-semibold text-primary">EDM</SheetTitle>
                     </Link>
                   <SheetClose asChild>

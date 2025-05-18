@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'code-alpha-image-gallary.vercel.app',
+        port: '',
+        pathname: '/**',
+      }
     ],
   },
 };

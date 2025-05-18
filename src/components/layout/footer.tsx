@@ -12,7 +12,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div>
             <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/assets/images/logo.png" alt="EDM Logo" width={48} height={48} className="h-12 w-12" />
+              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={48} height={48} className="h-12 w-12" />
               <span className="text-xl font-bold text-primary">EDM</span>
             </Link>
             <p className="text-sm text-muted-foreground">
