@@ -7,7 +7,7 @@ import SectionTitle from '@/components/shared/section-title';
 import { ArrowRight, Users, BookOpenText, HeartHandshake, Newspaper, HelpingHand, Target, Milestone, School } from 'lucide-react';
 
 const recentNews = [
-  { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: '/news/edm-campus-vision-update', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
+  { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: '/news/edm-marifa-school-operational', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
   { id: 2, title: 'Urgent: Customs Fee for Ministry Van', excerpt: 'We need your help to clear our vital ministry van and equipment from customs in Freetown...', slug: '/news/customs-fee-urgent-need', image: 'https://source.unsplash.com/random/400x250/?donation,support', dataAiHint: 'donation support hands' },
 ];
 
@@ -22,17 +22,16 @@ export default function Home() {
             alt="Evangelism and community work in Sierra Leone"
             layout="fill"
             objectFit="cover"
-            className="opacity-20"
             data-ai-hint="christianity community children"
             priority
           />
-          <div className="absolute inset-0 bg-background/50"></div>
+          <div className="absolute inset-0 bg-black/60"></div> {/* Changed overlay to dark */}
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 md:mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6"> {/* Changed text to white for contrast */}
             Welcome to <span className="text-primary">EDM</span>
           </h1>
-          <p className="text-md sm:text-lg md:text-xl text-muted-foreground max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
+          <p className="text-md sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8"> {/* Changed text to light gray for contrast */}
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
@@ -42,7 +41,7 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2">
+              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border-gray-300 text-gray-200 hover:bg-white/10 hover:text-white"> {/* Adjusted outline button for dark overlay */}
                 Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
@@ -52,7 +51,7 @@ export default function Home() {
 
       {/* Core Pillars Section */}
       <section>
-        <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry" />
+        <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry in Sierra Leone" />
         <div className="grid md:grid-cols-3 gap-6 md:gap-8">
           {[
             { title: 'Evangelism', description: 'Actively sharing the good news of Jesus Christ with unbelievers throughout Sierra Leone, compelled by Romans 10:13-15.', icon: BookOpenText, href: "/ministries/evangelism" },
@@ -84,7 +83,7 @@ export default function Home() {
         <div className="text-center max-w-3xl mx-auto">
             <SectionTitle title="Our Guiding Words" className="text-center"/>
              <div className="mb-6 md:mb-8">
-                <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Mission Statement</h3>
+                <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Purpose Statement</h3>
                 <blockquote className="text-lg sm:text-xl italic text-foreground border-l-4 border-primary pl-3 sm:pl-4 py-1 sm:py-2">
                 "In our acts of obedience and worship to God, we will go out and share the good news to the unbelievers, train them to maturity so they will train others."
                 </blockquote>
