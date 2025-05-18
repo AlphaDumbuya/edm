@@ -7,8 +7,8 @@ import SectionTitle from '@/components/shared/section-title';
 import { ArrowRight, Users, BookOpenText, HeartHandshake, Newspaper, HelpingHand, Target, Milestone, School } from 'lucide-react';
 
 const recentNews = [
-  { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: 'edm-marifa-school-operational', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
-  { id: 2, title: 'Urgent: Customs Fee for Ministry Van', excerpt: 'We need your help to clear our vital ministry van and equipment from customs in Freetown...', slug: 'customs-fee-urgent-need', image: 'https://source.unsplash.com/random/400x250/?donation,support', dataAiHint: 'donation support hands' },
+  { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: '/news/edm-campus-vision-update', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
+  { id: 2, title: 'Urgent: Customs Fee for Ministry Van', excerpt: 'We need your help to clear our vital ministry van and equipment from customs in Freetown...', slug: '/news/customs-fee-urgent-need', image: 'https://source.unsplash.com/random/400x250/?donation,support', dataAiHint: 'donation support hands' },
 ];
 
 export default function Home() {
@@ -18,15 +18,15 @@ export default function Home() {
       <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-16 md:py-24 lg:py-32 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/assets/images/hero-background.jpg" 
+            src="https://images.unsplash.com/photo-1572061486195-d811e12d0a10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHx8MA%3D%3D"
             alt="Evangelism and community work in Sierra Leone"
             layout="fill"
             objectFit="cover"
             className="opacity-20"
-            data-ai-hint="sierra leone landscape children"
+            data-ai-hint="christianity community children"
             priority
           />
-          <div className="absolute inset-0 bg-background/50"></div> 
+          <div className="absolute inset-0 bg-background/50"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-4 md:mb-6">
@@ -69,7 +69,7 @@ export default function Home() {
               <CardContent className="p-4 sm:p-6 flex-grow">
                 <p className="text-muted-foreground text-sm">{pillar.description}</p>
               </CardContent>
-              <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4">
+              <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4 border-t flex justify-center">
                  <Link href={pillar.href}>
                     <Button variant="link" className="text-sm">Learn More <ArrowRight className="ml-1 h-3 w-3"/></Button>
                  </Link>
@@ -78,7 +78,7 @@ export default function Home() {
           ))}
         </div>
       </section>
-      
+
       {/* Mission Statement & Motto Section */}
       <section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <div className="text-center max-w-3xl mx-auto">
@@ -158,13 +158,13 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Link href={`/news/${post.slug}`} className="block">
+              <Link href={post.slug} className="block">
                 <Image src={post.image} alt={post.title} width={400} height={250} className="w-full h-40 sm:h-48 object-cover" data-ai-hint={post.dataAiHint} />
               </Link>
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={`/news/${post.slug}`}>{post.title}</Link></h3>
+                <h3 className="text-lg sm:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug}>{post.title}</Link></h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
-                <Link href={`/news/${post.slug}`}>
+                <Link href={post.slug}>
                   <Button variant="outline" className="w-full text-xs sm:text-sm">
                     Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
@@ -195,7 +195,7 @@ export default function Home() {
                 Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
-            <Link href="/get-involved"> 
+            <Link href="/get-involved">
               <Button size="sm" variant="outline" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2">
                 Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
