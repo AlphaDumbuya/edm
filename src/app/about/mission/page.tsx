@@ -2,7 +2,7 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, ShieldCheck, School } from 'lucide-react';
+import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, ShieldCheck, School, Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -121,17 +121,16 @@ export default function OurMissionPage() {
         <SectionTitle title="Current Updates & Needs" />
          <Card className="shadow-lg bg-primary/5">
             <CardHeader>
-                <CardTitle className="text-primary">Progress and Urgent Needs</CardTitle>
+                <CardTitle className="text-primary">Progress and Support Opportunities</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground">
                 <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more & support the school.</Link></p>
                 <p><strong className="text-foreground">Land Acquired:</strong> We praise God that we have acquired land for the main EDM campus and a retreat center for the Body of Christ in Sierra Leone!</p>
-                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped in August and are expected to arrive the first week of October. These are vital for our outreach.</p>
-                <p className="font-semibold text-destructive"><strong className="text-foreground">Urgent Need:</strong> There is an outstanding balance of $3,500.00 to pay customs in Freetown for the van and equipment. Your support is crucial to clear these items.</p>
+                <p><strong className="text-foreground">Van & Equipment Arrived:</strong> The van and musical instruments have arrived in Freetown and are being prepared for ministry use. These are vital for our outreach efforts.</p>
             </CardContent>
             <CardFooter>
-                <Link href="/donate?reason=urgent_needs">
-                    <Button variant="default">Help Meet These Needs</Button>
+                <Link href="/donate?reason=current_projects">
+                    <Button variant="default">Help Support These Initiatives</Button>
                 </Link>
             </CardFooter>
          </Card>

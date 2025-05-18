@@ -8,7 +8,7 @@ import { ArrowRight, Users, BookOpenText, HeartHandshake, Newspaper, HelpingHand
 
 const recentNews = [
   { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: '/news/edm-marifa-school-operational', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
-  { id: 2, title: 'Urgent: Customs Fee for Ministry Van', excerpt: 'We need your help to clear our vital ministry van and equipment from customs in Freetown...', slug: '/news/customs-fee-urgent-need', image: 'https://source.unsplash.com/random/400x250/?donation,support', dataAiHint: 'donation support hands' },
+  { id: 2, title: 'Ministry Van & Equipment Arriving Soon!', excerpt: 'The van and musical instruments shipped from our Oregon partners are expected to arrive in Freetown soon. These tools are vital for our outreach.', slug: '/news/van-equipment-arrival-news', image: 'https://source.unsplash.com/random/400x250/?shipping,logistics', dataAiHint: 'shipping logistics port' },
 ];
 
 export default function Home() {
@@ -22,7 +22,7 @@ export default function Home() {
             alt="Evangelism and community work in Sierra Leone"
             layout="fill"
             objectFit="cover"
-            className="opacity-40" 
+            className="opacity-40"
             data-ai-hint="christianity community children"
             priority
           />
@@ -42,11 +42,11 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/donate">
-              <Button 
-                size="sm" 
-                variant="ghost" 
+              <Button
+                size="sm"
+                variant="ghost"
                 className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white"
-              > 
+              >
                 Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
@@ -200,11 +200,11 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/get-involved">
-              <Button 
-                size="sm" 
-                variant="ghost" 
+              <Button
+                size="sm"
+                variant="ghost"
                 className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white"
-              > 
+              >
                 Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
@@ -214,4 +214,3 @@ export default function Home() {
     </div>
   );
 }
-

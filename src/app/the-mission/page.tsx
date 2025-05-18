@@ -2,7 +2,7 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck, School } from 'lucide-react';
+import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck, School, Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -46,7 +46,7 @@ export default function TheMissionPage() {
               <p className="text-muted-foreground mb-4">
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school), lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
-              <Image src="https://placehold.co/600x400.png" alt="Artist rendering of EDM Campus" width={600} height={400} data-ai-hint="campus building africa rendering" className="rounded-md shadow-md"/>
+              <Image src="https://source.unsplash.com/random/600x400/?campus,building,africa,rendering" alt="Artist rendering of EDM Campus" width={600} height={400} data-ai-hint="campus building africa rendering" className="rounded-md shadow-md"/>
             </CardContent>
           </Card>
           
@@ -112,17 +112,16 @@ export default function TheMissionPage() {
         <SectionTitle title="Current Updates & Needs" />
          <Card className="shadow-lg bg-primary/5">
             <CardHeader>
-                <CardTitle className="text-primary">Progress and Urgent Needs</CardTitle>
+                <CardTitle className="text-primary">Progress and Support Opportunities</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground">
-                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline">Learn more and support the school.</Link></p>
+                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more and support the school.</Link></p>
                 <p><strong className="text-foreground">Land Acquired:</strong> We have acquired land for the main EDM campus and retreat center for the Body of Christ in Sierra Leone!</p>
-                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped in August and are expected to arrive the first week of October. These are vital for our outreach.</p>
-                <p className="font-semibold text-destructive"><strong className="text-foreground">Urgent Need:</strong> There is an outstanding balance of $3,500.00 to pay customs in Freetown for the van and equipment. Your support is crucial to clear these items.</p>
+                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and are expected to arrive soon. These are vital for our outreach efforts. Your prayers and support for their effective deployment are appreciated.</p>
             </CardContent>
             <CardFooter>
-                <Link href="/donate?reason=urgent_customs_need">
-                    <Button variant="default">Help Meet Urgent Needs</Button>
+                <Link href="/donate?reason=general_support">
+                    <Button variant="default">Support Our Ongoing Work</Button>
                 </Link>
             </CardFooter>
          </Card>

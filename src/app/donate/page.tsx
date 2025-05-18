@@ -35,7 +35,7 @@ export default function DonatePage() {
         </div>
         <div className="relative h-64 md:h-80 w-full max-w-md mx-auto md:mx-0 rounded-lg overflow-hidden shadow-xl">
           <Image
-            src="https://placehold.co/800x600.png"
+            src="https://source.unsplash.com/random/800x600/?sierra,leone,children,community"
             alt="Children in Sierra Leone benefiting from EDM's work"
             layout="fill"
             objectFit="cover"
@@ -46,7 +46,7 @@ export default function DonatePage() {
 
       <section>
         <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects in Sierra Leone" />
-        <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8"> {/* Changed to 2 columns for better balance */}
           <Card className="shadow-md hover:shadow-lg">
             <CardHeader>
               <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
@@ -66,21 +66,10 @@ export default function DonatePage() {
               <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
                 <Package className="h-8 w-8 text-primary" />
               </div>
-              <CardTitle className="text-center">Van & Equipment Arrival</CardTitle>
+              <CardTitle className="text-center">Van & Equipment Support</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground text-center">A van and musical instruments shipped in August are expected to arrive the first week of October. These are vital for our outreach and evangelism efforts across Sierra Leone.</p>
-            </CardContent>
-          </Card>
-          <Card className="shadow-md hover:shadow-lg bg-destructive/10 border-destructive">
-            <CardHeader>
-              <div className="mx-auto bg-destructive/20 p-3 rounded-full w-fit mb-3">
-                <DollarSign className="h-8 w-8 text-destructive" />
-              </div>
-              <CardTitle className="text-center text-destructive">Urgent: Customs Clearance</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-foreground text-center">There is an outstanding balance of <strong>$3,500.00</strong> to pay customs in Freetown for the van and equipment. Your immediate contribution can help us clear these essential items.</p>
+              <p className="text-sm text-muted-foreground text-center">A van and musical instruments have been shipped and are expected to arrive soon. These are vital for our outreach and evangelism efforts across Sierra Leone. Support for fuel, maintenance, and future equipment needs is appreciated.</p>
             </CardContent>
           </Card>
         </div>

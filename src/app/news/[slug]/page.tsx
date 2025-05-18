@@ -14,7 +14,7 @@ const getNewsPostData = async (slug: string) => {
       title: 'The Unstoppable Call: Evangelism in Sierra Leone',
       author: 'EDM Team',
       date: 'October 28, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
+      imageUrl: 'https://source.unsplash.com/random/800x400/?sierra,leone,preaching,crowd',
       dataAiHint: 'sierra leone preaching crowd',
       tags: ['Evangelism', 'Great Commission', 'Sierra Leone', 'Update'],
       content: `
@@ -22,7 +22,7 @@ const getNewsPostData = async (slug: string) => {
         <h2 class="text-2xl font-semibold my-4 text-foreground">Our Mandate and Motivation</h2>
         <p class="mb-4 text-lg text-muted-foreground">Our commitment to evangelism stems from a deep understanding of God's love and the urgency of the Great Commission. We believe that every person deserves the opportunity to hear the life-changing message of Jesus Christ. Our efforts are not confined to church walls; we actively go out into communities, marketplaces, and villages, employing various methods, including open-air meetings and showings of the "Jesus" film, to reach those who have not yet heard.</p>
         <figure class="my-6">
-          <img src="https://placehold.co/700x350.png" alt="Evangelism outreach in Sierra Leone" class="rounded-lg shadow-md mx-auto" data-ai-hint="evangelism outreach africa"/>
+          <img src="https://source.unsplash.com/random/700x350/?evangelism,outreach,africa" alt="Evangelism outreach in Sierra Leone" class="rounded-lg shadow-md mx-auto" data-ai-hint="evangelism outreach africa"/>
           <figcaption class="text-center text-sm text-muted-foreground mt-2">Taking the Gospel to every corner of Sierra Leone.</figcaption>
         </figure>
         <p class="mb-4 text-lg text-muted-foreground">We see evangelism not as an event, but as a continuous lifestyle of sharing God's love. This involves building relationships, understanding the local culture, and presenting the Gospel in a way that is relevant and clear. Our Oregon partners play a crucial role in supporting these evangelistic endeavors through prayer, resources, and collaborative efforts.</p>
@@ -32,20 +32,20 @@ const getNewsPostData = async (slug: string) => {
       title: 'Building Mature Disciples: The EDM Way',
       author: 'EDM Team',
       date: 'November 5, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
+      imageUrl: 'https://source.unsplash.com/random/800x400/?mentoring,group,africa,christian',
       dataAiHint: 'mentoring group africa',
       tags: ['Discipleship', 'Mentorship', 'Christian Growth', 'Update'],
       content: `
         <p class="mb-4 text-lg text-muted-foreground">At EDM, discipleship is more than just a program; it's the core of our mission to build a strong, vibrant church in Sierra Leone. We are guided by Matthew 28:18-20, where Jesus commands us not only to make disciples but to "teach them to observe all that I have commanded you." Our goal is to see new believers grow into mature followers of Christ, equipped to then train others.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">From Conversion to Maturity</h2>
         <p class="mb-4 text-lg text-muted-foreground">We recognized a critical need for formal training structures to help new converts grow in their faith. It's not enough for someone to accept Christ; they need ongoing support, teaching, and mentorship to develop a deep, resilient faith. EDM's discipleship pathway focuses on foundational biblical truths, spiritual disciplines, and practical Christian living.</p>
-      `,
+      `
     },
     'edm-campus-vision-update': {
       title: 'A Vision Unfolding: Progress on the EDM Campus in Sierra Leone',
       author: 'EDM Leadership',
       date: 'November 12, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
+      imageUrl: 'https://source.unsplash.com/random/800x400/?land,development,africa,construction',
       dataAiHint: 'land development africa',
       tags: ['Missions', 'Vision', 'Sierra Leone', 'Campus Project', 'Update'],
       content: `
@@ -57,7 +57,7 @@ const getNewsPostData = async (slug: string) => {
         title: 'Partnership Power: Oregon & Sierra Leone United for the Gospel',
         author: 'EDM Team',
         date: 'November 18, 2024',
-        imageUrl: 'https://placehold.co/800x400.png',
+        imageUrl: 'https://source.unsplash.com/random/800x400/?global,partnership,diverse,team,collaboration',
         dataAiHint: 'global partnership diverse team',
         tags: ['Partnership', 'Missions', 'Oregon', 'Global Church', 'Testimony'],
         content: `
@@ -69,34 +69,31 @@ const getNewsPostData = async (slug: string) => {
       title: 'Update: Van and Equipment Arriving Soon in Freetown!',
       author: 'EDM Operations',
       date: 'September 25, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
+      imageUrl: 'https://source.unsplash.com/random/800x400/?cargo,ship,port,container',
       dataAiHint: 'cargo ship port',
       tags: ['Update', 'Logistics', 'Sierra Leone', 'Prayer Request'],
       content: `
         <p class="mb-4 text-lg text-muted-foreground">We are excited to announce that the van and musical instruments shipped from our Oregon partners in August are expected to arrive in Freetown during the first week of October! These tools are absolutely vital for our evangelistic outreaches, "Jesus" film showings, and for transporting ministry teams across Sierra Leone.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">Prayer for Customs Clearance</h2>
-        <p class="mb-4 text-lg text-muted-foreground">Please join us in prayer for a smooth and swift customs clearance process. There are often bureaucratic hurdles, and we are trusting God for favor and efficiency so that these resources can be deployed quickly for His glory.</p>
-        <p class="mb-4 text-lg text-muted-foreground">We also anticipate a customs fee, which we are currently raising funds for. Your support in this area is greatly appreciated. See our <a href="/donate" class="text-primary hover:underline">donate page</a> for how you can help.</p>
+        <h2 class="text-2xl font-semibold my-4 text-foreground">Prayer for Smooth Process</h2>
+        <p class="mb-4 text-lg text-muted-foreground">Please join us in prayer for a smooth and swift customs clearance process and for the resources needed for their deployment. These tools are not luxuries but necessities for the work God has called us to. Your support in this area is greatly appreciated. See our <a href="/donate" class="text-primary hover:underline">donate page</a> for how you can help.</p>
       `
     },
-    'customs-fee-urgent-need': {
-      title: 'Urgent Appeal: Help Clear Essential Ministry Tools!',
-      author: 'EDM Finance Team',
-      date: 'October 2, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
-      dataAiHint: 'financial support document',
-      tags: ['Urgent Need', 'Fundraising', 'Sierra Leone', 'Donation'],
+    'edm-marifa-school-operational': {
+      title: 'EDM Marifa School: Now Operating in Rosortta Village!',
+      author: 'EDM Education Department',
+      date: 'October 15, 2024',
+      imageUrl: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG',
+      dataAiHint: 'school students sierra leone',
+      tags: ['Education', 'Marifa School', 'Sierra Leone', 'Update', 'Milestone'],
       content: `
-        <p class="mb-4 text-lg text-muted-foreground">As mentioned in our previous update, the van and musical instruments crucial for our ministry in Sierra Leone have arrived in Freetown. We are now facing an urgent need to cover the customs clearance fees, totaling <strong>$3,500.00</strong>.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">Your Support is Critical</h2>
-        <p class="mb-4 text-lg text-muted-foreground">Without clearing these items, our ability to conduct effective evangelism, show the "Jesus" film in remote areas, and support our discipleship programs will be significantly hampered. These tools are not luxuries but necessities for the work God has called us to.</p>
-        <p class="mb-4 text-lg text-muted-foreground">We humbly appeal to our faithful partners in Sierra Leone, Oregon, and around the world to help us meet this urgent financial need. Any amount you can contribute will make a direct impact on getting these resources into the field.</p>
-        <div class="my-6 text-center">
-          <a href="/donate" class="inline-block bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md text-lg font-medium transition-colors">
-            Donate Now to Help Clear Customs
-          </a>
-        </div>
-        <p class="mb-4 text-lg text-muted-foreground">Thank you for your prayerful consideration and generous support of EDM's mission.</p>
+        <p class="mb-4 text-lg text-muted-foreground">We are overjoyed to announce that the EDM Marifa Secondary School in Rosortta Village is now operational! This is a significant milestone in our mission to provide quality, Christ-centered education to the children of Sierra Leone.</p>
+        <h2 class="text-2xl font-semibold my-4 text-foreground">A Beacon of Hope and Learning</h2>
+        <p class="mb-4 text-lg text-muted-foreground">The school is already making a difference, offering a safe learning environment and sharing the Gospel with students from Marifa and surrounding villages. We are deeply grateful for all the prayers and support that have made this possible.</p>
+        <figure class="my-6">
+          <img src="https://code-alpha-image-gallary.vercel.app/edm-marifa2.JPG" alt="EDM Marifa School Students" class="rounded-lg shadow-md mx-auto" data-ai-hint="sierra leone classroom students"/>
+          <figcaption class="text-center text-sm text-muted-foreground mt-2">Students at the EDM Marifa School.</figcaption>
+        </figure>
+        <p class="mb-4 text-lg text-muted-foreground">Ongoing support is crucial for the school's continued success and development, including resources for students, staff, and facility improvements. Learn more about how you can contribute by visiting our <a href="/ministries/education/marifa-school" class="text-primary hover:underline">EDM Marifa School page</a> or our <a href="/donate" class="text-primary hover:underline">donation page</a>.</p>
       `
     }
   };
