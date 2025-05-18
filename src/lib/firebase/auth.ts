@@ -1,72 +1,23 @@
-// src/lib/firebase/auth.ts
-// Removed 'use server'; directive as onAuthStateChanged is client-side and other functions are called from client context.
+# Genkit / Google AI
+GEMINI_API_KEY=YOUR_GEMINI_API_KEY_HERE
 
-import type { User } from 'firebase/auth';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut,
-  onAuthStateChanged as firebaseOnAuthStateChanged,
-  updateProfile,
-  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
-} from 'firebase/auth';
-import { auth } from './config';
+# Stripe
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51QWyYUETYNgP9eIt80IfU9IevKMR5H1I13mqkfU9gxz29wdEYbCRzOWxy9KIsRTyq32hSV4dnxfgu5fB7HjsjqLO00HEpl86Ng
+STRIPE_SECRET_KEY=sk_test_51QWyYUETYNgP9eItyjMR7sGI7zHVFNCpeI5eto8LqNge61peLAX6WoHvPM3JGBq0wRJqssXwb3TegoUDhitfXWVO00SMedKcoj
+STRIPE_WEBHOOK_SECRET=YOUR_STRIPE_WEBHOOK_SECRET_HERE
 
-// Sign Up
-export async function signUpWithEmailAndPassword(email: string, password_1: string) {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password_1);
-    return { user: userCredential.user, error: null };
-  } catch (error: any) {
-    return { user: null, error: error.message };
-  }
-}
+# Google Maps
+NEXT_PUBLIC_GOOGLE_MAPS_API_KEY=AIzaSyDqPf2nWmKqIYGdpeBABNzpSnwaV-xVxzk
 
-// Sign In
-export async function signInWithEmail(email: string, password_1: string) {
-  try {
-    const userCredential = await signInWithEmailAndPassword(auth, email, password_1);
-    return { user: userCredential.user, error: null };
-  } catch (error: any) {
-    return { user: null, error: error.message };
-  }
-}
+# Neon Database (PostgreSQL)
+# Get your connection string from Neon: https://neon.tech/docs/connect/connection-strings
+DATABASE_URL="postgresql://user:password@host:port/dbname?sslmode=require"
 
-// Sign Out
-export async function signOutUser() {
-  try {
-    await signOut(auth);
-    return { error: null };
-  } catch (error: any) {
-    return { error: error.message };
-  }
-}
+# Uploadthing
+# Get your keys from Uploadthing: https://uploadthing.com/dashboard
+UPLOADTHING_SECRET=YOUR_UPLOADTHING_SECRET_HERE
+UPLOADTHING_APP_ID=YOUR_UPLOADTHING_APP_ID_HERE
 
-// Get Current User (client-side)
-export function onAuthStateChanged(callback: (user: User | null) => void) {
-  return firebaseOnAuthStateChanged(auth, callback);
-}
-
-// Update User Profile
-export async function updateUserProfile(user: User, profileData: { displayName?: string; photoURL?: string }) {
-  try {
-    await updateProfile(user, profileData);
-    return { error: null };
-  } catch (error: any) {
-    return { error: error.message };
-  }
-}
-
-// Send Password Reset Email
-export async function sendPasswordResetEmail(email: string) {
-  try {
-    await firebaseSendPasswordResetEmail(auth, email);
-    return { error: null };
-  } catch (error: any) {
-    return { error: error.message };
-  }
-}
-
-export async function getCurrentUser(): Promise<User | null> {
-  return auth.currentUser;
-}
+# Brevo (formerly Sendinblue)
+# Get your API key from Brevo: https://account.brevo.com/advanced/api
+BREVO_API_KEY=YOUR_BREVO_API_KEY_HERE

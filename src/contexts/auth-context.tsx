@@ -1,20 +1,17 @@
 // src/contexts/auth-context.tsx
 'use client';
 
-import type { User as FirebaseUser } from 'firebase/auth';
-import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { 
-  onAuthStateChanged, 
-  signUpWithEmailAndPassword, 
-  signInWithEmail, 
-  signOutUser, 
-  updateUserProfile as firebaseUpdateUserProfile, 
-  getCurrentUser as firebaseGetCurrentUser,
-  sendPasswordResetEmail as firebaseSendPasswordResetEmail
-} from '@/lib/firebase/auth';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-interface User extends FirebaseUser {}
+// Define a basic User type, this can be expanded later
+interface User {
+  id: string;
+  email?: string | null;
+  displayName?: string | null;
+  photoURL?: string | null;
+  // Add other fields as needed from your Neon DB user table
+}
 
 interface AuthContextType {
   user: User | null;
@@ -32,90 +29,56 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // Set to true initially, then false after checking auth status
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged((firebaseUser) => {
-      setUser(firebaseUser as User | null);
-      setLoading(false);
-    });
-    return () => unsubscribe();
+    // Placeholder for checking auth status (e.g., from a token in localStorage)
+    // For now, we'll assume no user is logged in on initial load
+    setLoading(false);
   }, []);
 
   const signUp = async (email: string, password_1: string) => {
-    setLoading(true);
-    setError(null);
-    const result = await signUpWithEmailAndPassword(email, password_1);
-    if (result.user) {
-      setUser(result.user as User);
-    } else {
-      setError(result.error);
-    }
-    setLoading(false);
-    return { user: result.user as User | null, error: result.error };
+    setError("Sign up functionality is not yet implemented with Neon DB.");
+    console.warn("Attempted to call signUp. Firebase is removed. Implement with Neon DB.");
+    return { user: null, error: "Sign up functionality is not yet implemented." };
   };
 
   const signIn = async (email: string, password_1: string) => {
-    setLoading(true);
-    setError(null);
-    const result = await signInWithEmail(email, password_1);
-    if (result.user) {
-      setUser(result.user as User);
-    } else {
-      setError(result.error);
-    }
-    setLoading(false);
-    return { user: result.user as User | null, error: result.error };
+    setError("Sign in functionality is not yet implemented with Neon DB.");
+    console.warn("Attempted to call signIn. Firebase is removed. Implement with Neon DB.");
+    return { user: null, error: "Sign in functionality is not yet implemented." };
   };
 
   const signOutAuth = async () => {
-    setLoading(true);
-    setError(null);
-    const result = await signOutUser();
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setUser(null);
-      router.push('/'); // Redirect to home after sign out
-    }
-    setLoading(false);
-    return result;
+    setUser(null);
+    // Clear any session/token information from localStorage if you implement token-based auth
+    router.push('/');
+    console.warn("Called signOutAuth. Firebase is removed. Ensure new auth logic clears session.");
+    return { error: null };
   };
 
   const updateUserProfile = async (profileData: { displayName?: string; photoURL?: string }) => {
     if (!user) return { error: 'No user logged in' };
-    setLoading(true);
-    setError(null);
-    const result = await firebaseUpdateUserProfile(user, profileData);
-    if (result.error) {
-      setError(result.error);
-    } else {
-      // Refresh user state to reflect changes
-      const updatedUser = await firebaseGetCurrentUser();
-      setUser(updatedUser as User | null);
-    }
-    setLoading(false);
-    return result;
+    setError("User profile update functionality is not yet implemented with Neon DB.");
+    console.warn("Attempted to call updateUserProfile. Firebase is removed. Implement with Neon DB.");
+    // Potentially update local state optimistically, then sync with backend
+    // For now, just showing a warning
+    // setUser(prevUser => prevUser ? { ...prevUser, ...profileData } : null);
+    return { error: "User profile update functionality is not yet implemented." };
   };
   
   const refreshUser = async () => {
-    const currentUser = await firebaseGetCurrentUser();
-    setUser(currentUser as User | null);
+    // This would re-fetch user data from your Neon DB backend
+    console.warn("Attempted to call refreshUser. Firebase is removed. Implement with Neon DB.");
   };
 
   const sendPasswordReset = async (email: string) => {
-    setLoading(true);
-    setError(null);
-    const result = await firebaseSendPasswordResetEmail(email);
-     if (result.error) {
-      setError(result.error);
-    }
-    setLoading(false);
-    return result;
+    setError("Password reset functionality is not yet implemented with Brevo.");
+    console.warn("Attempted to call sendPasswordReset. Firebase is removed. Implement with Brevo.");
+    return { error: "Password reset functionality is not yet implemented." };
   }
-
 
   return (
     <AuthContext.Provider value={{ user, loading, error, signUp, signIn, signOutAuth, updateUserProfile, refreshUser, sendPasswordReset }}>
