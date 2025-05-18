@@ -46,16 +46,15 @@ export default function FinancialTransparencyPage() {
             At EDM, we believe that financial transparency is a cornerstone of trust and faithful stewardship. We are deeply grateful for every gift entrusted to us for our work, primarily based in Sierra Leone with key partnerships in Oregon, USA. 
           </p>
           <p className="text-lg text-muted-foreground">
-            This page outlines our policies and practices regarding the financial management of your generous contributions, ensuring they are used to advance our mission of evangelism, discipleship, and missions.
+            EDM is a registered 501(c)(3) non-profit organization. This page outlines our policies and practices regarding the financial management of your generous contributions, ensuring they are used to advance our mission of evangelism, discipleship, and missions.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
+        <div className="rounded-lg overflow-hidden shadow-xl h-80"> {/* Added h-80 for consistent image height */}
           <Image
-            src="https://picsum.photos/seed/financialsl/600/400"
+            src="https://placehold.co/600x400.png"
             alt="Financial documents related to Sierra Leone mission"
-            width={600}
-            height={400}
-            className="object-cover w-full h-full"
+            layout="fill"
+            objectFit="cover"
             data-ai-hint="financial integrity sierra leone"
           />
         </div>
@@ -145,7 +144,7 @@ export default function FinancialTransparencyPage() {
           </Card>
         </div>
          <p className="text-sm text-muted-foreground mt-8 text-center">
-            EDM is a registered non-profit organization in Sierra Leone. All financial information is managed in accordance with applicable laws and regulations.
+            EDM is a registered 501(c)(3) non-profit organization in Sierra Leone. All financial information is managed in accordance with applicable laws and regulations.
         </p>
       </section>
 

@@ -4,7 +4,7 @@ import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
-import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign, CheckCircle, Heart } from 'lucide-react';
+import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign, CheckCircle, Heart, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -26,7 +26,7 @@ export default function DonatePage() {
               At EDM, we rely on the faithful support of partners like you to carry out our work of evangelism, discipleship, and missions in Sierra Leone. Your donations enable us to share the Gospel, train believers, develop our planned campus (school, retreat center), and bring tangible hope to communities.
             </p>
             <p>
-              We are committed to financial integrity and stewardship. We want to take this opportunity to thank all those who have generously contributed toward this venture. Your support helps us accomplish all that God has called us to do.
+              We are committed to financial integrity and stewardship. EDM is a registered 501(c)(3) non-profit organization. We want to take this opportunity to thank all those who have generously contributed toward this venture. Your support helps us accomplish all that God has called us to do.
             </p>
             <p>
               Please consider donating one time, monthly, or quarterly to support EDM's ongoing mission and specific needs.
@@ -89,7 +89,7 @@ export default function DonatePage() {
           Your donation, whether one-time, monthly, or quarterly, directly supports EDM's evangelism, discipleship, and missions activities, including the development of our ministry campus in Sierra Leone and our collaborative efforts with Oregon partners.
         </p>
         <DonationFormWrapper />
-         <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is committed to financial transparency.</p>
+         <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
       </section>
 
       <section id="more-support-options" className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
@@ -136,9 +136,10 @@ export default function DonatePage() {
       </section>
 
       <section className="text-center py-8">
-        <p className="text-muted-foreground mb-4">
-          EDM is a registered Christian non-profit organization in Sierra Leone. We are committed to stewarding all resources with integrity and for the advancement of the Gospel.
-        </p>
+        <div className="flex items-center justify-center text-muted-foreground mb-4">
+            <ShieldCheck className="h-5 w-5 mr-2 text-primary"/>
+            <p>EDM is a registered 501(c)(3) non-profit organization in Sierra Leone. We are committed to stewarding all resources with integrity and for the advancement of the Gospel.</p>
+        </div>
         <Link href="/financial-transparency">
           <Button variant="link" className="text-primary">
             View Our Financial Transparency Policy

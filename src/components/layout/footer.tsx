@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import Image from 'next/image'; 
+import Image from 'next/image';
 import { Facebook, Twitter, Instagram, Youtube, ShieldCheck, FileText, ShieldAlert, MapPin, Mail, Phone } from 'lucide-react';
 
 export default function Footer() {
@@ -17,6 +17,9 @@ export default function Footer() {
             </Link>
             <p className="text-sm text-muted-foreground">
               Evangelism, Discipleship, Missions in Sierra Leone, West Africa and with our partners in Oregon, USA.
+            </p>
+            <p className="text-xs text-muted-foreground mt-2">
+              EDM is a registered 501(c)(3) non-profit organization.
             </p>
           </div>
           <div>

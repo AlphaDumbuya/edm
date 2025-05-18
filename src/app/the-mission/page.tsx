@@ -2,7 +2,7 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map } from 'lucide-react';
+import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ export default function TheMissionPage() {
     <div className="space-y-16">
       <PageHeader
         title="The EDM Mission"
-        subtitle="Our calling: Evangelism, Discipleship, and Missions in Sierra Leone and beyond."
+        subtitle="Our calling: Evangelism, Discipleship, and Missions in Sierra Leone and beyond, with key partnerships in Oregon, USA."
         icon={Target}
       />
 
@@ -129,13 +129,18 @@ export default function TheMissionPage() {
 
       <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Join Us on This Journey" className="text-center" />
-        <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-          We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Ohio, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
-        </p>
-        <div className="text-center mt-8">
-          <Link href="/donate">
-            <Button size="lg" variant="default">Support Our Mission</Button>
-          </Link>
+        <div className="flex flex-col items-center">
+          <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
+            We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
+          </p>
+          <p className="text-sm text-muted-foreground mt-2 flex items-center">
+            <ShieldCheck className="h-4 w-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.
+          </p>
+          <div className="text-center mt-8">
+            <Link href="/donate">
+              <Button size="lg" variant="default">Support Our Mission</Button>
+            </Link>
+          </div>
         </div>
       </section>
     </div>
