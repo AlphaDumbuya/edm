@@ -63,12 +63,12 @@ export default function VolunteerPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-64 md:h-80">
           <Image
-            src="https://source.unsplash.com/random/600x400/?volunteers,teamwork,community"
-            alt="Volunteers working together happily"
+            src="https://plus.unsplash.com/premium_photo-1681195079271-cbfd9ba1cbc7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dm9sdW50ZWVyaW5nfGVufDB8fDB8fHww"
+            alt="Volunteers making a tangible difference"
             width={600}
             height={400}
             className="object-cover w-full h-full"
-            data-ai-hint="diverse volunteers smiling"
+            data-ai-hint="volunteering hands community"
           />
         </div>
       </section>
