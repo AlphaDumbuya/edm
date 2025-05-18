@@ -12,25 +12,25 @@ const partnershipTypes = [
     title: 'For Individuals',
     icon: Users,
     description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Oregon, advocacy, or financial support. Discover how your unique gifts can make a difference.',
-    href: '/partnership/individuals', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'person volunteering sierra leone',
+    href: '/partnership/individuals',
+    imageUrl: 'https://media.istockphoto.com/id/2099408907/photo/smiling-young-businessman-standing-with-his-arms-crossed-against-an-office-wall.webp?a=1&b=1&s=612x612&w=0&k=20&c=N0rshqVGbuvJ6zFWKLzkwbulYEqqx1mtWzu_eSSOQXE=',
+    dataAiHint: 'individual professional volunteering',
   },
   {
     title: 'For Churches',
     icon: Building, 
     description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach.',
-    href: '/partnership/churches', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'church congregation freetown',
+    href: '/partnership/churches',
+    imageUrl: 'https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww',
+    dataAiHint: 'church congregation africa',
   },
   {
     title: 'For Organizations & Businesses',
     icon: BriefcaseIcon, // Using renamed icon
     description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
-    href: '/partnership/organizations', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'business team oregon',
+    href: '/partnership/organizations',
+    imageUrl: 'https://media.istockphoto.com/id/2161896355/photo/two-businessmen-collaborating-in-office-with-laptop.webp?a=1&b=1&s=612x612&w=0&k=20&c=mosmbYinW92mgeSo7qD1iZvTYPzUCofx7mDNhBIYqzA=',
+    dataAiHint: 'business team collaboration',
   },
 ];
 
@@ -53,14 +53,14 @@ export default function PartnerPage() {
             When you partner with EDM, you become an integral part of a movement dedicated to transforming lives in West Africa and the US. Your support, whether through prayer, resources, or active involvement, fuels our ability to evangelize, disciple, and serve those in need.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
+        <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png"
+            src="https://media.istockphoto.com/id/96653688/photo/handshake.webp?a=1&b=1&s=612x612&w=0&k=20&c=2o15a4X4zTScv56ipJaem6iV5jcNqnu-n3IRm8Eys-o="
             alt="Diverse hands collaborating for Sierra Leone and Oregon"
-            width={600}
-            height={400}
+            layout="fill"
+            objectFit="cover"
             className="object-cover w-full h-full"
-            data-ai-hint="collaboration sierra leone oregon"
+            data-ai-hint="collaboration handshake partnership"
           />
         </div>
       </section>
@@ -106,3 +106,4 @@ export default function PartnerPage() {
     </div>
   );
 }
+
