@@ -12,7 +12,7 @@ const partnershipTypes = [
     title: 'For Individuals',
     icon: Users,
     description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Oregon, advocacy, or financial support. Discover how your unique gifts can make a difference.',
-    href: '/partnership/individuals',
+    link: '/partnership/individuals',
     imageUrl: 'https://media.istockphoto.com/id/2099408907/photo/smiling-young-businessman-standing-with-his-arms-crossed-against-an-office-wall.webp?a=1&b=1&s=612x612&w=0&k=20&c=N0rshqVGbuvJ6zFWKLzkwbulYEqqx1mtWzu_eSSOQXE=',
     dataAiHint: 'person volunteering sierra leone',
   },
@@ -20,21 +20,21 @@ const partnershipTypes = [
     title: 'For Churches',
     icon: Building,
     description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach.',
-    href: '/partnership/churches',
-    imageUrl: 'https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww',
+    link: '/partnership/churches',
+    imageUrl: 'https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww',
     dataAiHint: 'church congregation freetown',
   },
   {
     title: 'For Organizations & Businesses',
     icon: BriefcaseIcon,
     description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
-    href: '/partnership/organizations',
+    link: '/partnership/organizations',
     imageUrl: 'https://media.istockphoto.com/id/1407285659/photo/multiethnic-young-and-middle-aged-businesspeople-engaged-in-group-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=kfzDX6VEwfalzyfpiXpdL5jHbLzTrCUjd3nQiSXE2dg=',
     dataAiHint: 'business meeting collaboration',
   },
 ];
 
-export default function GetInvolvedPartnerPage() { // Renamed component to avoid conflict
+export default function GetInvolvedPartnerPage() { 
   return (
     <div className="space-y-12 md:space-y-16">
       <PageHeader
@@ -89,7 +89,7 @@ export default function GetInvolvedPartnerPage() { // Renamed component to avoid
               <p className="text-muted-foreground text-xs sm:text-sm mb-4">{opportunity.description}</p>
             </CardContent>
             <CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t">
-              <Link href={opportunity.href}>
+              <Link href={opportunity.link}>
                 <Button className="w-full sm:w-auto text-xs sm:text-sm" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
@@ -105,7 +105,7 @@ export default function GetInvolvedPartnerPage() { // Renamed component to avoid
           We are excited to discuss how your unique gifts, resources, or organizational goals can align with EDM's mission. Reach out to our partnership team to start a conversation.
         </p>
         <Link href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry">
-          <Button size="lg" className="text-sm sm:text-base">
+          <Button size="default" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Our Partnership Team
           </Button>
         </Link>
