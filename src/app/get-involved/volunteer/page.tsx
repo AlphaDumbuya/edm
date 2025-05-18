@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Heart, Wrench, Laptop, GraduationCap, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import VolunteerSignupForm from '@/components/volunteer/volunteer-signup-form'; // Import the form
+import VolunteerSignupForm from '@/components/volunteer/volunteer-signup-form';
 
 const volunteerAreas = [
   {
@@ -51,13 +51,13 @@ export default function VolunteerPage() {
         icon={Heart}
       />
 
-      <section className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="Make a Tangible Difference" />
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             Volunteers are the hands and feet of EDM. Whether you can travel to Sierra Leone, offer skills remotely, or support our efforts in Oregon, your contribution is invaluable. We seek passionate individuals ready to serve and share God's love.
           </p>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             Explore the various ways you can volunteer and become an active part of our mission.
           </p>
         </div>
@@ -74,24 +74,32 @@ export default function VolunteerPage() {
       </section>
 
       <SectionTitle title="Volunteer Opportunities" subtitle="Find where your skills and passion fit best" />
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         {volunteerAreas.map((area) => (
-          <Card key={area.title} className="shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader className="items-center text-center">
-              <div className="p-3 bg-primary/10 rounded-full mb-3 w-fit">
-                <area.icon className="h-8 w-8 text-primary" />
+          <Card key={area.title} className="shadow-lg hover:shadow-xl transition-shadow flex flex-col">
+            <CardHeader className="items-center text-center p-4">
+              <div className="p-3 bg-primary/10 rounded-full mb-2 w-fit">
+                <area.icon className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
               </div>
-              <CardTitle className="text-xl">{area.title}</CardTitle>
+              <CardTitle className="text-lg sm:text-xl">{area.title}</CardTitle>
             </CardHeader>
-            <CardContent className="text-center">
-              <Image src={`https://source.unsplash.com/random/400x250/?${area.dataAiHint.replace(/\s/g,',')}`} alt={area.title} width={400} height={250} className="rounded-md mb-4 mx-auto h-40 object-cover" data-ai-hint={area.dataAiHint} />
+            <CardContent className="text-center p-4 pt-0 flex-grow">
+              <div className="relative w-full h-40 sm:h-48 rounded-md overflow-hidden mb-3">
+                <Image 
+                    src={`https://source.unsplash.com/random/400x250/?${area.dataAiHint.replace(/\s/g,',')}`} 
+                    alt={area.title} 
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-md"
+                    data-ai-hint={area.dataAiHint} />
+              </div>
               <p className="text-muted-foreground text-sm">{area.description}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
+      <section className="text-center bg-card p-6 md:p-12 rounded-lg shadow-lg mt-12">
         <SectionTitle title="Ready to Volunteer?" subtitle="Fill out the form below to express your interest" className="text-center" />
         <div className="max-w-2xl mx-auto">
             <VolunteerSignupForm />
