@@ -3,44 +3,9 @@ import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Users, HeartHandshake, Handshake as PartnerIcon, Film, ArrowRight, Briefcase, Building } from 'lucide-react'; // Renamed Handshake to PartnerIcon
-import Link from 'next/link';
+import { Users, Building, Briefcase as BriefcaseIcon, Handshake as PartnerIcon, ArrowRight, Mail } from 'lucide-react';
 import Image from 'next/image';
-
-const involvementOpportunities = [
-  {
-    title: 'Volunteer Your Time & Skills',
-    icon: Users,
-    description: 'Offer your talents to support EDM\'s work in Sierra Leone or assist our Oregon-based partners with administrative, technical, or outreach tasks.',
-    link: '/get-involved/volunteer',
-    imageUrl: 'https://source.unsplash.com/random/500x300/?volunteers,group,diverse,hands',
-    dataAiHint: "volunteers group diverse hands",
-  },
-  {
-    title: 'Become a Prayer Partner',
-    icon: HeartHandshake,
-    description: 'Commit to praying regularly for our missionaries, projects, the communities we serve in Sierra Leone, and our partnerships in Oregon.',
-    link: '/get-involved/prayer',
-    imageUrl: 'https://source.unsplash.com/random/500x300/?people,praying,together,circle',
-    dataAiHint: "people praying together circle",
-  },
-  {
-    title: 'Partnership Opportunities',
-    icon: PartnerIcon, // Using the aliased icon
-    description: 'Explore how your church, organization, or business can formally partner with EDM to amplify our impact in Sierra Leone and Oregon.',
-    link: '/get-involved/partner',
-    imageUrl: 'https://media.istockphoto.com/id/96653688/photo/handshake.webp?a=1&b=1&s=612x612&w=0&k=20&c=2o15a4X4zTScv56ipJaem6iV5jcNqnu-n3IRm8Eys-o=',
-    dataAiHint: "handshake agreement global",
-  },
-  {
-    title: 'Host a Movie Screening or Event',
-    icon: Film,
-    description: 'Organize a showing of the "Jesus" film or an EDM awareness event in your community to share our mission and gather support.',
-    link: '/contact', // Link to contact page for now
-    imageUrl: 'https://source.unsplash.com/random/500x300/?movie,screening,community,event',
-    dataAiHint: "movie screening community event",
-  },
-];
+import Link from 'next/link';
 
 const partnershipTypes = [
   {
@@ -53,7 +18,7 @@ const partnershipTypes = [
   },
   {
     title: 'For Churches',
-    icon: Building, 
+    icon: Building,
     description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach.',
     href: '/partnership/churches',
     imageUrl: 'https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww',
@@ -61,16 +26,15 @@ const partnershipTypes = [
   },
   {
     title: 'For Organizations & Businesses',
-    icon: Briefcase, 
+    icon: BriefcaseIcon,
     description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
-    href: '/partnership/organizations', 
+    href: '/partnership/organizations',
     imageUrl: 'https://media.istockphoto.com/id/1407285659/photo/multiethnic-young-and-middle-aged-businesspeople-engaged-in-group-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=kfzDX6VEwfalzyfpiXpdL5jHbLzTrCUjd3nQiSXE2dg=',
     dataAiHint: 'business meeting collaboration',
   },
 ];
 
-
-export default function GetInvolvedPage() {
+export default function GetInvolvedPartnerPage() { // Renamed component to avoid conflict
   return (
     <div className="space-y-12 md:space-y-16">
       <PageHeader
@@ -106,7 +70,14 @@ export default function GetInvolvedPage() {
         {partnershipTypes.map((opportunity) => (
           <Card key={opportunity.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
              <div className="relative w-full h-48 sm:h-56">
-                <Image src={opportunity.imageUrl} alt={opportunity.title} layout="fill" objectFit="cover" data-ai-hint={opportunity.dataAiHint} />
+                <Image 
+                    src={opportunity.imageUrl} 
+                    alt={opportunity.title} 
+                    layout="fill" 
+                    objectFit="cover" 
+                    data-ai-hint={opportunity.dataAiHint}
+                    className="rounded-t-lg"
+                 />
              </div>
             <CardHeader className="items-center text-center p-4">
               <div className="p-3 bg-primary/10 rounded-full mb-2 sm:mb-3 w-fit">
@@ -117,7 +88,7 @@ export default function GetInvolvedPage() {
             <CardContent className="flex-grow text-center p-4 pt-0">
               <p className="text-muted-foreground text-xs sm:text-sm mb-4">{opportunity.description}</p>
             </CardContent>
-            <CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t"> 
+            <CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t">
               <Link href={opportunity.href}>
                 <Button className="w-full sm:w-auto text-xs sm:text-sm" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
@@ -127,7 +98,7 @@ export default function GetInvolvedPage() {
           </Card>
         ))}
       </div>
-      
+
       <section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mt-8 sm:mt-12">
         <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Oregon?" className="text-center" />
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
@@ -142,5 +113,3 @@ export default function GetInvolvedPage() {
     </div>
   );
 }
-
-    
