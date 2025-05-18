@@ -1,10 +1,11 @@
+
 // src/components/layout/navbar.tsx
 'use client';
 
 import Link from 'next/link';
 import Image from 'next/image'; 
-import { Menu, X, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Menu, X, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import {
@@ -33,34 +34,56 @@ import { useAuth } from '@/contexts/auth-context';
 const mainNavItems = [
   {
     title: 'About',
-    icon: Handshake,
+    icon: Info,
     links: [
-      { href: '/about/mission', title: 'Our Mission', description: 'Learn about our core values and goals.' },
-      { href: '/about/leadership', title: 'Leadership', description: 'Meet the team guiding our mission.' },
+      { href: '/about', title: 'Our Story & Foundations', description: 'EDM\'s history, beliefs, and structure.' },
+      { href: '/about/what-we-believe', title: 'What We Believe', description: 'Our core doctrinal statements.' },
+      { href: '/international-board', title: 'International Board', description: 'Meet our leadership team.' },
     ],
+  },
+  {
+    title: 'The Mission',
+    icon: Handshake, // Using Handshake for "The Mission"
+    href: '/the-mission',
+    description: 'Our overall mission, vision, and goals.',
   },
   {
     title: 'Ministries',
-    icon: Users,
+    icon: HeartHandshake, // Users icon might be better
     links: [
-      { href: '/events', title: 'Events', description: 'Upcoming mission events and activities.' },
-      { href: '/content', title: 'Content Hub', description: 'Articles, testimonies, and resources.' },
-      { href: '/blog', title: 'Blog', description: 'Insights, updates, and stories from the field.' },
+      { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches.' },
+      { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity.' },
+      { href: '/ministries/missions-outreach', title: 'Missions Outreach', description: 'Church planting and community projects.' },
+      { href: '/ministries/education', title: 'Education', description: 'Our school project and Bible training.' },
     ],
   },
   {
-    title: 'Connect',
-    icon: Globe,
+    title: 'Get Involved',
+    icon: Users, // Using Users for "Get Involved"
     links: [
-      { href: '/prayer', title: 'Prayer Wall', description: 'Submit and view prayer requests.' },
-      { href: '/missions', title: 'Missions Map', description: 'See where we are actively involved.' },
-      { href: '/gallery', title: 'Media Gallery', description: 'Photos and videos from our work.' },
+      { href: '/get-involved/volunteer', title: 'Volunteer', description: 'Offer your time and skills.' },
+      { href: '/get-involved/prayer', title: 'Prayer Wall', description: 'Join us in prayer.' },
+      { href: '/get-involved/partner', title: 'Partnerships', description: 'Collaborate with EDM.' },
     ],
   },
   {
-    title: 'Tools',
-    icon: Sparkles,
-    href: '/scripture-generator',
+    title: 'Donate',
+    icon: DollarSign,
+    href: '/donate',
+    description: 'Support our work financially.',
+  },
+  {
+    title: 'News & Media',
+    icon: Newspaper,
+    links: [
+       { href: '/news', title: 'News & Updates', description: 'Latest articles, reports, and testimonies.'},
+       { href: '/gallery', title: 'Media Gallery', description: 'Photos, videos, and downloadable resources.'},
+    ]
+  },
+   {
+    title: 'Contact',
+    icon: Phone,
+    href: '/contact',
   },
 ];
 
@@ -77,7 +100,7 @@ export default function Navbar() {
   const dynamicNavItems = user 
   ? [
       ...mainNavItems,
-      { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
+      // { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' }, // Dashboard can be accessed via user menu
     ]
   : mainNavItems;
 
@@ -86,23 +109,24 @@ export default function Navbar() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-2 text-primary hover:text-primary/90 transition-colors">
-            <Image src="/assets/images/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image src="/assets/images/logo.png" alt="EDM Logo" width={36} height={36} className="h-9 w-9" />
+            <span className="text-2xl font-bold text-primary">EDM</span>
           </Link>
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="space-x-4"> {/* Increased spacing here */}
+            <NavigationMenuList className="space-x-1"> {/* Reduced spacing for more items */}
               {dynamicNavItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   {item.links ? (
                     <>
-                      <NavigationMenuTrigger>
-                        <item.icon className="h-4 w-4 mr-2" />
+                      <NavigationMenuTrigger className="text-sm px-3 py-2">
+                        <item.icon className="h-4 w-4 mr-1.5" />
                         {item.title}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[550px] ">
                           {item.links.map((link) => (
                             <ListItem key={link.title} title={link.title} href={link.href}>
                               {link.description}
@@ -113,8 +137,8 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Link href={item.href || '#'} legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center")}>
-                        <item.icon className="h-4 w-4 mr-2" />
+                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center text-sm px-3 py-2")}>
+                        <item.icon className="h-4 w-4 mr-1.5" />
                         {item.title}
                       </NavigationMenuLink>
                     </Link>
@@ -189,25 +213,26 @@ export default function Navbar() {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0 flex flex-col">
-                <SheetHeader className="p-4 border-b">
-                   <SheetClose asChild>
-                    <Link href="/" className="flex items-center gap-2 text-primary" onClick={() => setMobileMenuOpen(false)}>
+              <SheetContent side="right" className="w-[300px] sm:w-[320px] bg-card p-0 flex flex-col">
+                <SheetHeader className="p-4 border-b flex flex-row justify-between items-center">
+                   <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                        <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
+                       <SheetTitle className="text-lg font-semibold text-primary">EDM</SheetTitle> 
                     </Link>
+                  <SheetClose asChild>
+                     <Button variant="ghost" size="icon"><X className="h-5 w-5"/></Button>
                   </SheetClose>
-                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
                 </SheetHeader>
                 <ScrollArea className="flex-1">
                   <div className="p-4">
-                    <nav className="flex flex-col gap-2">
+                    <nav className="flex flex-col gap-1">
                       {dynamicNavItems.map((item) => (
                         item.links ? (
-                          <div key={item.title}>
-                            <h3 className="font-semibold text-muted-foreground mb-1 mt-3 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
+                          <div key={item.title} className="py-1">
+                            <h3 className="font-semibold text-muted-foreground mb-1 mt-2 flex items-center text-sm px-2"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
                             {item.links.map((link) => (
                               <SheetClose asChild key={link.href}>
-                              <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm" onClick={() => setMobileMenuOpen(false)}>
+                              <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm ml-2" onClick={() => setMobileMenuOpen(false)}>
                                 {link.title}
                               </Link>
                               </SheetClose>
@@ -215,7 +240,7 @@ export default function Navbar() {
                           </div>
                         ) : (
                           <SheetClose asChild key={item.title}>
-                            <Link href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                            <Link href={item.href || '#'} className="flex items-center py-2.5 px-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                               <item.icon className="h-4 w-4 mr-2" />{item.title}
                             </Link>
                           </SheetClose>
@@ -228,7 +253,12 @@ export default function Navbar() {
                       ): user ? (
                         <>
                           <SheetClose asChild>
-                            <Link href="/dashboard/profile" className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2" onClick={() => setMobileMenuOpen(false)}>
+                            <Link href="/dashboard" className="flex items-center py-2.5 px-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
+                              <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link href="/dashboard/profile" className="flex items-center py-2.5 px-2 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2 text-sm font-medium" onClick={() => setMobileMenuOpen(false)}>
                               <UserCircle className="mr-2 h-4 w-4" /> My Profile
                             </Link>
                           </SheetClose>

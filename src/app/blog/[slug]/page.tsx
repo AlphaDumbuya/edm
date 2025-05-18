@@ -1,119 +1,149 @@
-
+// src/app/donate/page.tsx
 import PageHeader from '@/components/shared/page-header';
-import { ArrowLeft, BookOpen, CalendarDays, User, Tag } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
+import SectionTitle from '@/components/shared/section-title';
+import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign, CheckCircle, Heart } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 
-// Dummy data structure. In a real app, you'd fetch this based on the slug.
-const getBlogPostData = async (slug: string) => {
-  // Simulate API call
-  await new Promise(resolve => setTimeout(resolve, 500));
-  const posts = {
-    'the-heart-of-evangelism': {
-      title: 'The Unstoppable Call: Evangelism in Sierra Leone',
-      author: 'EDM Team',
-      date: 'October 1, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
-      dataAiHint: 'sierra leone preaching crowd',
-      tags: ['Evangelism', 'Great Commission', 'Sierra Leone'],
-      content: `
-        <p class="mb-4 text-lg text-muted-foreground">The heart of EDM beats with a passion for evangelism. We are driven by the words of Romans 10:13-15: "For everyone who calls on the name of the Lord will be saved. How then will they call on him in whom they have not believed? And how are they to believe in him of whom they have never heard? And how are they to hear without someone preaching? And how are they to preach unless they are sent?" This is why EDM exists – to be sent, to preach, and to see lives transformed by the Gospel in Sierra Leone.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">Our Mandate and Motivation</h2>
-        <p class="mb-4 text-lg text-muted-foreground">Our commitment to evangelism stems from a deep understanding of God's love and the urgency of the Great Commission. We believe that every person deserves the opportunity to hear the life-changing message of Jesus Christ. Our efforts are not confined to church walls; we actively go out into communities, marketplaces, and villages, employing various methods, including open-air meetings and showings of the "Jesus" film, to reach those who have not yet heard.</p>
-        <figure class="my-6">
-          <img src="https://placehold.co/700x350.png" alt="Evangelism outreach in Sierra Leone" class="rounded-lg shadow-md mx-auto" data-ai-hint="evangelism outreach africa"/>
-          <figcaption class="text-center text-sm text-muted-foreground mt-2">Taking the Gospel to every corner of Sierra Leone.</figcaption>
-        </figure>
-        <p class="mb-4 text-lg text-muted-foreground">We see evangelism not as an event, but as a continuous lifestyle of sharing God's love. This involves building relationships, understanding the local culture, and presenting the Gospel in a way that is relevant and clear. Our Ohio partners play a crucial role in supporting these evangelistic endeavors through prayer, resources, and collaborative efforts.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">The Joy of Transformation</h2>
-        <p class="mb-4 text-lg text-muted-foreground">There is no greater joy than witnessing a life transformed by the power of the Holy Spirit. Each testimony of salvation fuels our passion and reinforces our commitment. We invite you to partner with us in this vital work of evangelism in Sierra Leone. Together, we can make an eternal difference.</p>
-      `,
-    },
-     'discipleship-in-the-modern-age': {
-      title: 'Building Mature Disciples: The EDM Way',
-      author: 'EDM Team',
-      date: 'October 5, 2024',
-      imageUrl: 'https://placehold.co/800x400.png',
-      dataAiHint: 'mentoring group africa',
-      tags: ['Discipleship', 'Mentorship', 'Christian Growth'],
-      content: `
-        <p class="mb-4 text-lg text-muted-foreground">At EDM, discipleship is more than just a program; it's the core of our mission to build a strong, vibrant church in Sierra Leone. We are guided by Matthew 28:18-20, where Jesus commands us not only to make disciples but to "teach them to observe all that I have commanded you." Our goal is to see new believers grow into mature followers of Christ, equipped to then train others.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">From Conversion to Maturity</h2>
-        <p class="mb-4 text-lg text-muted-foreground">We recognized a critical need for formal training structures to help new converts grow in their faith. It's not enough for someone to accept Christ; they need ongoing support, teaching, and mentorship to develop a deep, resilient faith. EDM's discipleship pathway focuses on foundational biblical truths, spiritual disciplines, and practical Christian living.</p>
-        <figure class="my-6">
-          <img src="https://placehold.co/700x350.png" alt="Discipleship group in Sierra Leone" class="rounded-lg shadow-md mx-auto" data-ai-hint="bible study small group"/>
-          <figcaption class="text-center text-sm text-muted-foreground mt-2">Nurturing believers to become like Christ.</figcaption>
-        </figure>
-        <p class="mb-4 text-lg text-muted-foreground">Our discipleship programs are designed to be relational and reproducible. We train local leaders who can then mentor and disciple others within their own communities. This approach, supported by resources and collaboration with our Ohio partners, ensures that the discipleship process is sustainable and culturally relevant.</p>
-        <h2 class="text-2xl font-semibold my-4 text-foreground">The Ripple Effect of Discipleship</h2>
-        <p class="mb-4 text-lg text-muted-foreground">When believers are properly discipled, they become active participants in God's mission. They grow in their love for God and others, share their faith confidently, and serve their communities. This ripple effect is how the church grows and society is transformed. Join us in this crucial work of making and maturing disciples in Sierra Leone.</p>
-      `,
-    },
-    // Add other blog posts here if needed for testing
-  };
-  return (posts as any)[slug] || null;
-};
-
-export default async function BlogPostPage({ params }: { params: { slug:string } }) {
-  const post = await getBlogPostData(params.slug);
-
-  if (!post) {
-    return (
-      <div>
-        <PageHeader title="Blog Post Not Found" icon={BookOpen} />
-        <p className="text-center text-muted-foreground">The blog post you are looking for does not exist or may have been moved.</p>
-        <div className="text-center mt-8">
-          <Link href="/blog">
-            <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Blog</Button>
-          </Link>
-        </div>
-      </div>
-    );
-  }
-
+export default function DonatePage() {
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <PageHeader title={post.title} icon={BookOpen} />
-      
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm text-muted-foreground border-b pb-4 mb-6">
-        <div className="flex items-center mb-2 sm:mb-0">
-          <User className="mr-2 h-5 w-5 text-primary" /> By: {post.author}
-        </div>
-        <div className="flex items-center">
-          <CalendarDays className="mr-2 h-5 w-5 text-primary" /> Published: {post.date}
-        </div>
-      </div>
+    <div className="space-y-16">
+      <PageHeader
+        title="Support EDM's Mission"
+        subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Ohio partnerships."
+        icon={HelpingHand}
+      />
 
-      {post.imageUrl && (
-        <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-8">
+      <section className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="space-y-4">
+          <SectionTitle title="Why Your Gift Matters to EDM" subtitle="Every contribution makes a difference" />
+          <div className="text-lg text-muted-foreground space-y-4">
+            <p>
+              At EDM, we rely on the faithful support of partners like you to carry out our work of evangelism, discipleship, and missions in Sierra Leone. Your donations enable us to share the Gospel, train believers, develop our planned campus (school, retreat center), and bring tangible hope to communities.
+            </p>
+            <p>
+              We are committed to financial integrity and stewardship. We want to take this opportunity to thank all those who have generously contributed toward this venture. Your support helps us accomplish all that God has called us to do.
+            </p>
+            <p>
+              Please consider donating one time, monthly, or quarterly to support EDM's ongoing mission and specific needs.
+            </p>
+          </div>
+        </div>
+        <div className="relative h-64 md:h-80 w-full max-w-md mx-auto md:mx-0 rounded-lg overflow-hidden shadow-xl">
           <Image
-            src={post.imageUrl}
-            alt={post.title}
+            src="https://placehold.co/800x600.png"
+            alt="Children in Sierra Leone benefiting from EDM's work"
             layout="fill"
             objectFit="cover"
-            data-ai-hint={post.dataAiHint}
+            data-ai-hint="sierra leone children smiling community"
           />
         </div>
-      )}
-      
-      {post.tags && post.tags.length > 0 && (
-        <div className="flex flex-wrap gap-2 items-center mb-6">
-          <Tag className="h-5 w-5 text-primary" />
-          {post.tags.map((tag: string) => (
-            <Badge key={tag} variant="secondary">{tag}</Badge>
-          ))}
-        </div>
-      )}
+      </section>
 
-      <article className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: post.content }} />
-      
-      <div className="text-center mt-12">
-        <Link href="/blog">
-          <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Blog</Button>
+      <section>
+        <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects in Sierra Leone" />
+        <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+          <Card className="shadow-md hover:shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+                <LandPlot className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-center">Land Acquired & School Construction</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">We have acquired land to build a school and a retreat center for the Body of Christ. Your support helps us finalize land documentation and begin school construction.</p>
+            </CardContent>
+          </Card>
+          <Card className="shadow-md hover:shadow-lg">
+            <CardHeader>
+              <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+                <Package className="h-8 w-8 text-primary" />
+              </div>
+              <CardTitle className="text-center">Van & Equipment Arrival</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground text-center">A van and musical instruments shipped in August are expected to arrive the first week of October. These are vital for our outreach and evangelism efforts.</p>
+            </CardContent>
+          </Card>
+          <Card className="shadow-md hover:shadow-lg bg-destructive/10 border-destructive">
+            <CardHeader>
+              <div className="mx-auto bg-destructive/20 p-3 rounded-full w-fit mb-3">
+                <DollarSign className="h-8 w-8 text-destructive" />
+              </div>
+              <CardTitle className="text-center text-destructive">Urgent: Customs Clearance</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-foreground text-center">There is an outstanding balance of <strong>$3,500.00</strong> to pay customs in Freetown for the van and equipment. Your immediate contribution can help us clear these essential items.</p>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="max-w-2xl mx-auto">
+        <SectionTitle title="Make a Secure Donation to EDM" subtitle="Empower our work in Sierra Leone and Ohio today" className="text-center" />
+        <p className="text-center text-muted-foreground mb-6">
+          Your donation, whether one-time, monthly, or quarterly, directly supports EDM's evangelism, discipleship, and missions activities, including the development of our ministry campus in Sierra Leone and our collaborative efforts with Ohio partners.
+        </p>
+        <DonationFormWrapper />
+         <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is committed to financial transparency.</p>
+      </section>
+
+      <section id="more-support-options" className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
+        <SectionTitle title="More Ways to Support EDM" subtitle="Beyond online donations" />
+        <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-start">
+          
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-foreground border-b pb-2 flex items-center"><Mail className="mr-3 h-6 w-6 text-primary"/> Donate by Mail</h3>
+            <p className="text-muted-foreground">
+              If you prefer to donate by check, please make it payable to "EDM" and mail to our Sierra Leone headquarters:
+            </p>
+            <address className="space-y-1 text-foreground font-medium bg-muted p-4 rounded-md not-italic shadow-sm">
+              <p>EDM</p>
+              <p>66 Main Grafton Road</p>
+              <p>Kossoh Town, Freetown</p>
+              <p>Sierra Leone</p>
+            </address>
+             <p className="text-muted-foreground">
+                For donations via our Ohio partners or other financial inquiries (stocks, planned giving), please contact us.
+             </p>
+              <Link href="/contact">
+                <Button variant="outline" className="w-full sm:w-auto">Contact for Other Giving <ArrowRight className="ml-2 h-4 w-4"/></Button>
+              </Link>
+          </div>
+
+          <div className="space-y-6">
+            <h3 className="text-xl font-semibold text-foreground border-b pb-2 flex items-center"><Heart className="mr-3 h-6 w-6 text-primary"/> Other Ways to Get Involved</h3>
+            <p className="text-muted-foreground">
+              Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Ohio. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
+            </p>
+            <div className="space-y-3">
+                <Link href="/get-involved/volunteer">
+                    <Button variant="outline" className="w-full justify-start"><Users className="mr-2"/>Volunteer Opportunities</Button>
+                </Link>
+                <Link href="/get-involved/prayer">
+                    <Button variant="outline" className="w-full justify-start"><HelpingHand className="mr-2"/>Join Our Prayer Wall</Button>
+                </Link>
+                <Link href="/get-involved/partner">
+                    <Button variant="outline" className="w-full justify-start"><Users className="mr-2"/>Explore Partnerships</Button>
+                </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="text-center py-8">
+        <p className="text-muted-foreground mb-4">
+          EDM is a registered Christian non-profit organization in Sierra Leone. We are committed to stewarding all resources with integrity and for the advancement of the Gospel.
+        </p>
+        <Link href="/financial-transparency">
+          <Button variant="link" className="text-primary">
+            View Our Financial Transparency Policy
+          </Button>
         </Link>
-      </div>
+      </section>
     </div>
   );
 }
