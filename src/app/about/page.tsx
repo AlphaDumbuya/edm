@@ -2,7 +2,7 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BookOpen, Milestone, Users, Info, Link as LinkIcon } from 'lucide-react'; // Added LinkIcon for clarity
+import { BookOpen, Milestone, Users, Info, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -21,18 +21,23 @@ export default function AboutPage() {
           <SectionTitle title="How It All Started" />
           <div className="text-base sm:text-lg text-muted-foreground space-y-3 md:space-y-4">
             <p className="font-semibold text-foreground mb-2">The vision for EDM was laid on the heart of our founder, Edwin Kargbo. He shares:</p>
-            <blockquote className="border-l-4 border-primary pl-3 md:pl-4 italic text-sm sm:text-base space-y-2">
+            <blockquote className="border-l-4 border-primary pl-3 md:pl-4 italic text-sm sm:text-base space-y-3">
               <p>
-                "Years ago, God put a burden on my heart for issues I noticed in the church. The church was often focused inwardly—on programs, budgets, and activities—while sometimes neglecting those outside its walls. This concern resonated with <Link href="https://www.biblegateway.com/passage/?search=Ephesians+2%3A3-4&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Ephesians 2:3-4</Link>, which reminds us of God's rich mercy and great love.
+                "Years ago God put a burden on my heart for issues I noticed in the church.
+                The church was focused inwardly (programs, budgets, activities), while neglecting others outside.
+                This concern resonated with <Link href="https://www.biblegateway.com/passage/?search=Ephesians+2%3A3-4&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Ephesians 2:3-4</Link>."
               </p>
               <p>
-                I observed a lack of formal training structures for new converts to grow in maturity in the faith. Yet, the purpose of God for our salvation is to grow to become like Christ Jesus. The Great Commission in <Link href="https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Matthew 28:18-20</Link> commands us to make disciples and teach them.
+                "There was no formal training structure for new converts to grow in maturity in the faith.
+                The purpose of God for our salvation is to grow to become like Christ Jesus.
+                This aligns with the Great Commission in <Link href="https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Matthew 28:18-20</Link>."
               </p>
               <p>
-                Looking at the church, it seemed that evangelism was not always given the priority it deserved, despite the call in <Link href="https://www.biblegateway.com/passage/?search=Romans+10%3A13-15&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Romans 10:13-15</Link>.
+                "When I look at the church, priority is not given to evangelism.
+                This is despite the clear call in <Link href="https://www.biblegateway.com/passage/?search=Romans+10%3A13-15&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Romans 10:13-15</Link>."
               </p>
               <p>
-                As I studied, prayed, and reflected on these challenges, the vision for EDM began to form. The organization was structured around three core pillars: Evangelism, Discipleship, and Missions."
+                "As I was studying and praying I began to form the organization and came up with the structure of EDM: Evangelism, Discipleship, and Missions."
               </p>
             </blockquote>
           </div>
