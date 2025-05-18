@@ -1,12 +1,12 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'; // Removed CardDescription as it's not used here
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, CalendarDays, User, Tag } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-interface NewsPost { // Renamed from BlogPost to NewsPost for clarity
+interface NewsPost {
   slug: string;
   title: string;
   date: string;
@@ -17,14 +17,14 @@ interface NewsPost { // Renamed from BlogPost to NewsPost for clarity
   tags?: string[];
 }
 
-interface NewsPostCardProps { // Renamed from BlogPostCardProps
+interface NewsPostCardProps {
   post: NewsPost;
 }
 
-export default function NewsPostCard({ post }: NewsPostCardProps) { // Renamed component
+export default function NewsPostCard({ post }: NewsPostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <Link href={`/news/${post.slug}`} className="block relative w-full h-56 group">
+      <Link href={`/news/${post.slug}`} className="block relative w-full h-48 sm:h-56 group">
         <Image
           src={post.imageUrl}
           alt={post.title}
@@ -34,28 +34,28 @@ export default function NewsPostCard({ post }: NewsPostCardProps) { // Renamed c
           className="transition-transform duration-300 group-hover:scale-105"
         />
       </Link>
-      <CardHeader className="p-4">
+      <CardHeader className="p-3 sm:p-4">
         <Link href={`/news/${post.slug}`}>
-          <CardTitle className="text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
+          <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
         </Link>
-        <div className="text-xs text-muted-foreground mt-1 space-y-1">
+        <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
           <span className="flex items-center"><User className="mr-1 h-3 w-3 text-primary" /> By {post.author}</span>
           <span className="flex items-center"><CalendarDays className="mr-1 h-3 w-3 text-primary" /> {post.date}</span>
         </div>
       </CardHeader>
-      <CardContent className="p-4 flex-grow">
-        <p className="text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
+      <CardContent className="p-3 sm:p-4 flex-grow">
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
         {post.tags && post.tags.length > 0 && (
-          <div className="mt-3 flex flex-wrap gap-1.5">
+          <div className="mt-2 sm:mt-3 flex flex-wrap gap-1 sm:gap-1.5">
             {post.tags.map(tag => (
               <Badge key={tag} variant="secondary" className="text-xs px-1.5 py-0.5">{tag}</Badge>
             ))}
           </div>
         )}
       </CardContent>
-      <CardFooter className="p-4 border-t">
+      <CardFooter className="p-3 sm:p-4 border-t">
         <Link href={`/news/${post.slug}`} className="w-full">
-          <Button variant="outline" className="w-full">
+          <Button variant="outline" className="w-full text-xs sm:text-sm">
             Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>

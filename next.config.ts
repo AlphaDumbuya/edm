@@ -28,7 +28,13 @@ const nextConfig: NextConfig = {
         hostname: 'code-alpha-image-gallary.vercel.app',
         port: '',
         pathname: '/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'source.unsplash.com',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
 };

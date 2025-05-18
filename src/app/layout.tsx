@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: 'EDM',
-  description: 'Evangelism Discipleship Missions - Transforming lives in Sierra Leone, Ohio, and beyond.',
+  description: 'Evangelism Discipleship Missions - Transforming lives in Sierra Leone, Oregon, and beyond.',
 };
 
 export default function RootLayout({
@@ -32,7 +32,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
         <AppProviders>
           <Navbar />
-          <main className="flex-grow container mx-auto px-4 py-8">
+          <main className="flex-grow container mx-auto px-4 py-6 sm:py-8">
             {children}
           </main>
           <Footer />
@@ -42,4 +42,3 @@ export default function RootLayout({
     </html>
   );
 }
-

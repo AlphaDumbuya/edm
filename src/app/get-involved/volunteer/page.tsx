@@ -1,11 +1,13 @@
 
+'use client';
+
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Users, Heart, Wrench, Laptop, ChalkboardTeacher, Mail } from 'lucide-react';
+import { Users, Heart, Wrench, Laptop, GraduationCap, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import VolunteerSignupForm from '@/components/volunteer/volunteer-signup-form'; // Import the form
 
 const volunteerAreas = [
   {
@@ -22,8 +24,8 @@ const volunteerAreas = [
   },
   {
     title: 'Educational Support in Sierra Leone',
-    icon: ChalkboardTeacher,
-    description: 'Assist with our school project, help with teaching, teacher training, or curriculum development once the school is operational.',
+    icon: GraduationCap,
+    description: 'Assist with our EDM Marifa School, help with teaching, teacher training, or curriculum development.',
     dataAiHint: "teacher classroom africa",
   },
   {
@@ -59,9 +61,9 @@ export default function VolunteerPage() {
             Explore the various ways you can volunteer and become an active part of our mission.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
+        <div className="rounded-lg overflow-hidden shadow-xl h-64 md:h-80">
           <Image
-            src="https://placehold.co/600x400.png"
+            src="https://source.unsplash.com/random/600x400/?volunteers,teamwork,community"
             alt="Volunteers working together happily"
             width={600}
             height={400}
@@ -82,7 +84,7 @@ export default function VolunteerPage() {
               <CardTitle className="text-xl">{area.title}</CardTitle>
             </CardHeader>
             <CardContent className="text-center">
-              <Image src={`https://placehold.co/400x250.png?text=${area.title.replace(/\s/g,'+')}`} alt={area.title} width={400} height={250} className="rounded-md mb-4 mx-auto" data-ai-hint={area.dataAiHint} />
+              <Image src={`https://source.unsplash.com/random/400x250/?${area.dataAiHint.replace(/\s/g,',')}`} alt={area.title} width={400} height={250} className="rounded-md mb-4 mx-auto h-40 object-cover" data-ai-hint={area.dataAiHint} />
               <p className="text-muted-foreground text-sm">{area.description}</p>
             </CardContent>
           </Card>
@@ -90,15 +92,10 @@ export default function VolunteerPage() {
       </div>
 
       <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
-        <SectionTitle title="Ready to Volunteer?" className="text-center" />
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-          If you're interested in volunteering with EDM in Sierra Leone or supporting our Oregon partnerships, please fill out our interest form or contact us directly. We'd love to discuss how you can get involved!
-        </p>
-        <Link href="mailto:volunteer@edm.org?subject=Volunteer%20Inquiry">
-          <Button size="lg">
-            <Mail className="mr-2 h-5 w-5" /> Express Your Interest to Volunteer
-          </Button>
-        </Link>
+        <SectionTitle title="Ready to Volunteer?" subtitle="Fill out the form below to express your interest" className="text-center" />
+        <div className="max-w-2xl mx-auto">
+            <VolunteerSignupForm />
+        </div>
       </section>
     </div>
   );
