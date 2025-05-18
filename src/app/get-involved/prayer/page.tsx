@@ -4,7 +4,7 @@
 import PageHeader from '@/components/shared/page-header';
 import PrayerRequestForm from '@/components/prayer/prayer-request-form';
 import PrayerRequestCard from '@/components/prayer/prayer-request-card';
-import { HeartHandshake } from 'lucide-react'; // Changed from Handshake
+import { HeartHandshake } from 'lucide-react'; 
 import { useState, useEffect } from 'react';
 import { Separator } from '@/components/ui/separator';
 import SectionTitle from '@/components/shared/section-title';
@@ -56,22 +56,22 @@ export default function PrayerPage() {
         icon={HeartHandshake}
       />
       
-      <section className="grid md:grid-cols-2 gap-12 items-center">
-         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
+      <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+         <div className="rounded-lg overflow-hidden shadow-xl h-64 md:h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png"
-            alt="People praying together"
+            src="https://images.unsplash.com/photo-1583090318293-ebd145b2c63f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fHByYXllcnxlbnwwfHwwfHx8MA%3D%3D"
+            alt="Hands clasped in prayer"
             layout="fill"
             objectFit="cover"
-            data-ai-hint="prayer hands group"
+            data-ai-hint="prayer hands togetherness"
           />
         </div>
         <div>
           <SectionTitle title="The Power of Prayer" />
-          <p className="text-lg text-muted-foreground mb-4">
+          <p className="text-base sm:text-lg text-muted-foreground mb-4">
             Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon.
           </p>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
           </p>
         </div>
