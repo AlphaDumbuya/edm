@@ -26,12 +26,12 @@ export default function IndividualPartnershipPage() {
             Discover how you can align your heart with our mission in these key regions and become an active participant in spreading the Gospel.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
+        <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://picsum.photos/seed/individualSLOH/600/400"
+            src="https://source.unsplash.com/random/600x400/?volunteer,helping,community"
             alt="Individual making a difference in Sierra Leone or Oregon"
-            width={600}
-            height={400}
+            layout="fill"
+            objectFit="cover"
             className="object-cover w-full h-full"
             data-ai-hint="person helping sierra leone oregon"
           />
@@ -52,7 +52,7 @@ export default function IndividualPartnershipPage() {
               Commit to praying for our missionaries in Sierra Leone, projects in both regions, and the unreached. Join our prayer network for specific updates.
             </p>
             <div className="text-center mt-4">
-                <Link href="/prayer">
+                <Link href="/get-involved/prayer">
                     <Button variant="outline" size="sm">Join Prayer Wall</Button>
                 </Link>
             </div>
@@ -71,8 +71,8 @@ export default function IndividualPartnershipPage() {
               Offer time and talents for Sierra Leone projects (local/remote) or assist Oregon-based support efforts. Skills like admin, design, or IT are valuable.
             </p>
              <div className="text-center mt-4">
-                <Link href="mailto:volunteer@edm.org">
-                    <Button variant="outline" size="sm">Inquire to Volunteer</Button>
+                <Link href="/get-involved/volunteer">
+                    <Button variant="outline" size="sm">Volunteer Sign-up</Button>
                 </Link>
             </div>
           </CardContent>
@@ -90,7 +90,7 @@ export default function IndividualPartnershipPage() {
               Be a voice for EDM's work in Sierra Leone and our Oregon connections within your community. Share stories and opportunities for involvement.
             </p>
             <div className="text-center mt-4">
-                <Link href="mailto:ambassador@edm.org">
+                <Link href="mailto:ambassador@edm.org?subject=Ambassador%20Inquiry">
                      <Button variant="outline" size="sm">Learn About Ambassadorship</Button>
                 </Link>
             </div>
@@ -122,7 +122,7 @@ export default function IndividualPartnershipPage() {
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
           We're excited to explore how your passion and skills can align with EDM's mission in these regions. If you have questions or want to discuss involvement, please reach out.
         </p>
-        <Link href="mailto:individuals@edm.org">
+        <Link href="mailto:individuals@edm.org?subject=Individual%20Partnership%20Inquiry">
           <Button size="lg">
             <Mail className="mr-2 h-5 w-5" /> Contact Us About Individual Partnership
           </Button>
