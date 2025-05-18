@@ -90,10 +90,10 @@ export default function OurMissionPage() {
             </CardHeader>
             <CardContent>
               <ul className="list-none text-muted-foreground text-sm space-y-2">
+                <li className="flex items-start"><School className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Support and develop the operational <Link href="/ministries/education/marifa-school" className="text-primary hover:underline">EDM Marifa Secondary School</Link>.</li>
                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Get the van and equipment through customs.</li>
                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Finalize land acquisition for the main campus.</li>
                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Establish international board members.</li>
-                <li className="flex items-start"><School className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Support and develop the operational EDM Marifa Secondary School.</li>
                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Conduct evangelism training.</li>
                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Show the "Jesus" movie for evangelism.</li>
               </ul>
@@ -118,20 +118,20 @@ export default function OurMissionPage() {
       </section>
 
        <section>
-        <SectionTitle title="Current Updates" />
+        <SectionTitle title="Current Updates & Needs" />
          <Card className="shadow-lg bg-primary/5">
             <CardHeader>
                 <CardTitle className="text-primary">Progress and Urgent Needs</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground">
-                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel!</p>
+                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more & support the school.</Link></p>
                 <p><strong className="text-foreground">Land Acquired:</strong> We praise God that we have acquired land for the main EDM campus and a retreat center for the Body of Christ in Sierra Leone!</p>
                 <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped in August and are expected to arrive the first week of October. These are vital for our outreach.</p>
                 <p className="font-semibold text-destructive"><strong className="text-foreground">Urgent Need:</strong> There is an outstanding balance of $3,500.00 to pay customs in Freetown for the van and equipment. Your support is crucial to clear these items.</p>
             </CardContent>
             <CardFooter>
-                <Link href="/donate">
-                    <Button variant="default">Help Meet This Need</Button>
+                <Link href="/donate?reason=urgent_needs">
+                    <Button variant="default">Help Meet These Needs</Button>
                 </Link>
             </CardFooter>
          </Card>

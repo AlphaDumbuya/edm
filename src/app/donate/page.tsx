@@ -55,7 +55,10 @@ export default function DonatePage() {
               <CardTitle className="text-center">Support EDM Marifa School</CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground text-center">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
+              <p className="text-sm text-muted-foreground text-center mb-3">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
+               <Link href="/ministries/education/marifa-school" className="block text-center">
+                <Button variant="outline" size="sm">Learn More & Support School</Button>
+              </Link>
             </CardContent>
           </Card>
           <Card className="shadow-md hover:shadow-lg">

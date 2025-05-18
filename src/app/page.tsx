@@ -2,18 +2,13 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import SectionTitle from '@/components/shared/section-title';
 import { ArrowRight, Users, BookOpenText, HeartHandshake, Newspaper, HelpingHand, Target, Milestone, School } from 'lucide-react';
 
-const upcomingEvents = [
-  { id: 1, title: 'Freetown Evangelism Training', date: 'November 10-12, 2024', location: 'EDM Center, Freetown', image: 'https://placehold.co/400x250.png', dataAiHint: 'training workshop sierra leone' },
-  { id: 2, title: 'Oregon Partnership Summit', date: 'December 5, 2024', location: 'Online & Portland, OR', image: 'https://placehold.co/400x250.png', dataAiHint: 'people meeting oregon' },
-];
-
 const recentNews = [
-  { id: 1, title: 'The Call to Evangelism in Sierra Leone', excerpt: 'Understanding our mandate to share the Good News in every community...', slug: 'the-heart-of-evangelism', image: 'https://placehold.co/400x250.png', dataAiHint: 'sierra leone preaching' },
-  { id: 2, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: 'edm-marifa-school-operational', image: 'https://placehold.co/400x250.png', dataAiHint: 'school children marifa' },
+  { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: 'edm-marifa-school-operational', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
+  { id: 2, title: 'Urgent: Customs Fee for Ministry Van', excerpt: 'We need your help to clear our vital ministry van and equipment from customs in Freetown...', slug: 'customs-fee-urgent-need', image: 'https://placehold.co/400x250.png', dataAiHint: 'donation support hands' },
 ];
 
 export default function Home() {
@@ -74,11 +69,11 @@ export default function Home() {
               <CardContent className="flex-grow">
                 <p className="text-muted-foreground text-sm">{pillar.description}</p>
               </CardContent>
-              <CardContent className="pt-4">
+              <CardFooter className="pt-4">
                  <Link href={pillar.href}>
                     <Button variant="link" className="text-sm">Learn More <ArrowRight className="ml-1 h-3 w-3"/></Button>
                  </Link>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
         </div>
@@ -117,7 +112,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (already operational), future Bible school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (now operational), future Bible school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
               </p>
               <Image src="https://placehold.co/600x350.png" alt="EDM Campus Vision" width={600} height={350} className="rounded-md shadow-md" data-ai-hint="architectural rendering school campus africa" />
             </CardContent>
@@ -133,7 +128,7 @@ export default function Home() {
               <CardContent className="text-sm">
                 <h4 className="font-semibold text-foreground mb-1">Short-Term:</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1 mb-3">
-                  <li>Support the operational EDM Marifa Secondary School.</li>
+                  <li>Support the operational EDM Marifa Secondary School (<Link href="/ministries/education/marifa-school" className="text-primary hover:underline">details</Link>).</li>
                   <li>Get the van and equipment through customs.</li>
                   <li>Finalize land acquisition for the main campus.</li>
                   <li>Establish international board members.</li>

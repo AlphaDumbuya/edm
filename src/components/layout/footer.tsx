@@ -57,8 +57,9 @@ export default function Footer() {
                  <MapPin size={16} className="mr-2 mt-1 text-primary shrink-0" />
                 <div>
                   <strong>USA (Oregon Partner Office):</strong><br />
-                  12301 South East Stephens Street<br />
-                  Portland, Oregon 97233
+                  12301 SE Stephens St.<br /> {/* Corrected address */}
+                  Portland, OR 97233<br />
+                  USA
                 </div>
               </div>
               <div className="flex items-center">
@@ -68,6 +69,10 @@ export default function Footer() {
                <div className="flex items-center">
                 <Mail size={16} className="mr-2 text-primary shrink-0" />
                 <a href="mailto:edwinjkargbo@yahoo.com" className="hover:text-primary">edwinjkargbo@yahoo.com</a>
+              </div>
+                 <div className="flex items-center">
+                <Mail size={16} className="mr-2 text-primary shrink-0" />
+                <a href="mailto:edmsierraleone@gmail.com" className="hover:text-primary">edmsierraleone@gmail.com (For Zelle)</a>
               </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-2 text-primary shrink-0" />
@@ -99,6 +104,9 @@ export default function Footer() {
           <p className="text-sm text-muted-foreground">
             &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
           </p>
+           <p className="text-xs text-muted-foreground mt-1">
+              EDM is a registered 501(c)(3) non-profit organization.
+            </p>
         </div>
       </div>
     </footer>

@@ -115,15 +115,14 @@ export default function TheMissionPage() {
                 <CardTitle className="text-primary">Progress and Urgent Needs</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground">
-                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel!</p>
+                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline">Learn more and support the school.</Link></p>
                 <p><strong className="text-foreground">Land Acquired:</strong> We have acquired land for the main EDM campus and retreat center for the Body of Christ in Sierra Leone!</p>
                 <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped in August and are expected to arrive the first week of October. These are vital for our outreach.</p>
                 <p className="font-semibold text-destructive"><strong className="text-foreground">Urgent Need:</strong> There is an outstanding balance of $3,500.00 to pay customs in Freetown for the van and equipment. Your support is crucial to clear these items.</p>
-                 <p><strong className="text-foreground">Support EDM Marifa School:</strong> We are actively seeking financial support and prayers for the ongoing operations and development of the EDM Marifa School.</p>
             </CardContent>
             <CardFooter>
-                <Link href="/donate">
-                    <Button variant="default">Help Meet These Needs</Button>
+                <Link href="/donate?reason=urgent_customs_need">
+                    <Button variant="default">Help Meet Urgent Needs</Button>
                 </Link>
             </CardFooter>
          </Card>

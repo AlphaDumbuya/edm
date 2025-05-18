@@ -4,7 +4,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, Target } from 'lucide-react'; // Added Target
+import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, Target, School } from 'lucide-react'; 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -54,7 +54,8 @@ const mainNavItems = [
       { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches.' },
       { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity.' },
       { href: '/ministries/missions-outreach', title: 'Missions Outreach', description: 'Church planting and community projects.' },
-      { href: '/ministries/education', title: 'Education', description: 'EDM Marifa School and future Bible training.' },
+      { href: '/ministries/education', title: 'Education Overview', description: 'Our commitment to Christ-centered education.' },
+      { href: '/ministries/education/marifa-school', title: 'EDM Marifa School', description: 'Operational secondary school in Rosortta Village.' },
     ],
   },
   {
