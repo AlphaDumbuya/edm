@@ -21,8 +21,8 @@ const educationProjects = [
     icon: Building,
     description: 'Planning for a future Bible school on the main EDM campus to provide in-depth theological training for pastors, leaders, and missionaries in Sierra Leone.',
     link: '#', // Update once a page exists
-    imageUrl: 'https://placehold.co/600x400.png',
-    dataAiHint: 'bible study leadership training',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1713890423188-01590e2422de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGJpYmxlJTIwc2Nob29sJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D',
+    dataAiHint: 'bible school africa students',
   },
 ];
 
@@ -60,11 +60,11 @@ export default function EducationOverviewPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png" 
+            src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZWR1Y2F0aW9ufGVufDB8fDB8fHww"
             alt="Students engaged in learning in Sierra Leone"
             layout="fill"
             objectFit="cover"
-            data-ai-hint="sierra leone students classroom"
+            data-ai-hint="education students learning"
           />
         </div>
       </section>
