@@ -73,7 +73,7 @@ export default function MarifaSchoolPage() {
                 </Link>
                 <div>
                   <p className="text-sm text-muted-foreground">For more information about the school project, please contact:</p>
-                  <p className="text-sm font-medium text-foreground">Rev. Edwin Kargbo</p>
+                  <p className="text-sm font-medium text-foreground">Edwin Kargbo</p>
                   <p className="text-sm"><Phone className="inline mr-1 h-4 w-4" /> 503-505-8884</p>
                   <p className="text-sm"><Mail className="inline mr-1 h-4 w-4" /> <a href="mailto:edwinjkargbo@yahoo.com" className="text-primary hover:underline">edwinjkargbo@yahoo.com</a></p>
                 </div>

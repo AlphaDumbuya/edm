@@ -20,7 +20,7 @@ export default function AboutPage() {
         <div>
           <SectionTitle title="How It All Started" />
           <div className="text-lg text-muted-foreground space-y-4">
-            <p className="font-semibold text-foreground mb-2">The vision for EDM was laid on the heart of our founder, Rev. Edwin Kargbo. He shares:</p>
+            <p className="font-semibold text-foreground mb-2">The vision for EDM was laid on the heart of our founder, Edwin Kargbo. He shares:</p>
             <blockquote className="border-l-4 border-primary pl-4 italic">
               <p>
                 "Years ago, God put a burden on my heart for issues I noticed in the church. The church was often focused inwardly—on programs, budgets, and activities—while sometimes neglecting those outside its walls. This concern resonated with <Link href="https://www.biblegateway.com/passage/?search=Ephesians+2%3A3-4&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Ephesians 2:3-4</Link>, which reminds us of God's rich mercy and great love.
@@ -39,7 +39,7 @@ export default function AboutPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-96 relative">
           <Image
-            src="https://placehold.co/600x450.png"
+            src="https://source.unsplash.com/random/600x450/?bible,study,prayer,journal"
             alt="Prayer and study leading to EDM's formation in Sierra Leone"
             layout="fill"
             objectFit="cover"

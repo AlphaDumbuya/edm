@@ -28,7 +28,7 @@ export default function OurMissionPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png"
+            src="https://source.unsplash.com/random/600x400/?sierra,leone,mission,team"
             alt="EDM team working in Sierra Leone"
             layout="fill"
             objectFit="cover"
@@ -42,7 +42,7 @@ export default function OurMissionPage() {
         <SectionTitle title="Our Journey: How It All Started" />
         <Card className="shadow-lg">
           <CardContent className="p-6 text-muted-foreground space-y-4 text-md">
-            <p className="font-semibold text-foreground">The vision for EDM was laid on the heart of our founder, Rev. Edwin Kargbo. He shares:</p>
+            <p className="font-semibold text-foreground">The vision for EDM was laid on the heart of our founder, Edwin Kargbo. He shares:</p>
             <blockquote className="border-l-4 border-primary pl-4 italic space-y-3">
                 <p>Years ago, God put a burden on my heart for issues I noticed in the church. The church was often focused inwardly—on programs, budgets, and activities—while sometimes neglecting those outside its walls. This concern resonated with <Link href="https://www.biblegateway.com/passage/?search=Ephesians+2%3A3-4&version=NIV" target="_blank" className="text-primary hover:underline">Ephesians 2:3-4</Link>, which reminds us of God's rich mercy and great love with which He loved us, even when we were dead in our trespasses, making us alive together with Christ.</p>
                 <p>I observed a lack of formal training structures for new converts to grow in maturity in the faith. Yet, the purpose of God for our salvation is to grow to become like Christ Jesus. The Great Commission in <Link href="https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=NIV" target="_blank" className="text-primary hover:underline">Matthew 28:18-20</Link> commands us: "Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit, teaching them to observe all that I have commanded you."</p>
@@ -53,15 +53,15 @@ export default function OurMissionPage() {
         </Card>
       </section>
       
-      <section className="text-center bg-primary/5 p-8 md:p-12 rounded-lg shadow-lg">
+      <section className="text-center bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Our Guiding Principles" className="text-center" />
         <div className="max-w-2xl mx-auto">
-            <h3 className="text-2xl font-semibold text-primary mb-2">Purpose Statement</h3>
-            <blockquote className="text-xl italic text-foreground mb-6 border-l-4 border-primary pl-4 py-2">
+            <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Purpose Statement</h3>
+            <blockquote className="text-lg sm:text-xl italic text-foreground mb-6 border-l-4 border-primary pl-3 sm:pl-4 py-1 sm:py-2">
               "In our acts of obedience and worship to God, we will go out and share the good news to the unbelievers, train them to maturity so they will train others."
             </blockquote>
-            <h3 className="text-2xl font-semibold text-primary mb-2">Motto</h3>
-            <p className="text-xl italic text-foreground">
+            <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Motto</h3>
+            <p className="text-lg sm:text-xl italic text-foreground">
               "Love God and love others."
             </p>
         </div>
@@ -137,7 +137,7 @@ export default function OurMissionPage() {
          </Card>
        </section>
 
-      <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
+      <section className="bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Join Us on Our Journey" className="text-center" />
         <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
           We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
