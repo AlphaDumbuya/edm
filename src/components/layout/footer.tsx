@@ -22,7 +22,7 @@ export default function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">About EDM</h3>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/about" className="hover:text-primary transition-colors">Our Story & Mission</Link></li>
+              <li><Link href="/about" className="hover:text-primary transition-colors">Our Story & Foundations</Link></li>
               <li><Link href="/about/what-we-believe" className="hover:text-primary transition-colors">What We Believe</Link></li>
               <li><Link href="/international-board" className="hover:text-primary transition-colors">International Board</Link></li>
               <li><Link href="/financial-transparency" className="hover:text-primary transition-colors">Financial Transparency</Link></li>

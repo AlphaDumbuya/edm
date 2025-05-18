@@ -20,7 +20,7 @@ interface MissionLocation {
 const missionLocations: MissionLocation[] = [
   { id: '1', position: { lat: 8.4844, lng: -13.2344 }, name: 'EDM Headquarters - Freetown', description: 'Main operations center for EDM in Sierra Leone, coordinating evangelism, discipleship, and mission projects. Future site of the EDM Campus.', country: 'Sierra Leone', type: 'EDM Hub' },
   { id: '2', position: { lat: 7.9503, lng: -11.8378 }, name: 'Bo District Ministry Focus', description: 'Focus area for church planting, community development, and evangelistic outreach in Bo District.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
-  { id: '3', position: { lat: 40.0000, lng: -82.9988 }, name: 'Portland, Ohio Partnership Hub', description: 'Coordinating US partner engagement, resource mobilization, and awareness campaigns from our office at 12301 South East Stephens Street, Portland, Ohio 97233.', country: 'USA', type: 'Partnership Hub' }, // Updated lat for generic Portland, Ohio, and address
+  { id: '3', position: { lat: 39.9612, lng: -82.9988 }, name: 'Portland, Ohio Partnership Hub', description: 'Coordinating US partner engagement, resource mobilization, and awareness campaigns from our office at 12301 South East Stephens Street, Portland, Ohio 97233.', country: 'USA', type: 'Partnership Hub' },
   { id: '4', position: { lat: 8.6200, lng: -12.5700 }, name: 'Makeni Education & Outreach', description: 'Supporting schools, providing educational resources, and conducting outreach in the Makeni area.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
   { id: '5', position: { lat: 8.7832, lng: -11.3300 }, name: 'Kenema District Evangelism', description: 'Active evangelism and discipleship programs in Kenema District, expanding EDM\'s reach.', country: 'Sierra Leone', type: 'Ministry Focus Area' },
 ];
@@ -66,7 +66,7 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
     <APIProvider apiKey={apiKey}>
       <div style={{ height: '100%', width: '100%', position: 'relative' }}>
         <Map
-          defaultCenter={{ lat: 6.5, lng: -40.0 }} // Adjusted to center better between SL and Ohio
+          defaultCenter={{ lat: 24, lng: -48 }} // Adjusted to center better between SL (8.5, -13.2) and Ohio (40, -83)
           defaultZoom={3} 
           mapId={mapId}
           gestureHandling={'greedy'}
