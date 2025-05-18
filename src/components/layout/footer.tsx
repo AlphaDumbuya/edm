@@ -45,7 +45,7 @@ export default function Footer() {
             <h3 className="text-md sm:text-lg font-semibold mb-3 md:mb-4">Contact Us</h3>
             <address className="text-xs sm:text-sm text-muted-foreground not-italic space-y-1.5 md:space-y-2">
               <div className="flex items-start">
-                <MapPin size={16} className="mr-2 mt-1 text-primary shrink-0" />
+                <MapPin size={14} className="mr-2 mt-0.5 text-primary shrink-0" />
                 <div>
                   <strong>Sierra Leone HQ:</strong><br />
                   66 Main Grafton Road<br />
@@ -54,7 +54,7 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-start">
-                 <MapPin size={16} className="mr-2 mt-1 text-primary shrink-0" />
+                 <MapPin size={14} className="mr-2 mt-0.5 text-primary shrink-0" />
                 <div>
                   <strong>USA (Oregon Partner Office):</strong><br />
                   12301 South East Stephens St.<br />
@@ -63,23 +63,23 @@ export default function Footer() {
                 </div>
               </div>
               <div className="flex items-center">
-                <Mail size={16} className="mr-2 text-primary shrink-0" />
+                <Mail size={14} className="mr-2 text-primary shrink-0" />
                 <a href="mailto:contact@edm.org" className="hover:text-primary">contact@edm.org</a>
               </div>
                <div className="flex items-center">
-                <Mail size={16} className="mr-2 text-primary shrink-0" />
+                <Mail size={14} className="mr-2 text-primary shrink-0" />
                 <a href="mailto:edwinjkargbo@yahoo.com" className="hover:text-primary">edwinjkargbo@yahoo.com</a>
               </div>
                  <div className="flex items-center">
-                <Mail size={16} className="mr-2 text-primary shrink-0" />
+                <Mail size={14} className="mr-2 text-primary shrink-0" />
                 <a href="mailto:edmsierraleone@gmail.com" className="hover:text-primary">edmsierraleone@gmail.com (For Zelle)</a>
               </div>
               <div className="flex items-center">
-                <Phone size={16} className="mr-2 text-primary shrink-0" />
-                <span>(+232) XX-XXX-XXX (SL)</span> 
+                <Phone size={14} className="mr-2 text-primary shrink-0" />
+                <span>(+232) XX-XXX-XXX (SL)</span>
               </div>
               <div className="flex items-center">
-                <Phone size={16} className="mr-2 text-primary shrink-0" />
+                <Phone size={14} className="mr-2 text-primary shrink-0" />
                 <span>503-505-8884 (USA - Edwin Kargbo)</span>
               </div>
             </address>
@@ -112,3 +112,4 @@ export default function Footer() {
     </footer>
   );
 }
+    
