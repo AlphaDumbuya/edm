@@ -6,12 +6,12 @@ import { Users, Globe } from 'lucide-react'; // Users for people, Globe for inte
 
 const boardMembers = [
   {
-    name: 'Rev. [Founder\'s Name]', // Placeholder - replace with actual founder's name
+    name: 'Rev. Edwin Kargbo', // Updated founder's name
     role: 'Founder & Director, EDM Sierra Leone',
-    bio: 'Driven by a divine burden for the church in Sierra Leone, Rev. [Founder\'s Name] established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. His vision is to see Sierra Leone transformed by the Gospel.',
+    bio: 'Driven by a divine burden for the church in Sierra Leone, Rev. Edwin Kargbo established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. His vision is to see Sierra Leone transformed by the Gospel.',
     imageUrl: 'https://placehold.co/300x300.png',
     dataAiHint: 'african pastor leader',
-    contact: 'founder.sl@edm.org', // Placeholder
+    contact: 'edwin.kargbo@edm.org', // Placeholder
     location: 'Sierra Leone',
   },
   {
