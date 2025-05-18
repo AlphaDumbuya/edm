@@ -23,7 +23,7 @@ export default function EducationPage() {
             Evangelism, Discipleship, Missions (EDM) believes that education is a powerful tool for transformation. Our educational initiatives aim to provide quality, Christ-centered learning opportunities that equip individuals for life, service, and leadership in Sierra Leone. This includes formal schooling and specialized biblical training.
           </p>
            <p className="text-lg text-muted-foreground">
-            A key achievement in this area is the EDM Marifa School, a secondary school now operating in Marifa.
+            A key achievement in this area is the EDM Marifa Secondary School, now operating in Marifa.
           </p>
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
@@ -38,7 +38,7 @@ export default function EducationPage() {
       </section>
 
       <section>
-        <SectionTitle title="EDM Marifa School - Now Operating!" subtitle="A Beacon of Hope and Learning in Marifa, Sierra Leone" />
+        <SectionTitle title="EDM Marifa Secondary School - Now Operating!" subtitle="A Beacon of Hope and Learning in Marifa, Sierra Leone" />
         <Card className="shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-3">
             <div className="md:col-span-1 relative min-h-[250px] md:min-h-full">
@@ -59,7 +59,7 @@ export default function EducationPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) proudly operates the EDM Marifa School, a secondary school in Marifa, Sierra Leone. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
+                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) proudly operates the EDM Marifa Secondary School in Marifa, Sierra Leone. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
                 </p>
                 <p>
                   The purpose of the EDM Marifa School is multifaceted:
@@ -75,14 +75,34 @@ export default function EducationPage() {
                  <p className="font-semibold text-foreground">
                   We will accept one-time or monthly donations. Please remember the EDM Marifa School, its students, and staff in your prayers. Thank you for your support.
                 </p>
-                 {/* Placeholder for future school media */}
                 <div className="mt-4 pt-4 border-t">
-                    <h4 className="text-md font-semibold text-foreground mb-2">School Media (Coming Soon)</h4>
-                    <div className="flex gap-2">
-                        <div className="flex items-center text-muted-foreground text-sm"><ImageIcon className="h-4 w-4 mr-1"/> Photos</div>
-                        <div className="flex items-center text-muted-foreground text-sm"><Video className="h-4 w-4 mr-1"/> Videos</div>
-                        {/* Badge placeholder could be an image or specific icon */}
+                    <h4 className="text-md font-semibold text-foreground mb-3">School Media</h4>
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        <div className="aspect-video rounded-lg overflow-hidden shadow-md">
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/HmiDIV_6JJA"
+                                title="EDM Marifa School Video 1"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                        <div className="aspect-video rounded-lg overflow-hidden shadow-md">
+                             <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/ieD1noKUz0A"
+                                title="EDM Marifa School Video 2"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
                     </div>
+                    <p className="text-xs text-muted-foreground mt-3">More photos and updates coming soon.</p>
+                    {/* Placeholder for badge - we can add an Image tag here later */}
                 </div>
               </CardContent>
               <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t">
@@ -95,7 +115,7 @@ export default function EducationPage() {
                   <p className="text-sm text-muted-foreground">For more information, please contact:</p>
                   <p className="text-sm font-medium text-foreground">Rev. Edwin Kargbo</p>
                   <p className="text-sm"><Phone className="inline mr-1 h-4 w-4" /> 503-505-8884</p>
-                  <p className="text-sm"><Mail className="inline mr-1 h-4 w-4" /> <a href="mailto:edwinjkargbo@yahoo.com" className="hover:underline">edwinjkargbo@yahoo.com</a></p>
+                  <p className="text-sm"><Mail className="inline mr-1 h-4 w-4" /> <a href="mailto:edwinjkargbo@yahoo.com" className="text-primary hover:underline">edwinjkargbo@yahoo.com</a></p>
                 </div>
               </CardFooter>
             </div>
@@ -184,3 +204,4 @@ export default function EducationPage() {
     </div>
   );
 }
+
