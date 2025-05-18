@@ -1,107 +1,131 @@
+
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Handshake, Users, Building, Briefcase as BriefcaseIcon, Mail, ArrowRight } from 'lucide-react'; // Renamed Briefcase
+import { Building, Users, Handshake, Mail, ArrowLeft, BookOpen, DollarSign, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const partnershipTypes = [
-  {
-    title: 'For Individuals',
-    icon: Users,
-    description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Ohio, advocacy, or financial support. Discover how your unique gifts can make a difference.',
-    href: '/partnership/individuals', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'person volunteering sierra leone',
-  },
-  {
-    title: 'For Churches',
-    icon: Building, 
-    description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Ohio network. Mobilize members for impactful outreach.',
-    href: '/partnership/churches', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'church congregation freetown',
-  },
-  {
-    title: 'For Organizations & Businesses',
-    icon: BriefcaseIcon, // Using renamed icon
-    description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
-    href: '/partnership/organizations', // Will create this page
-    imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'business team ohio',
-  },
-];
-
-export default function PartnerPage() {
+export default function ChurchPartnershipPage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-12">
       <PageHeader
-        title="Partner With EDM"
-        subtitle="Together, we can amplify our impact in Sierra Leone and Ohio through Evangelism, Discipleship, and Missions."
-        icon={Handshake}
+        title="Church Partnerships with EDM"
+        subtitle="Unite with EDM to amplify your church's mission impact in Sierra Leone and Oregon."
+        icon={Building}
       />
 
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
-          <SectionTitle title="Why Your Partnership Matters" />
+          <SectionTitle title="Partner Your Congregation" />
           <p className="text-lg text-muted-foreground">
-            At EDM, we believe that collaboration is key to fulfilling the Great Commission in Sierra Leone and extending our reach through vital partnerships in Ohio. Partnerships enable us to expand, deepen our impact, and bring the hope of the Gospel to more communities.
+            Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach, sharing the Gospel, supporting discipleship, and contributing to vital community projects.
           </p>
           <p className="text-lg text-muted-foreground">
-            When you partner with EDM, you become an integral part of a movement dedicated to transforming lives in West Africa and the US. Your support, whether through prayer, resources, or active involvement, fuels our ability to evangelize, disciple, and serve those in need.
+            Together, we can empower local leaders, plant and strengthen churches in Sierra Leone, and provide essential resources for sustainable ministry.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl">
+        <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png"
-            alt="Diverse hands collaborating for Sierra Leone and Ohio"
-            width={600}
-            height={400}
+            src="https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww"
+            alt="African church congregation in fellowship"
+            layout="fill"
+            objectFit="cover"
             className="object-cover w-full h-full"
-            data-ai-hint="collaboration sierra leone ohio"
+            data-ai-hint="african church congregation"
           />
         </div>
       </section>
 
-      <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization to impact Sierra Leone & Ohio" className="text-center" />
-      <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
-        {partnershipTypes.map((opportunity) => (
-          <Card key={opportunity.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
-             <div className="relative w-full h-56">
-                <Image src={opportunity.imageUrl} alt={opportunity.title} layout="fill" objectFit="cover" data-ai-hint={opportunity.dataAiHint} />
-             </div>
-            <CardHeader className="items-center text-center">
-              <div className="p-3 bg-primary/10 rounded-full mb-3 w-fit">
-                <opportunity.icon className="h-10 w-10 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">{opportunity.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="flex-grow text-center">
-              <p className="text-muted-foreground text-sm mb-4">{opportunity.description}</p>
-            </CardContent>
-            <CardContent className="pt-4 pb-6 text-center"> 
-              <Link href={opportunity.href}>
-                <Button className="w-full sm:w-auto" variant="outline">
-                  Learn More <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
+      <SectionTitle title="How Your Church Can Partner" subtitle="Collaborate with EDM for greater Kingdom impact in Sierra Leone & Oregon" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+              <MapPin className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-center">Mission Trips & Teams</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Organize short-term mission trips to Sierra Leone for evangelism, construction, medical outreach, or leadership training.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+              <DollarSign className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-center">Project Sponsorship</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Support specific EDM projects like the EDM Marifa School, campus development in Sierra Leone, or evangelistic crusades.
+            </p>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+              <BookOpen className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-center">Resource Mobilization</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Help gather and send needed resources such as Bibles, discipleship materials, educational supplies, or ministry equipment to Sierra Leone.
+            </p>
+          </CardContent>
+        </Card>
+         <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+              <Users className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-center">Support Missionaries</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Partner in supporting local missionaries and church planters in Sierra Leone, enabling them to dedicate their lives to ministry.
+            </p>
+          </CardContent>
+        </Card>
+         <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <CardHeader>
+            <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
+              <Handshake className="h-8 w-8 text-primary" />
+            </div>
+            <CardTitle className="text-center">Joint Outreach Events</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground text-center">
+              Collaborate on local outreach events within your community in Oregon to raise awareness and support for the mission in Sierra Leone.
+            </p>
+          </CardContent>
+        </Card>
       </div>
-      
-      <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
-        <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Ohio?" className="text-center" />
+
+      <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg">
+        <SectionTitle title="Connect Your Church with EDM's Mission" className="text-center" />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-          We are excited to discuss how your unique gifts, resources, or organizational goals can align with EDM's mission. Reach out to our partnership team to start a conversation.
+          We believe in the power of the local church. Let's explore how your congregation can join hands with EDM to make a lasting impact in Sierra Leone and Oregon.
         </p>
-        <Link href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry">
+        <Link href="mailto:churchpartnerships@edm.org?subject=Church%20Partnership%20Inquiry">
           <Button size="lg">
-            <Mail className="mr-2 h-5 w-5" /> Contact Our Partnership Team
+            <Mail className="mr-2 h-5 w-5" /> Discuss Church Partnership
           </Button>
         </Link>
       </section>
+
+      <div className="text-center mt-12">
+        <Link href="/get-involved/partner">
+          <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to Partnership Overview</Button>
+        </Link>
+      </div>
     </div>
   );
 }

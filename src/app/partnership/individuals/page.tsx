@@ -3,7 +3,7 @@ import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { User, HeartHandshake, Mail, Users, Briefcase, ArrowLeft, Gift, HandCoins, Volume2 } from 'lucide-react';
+import { User, HeartHandshake, Mail, ArrowLeft, Gift, HandCoins, Volume2, Users as UsersIcon, Briefcase, Building } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -28,12 +28,12 @@ export default function IndividualPartnershipPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://source.unsplash.com/random/600x400/?volunteer,helping,community"
-            alt="Individual making a difference in Sierra Leone or Oregon"
+            src="https://media.istockphoto.com/id/2099408907/photo/smiling-young-businessman-standing-with-his-arms-crossed-against-an-office-wall.webp?a=1&b=1&s=612x612&w=0&k=20&c=N0rshqVGbuvJ6zFWKLzkwbulYEqqx1mtWzu_eSSOQXE="
+            alt="Individual ready to partner with EDM"
             layout="fill"
             objectFit="cover"
             className="object-cover w-full h-full"
-            data-ai-hint="person helping sierra leone oregon"
+            data-ai-hint="professional person smiling"
           />
         </div>
       </section>
@@ -45,7 +45,7 @@ export default function IndividualPartnershipPage() {
             <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
               <HeartHandshake className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-center">Prayer Partnership (SL/OR)</CardTitle>
+            <CardTitle className="text-center">Prayer Partnership</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center">
@@ -64,7 +64,7 @@ export default function IndividualPartnershipPage() {
             <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
               <Gift className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-center">Volunteer Your Skills (SL/OR)</CardTitle>
+            <CardTitle className="text-center">Volunteer Your Skills</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center">
@@ -83,7 +83,7 @@ export default function IndividualPartnershipPage() {
             <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
               <Volume2 className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-center">Become an Ambassador (SL/OR)</CardTitle>
+            <CardTitle className="text-center">Become an Ambassador</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center">
@@ -97,12 +97,12 @@ export default function IndividualPartnershipPage() {
           </CardContent>
         </Card>
 
-        <Card className="shadow-lg hover:shadow-xl transition-shadow lg:col-span-3 md:col-span-2"> {/* Spanning for emphasis */}
+        <Card className="shadow-lg hover:shadow-xl transition-shadow lg:col-span-3 md:col-span-2">
           <CardHeader>
             <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
               <HandCoins className="h-8 w-8 text-primary" />
             </div>
-            <CardTitle className="text-center">Financial Giving for SL & OR</CardTitle>
+            <CardTitle className="text-center">Financial Giving for Sierra Leone & Oregon</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="text-sm text-muted-foreground text-center">
