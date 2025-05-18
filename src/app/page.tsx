@@ -22,16 +22,17 @@ export default function Home() {
             alt="Evangelism and community work in Sierra Leone"
             layout="fill"
             objectFit="cover"
+            className="opacity-40" 
             data-ai-hint="christianity community children"
             priority
           />
-          <div className="absolute inset-0 bg-black/60"></div> {/* Changed overlay to dark */}
+          <div className="absolute inset-0 bg-black/60"></div>
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6"> {/* Changed text to white for contrast */}
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">
             Welcome to <span className="text-primary">EDM</span>
           </h1>
-          <p className="text-md sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8"> {/* Changed text to light gray for contrast */}
+          <p className="text-md sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
@@ -41,7 +42,11 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/donate">
-              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border-gray-300 text-gray-200 hover:bg-white/10 hover:text-white"> {/* Adjusted outline button for dark overlay */}
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white"
+              > 
                 Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
@@ -195,7 +200,11 @@ export default function Home() {
               </Button>
             </Link>
             <Link href="/get-involved">
-              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2">
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white"
+              > 
                 Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
@@ -205,3 +214,4 @@ export default function Home() {
     </div>
   );
 }
+
