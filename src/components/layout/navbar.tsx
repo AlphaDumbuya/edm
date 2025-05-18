@@ -4,7 +4,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, Target, School } from 'lucide-react';
+import { Menu, X, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, Target, School, DollarSign, Users } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -60,7 +60,7 @@ const mainNavItems = [
   },
   {
     title: 'Get Involved',
-    icon: Users,
+    icon: Users, // This icon was causing the error
     links: [
       { href: '/get-involved/volunteer', title: 'Volunteer', description: 'Offer your time and skills for Sierra Leone or Oregon support.' },
       { href: '/get-involved/prayer', title: 'Prayer Wall', description: 'Join us in prayer for Sierra Leone and Oregon.' },
@@ -113,12 +113,12 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="space-x-1">
+            <NavigationMenuList className="space-x-0.5 md:space-x-1">
               {dynamicNavItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   {item.links ? (
                     <>
-                      <NavigationMenuTrigger className="text-xs px-2 py-1.5 md:text-sm md:px-3 md:py-2">
+                      <NavigationMenuTrigger className="text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5">
                         {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                         {item.title}
                       </NavigationMenuTrigger>
@@ -134,7 +134,7 @@ export default function Navbar() {
                     </>
                   ) : (
                     <Link href={item.href || '#'} legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-2 py-1.5 md:text-sm md:px-3 md:py-2")}>
+                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}>
                         {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                         {item.title}
                       </NavigationMenuLink>
@@ -320,5 +320,3 @@ const ListItem = React.forwardRef<
   )
 })
 ListItem.displayName = "ListItem"
-    
-    
