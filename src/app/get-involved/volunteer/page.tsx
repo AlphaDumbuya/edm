@@ -14,31 +14,36 @@ const volunteerAreas = [
     title: 'Local Outreach in Sierra Leone',
     icon: Users,
     description: 'Join our teams in Sierra Leone for evangelism, community service, and supporting local church activities. Short-term and long-term opportunities available.',
-    dataAiHint: "volunteers africa community",
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1678836048286-a511c8c07cc7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8bG9jYW4lMjBvdXRyZWFjaCUyMHZvbHVudGVlciUyMGluJTIwYWZyaWNhfGVufDB8fDB8fHww',
+    dataAiHint: "africa outreach volunteer",
   },
   {
     title: 'Skills-Based Volunteering (Remote/Local)',
     icon: Laptop,
     description: 'Offer your professional skills (e.g., IT, graphic design, writing, marketing, accounting) to support EDM\'s operations either remotely or on-site in Sierra Leone/Oregon.',
-    dataAiHint: "person working laptop remotely",
+    imageUrl: 'https://images.unsplash.com/photo-1744234233590-2d00b3c87444?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8U2tpbGxzJTIwQmFzZWQlMjBWb2x1bnRlZXJpbmclMjBpbiUyMGFmcmljYXxlbnwwfHwwfHx8MA%3D%3D',
+    dataAiHint: "skills based volunteering",
   },
   {
     title: 'Educational Support in Sierra Leone',
     icon: GraduationCap,
     description: 'Assist with our EDM Marifa School, help with teaching, teacher training, or curriculum development.',
-    dataAiHint: "teacher classroom africa",
+    imageUrl: 'https://images.unsplash.com/flagged/photo-1579133311477-9121405c78dd?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8RWR1Y2F0aW9uYWwlMjBTdXBwb3J0Vm9sdW50ZWVyaW5nJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D',
+    dataAiHint: "education support africa",
   },
   {
     title: 'Practical Help & Maintenance (Sierra Leone)',
     icon: Wrench,
     description: 'Contribute to building and maintenance projects at our future EDM campus in Sierra Leone, or assist with logistics for equipment and supplies.',
-    dataAiHint: "construction workers tools",
+    imageUrl: 'https://images.unsplash.com/photo-1584731683405-858d4c66e72d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fFByYWN0aWNhbCUyMEhlbHAlMjAlMjYlMjBNYWludGVuYW5jZSUyMFZvbHVudGVlcmluZyUyMGluJTIwYWZyaWNhfGVufDB8fDB8fHww',
+    dataAiHint: "practical help africa",
   },
   {
     title: 'Oregon Partnership Support',
     icon: Heart,
     description: 'Help our Oregon-based team with awareness campaigns, fundraising events, administrative tasks, and coordinating support for Sierra Leone.',
-    dataAiHint: "team meeting office oregon",
+    imageUrl: 'https://media.istockphoto.com/id/2155462703/photo/architects-and-investors-discuss-real-estate-projects-using-clean-energy-or-solar-cells.webp?a=1&b=1&s=612x612&w=0&k=20&c=rpba0sQ_K_p8v6Z0khsK6aghKTMVf3U3xeKD2vUdfo4=',
+    dataAiHint: "architects meeting investment",
   },
 ];
 
@@ -85,9 +90,9 @@ export default function VolunteerPage() {
             </CardHeader>
             <CardContent className="text-center p-4 pt-0 flex-grow">
               <div className="relative w-full h-40 sm:h-48 rounded-md overflow-hidden mb-3">
-                <Image 
-                    src={`https://source.unsplash.com/random/400x250/?${area.dataAiHint.replace(/\s/g,',')}`} 
-                    alt={area.title} 
+                <Image
+                    src={area.imageUrl}
+                    alt={area.title}
                     layout="fill"
                     objectFit="cover"
                     className="rounded-md"
