@@ -10,7 +10,7 @@ const blogPosts = [
     date: 'October 1, 2024',
     author: 'EDM Team',
     excerpt: 'Exploring Romans 10:13-15 and our deep conviction to share the Gospel across Sierra Leone. The urgency and joy of leading others to Christ.',
-    imageUrl: 'https://placehold.co/400x250.png',
+    imageUrl: 'https://source.unsplash.com/random/400x250/?sierra,leone,preaching,gospel',
     dataAiHint: 'sierra leone preaching gospel',
     tags: ['Evangelism', 'Great Commission', 'Sierra Leone'],
   },
@@ -20,7 +20,7 @@ const blogPosts = [
     date: 'October 5, 2024',
     author: 'EDM Team',
     excerpt: 'Matthew 28:18-20 guides our approach to not just make converts, but to train believers to full maturity in Christ, ready to train others.',
-    imageUrl: 'https://placehold.co/400x250.png',
+    imageUrl: 'https://source.unsplash.com/random/400x250/?bible,study,group,africa',
     dataAiHint: 'bible study group africa',
     tags: ['Discipleship', 'Mentorship', 'Christian Growth'],
   },
@@ -30,7 +30,7 @@ const blogPosts = [
     date: 'October 12, 2024',
     author: 'EDM Leadership',
     excerpt: 'Our dream for a dedicated hub for the body of Christ in Sierra Leone – a place for retreat, training, and outreach. Learn about our plans and how you can help.',
-    imageUrl: 'https://placehold.co/400x250.png',
+    imageUrl: 'https://source.unsplash.com/random/400x250/?building,plans,construction,africa',
     dataAiHint: 'building plans construction africa',
     tags: ['Missions', 'Vision', 'Sierra Leone', 'Campus Project'],
   },
@@ -40,7 +40,7 @@ const blogPosts = [
     date: 'October 18, 2024',
     author: 'EDM Team',
     excerpt: 'Highlighting the vital role of our Ohio partners in prayer, support, and collaboration for the mission in Sierra Leone.',
-    imageUrl: 'https://placehold.co/400x250.png',
+    imageUrl: 'https://source.unsplash.com/random/400x250/?hands,shaking,diverse,map',
     dataAiHint: 'hands shaking diverse map',
     tags: ['Partnership', 'Missions', 'Ohio', 'Global Church'],
   },
@@ -62,3 +62,4 @@ export default function BlogPage() {
     </div>
   );
 }
+
