@@ -79,7 +79,7 @@ export default function AboutPage() {
         <Card className="bg-card shadow-lg">
           <CardContent className="p-6 text-muted-foreground space-y-4">
             <p>
-              EDM is a Christian organization rooted in Sierra Leone, West Africa. We are committed to fulfilling the Great Commission through dynamic Evangelism in local communities, intentional Discipleship to build strong believers, and impactful Missions to serve those in need. Our work is driven by the belief in the transformative power of the Gospel to change lives, build communities, and bring hope to Sierra Leone and beyond, with key partnerships extending to Ohio, USA.
+              EDM is a Christian organization rooted in Sierra Leone, West Africa. We are committed to fulfilling the Great Commission through dynamic Evangelism in local communities, intentional Discipleship to build strong believers, and impactful Missions to serve those in need. Our work is driven by the belief in the transformative power of the Gospel to change lives, build communities, and bring hope to Sierra Leone and beyond, with key partnerships extending to Oregon, USA.
             </p>
             <p>
               The organization is structured to effectively carry out its three core mandates:

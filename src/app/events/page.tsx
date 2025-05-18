@@ -25,10 +25,10 @@ const events = [
   },
   {
     id: '3',
-    title: 'Ohio - Sierra Leone Partnership Summit (Online & In-Person)',
+    title: 'Oregon - Sierra Leone Partnership Summit (Online & In-Person)',
     date: 'December 5, 2024',
-    location: 'Columbus, Ohio (Partner Venue) & Online',
-    description: 'Connecting our Ohio partners with the work in Sierra Leone. Updates, prayer, and strategic planning for future collaboration in evangelism and discipleship.',
+    location: 'Portland, Oregon (Partner Venue) & Online',
+    description: 'Connecting our Oregon partners with the work in Sierra Leone. Updates, prayer, and strategic planning for future collaboration in evangelism and discipleship.',
     imageUrl: 'https://placehold.co/600x400.png',
     dataAiHint: 'people meeting video conference diverse',
   },
@@ -48,7 +48,7 @@ export default function EventsPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM Upcoming Events"
-        subtitle="Join us for fellowship, growth, and service opportunities in Sierra Leone and with our Ohio partners."
+        subtitle="Join us for fellowship, growth, and service opportunities in Sierra Leone and with our Oregon partners."
         icon={CalendarDays}
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

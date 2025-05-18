@@ -15,13 +15,13 @@ const boardMembers = [
     location: 'Sierra Leone',
   },
   {
-    name: '[Ohio Partnership Lead Name]', // Placeholder
-    role: 'Director, Ohio Partnerships & International Support',
-    bio: 'Based in Ohio, USA, this leader facilitates crucial support from US-based partners, connecting resources, prayer, and collaborative efforts to empower EDM\'s work in Sierra Leone. Passionate about global missions and the unity of the Body of Christ.',
+    name: '[Oregon Partnership Lead Name]', // Placeholder
+    role: 'Director, Oregon Partnerships & International Support',
+    bio: 'Based in Oregon, USA, this leader facilitates crucial support from US-based partners, connecting resources, prayer, and collaborative efforts to empower EDM\'s work in Sierra Leone. Passionate about global missions and the unity of the Body of Christ.',
     imageUrl: 'https://placehold.co/300x300.png',
     dataAiHint: 'professional person office',
-    contact: 'ohiopartners@edm.org', // Placeholder
-    location: 'Ohio, USA',
+    contact: 'oregonpartners@edm.org', // Placeholder
+    location: 'Oregon, USA',
   },
   {
     name: '[International Advisor Name 1]', // Placeholder
@@ -41,7 +41,7 @@ const boardMembers = [
     contact: 'advisor.finance@edm.org', // Placeholder
     location: 'International',
   },
-  // Add more board members as needed, distinguishing between Sierra Leone based and international/Ohio based.
+  // Add more board members as needed, distinguishing between Sierra Leone based and international/Oregon based.
 ];
 
 export default function InternationalBoardPage() {
@@ -49,7 +49,7 @@ export default function InternationalBoardPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM International Board & Leadership"
-        subtitle="Meet the dedicated individuals providing strategic oversight and guidance for EDM's mission in Sierra Leone and our international partnerships, including those in Ohio, USA."
+        subtitle="Meet the dedicated individuals providing strategic oversight and guidance for EDM's mission in Sierra Leone and our international partnerships, including those in Oregon, USA."
         icon={Globe}
       />
 
@@ -73,7 +73,7 @@ export default function InternationalBoardPage() {
        <section className="bg-card p-8 rounded-lg shadow-md">
         <SectionTitle title="Our Commitment to Governance" />
         <p className="text-muted-foreground">
-          The EDM International Board is responsible for ensuring the ministry adheres to its mission, maintains financial integrity, and operates with ethical accountability in both Sierra Leone and its international partnerships, including those in Ohio. Board members are selected for their spiritual maturity, professional expertise, and commitment to the Great Commission.
+          The EDM International Board is responsible for ensuring the ministry adheres to its mission, maintains financial integrity, and operates with ethical accountability in both Sierra Leone and its international partnerships, including those in Oregon. Board members are selected for their spiritual maturity, professional expertise, and commitment to the Great Commission.
         </p>
       </section>
     </div>

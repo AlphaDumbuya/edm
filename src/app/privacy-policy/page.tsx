@@ -8,14 +8,14 @@ export default function PrivacyPolicyPage() {
     <div className="space-y-12">
       <PageHeader
         title="Privacy Policy"
-        subtitle="Your privacy is important to us. This policy outlines how we collect, use, and protect your information related to our work in Sierra Leone and partnerships in Ohio, USA."
+        subtitle="Your privacy is important to us. This policy outlines how we collect, use, and protect your information related to our work in Sierra Leone and partnerships in Oregon, USA."
         icon={ShieldAlert}
       />
 
       <section className="prose prose-lg max-w-none dark:prose-invert">
         <p>Last updated: {new Date().toLocaleDateString()}</p>
         <p>
-          EDM ("us", "we", or "our") operates the [Your Website URL] website (the "Service"), with primary operations based in Sierra Leone and partnerships extending to Ohio, USA.
+          EDM ("us", "we", or "our") operates the [Your Website URL] website (the "Service"), with primary operations based in Sierra Leone and partnerships extending to Oregon, USA.
         </p>
         <p>
           This page informs you of our policies regarding the collection, use, and disclosure of personal data when you use our Service and the choices you have associated with that data. Our Privacy Policy for EDM is created with the help of the Privacy Policy Generator.
@@ -26,20 +26,20 @@ export default function PrivacyPolicyPage() {
 
         <SectionTitle title="Information Collection and Use" />
         <p>
-          We collect several different types of information for various purposes to provide and improve our Service to you, relevant to our activities in Sierra Leone and Ohio.
+          We collect several different types of information for various purposes to provide and improve our Service to you, relevant to our activities in Sierra Leone and Oregon.
         </p>
 
         <h3>Types of Data Collected</h3>
 
         <h4>Personal Data</h4>
         <p>
-          While using our Service, particularly when engaging with our Sierra Leonean operations or Ohio-based partnerships, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:
+          While using our Service, particularly when engaging with our Sierra Leonean operations or Oregon-based partnerships, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you ("Personal Data"). Personally identifiable information may include, but is not limited to:
         </p>
         <ul>
           <li>Email address</li>
           <li>First name and last name</li>
           <li>Phone number</li>
-          <li>Address, State, Province, ZIP/Postal code, City (relevant to Sierra Leone or Ohio as applicable)</li>
+          <li>Address, State, Province, ZIP/Postal code, City (relevant to Sierra Leone or Oregon as applicable)</li>
           <li>Cookies and Usage Data</li>
         </ul>
 
@@ -68,7 +68,7 @@ export default function PrivacyPolicyPage() {
         <SectionTitle title="Use of Data" />
         <p>EDM uses the collected data for various purposes:</p>
         <ul>
-          <li>To provide and maintain the Service, supporting our mission in Sierra Leone and Ohio</li>
+          <li>To provide and maintain the Service, supporting our mission in Sierra Leone and Oregon</li>
           <li>To notify you about changes to our Service</li>
           <li>To allow you to participate in interactive features of our Service when you choose to do so</li>
           <li>To provide customer care and support</li>
@@ -155,4 +155,3 @@ export default function PrivacyPolicyPage() {
     </div>
   );
 }
-

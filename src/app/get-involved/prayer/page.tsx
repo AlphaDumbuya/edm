@@ -21,7 +21,7 @@ export interface PrayerRequest {
 
 const initialRequests: PrayerRequest[] = [
   { id: '1', name: 'Anonymous', requestText: 'Please pray for healing for my mother who is unwell in Freetown.', isPublic: true, timestamp: new Date(Date.now() - 86400000 * 2), category: 'Healing' },
-  { id: '2', name: 'Sarah P. (Ohio Partner)', requestText: 'Praying for guidance for EDM\'s leadership as they make strategic decisions.', isPublic: true, timestamp: new Date(Date.now() - 86400000), category: 'Guidance' },
+  { id: '2', name: 'Sarah P. (Oregon Partner)', requestText: 'Praying for guidance for EDM\'s leadership as they make strategic decisions.', isPublic: true, timestamp: new Date(Date.now() - 86400000), category: 'Guidance' },
   { id: '3', name: 'Anonymous', requestText: 'For peace and provision for families affected by recent flooding in Sierra Leone.', isPublic: true, timestamp: new Date(), category: 'Comfort' },
   { id: '4', name: 'John B.', requestText: 'Pray for successful customs clearance of the van and equipment for EDM Sierra Leone.', isPublic: true, timestamp: new Date(Date.now() - 3600000 * 5), category: 'EDM Projects' },
 ];
@@ -52,7 +52,7 @@ export default function PrayerPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM Prayer Wall"
-        subtitle="Share your requests and join us in praying for one another, our mission in Sierra Leone, and our Ohio partners."
+        subtitle="Share your requests and join us in praying for one another, our mission in Sierra Leone, and our Oregon partners."
         icon={HeartHandshake}
       />
       
@@ -69,7 +69,7 @@ export default function PrayerPage() {
         <div>
           <SectionTitle title="The Power of Prayer" />
           <p className="text-lg text-muted-foreground mb-4">
-            Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Ohio.
+            Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon.
           </p>
           <p className="text-lg text-muted-foreground">
             Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
@@ -86,7 +86,7 @@ export default function PrayerPage() {
       <Separator />
 
       <section>
-        <SectionTitle title="Community Prayer Wall" subtitle="Lifting up needs together in faith for Sierra Leone, Ohio, and beyond."/>
+        <SectionTitle title="Community Prayer Wall" subtitle="Lifting up needs together in faith for Sierra Leone, Oregon, and beyond."/>
         {publicRequests.length > 0 ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {publicRequests.map(request => (

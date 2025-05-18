@@ -17,7 +17,7 @@ const volunteerAreas = [
   {
     title: 'Skills-Based Volunteering (Remote/Local)',
     icon: Laptop,
-    description: 'Offer your professional skills (e.g., IT, graphic design, writing, marketing, accounting) to support EDM\'s operations either remotely or on-site in Sierra Leone/Ohio.',
+    description: 'Offer your professional skills (e.g., IT, graphic design, writing, marketing, accounting) to support EDM\'s operations either remotely or on-site in Sierra Leone/Oregon.',
     dataAiHint: "person working laptop remotely",
   },
   {
@@ -33,10 +33,10 @@ const volunteerAreas = [
     dataAiHint: "construction workers tools",
   },
   {
-    title: 'Ohio Partnership Support',
+    title: 'Oregon Partnership Support',
     icon: Heart,
-    description: 'Help our Ohio-based team with awareness campaigns, fundraising events, administrative tasks, and coordinating support for Sierra Leone.',
-    dataAiHint: "team meeting office ohio",
+    description: 'Help our Oregon-based team with awareness campaigns, fundraising events, administrative tasks, and coordinating support for Sierra Leone.',
+    dataAiHint: "team meeting office oregon",
   },
 ];
 
@@ -45,7 +45,7 @@ export default function VolunteerPage() {
     <div className="space-y-12">
       <PageHeader
         title="Volunteer with EDM"
-        subtitle="Use your God-given talents to serve in Sierra Leone or support our Ohio partnerships."
+        subtitle="Use your God-given talents to serve in Sierra Leone or support our Oregon partnerships."
         icon={Heart}
       />
 
@@ -53,7 +53,7 @@ export default function VolunteerPage() {
         <div className="space-y-4">
           <SectionTitle title="Make a Tangible Difference" />
           <p className="text-lg text-muted-foreground">
-            Volunteers are the hands and feet of EDM. Whether you can travel to Sierra Leone, offer skills remotely, or support our efforts in Ohio, your contribution is invaluable. We seek passionate individuals ready to serve and share God's love.
+            Volunteers are the hands and feet of EDM. Whether you can travel to Sierra Leone, offer skills remotely, or support our efforts in Oregon, your contribution is invaluable. We seek passionate individuals ready to serve and share God's love.
           </p>
           <p className="text-lg text-muted-foreground">
             Explore the various ways you can volunteer and become an active part of our mission.
@@ -92,7 +92,7 @@ export default function VolunteerPage() {
       <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
         <SectionTitle title="Ready to Volunteer?" className="text-center" />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-          If you're interested in volunteering with EDM in Sierra Leone or supporting our Ohio partnerships, please fill out our interest form or contact us directly. We'd love to discuss how you can get involved!
+          If you're interested in volunteering with EDM in Sierra Leone or supporting our Oregon partnerships, please fill out our interest form or contact us directly. We'd love to discuss how you can get involved!
         </p>
         <Link href="mailto:volunteer@edm.org?subject=Volunteer%20Inquiry">
           <Button size="lg">

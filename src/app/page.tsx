@@ -8,7 +8,7 @@ import { ArrowRight, CalendarDays, Users, BookOpenText, HeartHandshake, MapPin, 
 
 const upcomingEvents = [
   { id: 1, title: 'Freetown Evangelism Training', date: 'November 10-12, 2024', location: 'EDM Center, Freetown', image: 'https://placehold.co/400x250.png', dataAiHint: 'training workshop sierra leone' },
-  { id: 2, title: 'Ohio Partnership Summit', date: 'December 5, 2024', location: 'Online & Columbus, OH', image: 'https://placehold.co/400x250.png', dataAiHint: 'people meeting ohio' },
+  { id: 2, title: 'Oregon Partnership Summit', date: 'December 5, 2024', location: 'Online & Portland, OR', image: 'https://placehold.co/400x250.png', dataAiHint: 'people meeting oregon' },
 ];
 
 const recentNews = [
@@ -38,7 +38,7 @@ export default function Home() {
             Welcome to <span className="text-primary">EDM</span>
           </h1>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Ohio, USA.
+            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
             <Link href="/about">
@@ -190,7 +190,7 @@ export default function Home() {
       {/* Call to Action - Donate / Get Involved */}
       <section className="bg-card py-16 rounded-lg shadow-lg">
         <div className="container mx-auto px-4 text-center">
-          <SectionTitle title="Partner With EDM" subtitle="Your support makes a difference in Sierra Leone & Ohio" className="text-center" />
+          <SectionTitle title="Partner With EDM" subtitle="Your support makes a difference in Sierra Leone & Oregon" className="text-center" />
           <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>

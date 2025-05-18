@@ -11,21 +11,21 @@ const involvementOpportunities = [
   {
     title: 'Volunteer Your Time & Skills',
     icon: Users,
-    description: 'Offer your talents to support EDM\'s work in Sierra Leone or assist our Ohio-based partners with administrative, technical, or outreach tasks.',
+    description: 'Offer your talents to support EDM\'s work in Sierra Leone or assist our Oregon-based partners with administrative, technical, or outreach tasks.',
     link: '/get-involved/volunteer',
     dataAiHint: "volunteers group diverse hands",
   },
   {
     title: 'Become a Prayer Partner',
     icon: HeartHandshake,
-    description: 'Commit to praying regularly for our missionaries, projects, the communities we serve in Sierra Leone, and our partnerships in Ohio.',
+    description: 'Commit to praying regularly for our missionaries, projects, the communities we serve in Sierra Leone, and our partnerships in Oregon.',
     link: '/get-involved/prayer',
     dataAiHint: "people praying together circle",
   },
   {
     title: 'Partnership Opportunities',
     icon: PartnerIcon, // Using the aliased icon
-    description: 'Explore how your church, organization, or business can formally partner with EDM to amplify our impact in Sierra Leone and Ohio.',
+    description: 'Explore how your church, organization, or business can formally partner with EDM to amplify our impact in Sierra Leone and Oregon.',
     link: '/get-involved/partner',
     dataAiHint: "handshake agreement global",
   },
@@ -43,7 +43,7 @@ export default function GetInvolvedPage() {
     <div className="space-y-16">
       <PageHeader
         title="Get Involved with EDM"
-        subtitle="Join us in making a difference in Sierra Leone and Ohio through Evangelism, Discipleship, and Missions."
+        subtitle="Join us in making a difference in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
         icon={Users}
       />
 
@@ -51,7 +51,7 @@ export default function GetInvolvedPage() {
         <div className="space-y-4">
           <SectionTitle title="Your Part in God's Work" />
           <p className="text-lg text-muted-foreground">
-            EDM thrives on the commitment and passion of individuals, churches, and organizations like yours. There are many ways to contribute your unique gifts and resources to support our vital work in Sierra Leone and our collaborative efforts with partners in Ohio.
+            EDM thrives on the commitment and passion of individuals, churches, and organizations like yours. There are many ways to contribute your unique gifts and resources to support our vital work in Sierra Leone and our collaborative efforts with partners in Oregon.
           </p>
           <p className="text-lg text-muted-foreground">
             Whether you can offer your time, prayers, financial support, or your network, every contribution helps us spread the Gospel, disciple believers, and serve communities in need.
@@ -99,7 +99,7 @@ export default function GetInvolvedPage() {
       <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
         <SectionTitle title="Ready to Take the Next Step?" className="text-center" />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-          Your involvement is crucial to our success in Sierra Leone and Ohio. If you're inspired to join us or have questions, please don't hesitate to reach out.
+          Your involvement is crucial to our success in Sierra Leone and Oregon. If you're inspired to join us or have questions, please don't hesitate to reach out.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <Link href="/contact">

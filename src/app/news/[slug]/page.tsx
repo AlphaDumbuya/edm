@@ -25,7 +25,7 @@ const getNewsPostData = async (slug: string) => {
           <img src="https://placehold.co/700x350.png" alt="Evangelism outreach in Sierra Leone" class="rounded-lg shadow-md mx-auto" data-ai-hint="evangelism outreach africa"/>
           <figcaption class="text-center text-sm text-muted-foreground mt-2">Taking the Gospel to every corner of Sierra Leone.</figcaption>
         </figure>
-        <p class="mb-4 text-lg text-muted-foreground">We see evangelism not as an event, but as a continuous lifestyle of sharing God's love. This involves building relationships, understanding the local culture, and presenting the Gospel in a way that is relevant and clear. Our Ohio partners play a crucial role in supporting these evangelistic endeavors through prayer, resources, and collaborative efforts.</p>
+        <p class="mb-4 text-lg text-muted-foreground">We see evangelism not as an event, but as a continuous lifestyle of sharing God's love. This involves building relationships, understanding the local culture, and presenting the Gospel in a way that is relevant and clear. Our Oregon partners play a crucial role in supporting these evangelistic endeavors through prayer, resources, and collaborative efforts.</p>
       `,
     },
      'discipleship-in-the-modern-age': {
@@ -53,15 +53,15 @@ const getNewsPostData = async (slug: string) => {
         <p class="mb-4 text-lg text-muted-foreground">Read more about the specific goals and how you can be a part of building this vital ministry hub.</p>
       `
     },
-    'ohio-partnership-impact-story': {
-        title: 'Partnership Power: Ohio & Sierra Leone United for the Gospel',
+    'oregon-partnership-impact-story': {
+        title: 'Partnership Power: Oregon & Sierra Leone United for the Gospel',
         author: 'EDM Team',
         date: 'November 18, 2024',
         imageUrl: 'https://placehold.co/800x400.png',
         dataAiHint: 'global partnership diverse team',
-        tags: ['Partnership', 'Missions', 'Ohio', 'Global Church', 'Testimony'],
+        tags: ['Partnership', 'Missions', 'Oregon', 'Global Church', 'Testimony'],
         content: `
-        <p class="mb-4 text-lg text-muted-foreground">The collaboration between our team in Sierra Leone and our dedicated partners in Ohio is a testament to the power of unity in the body of Christ. This post shares a recent story of how this partnership directly impacted an outreach effort, providing essential resources and prayer support that led to significant breakthroughs.</p>
+        <p class="mb-4 text-lg text-muted-foreground">The collaboration between our team in Sierra Leone and our dedicated partners in Oregon is a testament to the power of unity in the body of Christ. This post shares a recent story of how this partnership directly impacted an outreach effort, providing essential resources and prayer support that led to significant breakthroughs.</p>
         <p class="mb-4 text-lg text-muted-foreground">Discover how God is using this transatlantic connection to further His kingdom in West Africa.</p>
         `
     },
@@ -73,7 +73,7 @@ const getNewsPostData = async (slug: string) => {
       dataAiHint: 'cargo ship port',
       tags: ['Update', 'Logistics', 'Sierra Leone', 'Prayer Request'],
       content: `
-        <p class="mb-4 text-lg text-muted-foreground">We are excited to announce that the van and musical instruments shipped from our Ohio partners in August are expected to arrive in Freetown during the first week of October! These tools are absolutely vital for our evangelistic outreaches, "Jesus" film showings, and for transporting ministry teams across Sierra Leone.</p>
+        <p class="mb-4 text-lg text-muted-foreground">We are excited to announce that the van and musical instruments shipped from our Oregon partners in August are expected to arrive in Freetown during the first week of October! These tools are absolutely vital for our evangelistic outreaches, "Jesus" film showings, and for transporting ministry teams across Sierra Leone.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">Prayer for Customs Clearance</h2>
         <p class="mb-4 text-lg text-muted-foreground">Please join us in prayer for a smooth and swift customs clearance process. There are often bureaucratic hurdles, and we are trusting God for favor and efficiency so that these resources can be deployed quickly for His glory.</p>
         <p class="mb-4 text-lg text-muted-foreground">We also anticipate a customs fee, which we are currently raising funds for. Your support in this area is greatly appreciated. See our <a href="/donate" class="text-primary hover:underline">donate page</a> for how you can help.</p>
@@ -90,7 +90,7 @@ const getNewsPostData = async (slug: string) => {
         <p class="mb-4 text-lg text-muted-foreground">As mentioned in our previous update, the van and musical instruments crucial for our ministry in Sierra Leone have arrived in Freetown. We are now facing an urgent need to cover the customs clearance fees, totaling <strong>$3,500.00</strong>.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">Your Support is Critical</h2>
         <p class="mb-4 text-lg text-muted-foreground">Without clearing these items, our ability to conduct effective evangelism, show the "Jesus" film in remote areas, and support our discipleship programs will be significantly hampered. These tools are not luxuries but necessities for the work God has called us to.</p>
-        <p class="mb-4 text-lg text-muted-foreground">We humbly appeal to our faithful partners in Sierra Leone, Ohio, and around the world to help us meet this urgent financial need. Any amount you can contribute will make a direct impact on getting these resources into the field.</p>
+        <p class="mb-4 text-lg text-muted-foreground">We humbly appeal to our faithful partners in Sierra Leone, Oregon, and around the world to help us meet this urgent financial need. Any amount you can contribute will make a direct impact on getting these resources into the field.</p>
         <div class="my-6 text-center">
           <a href="/donate" class="inline-block bg-primary text-primary-foreground hover:bg-primary/90 px-6 py-3 rounded-md text-lg font-medium transition-colors">
             Donate Now to Help Clear Customs

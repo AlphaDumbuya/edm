@@ -11,7 +11,7 @@ const partnershipTypes = [
   {
     title: 'For Individuals',
     icon: Users,
-    description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Ohio, advocacy, or financial support. Discover how your unique gifts can make a difference.',
+    description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Oregon, advocacy, or financial support. Discover how your unique gifts can make a difference.',
     href: '/partnership/individuals', // Will create this page
     imageUrl: 'https://placehold.co/500x300.png',
     dataAiHint: 'person volunteering sierra leone',
@@ -19,7 +19,7 @@ const partnershipTypes = [
   {
     title: 'For Churches',
     icon: Building, 
-    description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Ohio network. Mobilize members for impactful outreach.',
+    description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach.',
     href: '/partnership/churches', // Will create this page
     imageUrl: 'https://placehold.co/500x300.png',
     dataAiHint: 'church congregation freetown',
@@ -30,7 +30,7 @@ const partnershipTypes = [
     description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
     href: '/partnership/organizations', // Will create this page
     imageUrl: 'https://placehold.co/500x300.png',
-    dataAiHint: 'business team ohio',
+    dataAiHint: 'business team oregon',
   },
 ];
 
@@ -39,7 +39,7 @@ export default function PartnerPage() {
     <div className="space-y-16">
       <PageHeader
         title="Partner With EDM"
-        subtitle="Together, we can amplify our impact in Sierra Leone and Ohio through Evangelism, Discipleship, and Missions."
+        subtitle="Together, we can amplify our impact in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
         icon={Handshake}
       />
 
@@ -47,7 +47,7 @@ export default function PartnerPage() {
         <div className="space-y-4">
           <SectionTitle title="Why Your Partnership Matters" />
           <p className="text-lg text-muted-foreground">
-            At EDM, we believe that collaboration is key to fulfilling the Great Commission in Sierra Leone and extending our reach through vital partnerships in Ohio. Partnerships enable us to expand, deepen our impact, and bring the hope of the Gospel to more communities.
+            At EDM, we believe that collaboration is key to fulfilling the Great Commission in Sierra Leone and extending our reach through vital partnerships in Oregon. Partnerships enable us to expand, deepen our impact, and bring the hope of the Gospel to more communities.
           </p>
           <p className="text-lg text-muted-foreground">
             When you partner with EDM, you become an integral part of a movement dedicated to transforming lives in West Africa and the US. Your support, whether through prayer, resources, or active involvement, fuels our ability to evangelize, disciple, and serve those in need.
@@ -56,16 +56,16 @@ export default function PartnerPage() {
         <div className="rounded-lg overflow-hidden shadow-xl">
           <Image
             src="https://placehold.co/600x400.png"
-            alt="Diverse hands collaborating for Sierra Leone and Ohio"
+            alt="Diverse hands collaborating for Sierra Leone and Oregon"
             width={600}
             height={400}
             className="object-cover w-full h-full"
-            data-ai-hint="collaboration sierra leone ohio"
+            data-ai-hint="collaboration sierra leone oregon"
           />
         </div>
       </section>
 
-      <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization to impact Sierra Leone & Ohio" className="text-center" />
+      <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization to impact Sierra Leone & Oregon" className="text-center" />
       <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
         {partnershipTypes.map((opportunity) => (
           <Card key={opportunity.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
@@ -93,7 +93,7 @@ export default function PartnerPage() {
       </div>
       
       <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
-        <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Ohio?" className="text-center" />
+        <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Oregon?" className="text-center" />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
           We are excited to discuss how your unique gifts, resources, or organizational goals can align with EDM's mission. Reach out to our partnership team to start a conversation.
         </p>

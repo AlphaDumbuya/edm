@@ -14,7 +14,7 @@ export default function DonatePage() {
     <div className="space-y-16">
       <PageHeader
         title="Support EDM's Mission"
-        subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Ohio partnerships."
+        subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Oregon partnerships."
         icon={HelpingHand}
       />
 
@@ -84,9 +84,9 @@ export default function DonatePage() {
       </section>
 
       <section className="max-w-2xl mx-auto">
-        <SectionTitle title="Make a Secure Donation to EDM" subtitle="Empower our work in Sierra Leone and Ohio today" className="text-center" />
+        <SectionTitle title="Make a Secure Donation to EDM" subtitle="Empower our work in Sierra Leone and Oregon today" className="text-center" />
         <p className="text-center text-muted-foreground mb-6">
-          Your donation, whether one-time, monthly, or quarterly, directly supports EDM's evangelism, discipleship, and missions activities, including the development of our ministry campus in Sierra Leone and our collaborative efforts with Ohio partners.
+          Your donation, whether one-time, monthly, or quarterly, directly supports EDM's evangelism, discipleship, and missions activities, including the development of our ministry campus in Sierra Leone and our collaborative efforts with Oregon partners.
         </p>
         <DonationFormWrapper />
          <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is committed to financial transparency.</p>
@@ -108,7 +108,7 @@ export default function DonatePage() {
               <p>Sierra Leone</p>
             </address>
              <p className="text-muted-foreground">
-                For donations via our Ohio partners or other financial inquiries (stocks, planned giving), please contact us.
+                For donations via our Oregon partners or other financial inquiries (stocks, planned giving), please contact us.
              </p>
               <Link href="/contact">
                 <Button variant="outline" className="w-full sm:w-auto">Contact for Other Giving <ArrowRight className="ml-2 h-4 w-4"/></Button>
@@ -118,7 +118,7 @@ export default function DonatePage() {
           <div className="space-y-6">
             <h3 className="text-xl font-semibold text-foreground border-b pb-2 flex items-center"><Heart className="mr-3 h-6 w-6 text-primary"/> Other Ways to Get Involved</h3>
             <p className="text-muted-foreground">
-              Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Ohio. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
+              Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
             </p>
             <div className="space-y-3">
                 <Link href="/get-involved/volunteer">

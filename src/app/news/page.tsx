@@ -35,14 +35,14 @@ const newsItems = [
     tags: ['Missions', 'Vision', 'Sierra Leone', 'Campus Project', 'Update'],
   },
   {
-    slug: 'ohio-partnership-impact-story',
-    title: 'Partnership Power: Ohio & Sierra Leone United for the Gospel',
+    slug: 'oregon-partnership-impact-story',
+    title: 'Partnership Power: Oregon & Sierra Leone United for the Gospel',
     date: 'November 18, 2024',
     author: 'EDM Team',
-    excerpt: 'Highlighting the vital role of our Ohio partners in prayer, support, and collaboration for the mission in Sierra Leone. A testimony of shared vision.',
+    excerpt: 'Highlighting the vital role of our Oregon partners in prayer, support, and collaboration for the mission in Sierra Leone. A testimony of shared vision.',
     imageUrl: 'https://placehold.co/400x250.png',
     dataAiHint: 'hands shaking diverse map',
-    tags: ['Partnership', 'Missions', 'Ohio', 'Global Church', 'Testimony'],
+    tags: ['Partnership', 'Missions', 'Oregon', 'Global Church', 'Testimony'],
   },
    {
     slug: 'van-equipment-arrival-news',
@@ -71,7 +71,7 @@ export default function NewsPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM News & Updates"
-        subtitle="Stay informed with the latest progress reports, event recaps, field testimonies, prayer updates, and construction milestones from our work in Sierra Leone and Ohio."
+        subtitle="Stay informed with the latest progress reports, event recaps, field testimonies, prayer updates, and construction milestones from our work in Sierra Leone and Oregon."
         icon={Newspaper}
       />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">

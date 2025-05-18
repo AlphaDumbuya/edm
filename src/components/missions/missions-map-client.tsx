@@ -64,7 +64,7 @@ export default function MissionsMapClient({ mapId = "default_missions_map" }: Mi
     <APIProvider apiKey={apiKey}>
       <div style={{ height: '100%', width: '100%', position: 'relative' }}>
         <Map
-          defaultCenter={{ lat: 26, lng: -68 }} // Centered between SL (8.5, -13.2) and Oregon (45.5, -122.6)
+          defaultCenter={{ lat: 26.9, lng: -67.9 }} // Centered between SL (8.5, -13.2) and Oregon (45.5, -122.6)
           defaultZoom={3} 
           mapId={mapId}
           gestureHandling={'greedy'}

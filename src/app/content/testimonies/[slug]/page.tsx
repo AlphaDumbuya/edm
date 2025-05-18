@@ -45,7 +45,7 @@ const getTestimonyData = async (slug: string) => {
         <p class="mb-4 text-lg text-muted-foreground">As relationships grew, we began sharing the Gospel message. We held evening gatherings, showed the "Jesus" film, and offered Bibles. Many hearts were touched, and a small group of believers began to form, eager to learn more about Jesus.</p>
         <h2 class="text-2xl font-semibold my-4 text-foreground">Lasting Change through Discipleship</h2>
         <p class="mb-4 text-lg text-muted-foreground">The transformation in Mapaki is a testament to EDM's commitment to Evangelism, Discipleship, and Missions. Today, there is a growing fellowship of believers, and EDM continues to support them through discipleship training and leadership development. The village is experiencing not only spiritual renewal but also a newfound sense of hope and community.</p>
-        <p class="text-lg text-muted-foreground">We are grateful for the prayers and support from our partners, including those in Ohio, which make such mission endeavors possible in Sierra Leone.</p>
+        <p class="text-lg text-muted-foreground">We are grateful for the prayers and support from our partners, including those in Oregon, which make such mission endeavors possible in Sierra Leone.</p>
       `,
     }
   };

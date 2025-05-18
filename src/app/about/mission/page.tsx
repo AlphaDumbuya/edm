@@ -23,7 +23,7 @@ export default function OurMissionPage() {
             EDM (Evangelism, Discipleship, Missions) is a Christian organization rooted in Sierra Leone, West Africa. We are committed to fulfilling the Great Commission through dynamic Evangelism in local communities, intentional Discipleship to build strong believers, and impactful Missions to serve those in need.
           </p>
           <p className="text-lg text-muted-foreground">
-            Our work is driven by the belief in the transformative power of the Gospel to change lives, build communities, and bring hope to Sierra Leone and beyond, with key partnerships extending to Ohio, USA.
+            Our work is driven by the belief in the transformative power of the Gospel to change lives, build communities, and bring hope to Sierra Leone and beyond, with key partnerships extending to Oregon, USA.
           </p>
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
@@ -136,7 +136,7 @@ export default function OurMissionPage() {
       <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Join Us on Our Journey" className="text-center" />
         <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-          We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Ohio, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
+          We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
         </p>
         <div className="text-center mt-8">
           <Link href="/donate" className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 py-3 rounded-md text-lg font-medium transition-colors">

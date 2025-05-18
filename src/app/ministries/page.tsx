@@ -50,7 +50,7 @@ export default function MinistriesPage() {
         subtitle="Exploring the diverse ways EDM serves through Evangelism, Discipleship, Missions, and Education."
         icon={HeartHandshake}
       />
-      <SectionTitle title="Core Ministry Areas" subtitle="Fulfilling the Great Commission in Sierra Leone & Ohio" />
+      <SectionTitle title="Core Ministry Areas" subtitle="Fulfilling the Great Commission in Sierra Leone & Oregon" />
       <div className="grid md:grid-cols-2 gap-8">
         {ministryAreas.map((area) => (
           <Card key={area.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
