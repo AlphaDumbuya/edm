@@ -2,7 +2,7 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck } from 'lucide-react';
+import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck, School } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -19,9 +19,9 @@ export default function TheMissionPage() {
       />
 
       <section className="text-center bg-primary/5 p-8 md:p-12 rounded-lg shadow-lg">
-        <SectionTitle title="Our Guiding Principles" className="text-center" />
+        <SectionTitle title="Our Guiding Principles" className="text-center"/>
         <div className="max-w-3xl mx-auto">
-            <h3 className="text-2xl font-semibold text-primary mb-2">Mission Statement</h3>
+            <h3 className="text-2xl font-semibold text-primary mb-2">Purpose Statement</h3>
             <blockquote className="text-xl italic text-foreground mb-6 border-l-4 border-primary pl-4 py-2">
               "In our acts of obedience and worship to God, we will go out and share the good news to the unbelievers, train them to maturity so they will train others."
             </blockquote>
@@ -44,7 +44,7 @@ export default function TheMissionPage() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, a school, lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school), lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
               <Image src="https://placehold.co/600x400.png" alt="Artist rendering of EDM Campus" width={600} height={400} data-ai-hint="campus building africa rendering" className="rounded-md shadow-md"/>
             </CardContent>
@@ -60,10 +60,10 @@ export default function TheMissionPage() {
                 </CardHeader>
                 <CardContent>
                 <ul className="list-none text-muted-foreground text-sm space-y-2">
+                    <li className="flex items-start"><School className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Support and develop the operational EDM Marifa Secondary School.</li>
                     <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Get the van and equipment through customs in Freetown.</li>
-                    <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Finalize land acquisition for the EDM campus.</li>
+                    <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Finalize land acquisition for the main EDM campus.</li>
                     <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Establish international board members to provide oversight and support.</li>
-                    <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Begin construction of the school facilities.</li>
                     <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Conduct comprehensive evangelism training for local leaders and volunteers.</li>
                     <li className="flex items-start"><CheckCircle className="h-4 w-4 text-green-500 mr-2 shrink-0 mt-1" /> Show the "Jesus" movie for evangelism in various communities.</li>
                 </ul>
@@ -78,7 +78,7 @@ export default function TheMissionPage() {
                 </CardHeader>
                 <CardContent>
                 <ul className="list-none text-muted-foreground text-sm space-y-2">
-                    <li className="flex items-start"><TrendingUp className="h-4 w-4 text-primary mr-2 shrink-0 mt-1" /> Build all planned facilities on the EDM campus (Bible school, retreat center/meeting hall, lodging, etc.).</li>
+                    <li className="flex items-start"><TrendingUp className="h-4 w-4 text-primary mr-2 shrink-0 mt-1" /> Build additional facilities on the EDM campus (Bible school, retreat center/meeting hall, lodging, etc.).</li>
                     <li className="flex items-start"><TrendingUp className="h-4 w-4 text-primary mr-2 shrink-0 mt-1" /> Extend the mission outreach to other major cities and regions in Sierra Leone.</li>
                     <li className="flex items-start"><TrendingUp className="h-4 w-4 text-primary mr-2 shrink-0 mt-1" /> Establish and develop key departments: Education, Training, Outreach/Missions, Development/Projects, Church Ministry, and Building & Maintenance.</li>
                 </ul>
@@ -89,9 +89,9 @@ export default function TheMissionPage() {
       </section>
       
       <section>
-        <SectionTitle title="Future Cities & Regional Impact" subtitle="Expanding EDM's reach beyond Freetown" />
+        <SectionTitle title="Future Cities & Regional Impact" subtitle="Expanding EDM's reach beyond Freetown and Marifa" />
         <p className="text-muted-foreground mb-6 text-center">
-          While our current hub is Freetown, EDM's long-term vision includes extending our ministry to other cities across Sierra Leone and potentially neighboring West African countries. The map below highlights our current primary operational areas and future expansion considerations.
+          While our current hubs are Freetown and Marifa (with the EDM Marifa School), EDM's long-term vision includes extending our ministry to other cities across Sierra Leone and potentially neighboring West African countries. The map below highlights our current primary operational areas and future expansion considerations.
         </p>
         <Card className="shadow-xl">
           <CardHeader>
@@ -103,7 +103,7 @@ export default function TheMissionPage() {
             </div>
           </CardContent>
            <CardFooter className="pt-4">
-            <p className="text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations and areas of future focus.</p>
+            <p className="text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations including EDM Marifa School and areas of future focus.</p>
            </CardFooter>
         </Card>
       </section>
@@ -115,13 +115,15 @@ export default function TheMissionPage() {
                 <CardTitle className="text-primary">Progress and Urgent Needs</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-muted-foreground">
-                <p><strong className="text-foreground">Land Acquired:</strong> We praise God that we have acquired land to build the school and a retreat center for the Body of Christ in Sierra Leone!</p>
+                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel!</p>
+                <p><strong className="text-foreground">Land Acquired:</strong> We have acquired land for the main EDM campus and retreat center for the Body of Christ in Sierra Leone!</p>
                 <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped in August and are expected to arrive the first week of October. These are vital for our outreach.</p>
                 <p className="font-semibold text-destructive"><strong className="text-foreground">Urgent Need:</strong> There is an outstanding balance of $3,500.00 to pay customs in Freetown for the van and equipment. Your support is crucial to clear these items.</p>
+                 <p><strong className="text-foreground">Support EDM Marifa School:</strong> We are actively seeking financial support and prayers for the ongoing operations and development of the EDM Marifa School.</p>
             </CardContent>
             <CardFooter>
                 <Link href="/donate">
-                    <Button variant="default">Help Meet This Need</Button>
+                    <Button variant="default">Help Meet These Needs</Button>
                 </Link>
             </CardFooter>
          </Card>
@@ -131,7 +133,7 @@ export default function TheMissionPage() {
         <SectionTitle title="Join Us on This Journey" className="text-center" />
         <div className="flex flex-col items-center">
           <p className="text-lg text-muted-foreground text-center max-w-3xl mx-auto">
-            We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
+            We invite you to partner with Evangelism, Discipleship, Missions (EDM). Whether through prayer, financial support for our work in Sierra Leone (including the EDM Marifa School) and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
           </p>
           <p className="text-sm text-muted-foreground mt-2 flex items-center">
             <ShieldCheck className="h-4 w-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.

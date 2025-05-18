@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import SectionTitle from '@/components/shared/section-title';
-import { ArrowRight, CalendarDays, Users, BookOpenText, HeartHandshake, MapPin, Newspaper, HelpingHand, Target, Milestone } from 'lucide-react';
+import { ArrowRight, Users, BookOpenText, HeartHandshake, Newspaper, HelpingHand, Target, Milestone, School } from 'lucide-react';
 
 const upcomingEvents = [
   { id: 1, title: 'Freetown Evangelism Training', date: 'November 10-12, 2024', location: 'EDM Center, Freetown', image: 'https://placehold.co/400x250.png', dataAiHint: 'training workshop sierra leone' },
@@ -13,7 +13,7 @@ const upcomingEvents = [
 
 const recentNews = [
   { id: 1, title: 'The Call to Evangelism in Sierra Leone', excerpt: 'Understanding our mandate to share the Good News in every community...', slug: 'the-heart-of-evangelism', image: 'https://placehold.co/400x250.png', dataAiHint: 'sierra leone preaching' },
-  { id: 2, title: 'Building Mature Disciples: Our Approach', excerpt: 'How EDM is nurturing new believers to become trainers of others...', slug: 'discipleship-in-the-modern-age', image: 'https://placehold.co/400x250.png', dataAiHint: 'mentoring group teaching' },
+  { id: 2, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: 'edm-marifa-school-operational', image: 'https://placehold.co/400x250.png', dataAiHint: 'school children marifa' },
 ];
 
 export default function Home() {
@@ -23,7 +23,7 @@ export default function Home() {
       <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-20 md:py-32 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/assets/images/hero-background.jpg" // Replace with a relevant, high-quality image
+            src="/assets/images/hero-background.jpg" 
             alt="Evangelism and community work in Sierra Leone"
             layout="fill"
             objectFit="cover"
@@ -31,7 +31,7 @@ export default function Home() {
             data-ai-hint="sierra leone landscape children"
             priority
           />
-          <div className="absolute inset-0 bg-background/50"></div> {/* Slightly stronger overlay */}
+          <div className="absolute inset-0 bg-background/50"></div> 
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-foreground mb-6">
@@ -117,7 +117,7 @@ export default function Home() {
             </CardHeader>
             <CardContent>
               <p className="text-muted-foreground mb-4">
-                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (already operational), future Bible school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
               </p>
               <Image src="https://placehold.co/600x350.png" alt="EDM Campus Vision" width={600} height={350} className="rounded-md shadow-md" data-ai-hint="architectural rendering school campus africa" />
             </CardContent>
@@ -133,16 +133,16 @@ export default function Home() {
               <CardContent className="text-sm">
                 <h4 className="font-semibold text-foreground mb-1">Short-Term:</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1 mb-3">
+                  <li>Support the operational EDM Marifa Secondary School.</li>
                   <li>Get the van and equipment through customs.</li>
-                  <li>Finalize land acquisition for the campus.</li>
+                  <li>Finalize land acquisition for the main campus.</li>
                   <li>Establish international board members.</li>
-                  <li>Begin construction of the school.</li>
                   <li>Conduct evangelism training sessions.</li>
                   <li>Utilize the "Jesus" movie for evangelism.</li>
                 </ul>
                 <h4 className="font-semibold text-foreground mb-1">Long-Term:</h4>
                 <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                  <li>Build all planned facilities on the EDM campus.</li>
+                  <li>Build additional facilities on the EDM campus (Bible school, retreat center/meeting hall).</li>
                   <li>Extend the mission to other cities in Sierra Leone.</li>
                   <li>Establish key operational departments.</li>
                 </ul>

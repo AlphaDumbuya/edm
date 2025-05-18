@@ -3,8 +3,8 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image'; 
-import { Menu, X, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone } from 'lucide-react';
+import Image from 'next/image';
+import { Menu, X, Handshake, Globe, Users, BookOpenText, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle, Rss, Info, HeartHandshake, GraduationCap, Newspaper, Video, Phone, School, Target } from 'lucide-react'; // Added Target
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
@@ -43,23 +43,23 @@ const mainNavItems = [
   },
   {
     title: 'The Mission',
-    icon: Handshake, // Using Handshake for "The Mission"
+    icon: Target,
     href: '/the-mission',
     description: 'Our overall mission, vision, and goals.',
   },
   {
     title: 'Ministries',
-    icon: HeartHandshake, // Users icon might be better
+    icon: HeartHandshake,
     links: [
       { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches.' },
       { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity.' },
       { href: '/ministries/missions-outreach', title: 'Missions Outreach', description: 'Church planting and community projects.' },
-      { href: '/ministries/education', title: 'Education', description: 'Our school project and Bible training.' },
+      { href: '/ministries/education', title: 'Education', description: 'Our school project at Rosortta Village and Bible training.' },
     ],
   },
   {
     title: 'Get Involved',
-    icon: Users, // Using Users for "Get Involved"
+    icon: Users,
     links: [
       { href: '/get-involved/volunteer', title: 'Volunteer', description: 'Offer your time and skills.' },
       { href: '/get-involved/prayer', title: 'Prayer Wall', description: 'Join us in prayer.' },
@@ -96,13 +96,8 @@ export default function Navbar() {
     if (!name) return 'U';
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
-  
-  const dynamicNavItems = user 
-  ? [
-      ...mainNavItems,
-      // { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' }, // Dashboard can be accessed via user menu
-    ]
-  : mainNavItems;
+
+  const dynamicNavItems = mainNavItems;
 
 
   return (
@@ -110,13 +105,13 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-20">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/assets/images/logo.png" alt="EDM Logo" width={36} height={36} className="h-9 w-9" />
+            <Image src="/assets/images/logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
             <span className="text-2xl font-bold text-primary">EDM</span>
           </Link>
 
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="space-x-1"> {/* Reduced spacing for more items */}
+            <NavigationMenuList className="space-x-1">
               {dynamicNavItems.map((item) => (
                 <NavigationMenuItem key={item.title}>
                   {item.links ? (
@@ -147,9 +142,9 @@ export default function Navbar() {
               ))}
             </NavigationMenuList>
           </NavigationMenu>
-          
+
           <div className="hidden lg:flex items-center gap-2">
-            <Button variant="ghost" size="icon" aria-label="Search">
+            <Button variant="ghost" size="icon" aria-label="Search (Coming Soon)" disabled>
               <Search className="h-5 w-5" />
             </Button>
             {loading ? (
@@ -217,7 +212,7 @@ export default function Navbar() {
                 <SheetHeader className="p-4 border-b flex flex-row justify-between items-center">
                    <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
                        <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
-                       <SheetTitle className="text-lg font-semibold text-primary">EDM</SheetTitle> 
+                       <SheetTitle className="text-lg font-semibold text-primary">EDM</SheetTitle>
                     </Link>
                   <SheetClose asChild>
                      <Button variant="ghost" size="icon"><X className="h-5 w-5"/></Button>

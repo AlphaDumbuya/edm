@@ -16,7 +16,7 @@ export default function Footer() {
               <span className="text-xl font-bold text-primary">EDM</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Evangelism, Discipleship, Missions in Sierra Leone, West Africa and with our partners in Oregon, USA.
+              Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
             </p>
             <p className="text-xs text-muted-foreground mt-2">
               EDM is a registered 501(c)(3) non-profit organization.
@@ -65,13 +65,21 @@ export default function Footer() {
                 <Mail size={16} className="mr-2 text-primary shrink-0" />
                 <a href="mailto:contact@edm.org" className="hover:text-primary">contact@edm.org</a>
               </div>
+               <div className="flex items-center">
+                <Mail size={16} className="mr-2 text-primary shrink-0" />
+                <a href="mailto:edwinjkargbo@yahoo.com" className="hover:text-primary">edwinjkargbo@yahoo.com</a>
+              </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-2 text-primary shrink-0" />
-                <span>(+232) XX-XXX-XXX (SL)</span>
+                <span>(+232) XX-XXX-XXX (SL)</span> 
+              </div>
+              <div className="flex items-center">
+                <Phone size={16} className="mr-2 text-primary shrink-0" />
+                <span>503-505-8884 (USA - Edwin Kargbo)</span>
               </div>
             </address>
             <div className="flex space-x-3 mt-4">
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
+              <a href="https://facebook.com/EDMSierraLeone" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={20} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={20} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={20} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={20} /></a>
@@ -89,7 +97,7 @@ export default function Footer() {
             </Link>
           </div>
           <p className="text-sm text-muted-foreground">
-            &copy; {currentYear} EDM. Evangelism, Discipleship, Missions. All rights reserved.
+            &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
           </p>
         </div>
       </div>
