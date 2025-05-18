@@ -23,11 +23,11 @@ export default function EvangelismPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://placehold.co/600x400.png"
-            alt="EDM evangelism team in action"
+            src="https://plus.unsplash.com/premium_photo-1723759212099-d33000267d6f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8RGlzY2lwbGVzaGlwfGVufDB8fDB8fHww"
+            alt="EDM evangelism team sharing the Gospel"
             layout="fill"
             objectFit="cover"
-            data-ai-hint="sierra leone street preaching"
+            data-ai-hint="sierra leone evangelism outreach"
           />
         </div>
       </section>
