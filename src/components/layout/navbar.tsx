@@ -106,7 +106,7 @@ export default function Navbar() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
             <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
           </Link>
 
@@ -212,7 +212,7 @@ export default function Navbar() {
               <SheetContent side="right" className="w-[300px] sm:w-[320px] bg-card p-0 flex flex-col">
                 <SheetHeader className="p-4 border-b flex flex-row justify-between items-center">
                    <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                       <Image src="/assets/images/logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
+                       <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7" />
                        <SheetTitle className="text-lg font-semibold text-primary">EDM</SheetTitle>
                     </Link>
                   <SheetClose asChild>

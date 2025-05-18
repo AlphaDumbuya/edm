@@ -1,47 +1,46 @@
 
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
-import LeaderProfile from '@/components/about/leader-profile'; // Assuming this component is suitable
-import { Users, Globe } from 'lucide-react'; // Users for people, Globe for international aspect
+import LeaderProfile from '@/components/about/leader-profile';
+import { Users, Globe } from 'lucide-react';
 
 const boardMembers = [
   {
     name: 'Edwin Kargbo',
     role: 'Founder & Director, EDM Sierra Leone',
     bio: 'Driven by a divine burden for the church in Sierra Leone, Edwin Kargbo established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. His vision is to see Sierra Leone transformed by the Gospel.',
-    imageUrl: 'https://source.unsplash.com/random/300x300/?african,pastor,leader',
-    dataAiHint: 'african pastor leader',
-    contact: 'edwin.kargbo@edm.org', // Placeholder
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/edwin-kargbo.png',
+    dataAiHint: 'Edwin Kargbo founder EDM',
+    contact: 'edwin.kargbo@edm.org',
     location: 'Sierra Leone',
   },
   {
-    name: '[Oregon Partnership Lead Name]', // Placeholder
+    name: '[Oregon Partnership Lead Name]',
     role: 'Director, Oregon Partnerships & International Support',
     bio: 'Based in Oregon, USA, this leader facilitates crucial support from US-based partners, connecting resources, prayer, and collaborative efforts to empower EDM\'s work in Sierra Leone. Passionate about global missions and the unity of the Body of Christ.',
-    imageUrl: 'https://source.unsplash.com/random/300x300/?professional,person,office',
+    imageUrl: 'https://source.unsplash.com/random/300x300/?professional,person,office,meeting',
     dataAiHint: 'professional person office',
-    contact: 'oregonpartners@edm.org', // Placeholder
+    contact: 'oregonpartners@edm.org',
     location: 'Oregon, USA',
   },
   {
-    name: '[International Advisor Name 1]', // Placeholder
+    name: '[International Advisor Name 1]',
     role: 'International Advisor & Board Member',
     bio: 'Brings extensive experience in non-profit governance and missions strategy to the EDM board, providing guidance and oversight for international operations and partnerships.',
-    imageUrl: 'https://source.unsplash.com/random/300x300/?board,member,professional',
+    imageUrl: 'https://source.unsplash.com/random/300x300/?board,member,meeting',
     dataAiHint: 'board member professional',
-    contact: 'advisor1@edm.org', // Placeholder
+    contact: 'advisor1@edm.org',
     location: 'International',
   },
    {
-    name: '[International Advisor Name 2]', // Placeholder
+    name: '[International Advisor Name 2]',
     role: 'International Advisor - Finance & Stewardship',
     bio: 'Oversees financial integrity and stewardship practices for EDM internationally, ensuring resources are managed effectively for maximum kingdom impact.',
-    imageUrl: 'https://source.unsplash.com/random/300x300/?finance,expert,professional',
+    imageUrl: 'https://source.unsplash.com/random/300x300/?finance,expert,desk',
     dataAiHint: 'finance expert professional',
-    contact: 'advisor.finance@edm.org', // Placeholder
+    contact: 'advisor.finance@edm.org',
     location: 'International',
   },
-  // Add more board members as needed, distinguishing between Sierra Leone based and international/Oregon based.
 ];
 
 export default function InternationalBoardPage() {
@@ -65,7 +64,6 @@ export default function InternationalBoardPage() {
               imageUrl={leader.imageUrl}
               dataAiHint={leader.dataAiHint}
               contact={leader.contact}
-              // You might want to add a 'location' prop to LeaderProfile if it's useful to display
             />
           ))}
         </div>
