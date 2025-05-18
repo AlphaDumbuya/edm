@@ -54,7 +54,7 @@ const mainNavItems = [
       { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches in Sierra Leone.' },
       { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity in Sierra Leone.' },
       { href: '/ministries/missions-outreach', title: 'Missions Outreach', description: 'Church planting and community projects in Sierra Leone.' },
-      { href: '/ministries/education', title: 'Education Overview', description: 'Our commitment to Christ-centered education in Sierra Leone.' },
+      { href: '/ministries/education', title: 'Education Overview', description: 'Our commitment to Christ-centered education.' },
       { href: '/ministries/education/marifa-school', title: 'EDM Marifa School', description: 'Operational secondary school in Rosortta Village, Sierra Leone.' },
     ],
   },
