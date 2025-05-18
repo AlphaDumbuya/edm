@@ -3,9 +3,44 @@ import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Handshake, Users, Building, Briefcase as BriefcaseIcon, Mail, ArrowRight } from 'lucide-react'; // Renamed Briefcase
-import Image from 'next/image';
+import { Users, HeartHandshake, Handshake as PartnerIcon, Film, ArrowRight, Briefcase, Building } from 'lucide-react'; // Renamed Handshake to PartnerIcon
 import Link from 'next/link';
+import Image from 'next/image';
+
+const involvementOpportunities = [
+  {
+    title: 'Volunteer Your Time & Skills',
+    icon: Users,
+    description: 'Offer your talents to support EDM\'s work in Sierra Leone or assist our Oregon-based partners with administrative, technical, or outreach tasks.',
+    link: '/get-involved/volunteer',
+    imageUrl: 'https://source.unsplash.com/random/500x300/?volunteers,group,diverse,hands',
+    dataAiHint: "volunteers group diverse hands",
+  },
+  {
+    title: 'Become a Prayer Partner',
+    icon: HeartHandshake,
+    description: 'Commit to praying regularly for our missionaries, projects, the communities we serve in Sierra Leone, and our partnerships in Oregon.',
+    link: '/get-involved/prayer',
+    imageUrl: 'https://source.unsplash.com/random/500x300/?people,praying,together,circle',
+    dataAiHint: "people praying together circle",
+  },
+  {
+    title: 'Partnership Opportunities',
+    icon: PartnerIcon, // Using the aliased icon
+    description: 'Explore how your church, organization, or business can formally partner with EDM to amplify our impact in Sierra Leone and Oregon.',
+    link: '/get-involved/partner',
+    imageUrl: 'https://media.istockphoto.com/id/96653688/photo/handshake.webp?a=1&b=1&s=612x612&w=0&k=20&c=2o15a4X4zTScv56ipJaem6iV5jcNqnu-n3IRm8Eys-o=',
+    dataAiHint: "handshake agreement global",
+  },
+  {
+    title: 'Host a Movie Screening or Event',
+    icon: Film,
+    description: 'Organize a showing of the "Jesus" film or an EDM awareness event in your community to share our mission and gather support.',
+    link: '/contact', // Link to contact page for now
+    imageUrl: 'https://source.unsplash.com/random/500x300/?movie,screening,community,event',
+    dataAiHint: "movie screening community event",
+  },
+];
 
 const partnershipTypes = [
   {
@@ -14,7 +49,7 @@ const partnershipTypes = [
     description: 'Join our mission personally through prayer, volunteering in Sierra Leone or Oregon, advocacy, or financial support. Discover how your unique gifts can make a difference.',
     href: '/partnership/individuals',
     imageUrl: 'https://media.istockphoto.com/id/2099408907/photo/smiling-young-businessman-standing-with-his-arms-crossed-against-an-office-wall.webp?a=1&b=1&s=612x612&w=0&k=20&c=N0rshqVGbuvJ6zFWKLzkwbulYEqqx1mtWzu_eSSOQXE=',
-    dataAiHint: 'individual professional volunteering',
+    dataAiHint: 'person volunteering sierra leone',
   },
   {
     title: 'For Churches',
@@ -22,25 +57,26 @@ const partnershipTypes = [
     description: 'Partner your congregation with EDM to expand missions in Sierra Leone and engage with our Oregon network. Mobilize members for impactful outreach.',
     href: '/partnership/churches',
     imageUrl: 'https://images.unsplash.com/photo-1560253226-26f367c49ae2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8YWZyaWNhJTIwY2h1cmNofGVufDB8fDB8fHww',
-    dataAiHint: 'church congregation africa',
+    dataAiHint: 'church congregation freetown',
   },
   {
     title: 'For Organizations & Businesses',
-    icon: BriefcaseIcon, // Using renamed icon
+    icon: Briefcase, 
     description: 'Align your organization with a cause that brings hope to Sierra Leone and fosters US-SL collaboration. Explore sponsorships and engagement.',
-    href: '/partnership/organizations',
-    imageUrl: 'https://source.unsplash.com/random/600x400/?business,collaboration,global',
-    dataAiHint: 'business team global',
+    href: '/partnership/organizations', 
+    imageUrl: 'https://media.istockphoto.com/id/1407285659/photo/multiethnic-young-and-middle-aged-businesspeople-engaged-in-group-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=kfzDX6VEwfalzyfpiXpdL5jHbLzTrCUjd3nQiSXE2dg=',
+    dataAiHint: 'business meeting collaboration',
   },
 ];
 
-export default function PartnerPage() {
+
+export default function GetInvolvedPage() {
   return (
-    <div className="space-y-12 sm:space-y-16">
+    <div className="space-y-12 md:space-y-16">
       <PageHeader
         title="Partner With EDM"
         subtitle="Together, we can amplify our impact in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
-        icon={Handshake}
+        icon={PartnerIcon}
       />
 
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
@@ -106,3 +142,5 @@ export default function PartnerPage() {
     </div>
   );
 }
+
+    

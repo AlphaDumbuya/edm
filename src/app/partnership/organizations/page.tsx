@@ -28,12 +28,12 @@ export default function OrganizationPartnershipPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-64 sm:h-80 relative">
           <Image
-            src="https://source.unsplash.com/random/600x400/?business,collaboration,global"
+            src="https://media.istockphoto.com/id/1407285659/photo/multiethnic-young-and-middle-aged-businesspeople-engaged-in-group-meeting.webp?a=1&b=1&s=612x612&w=0&k=20&c=kfzDX6VEwfalzyfpiXpdL5jHbLzTrCUjd3nQiSXE2dg="
             alt="Business professionals collaborating on a global project"
             layout="fill"
             objectFit="cover"
             className="object-cover w-full h-full"
-            data-ai-hint="business team global"
+            data-ai-hint="business meeting collaboration"
           />
         </div>
       </section>
@@ -129,3 +129,5 @@ export default function OrganizationPartnershipPage() {
     </div>
   );
 }
+
+    
