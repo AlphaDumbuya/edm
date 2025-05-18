@@ -4,7 +4,7 @@ import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
-import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign, CheckCircle, Heart, ShieldCheck, CreditCard, Mailbox, School, Paypal } from 'lucide-react';
+import { HelpingHand, Mail, Phone, Users, ArrowRight, Info, Package, LandPlot, DollarSign, CheckCircle, Heart, ShieldCheck, CreditCard, Mailbox, School, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -128,17 +128,15 @@ export default function DonatePage() {
                 <p className="text-foreground font-medium">Email: <a href="mailto:edmsierraleone@gmail.com" className="text-primary hover:underline">edmsierraleone@gmail.com</a></p>
             </div>
 
-            <h3 className="text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-4"><Paypal className="mr-3 h-6 w-6 text-primary"/> Donate with PayPal</h3>
+            <h3 className="text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-4"><ExternalLink className="mr-3 h-6 w-6 text-primary"/> Donate with PayPal</h3>
             <p className="text-muted-foreground">
               You can also support EDM's mission by donating via PayPal.
             </p>
             <div className="bg-muted p-4 rounded-md shadow-sm">
-                {/* Replace with your actual PayPal information */}
                 <p className="text-foreground font-medium">PayPal Email: <a href="mailto:your-paypal-email@edm.org" className="text-primary hover:underline">your-paypal-email@edm.org</a></p>
                 <p className="text-xs text-muted-foreground mt-1">(Or provide a direct PayPal.Me link if you have one)</p>
                  <Button variant="link" asChild className="mt-2 px-0">
                     <a href="#" target="_blank" rel="noopener noreferrer" className="text-primary">
-                       {/* Replace # with your PayPal.Me link or donation page link */}
                         Go to PayPal Donation Page <ArrowRight className="ml-1 h-4 w-4"/>
                     </a>
                 </Button>
@@ -177,4 +175,3 @@ export default function DonatePage() {
     </div>
   );
 }
-
