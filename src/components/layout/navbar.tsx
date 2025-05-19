@@ -6,10 +6,10 @@ import Image from 'next/image';
 import {
   Menu, X, Search, LogIn, UserPlus, LayoutDashboard, LogOut,
   UserCircle, Info, HeartHandshake, GraduationCap, Newspaper,
-  Phone, Target, School, DollarSign, Users, ExternalLink, BookOpenText, Briefcase
+  Phone, Target, School, DollarSign, Users, ExternalLink, BookOpenText, Briefcase, ArrowRight
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { useState } from 'react';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import {
   NavigationMenu,
@@ -52,7 +52,7 @@ const mainNavItems = [
   },
   {
     title: 'Ministries',
-    icon: HeartHandshake,
+    icon: HeartHandshake, // Using HeartHandshake as a general "Ministries" icon
     links: [
       { href: '/ministries/evangelism', title: 'Evangelism', description: 'Sharing the Gospel through various outreaches in Sierra Leone.' },
       { href: '/ministries/discipleship', title: 'Discipleship', description: 'Training believers to maturity in Sierra Leone.' },
@@ -129,6 +129,7 @@ export default function Navbar() {
   };
 
   return (
+    <>
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
@@ -136,9 +137,8 @@ export default function Navbar() {
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
-              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-              <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
-            </>
+            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -162,8 +162,7 @@ export default function Navbar() {
                       </NavigationMenuContent>
                     </>
                   ) : (
-                    // This is for direct links in the main nav that are NOT dropdowns
-                    (<NavigationMenuLink asChild>
+                    <NavigationMenuLink asChild>
                       <Link
                         href={item.href || '#'}
                         className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
@@ -171,7 +170,7 @@ export default function Navbar() {
                         {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                         {item.title}
                       </Link>
-                    </NavigationMenuLink>)
+                    </NavigationMenuLink>
                   )}
                 </NavigationMenuItem>
               ))}
@@ -211,7 +210,7 @@ export default function Navbar() {
                   <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />Log Out
                   </DropdownMenuItem>
- </DropdownMenuContent>
+                </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <DropdownMenu>
@@ -249,12 +248,12 @@ export default function Navbar() {
                   </SheetTitle>
                 </SheetHeader>
                 <ScrollArea className="h-[calc(100vh-var(--header-height,120px))]"> {/* Adjusted height */}
-                  <nav className="flex flex-col p-4 space-y-2">
+                  <nav className="flex flex-col p-4 space-y-1">
                     {mainNavItems.map((item) => (
                       <div key={item.title}>
                         {item.links ? (
-                          <div className="space-y-1">
-                            <h4 className="font-semibold text-sm text-primary flex items-center mb-1">
+                          <div className="space-y-0.5">
+                            <h4 className="font-semibold text-sm text-primary flex items-center mb-1 pt-1">
                               {item.icon && <item.icon className="h-4 w-4 mr-2" />}
                               {item.title}
                             </h4>
@@ -262,8 +261,8 @@ export default function Navbar() {
                               <SheetClose asChild key={link.href}>
                                 <Link
                                   href={link.href}
-                                  className="block rounded-md py-2 px-3 text-sm hover:bg-accent text-muted-foreground hover:text-accent-foreground"
- >
+                                  className="block rounded-md py-1.5 px-3 text-sm hover:bg-accent text-muted-foreground hover:text-accent-foreground"
+                                >
                                   {link.title}
                                 </Link>
                               </SheetClose>
@@ -274,17 +273,17 @@ export default function Navbar() {
                             <Link
                               href={item.href || '#'}
                               className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
- >
+                            >
                               {item.icon && <item.icon className="h-4 w-4 mr-2 text-primary" />}
                               {item.title}
                             </Link>
                           </SheetClose>
                         )}
-                        <div className="my-2 border-b border-border/50 last:border-b-0"></div>
+                        <div className="my-1.5 border-b border-border/50 last:border-b-0"></div>
                       </div>
                     ))}
                     {/* Mobile Auth Links */}
-                    <div className="pt-4">
+                    <div className="pt-3">
                     {loading ? (
                         <Button variant="outline" disabled className="w-full justify-start text-sm">Loading...</Button>
                     ) : user ? (
@@ -305,7 +304,7 @@ export default function Navbar() {
                             <UserCircle className="mr-2 h-4 w-4 text-primary" /> My Profile
                           </Link>
                         </SheetClose>
-                        <div className="my-2 border-b border-border/50"></div>
+                        <div className="my-1.5 border-b border-border/50"></div>
                         <SheetClose asChild>
                           <Button variant="ghost" onClick={signOutAuth} className="w-full justify-start text-sm text-destructive hover:text-destructive focus:bg-destructive/10">
                             <LogOut className="mr-2 h-4 w-4" /> Log Out
@@ -318,15 +317,14 @@ export default function Navbar() {
                           <Link
                             href="/auth/login"
                             className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                            legacyBehavior>
+                          >
                             <LogIn className="mr-2 h-4 w-4 text-primary" /> Sign In
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
                           <Link
                             href="/auth/signup"
-                            className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                          >
+                            className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground">
                             <UserPlus className="mr-2 h-4 w-4 text-primary" /> Register
                           </Link>
                         </SheetClose>
@@ -341,5 +339,6 @@ export default function Navbar() {
         </div>
       </div>
     </header>
+    </>
   );
 }
