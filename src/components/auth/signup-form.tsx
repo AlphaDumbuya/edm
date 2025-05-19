@@ -16,12 +16,13 @@ import Link from 'next/link';
 import { Loader2, UserPlus } from 'lucide-react';
 
 const signupSchema = z.object({
+  name: z.string().min(2, { message: 'Name must be at least 2 characters.' }).max(50, { message: 'Name too long.'}),
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
   confirmPassword: z.string(),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
-  path: ['confirmPassword'], // path of error
+  path: ['confirmPassword'],
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
@@ -35,6 +36,7 @@ export default function SignupForm() {
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
+      name: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -43,7 +45,7 @@ export default function SignupForm() {
 
   const onSubmit = async (data: SignupFormValues) => {
     setIsLoading(true);
-    const { error } = await signUp(data.email, data.password);
+    const { error } = await signUp(data.email, data.password, data.name);
     setIsLoading(false);
 
     if (error) {
@@ -55,9 +57,11 @@ export default function SignupForm() {
     } else {
       toast({
         title: 'Signup Successful',
-        description: 'Welcome! You are now logged in.',
+        description: 'Welcome! Please check your email to verify your account if applicable. You are now logged in.',
       });
-      router.push('/dashboard');
+      // Redirect to dashboard or a welcome page
+      router.push('/dashboard'); 
+      router.refresh(); // Ensures middleware re-evaluates for protected routes
     }
   };
 
@@ -71,6 +75,18 @@ export default function SignupForm() {
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="name">Full Name</Label>
+            <Input
+              id="name"
+              placeholder="John Doe"
+              {...form.register('name')}
+              disabled={isLoading}
+            />
+            {form.formState.errors.name && (
+              <p className="text-sm text-destructive">{form.formState.errors.name.message}</p>
+            )}
+          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input

@@ -4,18 +4,12 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Building, Milestone, TrendingUp, CheckCircle, Map, ShieldCheck, School, Package } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Target, Building, Milestone, TrendingUp, CheckCircle, ShieldCheck, School, Package } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
+import Link from 'next/link'; // Keep Link for other uses
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import dynamic from 'next/dynamic';
-
-const MissionsMapClient = dynamic(() => import('@/components/missions/missions-map-client'), {
-  ssr: false,
-  loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
-});
-
 
 export default function TheMissionPage() {
   return (
@@ -98,16 +92,14 @@ export default function TheMissionPage() {
       <section>
         <SectionTitle title="Future Cities & Regional Impact" subtitle="Expanding EDM's reach beyond Freetown and Marifa" />
         <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-4 sm:mb-6 text-center">
-          While our current hubs are Freetown and Marifa (with the EDM Marifa School), EDM's long-term vision includes extending our ministry to other cities across Sierra Leone and potentially neighboring West African countries. The map below highlights our current primary operational areas and future expansion considerations.
+          While our current hubs are Freetown and Marifa (with the EDM Marifa School), EDM's long-term vision includes extending our ministry to other cities across Sierra Leone and potentially neighboring West African countries.
         </p>
         <Card className="shadow-xl">
           <CardHeader className="p-3 sm:p-4 md:p-6">
-            <CardTitle className="flex items-center text-sm sm:text-base md:text-lg lg:text-xl"><Map className="mr-2 h-4 w-4 sm:h-5 md:h-6 text-primary"/>EDM Operational & Future Expansion Map</CardTitle>
+            <CardTitle className="flex items-center text-sm sm:text-base md:text-lg lg:text-xl">EDM Operational & Future Expansion</CardTitle>
           </CardHeader>
           <CardContent className="p-0">
-            <div className="aspect-[16/9] md:aspect-[2/1] bg-muted rounded-lg overflow-hidden">
-              <MissionsMapClient mapId="edm_the_mission_map" />
-            </div>
+            {/* Content for future cities/regional impact can go here */}
           </CardContent>
            <CardFooter className="p-2 sm:p-3 md:p-4 pt-2 sm:pt-3">
             <p className="text-[10px] sm:text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations including EDM Marifa School and areas of future focus.</p>
@@ -151,3 +143,5 @@ export default function TheMissionPage() {
     </div>
   );
 }
+
+
