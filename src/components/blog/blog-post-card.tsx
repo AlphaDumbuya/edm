@@ -27,8 +27,8 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
       <Link
         href={`/news/${post.slug}`}
         className="block relative w-full h-48 sm:h-56 group"
-        legacyBehavior>
-        <Image
+      >
+ <Image
           src={post.imageUrl}
           alt={post.title}
           layout="fill"
@@ -38,9 +38,9 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         />
       </Link>
       <CardHeader className="p-3 sm:p-4">
-        <Link href={`/news/${post.slug}`} legacyBehavior>
-          <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
-        </Link>
+ <Link href={`/news/${post.slug}`}>
+ <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
+ </Link>
         <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
           <span className="flex items-center"><User className="mr-1 h-3 w-3 text-primary" /> By {post.author}</span>
           <span className="flex items-center"><CalendarDays className="mr-1 h-3 w-3 text-primary" /> {post.date}</span>
@@ -57,9 +57,9 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         )}
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
-        <Link href={`/news/${post.slug}`} className="w-full" legacyBehavior>
-          <Button variant="outline" className="w-full text-xs sm:text-sm">
-            Read More <ArrowRight className="ml-2 h-4 w-4" />
+ <Link href={`/news/${post.slug}`} className="w-full">
+ <Button variant="outline" className="w-full text-xs sm:text-sm">
+ Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
       </CardFooter>
