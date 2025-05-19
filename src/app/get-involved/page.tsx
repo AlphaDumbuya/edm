@@ -50,7 +50,6 @@ export default function GetInvolvedPage() {
         subtitle="Join us in making a difference in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
         icon={Users}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Your Part in God's Work" />
@@ -72,7 +71,6 @@ export default function GetInvolvedPage() {
           />
         </div>
       </section>
-
       <SectionTitle title="Ways to Engage with EDM" subtitle="Find how you can best contribute" className="text-center"/>
       <div className="grid md:grid-cols-2 gap-6 md:gap-8">
         {involvementOpportunities.map((opportunity) => (
@@ -97,7 +95,7 @@ export default function GetInvolvedPage() {
               <p className="text-muted-foreground text-xs sm:text-sm mb-4">{opportunity.description}</p>
             </CardContent>
             <CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t">
-              <Link href={opportunity.link}>
+              <Link href={opportunity.link} legacyBehavior>
                 <Button className="w-full sm:w-auto text-xs sm:text-sm" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
@@ -106,19 +104,18 @@ export default function GetInvolvedPage() {
           </Card>
         ))}
       </div>
-      
       <section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mt-8 sm:mt-12">
         <SectionTitle title="Ready to Take the Next Step?" className="text-center" />
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           Your involvement is crucial to our success in Sierra Leone and Oregon. If you're inspired to join us or have questions, please don't hesitate to reach out.
         </p>
         <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
-            <Link href="/contact">
+            <Link href="/contact" legacyBehavior>
                 <Button size="lg" className="text-sm sm:text-base">
                     <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
                 </Button>
             </Link>
-            <Link href="/donate">
+            <Link href="/donate" legacyBehavior>
                 <Button size="lg" variant="default" className="text-sm sm:text-base">Donate to Support EDM</Button>
             </Link>
         </div>

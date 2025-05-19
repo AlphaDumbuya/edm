@@ -19,11 +19,10 @@ export default function DashboardPage() {
         subtitle="This is your personal dashboard."
         icon={LayoutDashboard} 
       />
-
       <section>
         <SectionTitle title="Quick Access" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/dashboard/profile">
+          <Link href="/dashboard/profile" legacyBehavior>
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">My Profile</CardTitle>
@@ -34,7 +33,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </Link>
-          <Link href="/dashboard/settings">
+          <Link href="/dashboard/settings" legacyBehavior>
              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Account Settings</CardTitle>
@@ -56,7 +55,6 @@ export default function DashboardPage() {
             </Card>
         </div>
       </section>
-      
       <section>
         <SectionTitle title="Account Status" />
          <Card>
@@ -80,13 +78,11 @@ export default function DashboardPage() {
             </CardContent>
          </Card>
       </section>
-
       <section className="text-center">
-        <Link href="/">
+        <Link href="/" legacyBehavior>
             <Button variant="outline">Back to Homepage</Button>
         </Link>
       </section>
-
     </div>
   );
 }

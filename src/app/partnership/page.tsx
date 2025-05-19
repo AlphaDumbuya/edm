@@ -41,7 +41,6 @@ export default function PartnerPage() {
         subtitle="Together, we can amplify our impact in Sierra Leone and Ohio through Evangelism, Discipleship, and Missions."
         icon={Handshake}
       />
-
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="Why Your Partnership Matters" />
@@ -63,7 +62,6 @@ export default function PartnerPage() {
           />
         </div>
       </section>
-
       <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization to impact Sierra Leone & Ohio" className="text-center" />
       <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
         {partnershipTypes.map((opportunity) => (
@@ -81,7 +79,7 @@ export default function PartnerPage() {
               <p className="text-muted-foreground text-sm mb-4">{opportunity.description}</p>
             </CardContent>
             <CardContent className="pt-4 pb-6 text-center"> 
-              <Link href={opportunity.href}>
+              <Link href={opportunity.href} legacyBehavior>
                 <Button className="w-full sm:w-auto" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -90,13 +88,14 @@ export default function PartnerPage() {
           </Card>
         ))}
       </div>
-      
       <section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
         <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Ohio?" className="text-center" />
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
           We are excited to discuss how your unique gifts, resources, or organizational goals can align with EDM's mission. Reach out to our partnership team to start a conversation.
         </p>
-        <Link href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry">
+        <Link
+          href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry"
+          legacyBehavior>
           <Button size="lg">
             <Mail className="mr-2 h-5 w-5" /> Contact Our Partnership Team
           </Button>

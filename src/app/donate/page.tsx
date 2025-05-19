@@ -17,7 +17,6 @@ export default function DonatePage() {
         subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Oregon partnerships."
         icon={HelpingHand}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Why Your Gift Matters" subtitle="Every contribution makes a difference" />
@@ -43,7 +42,6 @@ export default function DonatePage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects" />
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
@@ -56,7 +54,10 @@ export default function DonatePage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-sm sm:text-base text-muted-foreground text-center mb-3">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
-               <Link href="/ministries/education/marifa-school" className="block text-center">
+               <Link
+                 href="/ministries/education/marifa-school"
+                 className="block text-center"
+                 legacyBehavior>
                 <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn More & Support School</Button>
               </Link>
             </CardContent>
@@ -74,7 +75,6 @@ export default function DonatePage() {
           </Card>
         </div>
       </section>
-
       <section className="max-w-2xl mx-auto">
         <SectionTitle title="Make a Secure Online Donation" subtitle="Empower our work in Sierra Leone and Oregon today" className="text-center" />
         <p className="text-center text-muted-foreground mb-6 text-sm sm:text-base">
@@ -83,7 +83,6 @@ export default function DonatePage() {
         <DonationFormWrapper />
          <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
       </section>
-
       <section id="more-support-options" className="bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="More Ways to Support EDM" subtitle="Beyond online donations" />
         <div className="grid md:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 items-start">
@@ -102,7 +101,7 @@ export default function DonatePage() {
              <p className="text-sm sm:text-base text-muted-foreground">
                 For donations to our Sierra Leone headquarters or other financial inquiries (stocks, planned giving), please contact us.
              </p>
-              <Link href="/contact">
+              <Link href="/contact" legacyBehavior>
                 <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4"/></Button>
               </Link>
           </div>
@@ -136,26 +135,25 @@ export default function DonatePage() {
               Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
             </p>
             <div className="space-y-2 sm:space-y-3">
-                <Link href="/get-involved/volunteer">
+                <Link href="/get-involved/volunteer" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4"/>Volunteer Opportunities</Button>
                 </Link>
-                <Link href="/get-involved/prayer">
+                <Link href="/get-involved/prayer" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><HelpingHand className="mr-2 h-4 w-4"/>Join Our Prayer Wall</Button>
                 </Link>
-                <Link href="/get-involved/partner">
+                <Link href="/get-involved/partner" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4"/>Explore Partnerships</Button>
                 </Link>
             </div>
           </div>
         </div>
       </section>
-
       <section className="text-center py-6 md:py-8">
         <div className="flex items-center justify-center text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm">
             <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-primary"/>
             <p>EDM is a registered 501(c)(3) non-profit organization. We are committed to stewarding all resources with integrity for the advancement of the Gospel.</p>
         </div>
-        <Link href="/financial-transparency">
+        <Link href="/financial-transparency" legacyBehavior>
           <Button variant="link" className="text-primary text-xs sm:text-sm">
             View Our Financial Transparency Policy
           </Button>

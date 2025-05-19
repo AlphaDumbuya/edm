@@ -67,7 +67,7 @@ export default function MinistriesPage() {
               <p className="text-muted-foreground">{area.description}</p>
             </CardContent>
             <CardContent className="border-t pt-4">
-              <Link href={area.link}>
+              <Link href={area.link} legacyBehavior>
                 <Button className="w-full" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

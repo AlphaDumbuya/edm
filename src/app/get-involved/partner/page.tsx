@@ -42,7 +42,6 @@ export default function GetInvolvedPartnerPage() {
         subtitle="Together, we can amplify our impact in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
         icon={PartnerIcon}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Why Your Partnership Matters" />
@@ -64,7 +63,6 @@ export default function GetInvolvedPartnerPage() {
           />
         </div>
       </section>
-
       <SectionTitle title="Explore Partnership Opportunities" subtitle="Find the best fit for you or your organization to impact Sierra Leone & Oregon" className="text-center" />
       <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         {partnershipTypes.map((opportunity) => (
@@ -89,7 +87,7 @@ export default function GetInvolvedPartnerPage() {
               <p className="text-muted-foreground text-xs sm:text-sm mb-4">{opportunity.description}</p>
             </CardContent>
             <CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t">
-              <Link href={opportunity.link}>
+              <Link href={opportunity.link} legacyBehavior>
                 <Button className="w-full sm:w-auto text-xs sm:text-sm" variant="outline">
                   Learn More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Button>
@@ -98,13 +96,14 @@ export default function GetInvolvedPartnerPage() {
           </Card>
         ))}
       </div>
-
       <section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mt-8 sm:mt-12">
         <SectionTitle title="Let's Connect" subtitle="Ready to explore how we can partner for Sierra Leone and Oregon?" className="text-center" />
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We are excited to discuss how your unique gifts, resources, or organizational goals can align with EDM's mission. Reach out to our partnership team to start a conversation.
         </p>
-        <Link href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry">
+        <Link
+          href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry"
+          legacyBehavior>
           <Button size="default" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Our Partnership Team
           </Button>

@@ -21,10 +21,9 @@ export default function MarifaSchoolPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM Marifa Secondary School"
-        subtitle="A Beacon of Hope and Learning in Marifa (Rosortta Village), Sierra Leone."
+        subtitle="A Beacon of Hope and Learning in Marifa (Rosortta Village), Sierra Leone. School Building Project ongoing."
         icon={School}
       />
-
       <section>
         <Card className="shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-3">
@@ -43,12 +42,12 @@ export default function MarifaSchoolPage() {
               <CardHeader>
                 <CardTitle className="text-2xl text-primary flex items-center">
                   <Info className="h-7 w-7 mr-3" />
-                  About The School Project
+                  The EDM Marifa School & Building Project
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) has established the EDM Marifa Secondary School in Marifa (Rosortta Village), Sierra Leone. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
+                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) established the EDM Marifa Secondary School and is continuing the school building project at Marifa (Rosortta Village), Sierra Leone. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
                 </p>
                 <p>
                   The purpose of the EDM Marifa School is multifaceted:
@@ -59,16 +58,16 @@ export default function MarifaSchoolPage() {
                   <li><Users className="inline h-4 w-4 mr-2 text-primary" /> To foster Christian fellowship and community engagement.</li>
                 </ul>
                 <p className="font-semibold text-foreground">
-                  The EDM Marifa School is now operational! While this is a significant milestone, ongoing support is vital for its continued success, development, and to provide resources for students and staff. EDM is reaching out to you for support for the EDM Marifa School. All finances received by EDM designated for this school will be for the sole purpose of its operation and development. We will keep you updated on its progress and impact.
+                  The EDM Marifa School is now operational, praise God! While this is a significant milestone, EDM is reaching out to you for support of the school building project to help it become a complete reality. All finances received by EDM designated for this project will be for the sole purpose of building and developing the school. We will keep you updated as the building progresses.
                 </p>
                  <p className="font-semibold text-foreground">
-                  We will accept one-time or monthly donations. Please remember the EDM Marifa School, its students, and staff in your prayers. Thank you for your support.
+                  We will accept one-time or monthly donations. Please remember this school building project, its students, and staff in your prayers. Thank you for your support. EDM is a registered 501(c)(3) non-profit organization.
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t">
-                <Link href="/donate?reason=marifa_school_support">
+                <Link href="/donate?reason=marifa_school_project" legacyBehavior>
                   <Button>
-                    <HeartHandshake className="mr-2 h-5 w-5" /> Support EDM Marifa School
+                    <HeartHandshake className="mr-2 h-5 w-5" /> Support School Building Project
                   </Button>
                 </Link>
                 <div>
@@ -82,7 +81,6 @@ export default function MarifaSchoolPage() {
           </div>
         </Card>
       </section>
-
       <section>
         <SectionTitle title="EDM Marifa School Media & Gallery" />
         <div className="mb-8">
@@ -130,14 +128,13 @@ export default function MarifaSchoolPage() {
             </div>
         </div>
       </section>
-
-       <section className="text-center py-8">
-        <Link href="/donate?reason=marifa_school_support">
-          <Button size="lg" variant="default">
-            <HeartHandshake className="mr-2 h-5 w-5" /> Donate to Support the School
-          </Button>
-        </Link>
-      </section>
+      <section className="text-center py-8">
+       <Link href="/donate?reason=marifa_school_project" legacyBehavior>
+         <Button size="lg" variant="default">
+           <HeartHandshake className="mr-2 h-5 w-5" /> Donate to Support the School Project
+         </Button>
+       </Link>
+     </section>
     </div>
   );
 }

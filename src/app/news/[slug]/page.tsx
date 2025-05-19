@@ -109,7 +109,7 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
         <PageHeader title="News Post Not Found" icon={Newspaper} />
         <p className="text-center text-muted-foreground">The news post you are looking for does not exist or may have been moved.</p>
         <div className="text-center mt-8">
-          <Link href="/news">
+          <Link href="/news" legacyBehavior>
             <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM News & Updates</Button>
           </Link>
         </div>
@@ -120,7 +120,6 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <PageHeader title={post.title} icon={Newspaper} />
-      
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center text-sm text-muted-foreground border-b pb-4 mb-6">
         <div className="flex items-center mb-2 sm:mb-0">
           <User className="mr-2 h-5 w-5 text-primary" /> By: {post.author}
@@ -129,7 +128,6 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
           <CalendarDays className="mr-2 h-5 w-5 text-primary" /> Published: {post.date}
         </div>
       </div>
-
       {post.imageUrl && (
         <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-8">
           <Image
@@ -141,7 +139,6 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
           />
         </div>
       )}
-      
       {post.tags && post.tags.length > 0 && (
         <div className="flex flex-wrap gap-2 items-center mb-6">
           <Tag className="h-5 w-5 text-primary" />
@@ -150,11 +147,9 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
           ))}
         </div>
       )}
-
       <article className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: post.content }} />
-      
       <div className="text-center mt-12">
-        <Link href="/news">
+        <Link href="/news" legacyBehavior>
           <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM News & Updates</Button>
         </Link>
       </div>

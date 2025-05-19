@@ -15,7 +15,6 @@ export default function OurMissionPage() {
         subtitle="EDM is a Christian organization in Sierra Leone, West Africa, called to evangelism, discipleship, and missions in that part of the world. EDM is a registered 501(c)(3) non-profit organization."
         icon={Target}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Who We Are" />
@@ -37,7 +36,6 @@ export default function OurMissionPage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Our Journey: How It All Started" />
         <Card className="shadow-lg">
@@ -65,7 +63,6 @@ export default function OurMissionPage() {
           </CardContent>
         </Card>
       </section>
-      
       <section className="text-center bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Our Guiding Principles" className="text-center" />
         <div className="max-w-2xl mx-auto">
@@ -79,7 +76,6 @@ export default function OurMissionPage() {
             </p>
         </div>
       </section>
-
       <section>
         <SectionTitle title="Our Vision for EDM" />
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
@@ -129,33 +125,31 @@ export default function OurMissionPage() {
           </Card>
         </div>
       </section>
-
-       <section>
-        <SectionTitle title="Current Updates & Needs" />
-         <Card className="shadow-lg bg-primary/5">
-            <CardHeader className="p-4 sm:p-6">
-                <CardTitle className="text-primary text-base sm:text-lg md:text-xl">Progress and Support Opportunities</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2 sm:space-y-3 p-4 sm:p-6 text-xs sm:text-sm md:text-base text-muted-foreground">
-                <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more & support the school.</Link></p>
-                <p><strong className="text-foreground">Land Acquired:</strong> We praise God that we have acquired land for the main EDM campus and a retreat center for the Body of Christ in Sierra Leone!</p>
-                <p><strong className="text-foreground">Van & Equipment Arrived:</strong> The van and musical instruments have arrived in Freetown and are being prepared for ministry use. These are vital for our outreach efforts.</p>
-            </CardContent>
-            <CardFooter className="p-4 sm:p-6">
-                <Link href="/donate?reason=current_projects">
-                    <Button variant="default" size="sm" className="text-xs sm:text-sm">Help Support These Initiatives</Button>
-                </Link>
-            </CardFooter>
-         </Card>
-       </section>
-
+      <section>
+       <SectionTitle title="Current Updates & Needs" />
+        <Card className="shadow-lg bg-primary/5">
+           <CardHeader className="p-4 sm:p-6">
+               <CardTitle className="text-primary text-base sm:text-lg md:text-xl">Progress and Support Opportunities</CardTitle>
+           </CardHeader>
+           <CardContent className="space-y-2 sm:space-y-3 p-4 sm:p-6 text-xs sm:text-sm md:text-base text-muted-foreground">
+               <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational, serving the community and sharing the Gospel! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more & support the school.</Link></p>
+               <p><strong className="text-foreground">Land Acquired:</strong> We praise God that we have acquired land for the main EDM campus and a retreat center for the Body of Christ in Sierra Leone!</p>
+               <p><strong className="text-foreground">Van & Equipment Arrived:</strong> The van and musical instruments have arrived in Freetown and are being prepared for ministry use. These are vital for our outreach efforts.</p>
+           </CardContent>
+           <CardFooter className="p-4 sm:p-6">
+               <Link href="/donate?reason=current_projects" legacyBehavior>
+                   <Button variant="default" size="sm" className="text-xs sm:text-sm">Help Support These Initiatives</Button>
+               </Link>
+           </CardFooter>
+        </Card>
+      </section>
       <section className="bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Join Us on Our Journey" className="text-center" />
         <p className="text-base sm:text-lg text-muted-foreground text-center max-w-3xl mx-auto">
           We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
         </p>
         <div className="text-center mt-6 md:mt-8">
-          <Link href="/donate">
+          <Link href="/donate" legacyBehavior>
             <Button size="lg" variant="default" className="text-sm sm:text-base">Support Our Mission</Button>
           </Link>
         </div>

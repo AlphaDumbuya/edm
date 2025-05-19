@@ -36,12 +36,12 @@ export default function Home() {
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
-            <Link href="/about">
+            <Link href="/about" legacyBehavior>
               <Button size="sm" variant="default" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2">
                 Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
-            <Link href="/donate">
+            <Link href="/donate" legacyBehavior>
               <Button
                 size="sm"
                 variant="ghost"
@@ -53,7 +53,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Core Pillars Section */}
       <section>
         <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry in Sierra Leone" />
@@ -74,7 +73,7 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm">{pillar.description}</p>
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4 border-t flex justify-center">
-                 <Link href={pillar.href}>
+                 <Link href={pillar.href} legacyBehavior>
                     <Button variant="link" className="text-sm">Learn More <ArrowRight className="ml-1 h-3 w-3"/></Button>
                  </Link>
               </CardFooter>
@@ -82,7 +81,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
       {/* Mission Statement & Motto Section */}
       <section className="bg-primary/5 p-4 sm:p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <div className="text-center max-w-3xl mx-auto">
@@ -101,8 +99,6 @@ export default function Home() {
             </div>
         </div>
       </section>
-
-
       {/* Vision Section */}
       <section>
         <SectionTitle title="Our Vision for EDM" subtitle="Building a legacy of faith and service" />
@@ -150,7 +146,7 @@ export default function Home() {
                 </ul>
               </CardContent>
             </Card>
-             <Link href="/the-mission" className="block">
+             <Link href="/the-mission" className="block" legacyBehavior>
                 <Button variant="default" className="w-full md:w-auto text-sm sm:text-base">
                 Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -158,22 +154,21 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Recent News & Updates Preview */}
       <section>
         <SectionTitle title="News & Updates" subtitle="Latest from EDM" />
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Link href={post.slug} className="block">
+              <Link href={post.slug} className="block" legacyBehavior>
                 <div className="relative w-full h-40 sm:h-48">
                 <Image src={post.image} alt={post.title} layout="fill" objectFit="cover" data-ai-hint={post.dataAiHint} />
                 </div>
               </Link>
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug}>{post.title}</Link></h3>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug} legacyBehavior>{post.title}</Link></h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
-                <Link href={post.slug}>
+                <Link href={post.slug} legacyBehavior>
                   <Button variant="outline" className="w-full text-xs sm:text-sm">
                     Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                   </Button>
@@ -183,14 +178,13 @@ export default function Home() {
           ))}
         </div>
         <div className="text-center mt-6 md:mt-8">
-          <Link href="/news">
+          <Link href="/news" legacyBehavior>
             <Button variant="default" className="text-sm sm:text-base">
               All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </Link>
         </div>
       </section>
-
       {/* Call to Action - Donate / Get Involved */}
       <section className="bg-card py-8 sm:py-12 md:py-16 rounded-lg shadow-lg">
         <div className="container mx-auto px-4 text-center">
@@ -199,12 +193,12 @@ export default function Home() {
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
-            <Link href="/donate">
+            <Link href="/donate" legacyBehavior>
               <Button size="sm" variant="default" className="whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2">
                 Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </Button>
             </Link>
-            <Link href="/get-involved">
+            <Link href="/get-involved" legacyBehavior>
               <Button
                 size="sm"
                 variant="ghost"

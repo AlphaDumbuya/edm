@@ -61,7 +61,7 @@ export default async function TestimonyPage({ params }: { params: { slug: string
         <PageHeader title="Testimony Not Found" icon={MessageSquareHeart} />
         <p className="text-center text-muted-foreground">The testimony you are looking for does not exist or may have been moved.</p>
         <div className="text-center mt-8">
-          <Link href="/content">
+          <Link href="/content" legacyBehavior>
             <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub</Button>
           </Link>
         </div>
@@ -72,7 +72,6 @@ export default async function TestimonyPage({ params }: { params: { slug: string
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <PageHeader title={testimony.title} icon={MessageSquareHeart} />
-      
       <div className="flex flex-col sm:flex-row justify-between items-center text-sm text-muted-foreground border-b pb-4 mb-6">
         <div className="flex items-center mb-2 sm:mb-0">
           <UserCircle className="mr-2 h-5 w-5 text-primary" /> Shared by: {testimony.author}
@@ -81,7 +80,6 @@ export default async function TestimonyPage({ params }: { params: { slug: string
           <CalendarDays className="mr-2 h-5 w-5 text-primary" /> Date: {testimony.date}
         </div>
       </div>
-
       {testimony.imageUrl && (
         <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-8">
           <Image
@@ -93,11 +91,9 @@ export default async function TestimonyPage({ params }: { params: { slug: string
           />
         </div>
       )}
-      
       <article className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: testimony.content }} />
-      
       <div className="text-center mt-12">
-        <Link href="/content">
+        <Link href="/content" legacyBehavior>
           <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub</Button>
         </Link>
       </div>

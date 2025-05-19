@@ -15,7 +15,6 @@ export default function AboutPage() {
         subtitle="Evangelism, Discipleship, Missions: Our Story, Foundations, and Structure in Sierra Leone and Oregon"
         icon={Info}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="How It All Started" />
@@ -53,7 +52,6 @@ export default function AboutPage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Our Scripture Foundations" />
         <div className="grid md:grid-cols-3 gap-4 md:gap-6">
@@ -83,7 +81,6 @@ export default function AboutPage() {
           </Card>
         </div>
       </section>
-      
       <section>
         <SectionTitle title="Our Structure & Focus" />
         <Card className="bg-card shadow-lg">
@@ -105,14 +102,13 @@ export default function AboutPage() {
           </CardContent>
         </Card>
       </section>
-
-       <section className="text-center">
-        <Link href="/about/what-we-believe">
-          <Button variant="default" size="lg">
-            What We Believe
-          </Button>
-        </Link>
-      </section>
+      <section className="text-center">
+       <Link href="/about/what-we-believe" legacyBehavior>
+         <Button variant="default" size="lg">
+           What We Believe
+         </Button>
+       </Link>
+     </section>
     </div>
   );
 }

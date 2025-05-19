@@ -16,7 +16,6 @@ export default function DonatePage() {
         subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Ohio partnerships."
         icon={HelpingHand}
       />
-
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="Why Your Gift Matters to EDM" subtitle="Every contribution makes a difference" />
@@ -42,7 +41,6 @@ export default function DonatePage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects in Sierra Leone" />
         <div className="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
@@ -81,7 +79,6 @@ export default function DonatePage() {
           </Card>
         </div>
       </section>
-
       <section className="max-w-2xl mx-auto">
         <SectionTitle title="Make a Secure Donation to EDM" subtitle="Empower our work in Sierra Leone and Ohio today" className="text-center" />
         <p className="text-center text-muted-foreground mb-6">
@@ -90,7 +87,6 @@ export default function DonatePage() {
         <DonationFormWrapper />
          <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is committed to financial transparency.</p>
       </section>
-
       <section id="more-support-options" className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="More Ways to Support EDM" subtitle="Beyond online donations" />
         <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 items-start">
@@ -109,7 +105,7 @@ export default function DonatePage() {
              <p className="text-muted-foreground">
                 For donations via our Ohio partners or other financial inquiries (stocks, planned giving), please contact us.
              </p>
-              <Link href="/contact">
+              <Link href="/contact" legacyBehavior>
                 <Button variant="outline" className="w-full sm:w-auto">Contact for Other Giving <ArrowRight className="ml-2 h-4 w-4"/></Button>
               </Link>
           </div>
@@ -120,25 +116,24 @@ export default function DonatePage() {
               Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Ohio. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
             </p>
             <div className="space-y-3">
-                <Link href="/get-involved/volunteer">
+                <Link href="/get-involved/volunteer" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start"><Users className="mr-2"/>Volunteer Opportunities</Button>
                 </Link>
-                <Link href="/get-involved/prayer">
+                <Link href="/get-involved/prayer" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start"><HelpingHand className="mr-2"/>Join Our Prayer Wall</Button>
                 </Link>
-                <Link href="/get-involved/partner">
+                <Link href="/get-involved/partner" legacyBehavior>
                     <Button variant="outline" className="w-full justify-start"><Users className="mr-2"/>Explore Partnerships</Button>
                 </Link>
             </div>
           </div>
         </div>
       </section>
-
       <section className="text-center py-8">
         <p className="text-muted-foreground mb-4">
           EDM is a registered Christian non-profit organization in Sierra Leone. We are committed to stewarding all resources with integrity and for the advancement of the Gospel.
         </p>
-        <Link href="/financial-transparency">
+        <Link href="/financial-transparency" legacyBehavior>
           <Button variant="link" className="text-primary">
             View Our Financial Transparency Policy
           </Button>

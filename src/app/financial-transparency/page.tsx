@@ -38,7 +38,6 @@ export default function FinancialTransparencyPage() {
         subtitle="Our Commitment to Accountability and Stewardship for work in Sierra Leone and Oregon"
         icon={ShieldCheck}
       />
-
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="Our Pledge to You" />
@@ -59,7 +58,6 @@ export default function FinancialTransparencyPage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Core Financial Principles" className="text-center" />
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -78,7 +76,6 @@ export default function FinancialTransparencyPage() {
           ))}
         </div>
       </section>
-
       <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="How Your Donations Are Utilized" />
         <div className="grid md:grid-cols-2 gap-8 items-center">
@@ -109,7 +106,6 @@ export default function FinancialTransparencyPage() {
             </div>
         </div>
       </section>
-
       <section>
         <SectionTitle title="Access to Financial Information" />
         <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto text-center">
@@ -137,7 +133,7 @@ export default function FinancialTransparencyPage() {
               <p className="text-muted-foreground mb-4">
                 If you have specific questions about our finances or how donations are used for our Sierra Leone and Oregon work, please contact our finance department.
               </p>
-              <Link href="mailto:finance@edm.org">
+              <Link href="mailto:finance@edm.org" legacyBehavior>
                 <Button variant="default">Contact Finance Team</Button>
               </Link>
             </CardContent>
@@ -147,12 +143,11 @@ export default function FinancialTransparencyPage() {
             EDM is a registered 501(c)(3) non-profit organization in Sierra Leone. All financial information is managed in accordance with applicable laws and regulations.
         </p>
       </section>
-
       <section className="text-center py-8">
         <p className="text-lg text-muted-foreground mb-6">
           Your trust and partnership are invaluable to us. Thank you for supporting the mission of EDM in Sierra Leone and Oregon.
         </p>
-        <Link href="/donate">
+        <Link href="/donate" legacyBehavior>
           <Button size="lg" variant="default">
             Support Our Mission
           </Button>

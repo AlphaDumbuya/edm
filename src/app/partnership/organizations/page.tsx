@@ -15,7 +15,6 @@ export default function OrganizationPartnershipPage() {
         subtitle="Collaborate with EDM to bring hope and transformation to Sierra Leone and foster US-SL connections."
         icon={Briefcase}
       />
-
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Align Your Organization with Impact" />
@@ -37,7 +36,6 @@ export default function OrganizationPartnershipPage() {
           />
         </div>
       </section>
-
       <SectionTitle title="Ways Your Organization Can Partner" subtitle="Tailored partnerships for meaningful engagement" />
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
         <Card className="shadow-lg hover:shadow-xl transition-shadow">
@@ -108,21 +106,21 @@ export default function OrganizationPartnershipPage() {
           </CardContent>
         </Card>
       </div>
-
       <section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="Partner Your Organization with EDM" className="text-center" />
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We are eager to collaborate with organizations and businesses that share our vision for transforming communities in Sierra Leone and supporting our US-based initiatives.
         </p>
-        <Link href="mailto:orgpartnerships@edm.org?subject=Organizational/Business%20Partnership%20Inquiry">
+        <Link
+          href="mailto:orgpartnerships@edm.org?subject=Organizational/Business%20Partnership%20Inquiry"
+          legacyBehavior>
           <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Connect with Our Team
           </Button>
         </Link>
       </section>
-
       <div className="text-center mt-8 md:mt-12">
-        <Link href="/get-involved/partner">
+        <Link href="/get-involved/partner" legacyBehavior>
           <Button variant="outline" size="sm" className="text-xs sm:text-sm"><ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview</Button>
         </Link>
       </div>

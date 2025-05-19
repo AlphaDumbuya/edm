@@ -47,7 +47,6 @@ export default function EducationOverviewPage() {
         subtitle="Building futures through Christ-centered education and training in Sierra Leone."
         icon={GraduationCap}
       />
-
       <section className="grid md:grid-cols-2 gap-12 items-center">
         <div>
           <SectionTitle title="Empowering Through Education" />
@@ -68,7 +67,6 @@ export default function EducationOverviewPage() {
           />
         </div>
       </section>
-
       <SectionTitle title="Our Educational Projects & Focus" subtitle="Impacting lives through knowledge and faith" />
       <div className="grid md:grid-cols-2 gap-8">
         {educationProjects.map((project) => (
@@ -86,7 +84,7 @@ export default function EducationOverviewPage() {
               <p className="text-muted-foreground">{project.description}</p>
             </CardContent>
             <CardFooter className="border-t pt-4">
-              <Link href={project.link} className="w-full">
+              <Link href={project.link} className="w-full" legacyBehavior>
                 <Button className="w-full" variant={project.link === '#' ? 'secondary' : 'default'} disabled={project.link === '#'}>
                   {project.link === '#' ? 'Coming Soon' : 'Learn More'} <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
@@ -95,7 +93,6 @@ export default function EducationOverviewPage() {
           </Card>
         ))}
       </div>
-
       <SectionTitle title="Other Educational Focus Areas" subtitle="Investing in holistic Christian education" />
       <div className="grid md:grid-cols-2 gap-8">
         {otherFocusAreas.map((area) => (
