@@ -1,3 +1,5 @@
+// src/app/the-mission/page.tsx
+'use client'; // Add this directive
 
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
@@ -124,12 +126,8 @@ export default function TheMissionPage() {
                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and are expected to arrive soon. These are vital for our outreach efforts. Your prayers and support for their effective deployment are appreciated.</p>
            </CardContent>
            <CardFooter className="p-4 sm:p-6">
-               <Link
-                 href="/donate?reason=general_support"
-                 className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}
-                 asChild
-               >
-                 <Button>Support Our Ongoing Work</Button>
+               <Link href="/donate?reason=general_support" className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}>
+                Support Our Ongoing Work
                </Link>
            </CardFooter>
         </Card>
@@ -144,12 +142,8 @@ export default function TheMissionPage() {
             <ShieldCheck className="h-3 w-3 sm:h-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.
           </p>
           <div className="text-center mt-4 sm:mt-6 md:mt-8">
-            <Link
-              href="/donate"
-              className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base")}
-              asChild
-            >
-              <Button>Support Our Mission</Button>
+            <Link href="/donate" className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base")}>
+              Support Our Mission
             </Link>
           </div>
         </div>

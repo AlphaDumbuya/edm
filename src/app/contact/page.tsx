@@ -1,6 +1,5 @@
-
 // src/app/contact/page.tsx
-'use client';
+'use client'; // Add this directive
 
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
