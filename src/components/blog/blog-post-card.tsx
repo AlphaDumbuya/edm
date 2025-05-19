@@ -31,8 +31,8 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
  <Image
           src={post.imageUrl}
           alt={post.title}
-          layout="fill"
-          objectFit="cover"
+          fill={true}
+          style={{ objectFit: 'cover' }}
           data-ai-hint={post.dataAiHint}
           className="transition-transform duration-300 group-hover:scale-105"
         />

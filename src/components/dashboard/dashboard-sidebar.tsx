@@ -38,7 +38,7 @@ export default function DashboardSidebar() {
         <ul className="space-y-2">
           {navItems.map(item => (
             <li key={item.href}>
-              <Link href={item.href} legacyBehavior>
+              <Link href={item.href}>
                 <Button
                   variant={pathname === item.href ? 'default' : 'ghost'}
                   className={cn(

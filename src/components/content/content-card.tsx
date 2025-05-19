@@ -28,8 +28,8 @@ export default function ContentCard({ item }: ContentCardProps) {
         <Image
           src={item.imageUrl}
           alt={item.title}
-          layout="fill"
-          objectFit="cover"
+ fill={true}
+ style={{ objectFit: 'cover' }}
           data-ai-hint={item.dataAiHint}
         />
         <Badge variant={item.type === 'Article' ? 'default' : 'secondary'} className="absolute top-2 right-2">{item.type}</Badge>
