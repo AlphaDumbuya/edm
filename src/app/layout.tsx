@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/navbar';
+import 'leaflet/dist/leaflet.css';
 import Footer from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
 import { AppProviders } from '@/components/layout/app-providers';
