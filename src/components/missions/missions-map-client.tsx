@@ -2,11 +2,7 @@
 // src/components/missions/missions-map-client.tsx
 'use client';
 
-import { APIProvider, Map, AdvancedMarker, Pin, InfoWindow } from '@vis.gl/react-google-maps';
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Button } from '../ui/button';
-import { Globe } from 'lucide-react';
+import dynamic from 'next/dynamic';
 
 interface MissionLocation {
   id: string;
@@ -30,80 +26,13 @@ interface MissionsMapClientProps {
 }
 
 export default function MissionsMapClient({ mapId = "default_missions_map" }: MissionsMapClientProps) {
-  const [selectedLocation, setSelectedLocation] = useState<MissionLocation | null>(null);
-  const [apiKey, setApiKey] = useState<string | undefined>(undefined);
-  const [mapReady, setMapReady] = useState(false);
-
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-    setApiKey(key);
-    setMapReady(true); 
-  }, []);
-
-  if (!mapReady) {
-    return <div className="flex items-center justify-center h-full bg-muted"><p>Loading map...</p></div>;
-  }
-  
-  if (!apiKey) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full bg-muted p-8 text-center">
-        <Globe className="w-16 h-16 text-destructive mb-4" />
-        <h3 className="text-xl font-semibold text-destructive mb-2">Google Maps API Key Missing</h3>
-        <p className="text-muted-foreground">
-          To display the interactive missions map, a Google Maps API key is required.
-          Please set the <code className="bg-destructive/20 px-1 rounded">NEXT_PUBLIC_GOOGLE_MAPS_API_KEY</code> environment variable.
-        </p>
-        <p className="text-sm text-muted-foreground mt-2">
-          For now, mission locations cannot be displayed visually. Key locations include Freetown, Sierra Leone and Portland, Oregon, USA.
-        </p>
-      </div>
-    );
-  }
+ // Disable SSR (Leaflet requires the browser's window object)
+  const LeafletMap = dynamic(() => import('./LeafletMap'), {
+    ssr: false,
+  });
 
   return (
-    <APIProvider apiKey={apiKey}>
-      <div style={{ height: '100%', width: '100%', position: 'relative' }}>
-        <Map
-          defaultCenter={{ lat: 26.9, lng: -67.9 }} // Centered between SL (8.5, -13.2) and Oregon (45.5, -122.6)
-          defaultZoom={3} 
-          mapId={mapId}
-          gestureHandling={'greedy'}
-          disableDefaultUI={false}
-          className="rounded-lg"
-        >
-          {missionLocations.map((location) => (
-            <AdvancedMarker
-              key={location.id}
-              position={location.position}
-              onClick={() => setSelectedLocation(location)}
-            >
-              <Pin
-                background={location.type === 'EDM Hub' ? 'hsl(var(--primary))' : location.type === 'Partnership Hub' ? 'hsl(var(--accent))' : 'hsl(var(--secondary))'}
-                borderColor={'hsl(var(--background))'}
-                glyphColor={location.type === 'EDM Hub' ? 'hsl(var(--primary-foreground))' : location.type === 'Partnership Hub' ? 'hsl(var(--accent-foreground))' : 'hsl(var(--secondary-foreground))'}
-              />
-            </AdvancedMarker>
-          ))}
-
-          {selectedLocation && (
-            <InfoWindow
-              position={selectedLocation.position}
-              onCloseClick={() => setSelectedLocation(null)}
-              minWidth={250}
-            >
-              <Card className="border-none shadow-none p-0 m-0 max-w-xs">
-                <CardHeader className="p-2">
-                  <CardTitle className="text-md text-primary">{selectedLocation.name}</CardTitle>
-                  <CardDescription className="text-xs">{selectedLocation.country} - {selectedLocation.type}</CardDescription>
-                </CardHeader>
-                <CardContent className="p-2 text-sm text-muted-foreground">
-                  {selectedLocation.description}
-                </CardContent>
-              </Card>
-            </InfoWindow>
-          )}
-        </Map>
-      </div>
-    </APIProvider>
+    // Render the dynamically imported LeafletMap component
+    <LeafletMap />
   );
 }
