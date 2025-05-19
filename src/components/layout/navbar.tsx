@@ -135,8 +135,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            legacyBehavior>
-            <>
+          >
               <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
               <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
             </>
@@ -168,7 +167,7 @@ export default function Navbar() {
                       <Link
                         href={item.href || '#'}
                         className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
-                        legacyBehavior>
+                      >
                         {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                         {item.title}
                       </Link>
@@ -203,16 +202,16 @@ export default function Navbar() {
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard" legacyBehavior><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
+                    <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/dashboard/profile" legacyBehavior><UserCircle className="mr-2 h-4 w-4" />My Profile</Link>
+                    <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" />My Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive">
                     <LogOut className="mr-2 h-4 w-4" />Log Out
                   </DropdownMenuItem>
-                </DropdownMenuContent>
+ </DropdownMenuContent>
               </DropdownMenu>
             ) : (
               <DropdownMenu>
@@ -223,10 +222,10 @@ export default function Navbar() {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem asChild>
-                    <Link href="/auth/login" legacyBehavior><LogIn className="mr-2 h-4 w-4" />Sign In</Link>
+                    <Link href="/auth/login"><LogIn className="mr-2 h-4 w-4" />Sign In</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/auth/signup" legacyBehavior><UserPlus className="mr-2 h-4 w-4" />Register</Link>
+                    <Link href="/auth/signup"><UserPlus className="mr-2 h-4 w-4" />Register</Link>
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -264,7 +263,7 @@ export default function Navbar() {
                                 <Link
                                   href={link.href}
                                   className="block rounded-md py-2 px-3 text-sm hover:bg-accent text-muted-foreground hover:text-accent-foreground"
-                                  legacyBehavior>
+ >
                                   {link.title}
                                 </Link>
                               </SheetClose>
@@ -275,7 +274,7 @@ export default function Navbar() {
                             <Link
                               href={item.href || '#'}
                               className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                              legacyBehavior>
+ >
                               {item.icon && <item.icon className="h-4 w-4 mr-2 text-primary" />}
                               {item.title}
                             </Link>
@@ -294,7 +293,7 @@ export default function Navbar() {
                           <Link
                             href="/dashboard"
                             className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                            legacyBehavior>
+                          >
                             <LayoutDashboard className="mr-2 h-4 w-4 text-primary" /> Dashboard
                           </Link>
                         </SheetClose>
@@ -302,7 +301,7 @@ export default function Navbar() {
                           <Link
                             href="/dashboard/profile"
                             className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                            legacyBehavior>
+                          >
                             <UserCircle className="mr-2 h-4 w-4 text-primary" /> My Profile
                           </Link>
                         </SheetClose>
@@ -327,7 +326,7 @@ export default function Navbar() {
                           <Link
                             href="/auth/signup"
                             className="flex items-center rounded-md py-2 px-3 text-sm font-medium hover:bg-accent text-foreground hover:text-accent-foreground"
-                            legacyBehavior>
+                          >
                             <UserPlus className="mr-2 h-4 w-4 text-primary" /> Register
                           </Link>
                         </SheetClose>
