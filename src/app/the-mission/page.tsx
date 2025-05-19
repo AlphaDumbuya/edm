@@ -2,11 +2,12 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
-import { Target, Users, Globe, HeartHandshake, BookOpenText, Building, Milestone, Eye, TrendingUp, CheckCircle, Map, ShieldCheck, School, Package } from 'lucide-react';
+import { Target, Building, Milestone, TrendingUp, CheckCircle, Map, ShieldCheck, School, Package } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import MissionsMapClient from '@/components/missions/missions-map-client';
+import { cn } from '@/lib/utils';
 
 
 export default function TheMissionPage() {
@@ -45,7 +46,7 @@ export default function TheMissionPage() {
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school), lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
-                <Image src="https://source.unsplash.com/random/600x400/?campus,building,africa,rendering" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
+                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
               </div>
             </CardContent>
           </Card>
@@ -118,8 +119,11 @@ export default function TheMissionPage() {
                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and are expected to arrive soon. These are vital for our outreach efforts. Your prayers and support for their effective deployment are appreciated.</p>
            </CardContent>
            <CardFooter className="p-4 sm:p-6">
-               <Link href="/donate?reason=general_support" asChild>
-                   <Button variant="default" size="sm" className="text-xs sm:text-sm">Support Our Ongoing Work</Button>
+               <Link
+                 href="/donate?reason=general_support"
+                 className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}
+               >
+                 Support Our Ongoing Work
                </Link>
            </CardFooter>
         </Card>
@@ -134,8 +138,11 @@ export default function TheMissionPage() {
             <ShieldCheck className="h-3 w-3 sm:h-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.
           </p>
           <div className="text-center mt-4 sm:mt-6 md:mt-8">
-            <Link href="/donate" asChild>
-              <Button size="sm" className="px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base" variant="default">Support Our Mission</Button>
+            <Link
+              href="/donate"
+              className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base")}
+            >
+              Support Our Mission
             </Link>
           </div>
         </div>
