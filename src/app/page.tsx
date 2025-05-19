@@ -37,10 +37,16 @@ export default function Home() {
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
-            <Link href="/about" className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}>
+            <Link
+              href="/about"
+              className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
+              legacyBehavior>
               Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
-            <Link href="/donate" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}>
+            <Link
+              href="/donate"
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
+              legacyBehavior>
               Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
           </div>
@@ -66,7 +72,10 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm">{pillar.description}</p>
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4 border-t flex justify-center">
-                 <Link href={pillar.href} className={cn(buttonVariants({ variant: "link" }), "text-sm")}>
+                 <Link
+                   href={pillar.href}
+                   className={cn(buttonVariants({ variant: "link" }), "text-sm")}
+                   legacyBehavior>
                     Learn More <ArrowRight className="ml-1 h-3 w-3"/>
                  </Link>
               </CardFooter>
@@ -139,7 +148,10 @@ export default function Home() {
                 </ul>
               </CardContent>
             </Card>
-             <Link href="/the-mission" className={cn(buttonVariants({ variant: "default" }), "w-full md:w-auto text-sm sm:text-base")}>
+             <Link
+               href="/the-mission"
+               className={cn(buttonVariants({ variant: "default" }), "w-full md:w-auto text-sm sm:text-base")}
+               legacyBehavior>
                 Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
              </Link>
           </div>
@@ -151,15 +163,18 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Link href={post.slug} className="block">
+              <Link href={post.slug} className="block" legacyBehavior>
                 <div className="relative w-full h-40 sm:h-48">
                 <Image src={post.image} alt={post.title} layout="fill" objectFit="cover" data-ai-hint={post.dataAiHint} />
                 </div>
               </Link>
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug}>{post.title}</Link></h3>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug} legacyBehavior>{post.title}</Link></h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
-                <Link href={post.slug} className={cn(buttonVariants({ variant: "outline" }), "w-full text-xs sm:text-sm")}>
+                <Link
+                  href={post.slug}
+                  className={cn(buttonVariants({ variant: "outline" }), "w-full text-xs sm:text-sm")}
+                  legacyBehavior>
                   Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Link>
               </CardContent>
@@ -167,7 +182,10 @@ export default function Home() {
           ))}
         </div>
         <div className="text-center mt-6 md:mt-8">
-          <Link href="/news" className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}>
+          <Link
+            href="/news"
+            className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}
+            legacyBehavior>
             All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
           </Link>
         </div>
@@ -180,10 +198,16 @@ export default function Home() {
             Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
-            <Link href="/donate" className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}>
+            <Link
+              href="/donate"
+              className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
+              legacyBehavior>
               Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
-            <Link href="/get-involved" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}>
+            <Link
+              href="/get-involved"
+              className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
+              legacyBehavior>
               Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
           </div>
