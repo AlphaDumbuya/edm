@@ -65,7 +65,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, [fetchSession, pathname]); // Re-fetch session if path changes, could be useful after login/logout redirects
 
   const signUp = async (email: string, password_1: string, name: string) => {
-    setIsLoading(true);
     setError(null);
     try {
       const response = await fetch('/api/auth/signup', {
