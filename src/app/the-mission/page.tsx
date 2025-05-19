@@ -118,7 +118,7 @@ export default function TheMissionPage() {
                <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and are expected to arrive soon. These are vital for our outreach efforts. Your prayers and support for their effective deployment are appreciated.</p>
            </CardContent>
            <CardFooter className="p-4 sm:p-6">
-               <Link href="/donate?reason=general_support" legacyBehavior>
+               <Link href="/donate?reason=general_support" asChild>
                    <Button variant="default" size="sm" className="text-xs sm:text-sm">Support Our Ongoing Work</Button>
                </Link>
            </CardFooter>
@@ -134,7 +134,7 @@ export default function TheMissionPage() {
             <ShieldCheck className="h-3 w-3 sm:h-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.
           </p>
           <div className="text-center mt-4 sm:mt-6 md:mt-8">
-            <Link href="/donate" legacyBehavior>
+            <Link href="/donate" asChild>
               <Button size="sm" className="px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base" variant="default">Support Our Mission</Button>
             </Link>
           </div>
@@ -143,5 +143,3 @@ export default function TheMissionPage() {
     </div>
   );
 }
-
-
