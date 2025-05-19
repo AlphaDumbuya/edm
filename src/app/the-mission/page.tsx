@@ -6,8 +6,13 @@ import { Target, Building, Milestone, TrendingUp, CheckCircle, Map, ShieldCheck,
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button, buttonVariants } from '@/components/ui/button';
-import MissionsMapClient from '@/components/missions/missions-map-client';
 import { cn } from '@/lib/utils';
+import dynamic from 'next/dynamic';
+
+const MissionsMapClient = dynamic(() => import('@/components/missions/missions-map-client'), {
+  ssr: false,
+  loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
+});
 
 
 export default function TheMissionPage() {
@@ -46,7 +51,7 @@ export default function TheMissionPage() {
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school), lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
-                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
+                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
               </div>
             </CardContent>
           </Card>
@@ -122,8 +127,9 @@ export default function TheMissionPage() {
                <Link
                  href="/donate?reason=general_support"
                  className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}
+                 asChild
                >
-                 Support Our Ongoing Work
+                 <Button>Support Our Ongoing Work</Button>
                </Link>
            </CardFooter>
         </Card>
@@ -141,8 +147,9 @@ export default function TheMissionPage() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base")}
+              asChild
             >
-              Support Our Mission
+              <Button>Support Our Mission</Button>
             </Link>
           </div>
         </div>
