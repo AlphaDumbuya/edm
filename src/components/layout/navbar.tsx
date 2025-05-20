@@ -161,46 +161,51 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-              <div>
-                <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-                <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
-              </div>
+          >
+            <div>
+              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+              <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+            </div>
           </Link>
 
           <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
-              {mainNavItems.map((item) => (
-                <NavigationMenuItem key={item.title}>
-                  {'links' in item ? (
-                    <>
-                      <NavigationMenuTrigger className="flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5">
-                        {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />} {item.title}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                          {item.links.map((link) => (
-                            <ListItem key={link.title} title={link.title} href={link.href}>
-                              {link.description}
-                            </ListItem>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </>
-                  ) : (
-                    <NavigationMenuLink asChild>
-                      <Link href="/dashboard" className="flex items-center px-2 py-1.5 text-sm rounded-sm hover:bg-accent">
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
-                  </Link>
-
-                    </NavigationMenuLink>
-                  )}
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-
+  <NavigationMenuList>
+    {mainNavItems.map((item) => (
+      <NavigationMenuItem key={item.title}>
+        {"links" in item ? (
+          <>
+            <NavigationMenuTrigger className="flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5">
+              {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
+              {item.title}
+            </NavigationMenuTrigger>
+            <NavigationMenuContent>
+              <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                {item.links.map((link) => (
+                  <ListItem key={link.title} title={link.title} href={link.href}>
+                    {link.description}
+                  </ListItem>
+                ))}
+              </ul>
+            </NavigationMenuContent>
+          </>
+        ) : (
+          <NavigationMenuLink asChild>
+            <Link
+              href={item.href}
+              className={cn(
+                navigationMenuTriggerStyle(),
+                "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5"
+              )}
+            >
+              {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
+              {item.title}
+            </Link>
+          </NavigationMenuLink>
+        )}
+      </NavigationMenuItem>
+    ))}
+  </NavigationMenuList>
+</NavigationMenu>
           {/* Additional elements (auth, mobile toggle, etc.) would go here */}
         </div>
       </div>
