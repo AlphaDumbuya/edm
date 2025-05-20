@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 const recentNews = [
   { id: 1, title: 'EDM Marifa School: Now Operating!', excerpt: 'Exciting updates from our operational secondary school in Marifa, shaping young lives...', slug: '/news/edm-marifa-school-operational', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG', dataAiHint: 'school children marifa' },
-  { id: 2, title: 'Ministry Van & Equipment Arriving Soon!', excerpt: 'The van and musical instruments shipped from our Oregon partners are expected to arrive in Freetown soon. These tools are vital for our outreach.', slug: '/news/van-equipment-arrival-news', image: 'https://code-alpha-image-gallary.vercel.app/edm-marifa6.JPG', dataAiHint: 'shipping logistics port' },
+  { id: 2, title: 'Ministry Van & Equipment Arriving Soon!', excerpt: 'The van and musical instruments shipped from our Oregon partners are expected to arrive in Freetown soon. These tools are vital for our outreach.', slug: '/news/van-equipment-arrival-news', image: 'https://source.unsplash.com/random/400x250/?shipping,logistics,port,africa', dataAiHint: 'shipping logistics port' },
 ];
 
 export default function Home() {
@@ -40,20 +40,14 @@ export default function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <div className="flex items-center justify-center">
-                Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-              </div>
+            >
+              Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
-              legacyBehavior>
-              <div className="flex items-center justify-center">              
-                <span>
- Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
- </span>              
-              </div>
+            >
+              Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
           </div>
         </div>
@@ -81,10 +75,8 @@ export default function Home() {
                  <Link
                    href={pillar.href}
                    className={cn(buttonVariants({ variant: "link" }), "text-sm")}
-                   legacyBehavior>
-                  <div className="flex items-center justify-center">
+                   >
                     Learn More <ArrowRight className="ml-1 h-3 w-3"/>
-                 </div>
                  </Link>
               </CardFooter>
             </Card>
@@ -159,10 +151,8 @@ export default function Home() {
              <Link
                href="/the-mission"
                className={cn(buttonVariants({ variant: "default" }), "w-full md:w-auto text-sm sm:text-base")}
-               legacyBehavior>
-                <div className="flex items-center justify-center">
-                  Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
-                </div>
+               >
+                Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
           </div>
         </div>
@@ -173,21 +163,19 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
-              <Link href={post.slug} className="block flex-shrink-0" legacyBehavior>
+              <Link href={post.slug} className="block flex-shrink-0">
                 <div className="relative w-full h-40 sm:h-48">
                 <Image src={post.image} alt={post.title} layout="fill" objectFit="cover" data-ai-hint={post.dataAiHint} />
                 </div>
               </Link>
               <CardContent className="p-4 sm:p-6 flex-grow flex flex-col">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug} legacyBehavior>{post.title}</Link></h3>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug}>{post.title}</Link></h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
                 <Link
                   href={post.slug}
                   className={cn(buttonVariants({ variant: "outline" }), "w-full text-xs sm:text-sm mt-auto")}
-                  legacyBehavior>
-                  <div className="flex items-center justify-center">
-                    Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-                 </div>
+                  >
+                  Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                 </Link>
               </CardContent>
             </Card>
@@ -197,10 +185,8 @@ export default function Home() {
           <Link
             href="/news"
             className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}
-            legacyBehavior>
-            <div className="flex items-center justify-center">
-              All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
-           </div>
+            >
+            All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
            </Link>
         </div>
       </section>
@@ -215,21 +201,19 @@ export default function Home() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <div className="flex items-center justify-center">
-                Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-              </div>
+              >
+              Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
             <Link
               href="/get-involved"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <div className="flex items-center justify-center">
-                Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-              </div>            </Link>
+              >
+              Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+            </Link>
           </div>
         </div>
       </section>
     </div>
   );
 }
+
