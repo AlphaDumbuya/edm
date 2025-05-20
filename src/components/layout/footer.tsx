@@ -11,7 +11,7 @@ export default function Footer() {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div>
-            <Link href="/" className="flex items-center gap-2 mb-3 md:mb-4">
+            <Link href="/" className="flex items-center gap-2 mb-3 md:mb-4" legacyBehavior>
               <span>
                 <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
                 <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
@@ -98,7 +98,7 @@ export default function Footer() {
             <Link
               href="/terms-and-conditions"
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
->
+              legacyBehavior>
               <span>
  <FileText size={14} className="mr-1" /> Terms & Conditions</span>
             </Link>
@@ -106,7 +106,7 @@ export default function Footer() {
             <Link
               href="/privacy-policy"
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
->
+              legacyBehavior>
               <span><ShieldAlert size={14} className="mr-1" /> Privacy Policy</span>
             </Link>
           </div>

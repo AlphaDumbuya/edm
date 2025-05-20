@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -8,9 +7,9 @@ import {
   Phone, Target, Users, ExternalLink, BookOpenText, Briefcase, ArrowRight,
   LogIn, UserPlus, LayoutDashboard, LogOut, GraduationCap, School,
 } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -29,10 +28,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
 import * as React from 'react';
 import { useAuth } from '@/contexts/auth-context';
+import { cn } from '@/lib/utils';
 
 interface NavLink {
   href: string;
@@ -44,7 +42,6 @@ interface NavItemWithLinks {
   title: string;
   icon: React.ForwardRefExoticComponent<any>;
   links: NavLink[];
-  href?: undefined; // Ensure href is not present for dropdown items
 }
 
 interface NavItemSingleLink {
@@ -52,7 +49,6 @@ interface NavItemSingleLink {
   icon: React.ForwardRefExoticComponent<any>;
   href: string;
   description: string;
-  links?: undefined; // Ensure links is not present for single link items
 }
 
 type MainNavItem = NavItemWithLinks | NavItemSingleLink;
@@ -62,7 +58,7 @@ const mainNavItems: MainNavItem[] = [
     title: 'About',
     icon: Info,
     links: [
-      { href: '/about', title: 'Our Story & Foundations', description: 'EDM\'s history, beliefs, and structure in Sierra Leone and Oregon.' },
+      { href: '/about', title: 'Our Story & Foundations', description: "EDM's history, beliefs, and structure in Sierra Leone and Oregon." },
       { href: '/about/what-we-believe', title: 'What We Believe', description: 'Our core doctrinal statements.' },
       { href: '/international-board', title: 'International Board', description: 'Meet our leadership team for Sierra Leone and Oregon.' },
     ],
@@ -117,30 +113,29 @@ const mainNavItems: MainNavItem[] = [
   },
 ];
 
-const ListItem = React.forwardRef<
-  React.ElementRef<'a'>,
-  React.ComponentPropsWithoutRef<'a'>
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
+const ListItem = React.forwardRef<React.ElementRef<'a'>, React.ComponentPropsWithoutRef<'a'>>(
+  ({ className, title, children, ...props }, ref) => {
+    return (
+      <li>
+        <NavigationMenuLink asChild>
+          <a
+            ref={ref}
+            className={cn(
+              'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+              className
+            )}
+            {...props}
+          >
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          </a>
+        </NavigationMenuLink>
+      </li>
+    );
+  }
+);
 ListItem.displayName = 'ListItem';
 
 export default function Navbar() {
@@ -151,7 +146,7 @@ export default function Navbar() {
     displayName?: string | null;
     photoURL?: string | null;
     email?: string | null;
-    id?: string; // Added id
+    id?: string;
     [key: string]: any;
   };
 
@@ -164,30 +159,25 @@ export default function Navbar() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            >
-            <div>
- <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
- <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
-            </div>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
           </Link>
 
           <NavigationMenu className="hidden lg:flex">
             <NavigationMenuList>
               {mainNavItems.map((item, index) => {
                 const IconComponent = item.icon;
-                const itemKey = `nav-item-${item.title || 'link'}-${index}`;
+                const itemKey = `nav-item-${item.title}-${index}`;
 
-                if (item.links) {
+                if ('links' in item && item.links) {
                   return (
                     <NavigationMenuItem key={itemKey}>
                       <NavigationMenuTrigger className="flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5">
                         {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />} {item.title}
                       </NavigationMenuTrigger>
                       <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
+                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                           {item.links.map((link) => (
                             <ListItem key={link.title} title={link.title} href={link.href}>
                               {link.description}
@@ -198,192 +188,73 @@ export default function Navbar() {
                     </NavigationMenuItem>
                   );
                 } else {
-                  return (
-                    <NavigationMenuItem key={itemKey}>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href={item.href || '#'}
-                          className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
+                  // Explicitly check if 'href' exists before accessing it
+                  if ('href' in item) {
+ return (
+                      <NavigationMenuItem key={itemKey}>
+                        <NavigationMenuLink asChild>
+                          <Link
+ href={item.href}
+                            className={cn(navigationMenuTriggerStyle(), 'flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5')}
                           >
-                          {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
-                          {item.title}
-                        </Link>
+                            {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />} {item.title}
+ </Link>
                       </NavigationMenuLink>
                     </NavigationMenuItem>
                   );
-                }
+                  }
+ }
               })}
             </NavigationMenuList>
           </NavigationMenu>
 
-          <div className="flex items-center gap-2">
-            <div className="hidden lg:flex items-center gap-2">
-              {loading ? (
-                <div className="h-8 w-20 bg-muted rounded-md animate-pulse"></div>
-              ) : user ? (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9">
-                        <AvatarImage src={user.photoURL || ''} alt={user.name || user.email || 'User'} />
-                        <AvatarFallback>{getInitials(user.name || user.email)}</AvatarFallback>
-                      </Avatar>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none truncate">{user.name || user.email}</p>
-                        <p className="text-xs leading-none text-muted-foreground truncate">
-                          {user.email}
-                        </p>
-                      </div>
-                    </DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard" ><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/dashboard/profile" ><UserCircle className="mr-2 h-4 w-4" /> Profile</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem onClick={signOutAuth}>
-                      <LogOut className="mr-2 h-4 w-4" /> Log out
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              ) : (
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" size="icon" className="h-9 w-9">
-                      <UserCircle className="h-5 w-5" />
-                      <span className="sr-only">User Menu</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-40" align="end" forceMount>
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/login" ><LogIn className="mr-2 h-4 w-4" />Login</Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem asChild>
-                      <Link href="/auth/signup" ><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              )}
-            </div>
-
-            {/* Mobile Menu */}
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="lg:hidden">
-                  {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-                  <span className="sr-only">Toggle menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[340px] bg-card p-0">
-                <ScrollArea className="h-full">
-                  <SheetHeader className="p-4 border-b">
-                    <SheetClose asChild>
-                      <Link href="/" className="flex items-center gap-2" >
-                        <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} />
-                        <SheetTitle className="text-primary text-lg">EDM</SheetTitle>
-                      </Link>
-                    </SheetClose>
-                  </SheetHeader>
-                  <div className="p-4">
-                    {loading && (
-                       <div className="space-y-2">
-                        <div className="h-8 bg-muted rounded-md animate-pulse"></div>
-                        <div className="h-8 bg-muted rounded-md animate-pulse"></div>
-                       </div>
-                    )}
-                    {!loading && user && (
-                      <div className="mb-4 p-3 rounded-md bg-muted/50 border">
-                        <div className="flex items-center gap-2 mb-2">
-                          <Avatar className="h-10 w-10">
-                            <AvatarImage src={user.photoURL || ''} alt={user.name || user.email || 'User'} />
-                            <AvatarFallback>{getInitials(user.name || user.email)}</AvatarFallback>
-                          </Avatar>
-                          <div>
-                             <p className="text-sm font-medium leading-none truncate">{user.name || user.email}</p>
-                             <p className="text-xs leading-none text-muted-foreground truncate">{user.email}</p>
-                          </div>
-                        </div>
-                        <SheetClose asChild><Link
-                          href="/dashboard"
-                          className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}
-                          ><LayoutDashboard className="mr-2"/>Dashboard</Link></SheetClose>
-                        <SheetClose asChild><Link
-                          href="/dashboard/profile"
-                          className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}
-                          ><UserCircle className="mr-2"/>Profile</Link></SheetClose>
-                        <Button variant="outline" size="sm" className="w-full justify-start" onClick={() => { signOutAuth(); setMobileMenuOpen(false);}}><LogOut className="mr-2"/>Log Out</Button>
-                      </div>
-                    )}
-                    {!loading && !user && (
-                      <div className="grid grid-cols-2 gap-2 mb-4">
-                        <SheetClose asChild>
-                          <Link
-                            href="/auth/login"
-                            className={cn(buttonVariants({ variant: "default" }))}
-                          >
-                          </Link>
-                        </SheetClose>
-                        <SheetClose asChild>
-                          <Link
-                            href="/auth/signup"
-                            className={cn(buttonVariants({ variant: "outline" }))}>
-                            <UserPlus className="mr-2 h-4 w-4" />Sign Up
-                          </Link>
-                        </SheetClose>
-                      </div>
-                    )}
-
-                    <nav className="flex flex-col space-y-1">
-                      {mainNavItems.map((item, index) => {
-                        const IconComponent = item.icon;
-                         const itemKey = `mobile-nav-${item.title || 'link'}-${index}`;
-                        if (item.links) {
-                          return (
-                            <div key={itemKey}>
-                              <h4 className="font-semibold text-sm text-muted-foreground px-3 py-2 flex items-center">
-                                {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
-                                {item.title}
-                              </h4>
-                              <ul className="pl-4">
-                                {item.links.map(link => (
-                                  <li key={link.href}>
-                                    <SheetClose asChild>
-                                      <Link
-                                        href={link.href}
-                                        className="block py-2 px-3 text-sm hover:bg-accent rounded-md">
-                                        {link.title}
-                                      </Link>
-                                    </SheetClose>
-                                  </li>
-                                ))}
-                              </ul>
-                            </div>
-                          );
-                        } else {
-                          return (
-                            <SheetClose asChild key={itemKey}>
-                              <Link
-                                href={item.href || '#'}
-                                className="flex items-center py-2 px-3 text-sm hover:bg-accent rounded-md font-medium"
-                                >
-                                {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
-                                {item.title}
-                              </Link>
-                            </SheetClose>
-                          );
-                        }
-                      })}
-                    </nav>
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
+          <div className="hidden lg:flex items-center gap-2">
+            {loading ? (
+              <div className="h-8 w-20 bg-muted rounded-md animate-pulse"></div>
+            ) : user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage src={user.photoURL || ''} alt={user.displayName || user.email || 'User'} />
+                      <AvatarFallback>{getInitials(user.displayName || user.email)}</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-56" align="end" forceMount>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm font-medium leading-none truncate">{user.displayName || user.email}</p>
+                      <p className="text-xs leading-none text-muted-foreground truncate">{user.email}</p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard">
+                      <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard/profile">
+                      <UserCircle className="mr-2 h-4 w-4" /> Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={signOutAuth}>
+                    <LogOut className="mr-2 h-4 w-4" /> Log out
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex gap-2">
+                <Link href="/login" className={cn(buttonVariants({ variant: 'ghost' }), 'text-sm')}>
+                  <LogIn className="mr-1 h-4 w-4" /> Login
+                </Link>
+                <Link href="/register" className={cn(buttonVariants({ variant: 'default' }), 'text-sm')}>
+                  <UserPlus className="mr-1 h-4 w-4" /> Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>
