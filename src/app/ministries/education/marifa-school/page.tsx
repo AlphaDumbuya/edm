@@ -8,7 +8,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const schoolImages = [
-  { src: "https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG", alt: "EDM Marifa School Students and Building", dataAiHint: "students school building" },
+  { src: "https://images.unsplash.com/photo-1747515203898-2df8f083f417?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1phm90b3MtZmVlZHwxNnx8fGVufDB8fHx8fA%3D%3D", alt: "EDM Marifa School Students and Building", dataAiHint: "students school building" },
   { src: "https://code-alpha-image-gallary.vercel.app/edm-marifa2.JPG", alt: "EDM Marifa School Classroom or Event", dataAiHint: "classroom students event" },
   { src: "https://code-alpha-image-gallary.vercel.app/edm-marifa4.JPG", alt: "EDM Marifa School Community", dataAiHint: "school community" },
   { src: "https://code-alpha-image-gallary.vercel.app/edm-marifa3.JPG", alt: "EDM Marifa School Students in Uniform", dataAiHint: "students uniform" },

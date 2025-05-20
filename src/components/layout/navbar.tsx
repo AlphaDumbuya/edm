@@ -166,9 +166,12 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link
             href="/"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+            <div>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+ <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+            </div>
           </Link>
 
           <NavigationMenu className="hidden lg:flex">
@@ -198,7 +201,10 @@ export default function Navbar() {
                   return (
                     <NavigationMenuItem key={itemKey}>
                       <NavigationMenuLink asChild>
-                        <Link href={item.href || '#'} className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}>
+                        <Link
+                          href={item.href || '#'}
+                          className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
+                          >
                           {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                           {item.title}
                         </Link>
@@ -235,10 +241,10 @@ export default function Navbar() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
+                      <Link href="/dashboard" ><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" /> Profile</Link>
+                      <Link href="/dashboard/profile" ><UserCircle className="mr-2 h-4 w-4" /> Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOutAuth}>
@@ -256,10 +262,10 @@ export default function Navbar() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-40" align="end" forceMount>
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/login"><LogIn className="mr-2 h-4 w-4" />Login</Link>
+                      <Link href="/auth/login" ><LogIn className="mr-2 h-4 w-4" />Login</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/signup"><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
+                      <Link href="/auth/signup" ><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -278,7 +284,7 @@ export default function Navbar() {
                 <ScrollArea className="h-full">
                   <SheetHeader className="p-4 border-b">
                     <SheetClose asChild>
-                      <Link href="/" className="flex items-center gap-2">
+                      <Link href="/" className="flex items-center gap-2" >
                         <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} />
                         <SheetTitle className="text-primary text-lg">EDM</SheetTitle>
                       </Link>
@@ -303,26 +309,36 @@ export default function Navbar() {
                              <p className="text-xs leading-none text-muted-foreground truncate">{user.email}</p>
                           </div>
                         </div>
-                        <SheetClose asChild><Link href="/dashboard" className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}><LayoutDashboard className="mr-2"/>Dashboard</Link></SheetClose>
-                        <SheetClose asChild><Link href="/dashboard/profile" className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}><UserCircle className="mr-2"/>Profile</Link></SheetClose>
+                        <SheetClose asChild><Link
+                          href="/dashboard"
+                          className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}
+                          ><LayoutDashboard className="mr-2"/>Dashboard</Link></SheetClose>
+                        <SheetClose asChild><Link
+                          href="/dashboard/profile"
+                          className={cn(buttonVariants({variant: "outline", size:"sm"}), "w-full justify-start mb-1")}
+                          ><UserCircle className="mr-2"/>Profile</Link></SheetClose>
                         <Button variant="outline" size="sm" className="w-full justify-start" onClick={() => { signOutAuth(); setMobileMenuOpen(false);}}><LogOut className="mr-2"/>Log Out</Button>
                       </div>
                     )}
                     {!loading && !user && (
                       <div className="grid grid-cols-2 gap-2 mb-4">
                         <SheetClose asChild>
-                          <Link href="/auth/login" className={cn(buttonVariants({ variant: "default" }))}>
-                            <LogIn className="mr-2 h-4 w-4" />Login
+                          <Link
+                            href="/auth/login"
+                            className={cn(buttonVariants({ variant: "default" }))}
+                          >
                           </Link>
                         </SheetClose>
                         <SheetClose asChild>
-                          <Link href="/auth/signup" className={cn(buttonVariants({ variant: "outline" }))}>
+                          <Link
+                            href="/auth/signup"
+                            className={cn(buttonVariants({ variant: "outline" }))}>
                             <UserPlus className="mr-2 h-4 w-4" />Sign Up
                           </Link>
                         </SheetClose>
                       </div>
                     )}
-                    
+
                     <nav className="flex flex-col space-y-1">
                       {mainNavItems.map((item, index) => {
                         const IconComponent = item.icon;
@@ -338,7 +354,9 @@ export default function Navbar() {
                                 {item.links.map(link => (
                                   <li key={link.href}>
                                     <SheetClose asChild>
-                                      <Link href={link.href} className="block py-2 px-3 text-sm hover:bg-accent rounded-md">
+                                      <Link
+                                        href={link.href}
+                                        className="block py-2 px-3 text-sm hover:bg-accent rounded-md">
                                         {link.title}
                                       </Link>
                                     </SheetClose>
@@ -353,7 +371,7 @@ export default function Navbar() {
                               <Link
                                 href={item.href || '#'}
                                 className="flex items-center py-2 px-3 text-sm hover:bg-accent rounded-md font-medium"
-                              >
+                                >
                                 {IconComponent && <IconComponent className="mr-2 h-4 w-4" />}
                                 {item.title}
                               </Link>
