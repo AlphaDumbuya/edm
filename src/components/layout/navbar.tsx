@@ -161,7 +161,7 @@ export default function Navbar() {
           <Link
             href="/"
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
+            legacyBehavior>
             <div>
               <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
               <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
@@ -196,7 +196,7 @@ export default function Navbar() {
                 navigationMenuTriggerStyle(),
                 "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5"
               )}
-            >
+              legacyBehavior>
               {item.icon && <item.icon className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
               {item.title}
             </Link>
