@@ -10,8 +10,16 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function DashboardPage() {
-  const { user } = useAuth();
+ type ExtendedUser = {
+  displayName?: string | null;
+  email?: string | null;
+  emailVerified?: boolean;
+  metadata?: { creationTime?: string };
+  [key: string]: any;
+ };
+ const { user } = useAuth() as { user: ExtendedUser | null };
 
+ 
   return (
     <div className="space-y-8">
       <PageHeader 
@@ -22,7 +30,7 @@ export default function DashboardPage() {
       <section>
         <SectionTitle title="Quick Access" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/dashboard/profile" legacyBehavior>
+          <Link href="/dashboard/profile">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">My Profile</CardTitle>
@@ -33,7 +41,7 @@ export default function DashboardPage() {
               </CardContent>
             </Card>
           </Link>
-          <Link href="/dashboard/settings" legacyBehavior>
+          <Link href="/dashboard/settings">
              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Account Settings</CardTitle>
@@ -73,13 +81,13 @@ export default function DashboardPage() {
                     </p>
                 )}
                  <p className="text-sm text-muted-foreground mt-2">
-                    Member since: {user?.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'N/A'}
+                    Member since: {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'N/A'}
                 </p>
             </CardContent>
          </Card>
       </section>
       <section className="text-center">
-        <Link href="/" legacyBehavior>
+        <Link href="/">
             <Button variant="outline">Back to Homepage</Button>
         </Link>
       </section>

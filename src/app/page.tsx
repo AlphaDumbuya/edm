@@ -40,16 +40,16 @@ export default function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <span className="flex items-center justify-center"> {/* Added span wrapper */}
+            >
+              <span className="flex items-center justify-center">
                 Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
             </Link>
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
-              legacyBehavior>
-               <span className="flex items-center justify-center"> {/* Added span wrapper */}
+            >
+               <span className="flex items-center justify-center">
                 Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
             </Link>
@@ -79,8 +79,8 @@ export default function Home() {
                  <Link
                    href={pillar.href}
                    className={cn(buttonVariants({ variant: "link" }), "text-sm")}
-                   legacyBehavior>
-                  <span className="flex items-center justify-center"> {/* Added span wrapper */}
+                 >
+                  <span className="flex items-center justify-center">
                     Learn More <ArrowRight className="ml-1 h-3 w-3"/>
                   </span>
                  </Link>
@@ -123,7 +123,7 @@ export default function Home() {
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (now operational), future Bible school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
-                 <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building" alt="EDM Campus Vision" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
+                 <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community" alt="EDM Campus Vision" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
               </div>
             </CardContent>
           </Card>
@@ -157,8 +157,8 @@ export default function Home() {
              <Link
                href="/the-mission"
                className={cn(buttonVariants({ variant: "default" }), "w-full md:w-auto text-sm sm:text-base")}
-               legacyBehavior>
-                <span className="flex items-center justify-center"> {/* Added span wrapper */}
+             >
+                <span className="flex items-center justify-center">
                   Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
                 </span>
              </Link>
@@ -171,19 +171,19 @@ export default function Home() {
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map(post => (
             <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Link href={post.slug} className="block" legacyBehavior>
+              <Link href={post.slug} className="block">
                 <div className="relative w-full h-40 sm:h-48">
                 <Image src={post.image} alt={post.title} layout="fill" objectFit="cover" data-ai-hint={post.dataAiHint} />
                 </div>
               </Link>
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug} legacyBehavior>{post.title}</Link></h3>
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors"><Link href={post.slug}>{post.title}</Link></h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
                 <Link
                   href={post.slug}
                   className={cn(buttonVariants({ variant: "outline" }), "w-full text-xs sm:text-sm")}
-                  legacyBehavior>
-                  <span className="flex items-center justify-center"> {/* Added span wrapper */}
+                >
+                  <span className="flex items-center justify-center">
                     Read More <ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
                   </span>
                 </Link>
@@ -195,8 +195,8 @@ export default function Home() {
           <Link
             href="/news"
             className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}
-            legacyBehavior>
-            <span className="flex items-center justify-center"> {/* Added span wrapper */}
+          >
+            <span className="flex items-center justify-center">
               All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
             </span>
           </Link>
@@ -213,16 +213,16 @@ export default function Home() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <span className="flex items-center justify-center"> {/* Added span wrapper */}
+            >
+              <span className="flex items-center justify-center">
                 Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
             </Link>
             <Link
               href="/get-involved"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              <span className="flex items-center justify-center"> {/* Added span wrapper */}
+            >
+              <span className="flex items-center justify-center">
                 Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
             </Link>
@@ -232,6 +232,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-    
