@@ -157,13 +157,21 @@ export default function Navbar() {
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
-  return (
-    <header className="bg-card shadow-md sticky top-0 z-50">
+
+ return (
+   <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            legacyBehavior
+          >
+            {/* Wrap these two elements in a single div */}
+            <div>
+              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+              <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+            </div>
           </Link>
 
           <div className="hidden lg:flex flex-grow items-center justify-center">
@@ -194,7 +202,10 @@ export default function Navbar() {
                     return (
                       <NavigationMenuItem key={itemKey}>
                         <NavigationMenuLink asChild>
-                          <Link href={item.href} className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}>
+                          <Link
+                            href={item.href}
+                            className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
+                            legacyBehavior>
                             {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                             {item.title}
                           </Link>
@@ -231,10 +242,10 @@ export default function Navbar() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
+                      <Link href="/dashboard" legacyBehavior><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" />Profile</Link>
+                      <Link href="/dashboard/profile" legacyBehavior><UserCircle className="mr-2 h-4 w-4" />Profile</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOutAuth}>
@@ -252,10 +263,10 @@ export default function Navbar() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/login"><LogIn className="mr-2 h-4 w-4" />Login</Link>
+                      <Link href="/auth/login" legacyBehavior><LogIn className="mr-2 h-4 w-4" />Login</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/signup"><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
+                      <Link href="/auth/signup" legacyBehavior><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -272,7 +283,11 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-card text-card-foreground p-0">
                 <SheetHeader className="p-4 border-b">
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                    legacyBehavior>
                     <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
                     <SheetTitle className="text-lg font-bold text-primary">EDM</SheetTitle>
                   </Link>
@@ -291,9 +306,11 @@ export default function Navbar() {
                               href={link.href}
                               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                               onClick={() => setMobileMenuOpen(false)}
-                            >
-                              <ArrowRight className="h-4 w-4 text-primary/70" />
-                              {link.title}
+                              legacyBehavior>
+                              <div>
+                                <ArrowRight className="h-4 w-4 text-primary/70" />
+                                {link.title}
+                              </div>
                             </Link>
                           ))}
                         </div>
@@ -305,9 +322,11 @@ export default function Navbar() {
                           href={item.href}
                           className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                           onClick={() => setMobileMenuOpen(false)}
-                        >
-                          {IconComponent && <IconComponent className="h-5 w-5" />}
-                          {item.title}
+                          legacyBehavior>
+                          <div>
+                            {IconComponent && <IconComponent className="h-5 w-5" />}
+                            {item.title}
+                          </div>
                         </Link>
                       );
                     }
@@ -320,8 +339,10 @@ export default function Navbar() {
                         href="/dashboard"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <LayoutDashboard className="h-5 w-5" /> Dashboard
+                        legacyBehavior>
+                        <div>
+                          <LayoutDashboard className="h-5 w-5" /> Dashboard
+                        </div>
                       </Link>
                       <Button
                         variant="ghost"
@@ -337,15 +358,19 @@ export default function Navbar() {
                         href="/auth/login"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <LogIn className="h-5 w-5" /> Login
+                        legacyBehavior>
+                        <div>
+                          <LogIn className="h-5 w-5" /> Login
+                        </div>
                       </Link>
                       <Link
                         href="/auth/signup"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                      >
-                        <UserPlus className="h-5 w-5" /> Sign Up
+                        legacyBehavior>
+                        <div>
+                          <UserPlus className="h-5 w-5" /> Sign Up
+                        </div>
                       </Link>
                     </>
                   )}
