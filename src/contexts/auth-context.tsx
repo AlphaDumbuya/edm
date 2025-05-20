@@ -36,20 +36,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const router = useRouter();
   const pathname = usePathname();
   const { toast } = useToast(); // Added toast
-
   const fetchSession = useCallback(async () => {
     setLoading(true);
     setError(null);
+    console.log('Fetching session from:', '/api/auth/session'); // Added logging
     try {
       const response = await fetch('/api/auth/session');
+      console.log('Session response status:', response.status, response.statusText); // Added logging
+
       if (response.ok) {
-        const data = await response.json();
-        setUser(data.user || null);
+        const rawResponse = await response.text(); // Added logging
+        console.log('Raw session response:', rawResponse); // Added logging
+        try {
+          const data = JSON.parse(rawResponse); // Manually parse to handle potential errors
+          setUser(data.user || null);
+        } catch (e: any) {
+          console.error('Failed to parse session JSON:', e); // Added error logging
+          setError('Failed to parse session data.');
+          setUser(null);
+        }
       } else {
         setUser(null);
         if (response.status !== 401 && response.status !== 404) {
-          const errData = await response.json();
-          setError(errData.error || 'Failed to fetch session');
+          const rawErrorResponse = await response.text(); // Added logging
+          console.log('Raw error response:', rawErrorResponse); // Added logging
+          try {
+            const errData = JSON.parse(rawErrorResponse); // Manually parse to handle potential errors
+            setError(errData.error || 'Failed to fetch session');
+          } catch (e: any) {
+            console.error('Failed to parse error JSON:', e); // Added error logging
+            setError('Failed to parse error data.');
+          }
         }
       }
     } catch (e: any) {
@@ -60,6 +77,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   }, []);
+
 
   useEffect(() => {
     fetchSession();
