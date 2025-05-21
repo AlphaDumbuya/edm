@@ -2,15 +2,16 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { useRouter, usePathname, ReadonlyURLSearchParams } from 'next/navigation';
+import { useRouter, usePathname, ReadonlyURLSearchParams, useSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
 export interface User {
   id: string;
   email?: string | null;
   name?: string | null;
-  emailVerified?: boolean; // Assuming this might come from session
-  metadata?: { creationTime?: string }; // Example, if you store this
+  emailVerified?: boolean;
+  metadata?: { creationTime?: string };
+  photoURL?: string | null; // Added for consistency with DashboardSidebar
 }
 
 interface AuthContextType {
@@ -18,9 +19,9 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   signUp: (email: string, password_1: string, name: string) => Promise<{ user: User | null; error: string | null }>;
-  signIn: (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => Promise<{ user: User | null; error: string | null }>;
+  signIn: (email: string, password_1: string) => Promise<{ user: User | null; error: string | null }>;
   signOutAuth: () => Promise<{ error: string | null }>;
-  updateUserProfile: (profileData: { name?: string; /* photoURL?: string */ }) => Promise<{ error: string | null }>;
+  updateUserProfile: (profileData: { name?: string; photoURL?: string }) => Promise<{ error: string | null }>;
   sendPasswordReset: (email: string) => Promise<{ error: string | null }>;
   refreshUser: () => Promise<void>;
 }
@@ -33,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
+  const searchParams = useSearchParams(); // Get searchParams for redirect
   const { toast } = useToast();
 
   const fetchSession = useCallback(async () => {
@@ -45,7 +47,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(data.user || null);
       } else {
         setUser(null);
-        // Don't set error for 401/404 on session fetch, it just means no active session
         if (response.status !== 401 && response.status !== 404) {
             let errorMsg = `Failed to fetch session: ${response.statusText}`;
             try {
@@ -66,7 +67,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     fetchSession();
-  }, [fetchSession, pathname]); // Re-fetch session on path change if needed
+  }, [fetchSession, pathname]);
 
   const signUp = async (email: string, password_1: string, name: string) => {
     setLoading(true);
@@ -83,16 +84,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         try {
             const errorData = await response.json();
             errorMsg = errorData.error || errorMsg;
-        } catch (e) { /* ignore if error response isn't json */ }
+        } catch (e) { /* ignore */ }
         setError(errorMsg);
         return { user: null, error: errorMsg };
       }
 
       const data = await response.json();
       setUser(data.user);
-      // Typically, after signup, user is auto-logged in, so redirect to dashboard
       router.push('/dashboard'); 
-      router.refresh(); // Ensures middleware re-evaluates for protected routes
+      router.refresh(); 
       return { user: data.user, error: null };
 
     } catch (e: any) {
@@ -105,7 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signIn = async (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => {
+  const signIn = async (email: string, password_1: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -116,13 +116,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
 
       if (!response.ok) {
-        let errorMsg = `Login failed: ${response.statusText}`;
-        try {
-          const errorData = await response.json();
-          errorMsg = errorData.error || errorMsg;
-        } catch (e) {
-          // If parsing error JSON fails, stick with the status text or a generic message
-          console.warn("Failed to parse error response as JSON during sign-in:", e);
+        let errorMsg = `Login failed.`;
+        if (response.headers.get('content-type')?.includes('application/json')) {
+            try {
+              const errorData = await response.json();
+              errorMsg = errorData.error || `Login failed: ${response.statusText}`;
+            } catch (e) {
+              console.warn("Failed to parse error response as JSON during sign-in:", e);
+              errorMsg = `Login failed with status: ${response.status}`;
+            }
+        } else {
+            errorMsg = `Login failed: ${response.statusText} (${response.status})`;
         }
         setError(errorMsg);
         toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
@@ -133,7 +137,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
-      router.refresh();
+      router.refresh(); // Ensure middleware re-evaluates
       toast({ title: 'Login Successful', description: 'Welcome back!' });
       return { user: data.user, error: null };
 
@@ -169,19 +173,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const updateUserProfile = async (profileData: { name?: string; /* photoURL?: string */ }) => {
+  const updateUserProfile = async (profileData: { name?: string; photoURL?: string }) => {
     if (!user) return { error: 'No user logged in' };
     setError(null);
     setLoading(true);
-    // This needs an API endpoint, e.g., /api/user/profile
-    // For now, this is a placeholder as the endpoint is not implemented
     console.warn("updateUserProfile: API endpoint not implemented. Simulating local update.");
     const updatedUser = { ...user, ...profileData };
-    setUser(updatedUser); 
+    setUser(updatedUser as User); // Cast as User after update
     setLoading(false);
     toast({ title: 'Profile Updated (Locally)', description: 'Your profile information has been saved (simulated).' });
     return { error: null }; 
-    // TODO: Implement /api/user/profile PUT endpoint
   };
   
   const refreshUser = async () => {
@@ -191,36 +192,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const sendPasswordReset = async (email_1: string) => {
      setLoading(true);
      setError(null);
-     // TODO: Implement actual password reset email sending via Brevo
      console.warn("sendPasswordReset: Email sending not implemented yet. Using placeholder logic.");
-     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+     await new Promise(resolve => setTimeout(resolve, 1000)); 
      setLoading(false);
      toast({ title: 'Password Reset Email Sent (Placeholder)', description: 'If an account exists for this email, a password reset link would have been sent.'});
      return { error: null };
-     // Placeholder for Brevo integration
-     // try {
-     //   const response = await fetch('/api/auth/forgot-password', {
-     //     method: 'POST',
-     //     headers: { 'Content-Type': 'application/json' },
-     //     body: JSON.stringify({ email: email_1 }),
-     //   });
-     //   const data = await response.json();
-     //   if (response.ok) {
-     //     toast({ title: 'Password Reset Email Sent', description: data.message || 'If an account exists, a reset link has been sent.'});
-     //     return { error: null };
-     //   } else {
-     //     setError(data.error || 'Failed to send password reset email.');
-     //     toast({ title: 'Error', description: data.error || 'Failed to send password reset email.', variant: 'destructive' });
-     //     return { error: data.error || 'Failed to send password reset email.' };
-     //   }
-     // } catch (e: any) {
-     //   console.error("Password reset API error:", e);
-     //   setError(e.message || 'An error occurred.');
-     //   toast({ title: 'Error', description: e.message || 'An error occurred.', variant: 'destructive' });
-     //   return { error: e.message || 'An error occurred.' };
-     // } finally {
-     //   setLoading(false);
-     // }
   };
 
   return (
