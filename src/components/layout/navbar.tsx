@@ -165,7 +165,7 @@ export default function Navbar() {
          <Link
            href="/"
            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-         >
+>
            <span>
            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
@@ -204,9 +204,11 @@ export default function Navbar() {
                          <Link
                            href={item.href || '#'}
                            className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
-                         >
-                           {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
-                           {item.title}
+>
+                           <span>
+                             {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
+                             {item.title}
+                           </span>
                          </Link>
                        </NavigationMenuLink>
                      </NavigationMenuItem>
@@ -246,7 +248,7 @@ export default function Navbar() {
                    </DropdownMenuItem>
                    <DropdownMenuItem asChild>
                      <Link href="/dashboard/profile">
-                       <span>
+                       <span> {/* This span is necessary to keep the icon and text together as a single child */}
                          <UserCircle className="mr-2 h-4 w-4" />Profile
                        </span>
                      </Link>
@@ -272,7 +274,7 @@ export default function Navbar() {
                    </DropdownMenuItem>
                    <DropdownMenuItem asChild>
                      <Link href="/auth/signup">
-                       <span>
+                       <span> {/* This span is necessary to keep the icon and text together as a single child */}
                          <UserPlus className="mr-2 h-4 w-4" />Sign Up
                        </span>
                      </Link>
@@ -297,7 +299,7 @@ export default function Navbar() {
                      href='/'
                      className="flex items-center gap-2"
                      onClick={() => setMobileMenuOpen(false)}
-                   >
+>
                      <span>
                      <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
                      <SheetTitle className="text-lg font-bold text-primary">EDM</SheetTitle>
@@ -320,8 +322,7 @@ export default function Navbar() {
                              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                              onClick={() => setMobileMenuOpen(false)}
                            >
-                             <ArrowRight className="h-4 w-4 text-primary/70" />
-                             <span>{link.title}</span>
+                             <ArrowRight className="h-4 w-4 text-primary/70" /><span>{link.title}</span>
                            </Link>
                          ))}
                        </div>
@@ -334,8 +335,7 @@ export default function Navbar() {
                          className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                          onClick={() => setMobileMenuOpen(false)}
                        >
-                         {IconComponent && <IconComponent className="h-5 w-5 mr-2" />}
-                         <span>{item.title}</span>
+                         {IconComponent && <IconComponent className="h-5 w-5 mr-2" />}<span>{item.title}</span>
                        </Link>
                      );
                    }
@@ -364,8 +364,7 @@ export default function Navbar() {
                      <Link
                        href="/auth/login"
                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
-                       onClick={() => setMobileMenuOpen(false)}
-                     >
+                       onClick={() => setMobileMenuOpen(false)}>
                        <span>
                          <LogIn className="h-5 w-5 mr-2" /> Login
                        </span>
@@ -373,12 +372,13 @@ export default function Navbar() {
                      <Link
                        href="/auth/signup"
                        className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
-                       onClick={() => setMobileMenuOpen(false)}
-                     >
+                       onClick={() => setMobileMenuOpen(false)}>
                        <span>
                        <UserPlus className="h-5 w-5 mr-2" /> Sign Up
                        </span>
                      </Link>
+
+
                    </>
                  )}
                </nav>
