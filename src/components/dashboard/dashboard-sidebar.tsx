@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Settings, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
-import { Button, buttonVariants } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button'; // Keep Button for the Log Out button
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,7 +17,7 @@ const navItems = [
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
-  const { user, signOutAuth, loading } = useAuth();
+  const { user, signOutAuth, loading: authContextLoading } = useAuth();
 
   const getInitials = (name?: string | null, email?: string | null) => {
     if (name) {
@@ -50,11 +50,11 @@ export default function DashboardSidebar() {
               <Link
                 href={item.href}
                 className={cn(
-                  buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost' }),
+                  buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
                   'w-full justify-start',
                   pathname === item.href 
                     ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90' 
-                    : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground'
+                    : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground'
                 )}
               >
                 <item.icon className="mr-2 h-5 w-5" />
@@ -69,7 +69,7 @@ export default function DashboardSidebar() {
           variant="outline"
           className="w-full justify-start hover:bg-destructive/10 hover:text-destructive border-sidebar-border text-sidebar-foreground"
           onClick={signOutAuth}
-          disabled={loading}
+          disabled={authContextLoading}
         >
           <LogOut className="mr-2 h-5 w-5" />
           Log Out
