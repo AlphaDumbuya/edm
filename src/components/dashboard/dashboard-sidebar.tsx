@@ -3,15 +3,15 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Settings, LogOut, LayoutDashboard, UserCircle } from 'lucide-react'; // Combined User and UserCircle
-import { Button } from '@/components/ui/button';
+import { Settings, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
+import { Button, buttonVariants } from '@/components/ui/button'; // Import buttonVariants
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const navItems = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
-  { href: '/dashboard/profile', label: 'Profile', icon: UserCircle }, // Changed to UserCircle for consistency
+  { href: '/dashboard/profile', label: 'Profile', icon: UserCircle },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
 ];
 
@@ -43,17 +43,16 @@ export default function DashboardSidebar() {
         <ul className="space-y-2">
           {navItems.map(item => (
             <li key={item.href}>
-              <Link href={item.href} asChild>
-                <Button
-                  variant={pathname === item.href ? 'default' : 'ghost'}
-                  className={cn(
-                    'w-full justify-start',
-                    pathname === item.href ? 'bg-primary text-primary-foreground' : 'hover:bg-accent hover:text-accent-foreground'
-                  )}
-                >
-                  <item.icon className="mr-2 h-5 w-5" />
-                  {item.label}
-                </Button>
+              <Link
+                href={item.href}
+                className={cn(
+                  buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost' }),
+                  'w-full justify-start',
+                  pathname === item.href ? 'bg-primary text-primary-foreground' : 'hover:bg-accent hover:text-accent-foreground'
+                )}
+              >
+                <item.icon className="mr-2 h-5 w-5" />
+                {item.label}
               </Link>
             </li>
           ))}

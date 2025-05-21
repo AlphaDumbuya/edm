@@ -9,9 +9,9 @@ export interface User {
   id: string;
   email?: string | null;
   name?: string | null;
-  emailVerified?: boolean;
-  metadata?: { creationTime?: string };
-  photoURL?: string | null; // Added for consistency with DashboardSidebar
+  // emailVerified?: boolean; // Not explicitly handled by current custom auth
+  // metadata?: { creationTime?: string }; // Not explicitly handled by current custom auth
+  photoURL?: string | null; // Placeholder for future
 }
 
 interface AuthContextType {
@@ -34,11 +34,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const searchParams = useSearchParams(); // Get searchParams for redirect
+  const searchParams = useSearchParams();
   const { toast } = useToast();
 
-  const fetchSession = useCallback(async () => {
-    setLoading(true);
+  const fetchSession = useCallback(async (isInitialLoad = false) => {
+    if (!isInitialLoad) setLoading(true); // Only set loading for non-initial fetches if needed
     setError(null);
     try {
       const response = await fetch('/api/auth/session');
@@ -47,17 +47,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(data.user || null);
       } else {
         setUser(null);
-        if (response.status !== 401 && response.status !== 404) {
-            let errorMsg = `Failed to fetch session: ${response.statusText}`;
-            try {
-                const errData = await response.json();
-                errorMsg = errData.error || errorMsg;
-            } catch (e) { /* ignore if error response isn't json */ }
-            setError(errorMsg);
+        if (response.status !== 401) { // Don't set error for "unauthorized" as it's expected if not logged in
+          const errorData = await response.json().catch(() => ({ error: `Failed to fetch session: ${response.statusText}` }));
+          setError(errorData.error || `Failed to fetch session: ${response.statusText}`);
         }
       }
     } catch (e: any) {
-      console.error("Error fetching session:", e);
       setError(e.message || 'An error occurred while fetching session.');
       setUser(null);
     } finally {
@@ -66,8 +61,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    fetchSession();
-  }, [fetchSession, pathname]);
+    fetchSession(true); // Pass true for initial load
+  }, [fetchSession]);
 
   const signUp = async (email: string, password_1: string, name: string) => {
     setLoading(true);
@@ -78,25 +73,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1, name }),
       });
-      
-      if (!response.ok) {
-        let errorMsg = `Signup failed: ${response.statusText}`;
-        try {
-            const errorData = await response.json();
-            errorMsg = errorData.error || errorMsg;
-        } catch (e) { /* ignore */ }
-        setError(errorMsg);
-        return { user: null, error: errorMsg };
-      }
-
       const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error || `Signup failed: ${response.statusText}`);
+        return { user: null, error: data.error || `Signup failed: ${response.statusText}` };
+      }
+      
       setUser(data.user);
-      router.push('/dashboard'); 
-      router.refresh(); 
+      // The middleware should handle redirecting from public routes to dashboard
+      // after the session cookie is set. Forcing a full page refresh can help.
+      router.push('/dashboard');
+      await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+      router.refresh();
       return { user: data.user, error: null };
 
     } catch (e: any) {
-      console.error("Signup API call error:", e);
       const errorMessage = e.message || 'An error occurred during signup.';
       setError(errorMessage);
       return { user: null, error: errorMessage };
@@ -114,30 +106,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1 }),
       });
+      const data = await response.json();
 
       if (!response.ok) {
-        let errorMsg = `Login failed.`;
-        if (response.headers.get('content-type')?.includes('application/json')) {
-            try {
-              const errorData = await response.json();
-              errorMsg = errorData.error || `Login failed: ${response.statusText}`;
-            } catch (e) {
-              console.warn("Failed to parse error response as JSON during sign-in:", e);
-              errorMsg = `Login failed with status: ${response.status}`;
-            }
-        } else {
-            errorMsg = `Login failed: ${response.statusText} (${response.status})`;
-        }
+        const errorMsg = data.error || `Login failed: ${response.statusText}`;
         setError(errorMsg);
         toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
         return { user: null, error: errorMsg };
       }
-
-      const data = await response.json();
+      
       setUser(data.user);
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
-      router.refresh(); // Ensure middleware re-evaluates
+      // Add a small delay before router.refresh() to allow cookie propagation
+      await new Promise(resolve => setTimeout(resolve, 100)); 
+      router.refresh(); 
       toast({ title: 'Login Successful', description: 'Welcome back!' });
       return { user: data.user, error: null };
 
@@ -162,8 +145,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       router.push('/auth/login');
       router.refresh();
       return { error: null };
-    } catch (e: any) {
-      console.error("Logout API error:", e);
+    } catch (e: any)
+{
       const errorMessage = e.message || 'An error occurred during logout.';
       setError(errorMessage);
       toast({ title: 'Logout Failed', description: errorMessage, variant: 'destructive' });
@@ -174,15 +157,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateUserProfile = async (profileData: { name?: string; photoURL?: string }) => {
+    // This will need to be implemented with an API call to your backend
+    // that updates the user in the Neon DB.
     if (!user) return { error: 'No user logged in' };
     setError(null);
     setLoading(true);
-    console.warn("updateUserProfile: API endpoint not implemented. Simulating local update.");
+    console.warn("updateUserProfile: API endpoint not yet implemented. Simulating local update.");
+    // Simulate update for UI feedback
     const updatedUser = { ...user, ...profileData };
-    setUser(updatedUser as User); // Cast as User after update
+    setUser(updatedUser);
     setLoading(false);
-    toast({ title: 'Profile Updated (Locally)', description: 'Your profile information has been saved (simulated).' });
-    return { error: null }; 
+    toast({ title: 'Profile Update (Simulated)', description: 'Your profile has been updated locally.' });
+    // In a real scenario, you'd call refreshUser() after a successful API response.
+    return { error: null };
   };
   
   const refreshUser = async () => {
@@ -190,12 +177,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sendPasswordReset = async (email_1: string) => {
+     // This will need to be implemented with Brevo
      setLoading(true);
      setError(null);
-     console.warn("sendPasswordReset: Email sending not implemented yet. Using placeholder logic.");
+     console.warn("sendPasswordReset: Brevo email sending not implemented yet. Placeholder logic.");
+     // Simulate API call
      await new Promise(resolve => setTimeout(resolve, 1000)); 
      setLoading(false);
-     toast({ title: 'Password Reset Email Sent (Placeholder)', description: 'If an account exists for this email, a password reset link would have been sent.'});
+     toast({ title: 'Password Reset Email (Placeholder)', description: 'If an account exists, a reset link would be sent.'});
      return { error: null };
   };
 
