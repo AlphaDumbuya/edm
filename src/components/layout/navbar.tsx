@@ -7,7 +7,7 @@ import {
   Menu, X, UserCircle, Info, HeartHandshake, DollarSign, Newspaper,
   Phone, Target, Users, ExternalLink, BookOpenText, Briefcase, ArrowRight,
   LogIn, UserPlus, LayoutDashboard, LogOut, GraduationCap, School,
-} from 'lucide-react';
+} from 'lucide-react'; // Added Target and Users
 import React, { useState } from 'react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -67,7 +67,7 @@ const mainNavItems: MainNavItem[] = [
   },
   {
     title: 'The Mission',
-    icon: Target,
+    icon: Target, // This icon was missing from imports
     href: '/the-mission',
     description: 'Our overall mission, vision, and goals for Sierra Leone and Oregon.',
   },
@@ -85,7 +85,7 @@ const mainNavItems: MainNavItem[] = [
   },
   {
     title: 'Get Involved',
-    icon: Users,
+    icon: Users, // This icon was missing from imports
     links: [
       { href: '/get-involved', title: 'Get Involved Overview', description: 'Discover ways to contribute to EDM.' },
       { href: '/get-involved/volunteer', title: 'Volunteer', description: 'Offer your time and skills for Sierra Leone or Oregon support.' },
@@ -144,34 +144,27 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user: rawUser, signOutAuth, loading } = useAuth();
 
+  // Define user with a more specific type if possible, or keep as any for now
   const user = rawUser as {
     displayName?: string | null;
     photoURL?: string | null;
     email?: string | null;
     id?: string;
-    [key: string]: any;
-  };
+    [key: string]: any; // Allows for other properties if they exist
+  } | null; // Add null explicitly if rawUser can be null
 
   const getInitials = (name?: string | null) => {
     if (!name) return 'U';
     return name.split(' ').map(n => n[0]).join('').toUpperCase();
   };
 
-
  return (
    <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link
-            href="/"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
-            legacyBehavior
-          >
-            {/* Wrap these two elements in a single div */}
-            <div>
-              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-              <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
-            </div>
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
           </Link>
 
           <div className="hidden lg:flex flex-grow items-center justify-center">
@@ -179,7 +172,8 @@ export default function Navbar() {
               <NavigationMenuList>
                 {mainNavItems.map((item, index) => {
                   const IconComponent = item.icon;
-                  const itemKey = `nav-item-${item.title || 'link'}-${index}`;
+                  // Using index for the key as a robust alternative, combined with title for readability
+                  const itemKey = `nav-item-${item.title || 'link'}-${index}`; 
 
                   if (item.links) {
                     return (
@@ -188,7 +182,7 @@ export default function Navbar() {
                           {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />} {item.title}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                          <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
                             {item.links.map((link) => (
                               <ListItem key={link.title} title={link.title} href={link.href}>
                                 {link.description}
@@ -198,14 +192,11 @@ export default function Navbar() {
                         </NavigationMenuContent>
                       </NavigationMenuItem>
                     );
-                  } else if (item.href) {
+                  } else {
                     return (
                       <NavigationMenuItem key={itemKey}>
                         <NavigationMenuLink asChild>
-                          <Link
-                            href={item.href}
-                            className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}
-                            legacyBehavior>
+                          <Link href={item.href || '#'} className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 md:text-sm md:px-2 md:py-1.5")}>
                             {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                             {item.title}
                           </Link>
@@ -213,7 +204,6 @@ export default function Navbar() {
                       </NavigationMenuItem>
                     );
                   }
-                  return null; 
                 })}
               </NavigationMenuList>
             </NavigationMenu>
@@ -242,12 +232,13 @@ export default function Navbar() {
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard" legacyBehavior><LayoutDashboard className="mr-2 h-4 w-4" />Dashboard</Link>
+                      <Link href="/dashboard">
+                        <LayoutDashboard className="mr-2 h-4 w-4" />Dashboard
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/dashboard/profile" legacyBehavior><UserCircle className="mr-2 h-4 w-4" />Profile</Link>
+                      <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" />Profile</Link>
                     </DropdownMenuItem>
-                    <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={signOutAuth}>
                       <LogOut className="mr-2 h-4 w-4" /> Log out
                     </DropdownMenuItem>
@@ -263,10 +254,12 @@ export default function Navbar() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/login" legacyBehavior><LogIn className="mr-2 h-4 w-4" />Login</Link>
+                      <Link href="/auth/login">
+                        <LogIn className="mr-2 h-4 w-4" />Login
+                      </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/auth/signup" legacyBehavior><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
+                      <Link href="/auth/signup"><UserPlus className="mr-2 h-4 w-4" />Sign Up</Link>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
@@ -283,14 +276,16 @@ export default function Navbar() {
               </SheetTrigger>
               <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-card text-card-foreground p-0">
                 <SheetHeader className="p-4 border-b">
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                    legacyBehavior>
-                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
-                    <SheetTitle className="text-lg font-bold text-primary">EDM</SheetTitle>
-                  </Link>
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href='/'
+                      className="flex items-center gap-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
+                      <SheetTitle className="text-lg font-bold text-primary">EDM</SheetTitle>
+                    </Link>
+                  </div>
                 </SheetHeader>
                 <nav className="flex flex-col p-4 space-y-2">
                   {mainNavItems.map((item, index) => {
@@ -306,11 +301,9 @@ export default function Navbar() {
                               href={link.href}
                               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                               onClick={() => setMobileMenuOpen(false)}
-                              legacyBehavior>
-                              <div>
-                                <ArrowRight className="h-4 w-4 text-primary/70" />
-                                {link.title}
-                              </div>
+                            >
+                              <ArrowRight className="h-4 w-4 text-primary/70" />
+                              {link.title}
                             </Link>
                           ))}
                         </div>
@@ -322,11 +315,9 @@ export default function Navbar() {
                           href={item.href}
                           className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                           onClick={() => setMobileMenuOpen(false)}
-                          legacyBehavior>
-                          <div>
-                            {IconComponent && <IconComponent className="h-5 w-5" />}
-                            {item.title}
-                          </div>
+                        >
+                          {IconComponent && <IconComponent className="h-5 w-5 mr-2" />}
+                          {item.title}
                         </Link>
                       );
                     }
@@ -339,17 +330,15 @@ export default function Navbar() {
                         href="/dashboard"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                        legacyBehavior>
-                        <div>
-                          <LayoutDashboard className="h-5 w-5" /> Dashboard
-                        </div>
+                      >
+                        <LayoutDashboard className="h-5 w-5 mr-2" /> Dashboard
                       </Link>
                       <Button
                         variant="ghost"
                         className="w-full justify-start gap-3 px-3 py-2 text-sm font-medium text-destructive hover:bg-destructive/10 hover:text-destructive"
                         onClick={() => { signOutAuth(); setMobileMenuOpen(false); }}
                       >
-                        <LogOut className="h-5 w-5" /> Log Out
+                        <LogOut className="h-5 w-5 mr-2" /> Log Out
                       </Button>
                     </>
                   ) : (
@@ -358,19 +347,15 @@ export default function Navbar() {
                         href="/auth/login"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                        legacyBehavior>
-                        <div>
-                          <LogIn className="h-5 w-5" /> Login
-                        </div>
+                      >
+                        <LogIn className="h-5 w-5 mr-2" /> Login
                       </Link>
                       <Link
                         href="/auth/signup"
                         className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
                         onClick={() => setMobileMenuOpen(false)}
-                        legacyBehavior>
-                        <div>
-                          <UserPlus className="h-5 w-5" /> Sign Up
-                        </div>
+                      >
+                        <UserPlus className="h-5 w-5 mr-2" /> Sign Up
                       </Link>
                     </>
                   )}
@@ -381,5 +366,5 @@ export default function Navbar() {
         </div>
       </div>
     </header>
-  );
+ );
 }
