@@ -1,12 +1,12 @@
 // src/app/dashboard/layout.tsx
 'use client';
 
-import React from 'react'; // Removed useEffect as it's no longer used for redirection
+import React from 'react';
 import { useAuth } from '@/contexts/auth-context';
-// import { useRouter } from 'next/navigation'; // No longer needed for client-side redirect
 import DashboardSidebar from '@/components/dashboard/dashboard-sidebar';
-import { Loader2 } from 'lucide-react';
-import Link from 'next/link'; // Import Link for the fallback message
+import { Loader2, LayoutDashboard } from 'lucide-react'; // Added LayoutDashboard
+import Link from 'next/link';
+import { buttonVariants } from '@/components/ui/button'; // Added buttonVariants
 
 export default function DashboardLayout({
   children,
@@ -14,11 +14,6 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { user, loading } = useAuth();
-  // const router = useRouter(); // Router not needed for client-side redirect here anymore
-
-  // The middleware is now the primary guard for protected routes.
-  // The useEffect that previously handled client-side redirection is removed
-  // to prevent potential race conditions with AuthContext state updates.
 
   if (loading) {
     return (
@@ -29,11 +24,6 @@ export default function DashboardLayout({
     );
   }
 
-  // If loading is false and there's still no user,
-  // it implies that even if middleware allowed access (e.g. for a brief moment before session invalidation),
-  // the AuthContext has confirmed no valid client-side session.
-  // Instead of redirecting (which middleware should handle for unauthorized access attempts),
-  // we show a message. This also helps if the user manually clears cookies while on a dashboard page.
   if (!user) {
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-background">
@@ -49,7 +39,6 @@ export default function DashboardLayout({
     );
   }
 
-  // If user exists and loading is false, render the dashboard.
   return (
     <div className="flex min-h-[calc(100vh-var(--header-height,80px))] bg-muted/30">
       <DashboardSidebar />
