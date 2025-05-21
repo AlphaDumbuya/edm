@@ -85,7 +85,7 @@ export default function UserProfileForm() {
     return 'U';
   };
 
-  if (authLoading || !typedUser) {
+  if (authLoading) {
     return (
       <Card className="shadow-xl">
         <CardHeader>
@@ -98,6 +98,20 @@ export default function UserProfileForm() {
     )
   }
 
+  // Handle the case where user is null after loading
+  if (!typedUser) {
+    return (
+      <Card className="shadow-xl">
+        <CardHeader>
+          <CardTitle className="flex items-center text-xl text-destructive"><UserProfileIcon className="mr-2 h-6 w-6" /> Error</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center items-center h-40 text-center text-muted-foreground">
+            Could not load user profile. Please try logging in again.
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className="shadow-xl">
       <CardHeader>
@@ -105,13 +119,13 @@ export default function UserProfileForm() {
         <CardDescription>View and update your personal information.</CardDescription>
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="space-y-6">
-          <div className="flex items-center space-x-4">
+        <CardContent className="space-y-6 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
             <Avatar className="h-24 w-24 border-2 border-primary">
               <AvatarImage src={typedUser?.photoURL || undefined} alt={typedUser?.name || typedUser?.email || 'User'} data-ai-hint="user avatar placeholder" />
               <AvatarFallback>{getInitials(typedUser?.name, typedUser?.email)}</AvatarFallback>
             </Avatar>
-            <div>
+            <div className="text-center sm:text-left">
                 <p className="text-sm text-muted-foreground">Profile Picture</p>
                 <Button type="button" variant="outline" size="sm" className="mt-1" disabled>Change (Uploadthing coming soon)</Button>
             </div>
@@ -141,7 +155,7 @@ export default function UserProfileForm() {
             )}
           </div>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="p-4 sm:p-6 flex justify-end">
           <Button type="submit" className="w-full md:w-auto" disabled={isLoading || authLoading}>
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
             {isLoading ? 'Saving...' : 'Save Changes'}
