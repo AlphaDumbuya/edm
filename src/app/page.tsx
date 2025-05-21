@@ -71,13 +71,13 @@ export default function Home() {
   return (
     <div className="space-y-12 md:space-y-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-16 md:py-24 lg:py-32 rounded-lg shadow-lg overflow-hidden">
+      <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-12 md:py-20 lg:py-28 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1572061486195-d811e12d0a10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHx8MA%3D%3D"
             alt="Evangelism and community work in Sierra Leone"
             fill
-            className="object-cover"
+            className="object-cover opacity-40"
             data-ai-hint="christianity community children"
             priority
           />
@@ -87,7 +87,7 @@ export default function Home() {
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">
             Welcome to <span className="text-primary">EDM</span>
           </h1>
-          <p className="text-md sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
+          <p className="text-sm sm:text-md md:text-lg lg:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
@@ -136,13 +136,13 @@ export default function Home() {
           <SectionTitle title="Our Guiding Words" className="text-center" />
           <div className="mb-6 md:mb-8">
             <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Purpose Statement</h3>
-            <blockquote className="text-lg sm:text-xl italic text-foreground border-l-4 border-primary pl-3 sm:pl-4 py-1 sm:py-2">
+            <blockquote className="text-base sm:text-lg md:text-xl italic text-foreground border-l-4 border-primary pl-3 sm:pl-4 py-1 sm:py-2">
               "In our acts of obedience and worship to God, we will go out and share the good news to the unbelievers, train them to maturity so they will train others."
             </blockquote>
           </div>
           <div>
             <h3 className="text-xl sm:text-2xl font-semibold text-primary mb-1 sm:mb-2">Motto</h3>
-            <p className="text-lg sm:text-xl italic text-foreground">"Love God and love others."</p>
+            <p className="text-base sm:text-lg md:text-xl italic text-foreground">"Love God and love others."</p>
           </div>
         </div>
       </section>
@@ -162,7 +162,7 @@ export default function Home() {
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (now operational), future Bible school, lodging, recreation facilities, a chapel, and more, serving as a beacon for growth, training, and outreach.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
-                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building" alt="EDM Campus Vision" layout="fill" objectFit="cover" data-ai-hint="architectural rendering school campus africa" />
+                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community" alt="EDM Campus Vision" layout="fill" objectFit="cover" data-ai-hint="architectural rendering school campus africa" />
               </div>
             </CardContent>
           </Card>
@@ -189,9 +189,9 @@ export default function Home() {
                   </ul>
                   <h4 className="font-semibold text-foreground mb-1">Long-Term:</h4>
                   <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                    <li>Build additional facilities on the EDM campus (Bible school, retreat center/meeting hall).</li>
+                    <li>Build additional facilities on the EDM campus (Bible school, retreat center/meeting hall, lodging, etc.).</li>
                     <li>Extend the mission outreach to other major cities and regions in Sierra Leone.</li>
-                    <li>Establish key operational departments.</li>
+                    <li>Establish and develop key departments: Education, Training, Outreach/Missions, Development/Projects, Church Ministry, and Building & Maintenance.</li>
                   </ul>
                 </CardContent>
             </Card>
@@ -220,14 +220,15 @@ export default function Home() {
                 </div>
               </Link>
               <CardContent className="p-4 sm:p-6">
-                <h3 className="text-lg sm:text-xl font-semibold mb-2 hover:text-primary transition-colors">
+                <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors">
                   <Link href={item.slug}>{item.title}</Link>
                 </h3>
                 <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
-                <Link href={item.slug} asChild>
-                  <Button variant="outline" className="w-full text-xs sm:text-sm">
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+                <Link 
+                  href={item.slug} 
+                  className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs sm:text-sm")}
+                >
+                  Read More <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </CardContent>
             </Card>
