@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Settings, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
-import { Button, buttonVariants } from '@/components/ui/button'; // Keep Button for the Log Out button
+import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -17,15 +17,21 @@ const navItems = [
 
 export default function DashboardSidebar() {
   const pathname = usePathname();
-  const { user, signOutAuth, loading: authContextLoading } = useAuth();
+  const { user: authUser, signOutAuth, loading: authContextLoading } = useAuth();
+
+  // Use a more specific type for user if available from your User interface
+  const user = authUser as User | null;
+
 
   const getInitials = (name?: string | null, email?: string | null) => {
     if (name) {
       const names = name.split(' ');
-      if (names.length > 1) {
+      if (names.length > 1 && names[0] && names[names.length - 1]) {
         return (names[0][0] + names[names.length - 1][0]).toUpperCase();
       }
-      return name.substring(0, 2).toUpperCase();
+      if (names[0]) {
+        return names[0].substring(0, 2).toUpperCase();
+      }
     }
     if (email) {
       return email[0].toUpperCase();
@@ -77,4 +83,13 @@ export default function DashboardSidebar() {
       </div>
     </aside>
   );
+}
+
+// Assuming User type is defined in AuthContext or globally
+interface User {
+  id: string;
+  email?: string | null;
+  name?: string | null;
+  photoURL?: string | null;
+  // Add any other fields you expect on the user object
 }

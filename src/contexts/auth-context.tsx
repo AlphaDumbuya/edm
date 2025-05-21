@@ -10,6 +10,8 @@ export interface User {
   email?: string | null;
   name?: string | null;
   photoURL?: string | null;
+  emailVerified?: boolean;
+  metadata?: { creationTime?: string };
 }
 
 interface AuthContextType {
@@ -35,27 +37,39 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
-    if (!isInitialLoad) setLoading(true);
+    if (!isInitialLoad) setLoading(true); // Only set loading for subsequent fetches
     setError(null);
+    console.log('[AuthContext] fetchSession called. Initial load:', isInitialLoad);
     try {
       const response = await fetch('/api/auth/session');
+      console.log('[AuthContext] /api/auth/session response status:', response.status);
+      
+      const responseText = await response.text(); // Get text first to avoid JSON parse error on empty/non-JSON body
+      console.log('[AuthContext] /api/auth/session raw response text:', responseText);
+
       if (response.ok) {
-        const data = await response.json();
-        setUser(data.user || null);
+        if (responseText) {
+          const data = JSON.parse(responseText);
+          console.log('[AuthContext] /api/auth/session parsed data:', data);
+          setUser(data.user || null);
+        } else {
+          console.log('[AuthContext] /api/auth/session response was OK but empty. Setting user to null.');
+          setUser(null);
+        }
       } else {
         setUser(null);
-        if (response.status !== 401) {
-          const errorData = await response.json().catch(() => ({ error: `Failed to fetch session: ${response.statusText}` }));
-          setError(errorData.error || `Failed to fetch session: ${response.statusText}`);
-        }
+        console.error(`[AuthContext] Error fetching session. Status: ${response.status}, Text: ${responseText}`);
+        setError(`Failed to fetch session: ${response.statusText} - ${responseText.substring(0,100)}`);
       }
     } catch (e: any) {
+      console.error('[AuthContext] Exception in fetchSession:', e.message, e.stack);
       setError(e.message || 'An error occurred while fetching session.');
       setUser(null);
     } finally {
       setLoading(false);
+      console.log('[AuthContext] fetchSession finished. Loading set to false. User state:', user);
     }
-  }, []);
+  }, [user]); // Added user to dependency array for logging current state, though fetchSession typically doesn't depend on it.
 
   useEffect(() => {
     fetchSession(true);
@@ -80,7 +94,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       toast({ title: 'Signup Successful', description: 'Welcome! You are now logged in.' });
       router.push('/dashboard');
-      await new Promise(resolve => setTimeout(resolve, 50)); // Short delay
+      await new Promise(resolve => setTimeout(resolve, 150)); 
       router.refresh();
       return { user: data.user, error: null };
 
@@ -102,34 +116,45 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1 }),
       });
-      const data = await response.json();
+      
+      const responseText = await response.text();
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (jsonError: any) {
+        console.error("signIn: Failed to parse JSON response from /api/auth/login", jsonError.message, response.status, response.statusText, "Response text:", responseText);
+        const errorMsg = `Login failed: Server returned an invalid response (status: ${response.status}). Check server logs.`;
+        setError(errorMsg);
+        toast({ title: 'Login Failed', description: 'An unexpected error occurred. Please try again.', variant: 'destructive' });
+        setLoading(false);
+        return { user: null, error: errorMsg };
+      }
 
       if (!response.ok) {
         const errorMsg = data.error || `Login failed: ${response.statusText}`;
         setError(errorMsg);
         toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
+        setLoading(false);
         return { user: null, error: errorMsg };
       }
       
-      setUser(data.user); // Update client-side user state
+      setUser(data.user);
       toast({ title: 'Login Successful', description: 'Welcome back!' });
       
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
-      // It's important router.refresh() runs to update server components and middleware state
-      // A small delay can sometimes help ensure cookie propagation before refresh.
-      await new Promise(resolve => setTimeout(resolve, 50)); 
+      await new Promise(resolve => setTimeout(resolve, 150)); 
       router.refresh(); 
+      setLoading(false);
       return { user: data.user, error: null };
 
     } catch (e: any) {
-      console.error("Login API call error:", e);
+      console.error("signIn: API call error:", e);
       const errorMessage = e.message || 'An error occurred during login.';
       setError(errorMessage);
       toast({ title: 'Login Error', description: errorMessage, variant: 'destructive' });
-      return { user: null, error: errorMessage };
-    } finally {
       setLoading(false);
+      return { user: null, error: errorMessage };
     }
   };
 
@@ -158,9 +183,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setLoading(true);
     setError(null);
     try {
-      // TODO: Implement API call to your backend to update user in Neon DB
-      // For now, simulate local update for UI feedback
-      const response = await fetch('/api/auth/profile', {
+      const response = await fetch('/api/auth/profile', { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(profileData),
@@ -171,13 +194,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(data.error || 'Failed to update profile.');
       }
       
-      // Optimistically update user state, or refresh from server
-      setUser(prevUser => prevUser ? { ...prevUser, ...profileData } : null);
-      await refreshUser(); // Re-fetch session to get latest user data
+      await fetchSession();
       toast({ title: 'Profile Updated', description: 'Your profile information has been saved.' });
       return { error: null };
 
-    } catch (e: any) {
+    } catch (e: any)
+{
       const errorMessage = e.message || 'An error occurred while updating profile.';
       setError(errorMessage);
       toast({ title: 'Profile Update Failed', description: errorMessage, variant: 'destructive' });
@@ -188,17 +210,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
   
   const refreshUser = async () => {
+    console.log('[AuthContext] refreshUser called, will call fetchSession.');
     await fetchSession();
   };
 
   const sendPasswordReset = async (email_1: string) => {
      setLoading(true);
      setError(null);
-     console.warn("sendPasswordReset: Brevo email sending not implemented yet. Placeholder logic.");
-     // Simulate API call
+     console.warn("[AuthContext] sendPasswordReset: Brevo email sending not implemented yet. Placeholder logic.");
      await new Promise(resolve => setTimeout(resolve, 1000)); 
      setLoading(false);
-     toast({ title: 'Password Reset Email (Placeholder)', description: 'If an account exists, a reset link would be sent.'});
+     toast({ title: 'Password Reset Email (Placeholder)', description: 'If an account exists, a reset link would be sent. (Brevo not yet integrated)'});
      return { error: null };
   };
 
