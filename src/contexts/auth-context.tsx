@@ -9,9 +9,7 @@ export interface User {
   id: string;
   email?: string | null;
   name?: string | null;
-  // emailVerified?: boolean; // Not explicitly handled by current custom auth
-  // metadata?: { creationTime?: string }; // Not explicitly handled by current custom auth
-  photoURL?: string | null; // Placeholder for future
+  photoURL?: string | null;
 }
 
 interface AuthContextType {
@@ -33,12 +31,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const { toast } = useToast();
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
-    if (!isInitialLoad) setLoading(true); // Only set loading for non-initial fetches if needed
+    if (!isInitialLoad) setLoading(true);
     setError(null);
     try {
       const response = await fetch('/api/auth/session');
@@ -47,7 +44,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(data.user || null);
       } else {
         setUser(null);
-        if (response.status !== 401) { // Don't set error for "unauthorized" as it's expected if not logged in
+        if (response.status !== 401) {
           const errorData = await response.json().catch(() => ({ error: `Failed to fetch session: ${response.statusText}` }));
           setError(errorData.error || `Failed to fetch session: ${response.statusText}`);
         }
@@ -61,7 +58,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   useEffect(() => {
-    fetchSession(true); // Pass true for initial load
+    fetchSession(true);
   }, [fetchSession]);
 
   const signUp = async (email: string, password_1: string, name: string) => {
@@ -81,10 +78,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
       
       setUser(data.user);
-      // The middleware should handle redirecting from public routes to dashboard
-      // after the session cookie is set. Forcing a full page refresh can help.
+      toast({ title: 'Signup Successful', description: 'Welcome! You are now logged in.' });
       router.push('/dashboard');
-      await new Promise(resolve => setTimeout(resolve, 100)); // Small delay
+      await new Promise(resolve => setTimeout(resolve, 50)); // Short delay
       router.refresh();
       return { user: data.user, error: null };
 
@@ -115,17 +111,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { user: null, error: errorMsg };
       }
       
-      setUser(data.user);
+      setUser(data.user); // Update client-side user state
+      toast({ title: 'Login Successful', description: 'Welcome back!' });
+      
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
-      // Add a small delay before router.refresh() to allow cookie propagation
-      await new Promise(resolve => setTimeout(resolve, 100)); 
+      // It's important router.refresh() runs to update server components and middleware state
+      // A small delay can sometimes help ensure cookie propagation before refresh.
+      await new Promise(resolve => setTimeout(resolve, 50)); 
       router.refresh(); 
-      toast({ title: 'Login Successful', description: 'Welcome back!' });
       return { user: data.user, error: null };
 
     } catch (e: any) {
-      console.error("Login API call error (e.g., network issue or unparseable response):", e);
+      console.error("Login API call error:", e);
       const errorMessage = e.message || 'An error occurred during login.';
       setError(errorMessage);
       toast({ title: 'Login Error', description: errorMessage, variant: 'destructive' });
@@ -145,8 +143,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       router.push('/auth/login');
       router.refresh();
       return { error: null };
-    } catch (e: any)
-{
+    } catch (e: any) {
       const errorMessage = e.message || 'An error occurred during logout.';
       setError(errorMessage);
       toast({ title: 'Logout Failed', description: errorMessage, variant: 'destructive' });
@@ -157,19 +154,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const updateUserProfile = async (profileData: { name?: string; photoURL?: string }) => {
-    // This will need to be implemented with an API call to your backend
-    // that updates the user in the Neon DB.
     if (!user) return { error: 'No user logged in' };
-    setError(null);
     setLoading(true);
-    console.warn("updateUserProfile: API endpoint not yet implemented. Simulating local update.");
-    // Simulate update for UI feedback
-    const updatedUser = { ...user, ...profileData };
-    setUser(updatedUser);
-    setLoading(false);
-    toast({ title: 'Profile Update (Simulated)', description: 'Your profile has been updated locally.' });
-    // In a real scenario, you'd call refreshUser() after a successful API response.
-    return { error: null };
+    setError(null);
+    try {
+      // TODO: Implement API call to your backend to update user in Neon DB
+      // For now, simulate local update for UI feedback
+      const response = await fetch('/api/auth/profile', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update profile.');
+      }
+      
+      // Optimistically update user state, or refresh from server
+      setUser(prevUser => prevUser ? { ...prevUser, ...profileData } : null);
+      await refreshUser(); // Re-fetch session to get latest user data
+      toast({ title: 'Profile Updated', description: 'Your profile information has been saved.' });
+      return { error: null };
+
+    } catch (e: any) {
+      const errorMessage = e.message || 'An error occurred while updating profile.';
+      setError(errorMessage);
+      toast({ title: 'Profile Update Failed', description: errorMessage, variant: 'destructive' });
+      return { error: errorMessage };
+    } finally {
+      setLoading(false);
+    }
   };
   
   const refreshUser = async () => {
@@ -177,7 +192,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const sendPasswordReset = async (email_1: string) => {
-     // This will need to be implemented with Brevo
      setLoading(true);
      setError(null);
      console.warn("sendPasswordReset: Brevo email sending not implemented yet. Placeholder logic.");
