@@ -2,29 +2,27 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useEffect, useCallback } from 'react';
-import { useRouter, usePathname, ReadonlyURLSearchParams } from 'next/navigation'; // Added ReadonlyURLSearchParams
+import { useRouter, usePathname, ReadonlyURLSearchParams } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
-// This User type should align with what your /api/auth/session returns
-// and what your Prisma User model (selectively) exposes.
 export interface User {
   id: string;
   email?: string | null;
   name?: string | null;
-  // photoURL?: string | null; // Keep if you plan to use Uploadthing for this
-  // Add other fields as needed, e.g., roles
+  emailVerified?: boolean; // Assuming this might come from session
+  metadata?: { creationTime?: string }; // Example, if you store this
 }
 
 interface AuthContextType {
   user: User | null;
-  loading: boolean; // Indicates loading of initial auth state
+  loading: boolean;
   error: string | null;
   signUp: (email: string, password_1: string, name: string) => Promise<{ user: User | null; error: string | null }>;
-  signIn: (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => Promise<{ user: User | null; error: string | null }>; // Added searchParams
+  signIn: (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => Promise<{ user: User | null; error: string | null }>;
   signOutAuth: () => Promise<{ error: string | null }>;
   updateUserProfile: (profileData: { name?: string; /* photoURL?: string */ }) => Promise<{ error: string | null }>;
   sendPasswordReset: (email: string) => Promise<{ error: string | null }>;
-  refreshUser: () => Promise<void>; // To manually re-fetch session
+  refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,38 +33,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const pathname = usePathname();
-  const { toast } = useToast(); // Added toast
+  const { toast } = useToast();
+
   const fetchSession = useCallback(async () => {
     setLoading(true);
     setError(null);
-    console.log('Fetching session from:', '/api/auth/session'); // Added logging
     try {
       const response = await fetch('/api/auth/session');
-      console.log('Session response status:', response.status, response.statusText); // Added logging
-
       if (response.ok) {
-        const rawResponse = await response.text(); // Added logging
-        console.log('Raw session response:', rawResponse); // Added logging
-        try {
-          const data = JSON.parse(rawResponse); // Manually parse to handle potential errors
-          setUser(data.user || null);
-        } catch (e: any) {
-          console.error('Failed to parse session JSON:', e); // Added error logging
-          setError('Failed to parse session data.');
-          setUser(null);
-        }
+        const data = await response.json();
+        setUser(data.user || null);
       } else {
         setUser(null);
+        // Don't set error for 401/404 on session fetch, it just means no active session
         if (response.status !== 401 && response.status !== 404) {
-          const rawErrorResponse = await response.text(); // Added logging
-          console.log('Raw error response:', rawErrorResponse); // Added logging
-          try {
-            const errData = JSON.parse(rawErrorResponse); // Manually parse to handle potential errors
-            setError(errData.error || 'Failed to fetch session');
-          } catch (e: any) {
-            console.error('Failed to parse error JSON:', e); // Added error logging
-            setError('Failed to parse error data.');
-          }
+            let errorMsg = `Failed to fetch session: ${response.statusText}`;
+            try {
+                const errData = await response.json();
+                errorMsg = errData.error || errorMsg;
+            } catch (e) { /* ignore if error response isn't json */ }
+            setError(errorMsg);
         }
       }
     } catch (e: any) {
@@ -78,10 +64,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-
   useEffect(() => {
     fetchSession();
-  }, [fetchSession, pathname]);
+  }, [fetchSession, pathname]); // Re-fetch session on path change if needed
 
   const signUp = async (email: string, password_1: string, name: string) => {
     setLoading(true);
@@ -92,24 +77,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1, name }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        setUser(data.user);
-        return { user: data.user, error: null };
-      } else {
-        setError(data.error || 'Signup failed');
-        return { user: null, error: data.error || 'Signup failed' };
+      
+      if (!response.ok) {
+        let errorMsg = `Signup failed: ${response.statusText}`;
+        try {
+            const errorData = await response.json();
+            errorMsg = errorData.error || errorMsg;
+        } catch (e) { /* ignore if error response isn't json */ }
+        setError(errorMsg);
+        return { user: null, error: errorMsg };
       }
+
+      const data = await response.json();
+      setUser(data.user);
+      // Typically, after signup, user is auto-logged in, so redirect to dashboard
+      router.push('/dashboard'); 
+      router.refresh(); // Ensures middleware re-evaluates for protected routes
+      return { user: data.user, error: null };
+
     } catch (e: any) {
-      console.error("Signup API error:", e);
-      setError(e.message || 'An error occurred during signup.');
-      return { user: null, error: e.message || 'An error occurred during signup.' };
+      console.error("Signup API call error:", e);
+      const errorMessage = e.message || 'An error occurred during signup.';
+      setError(errorMessage);
+      return { user: null, error: errorMessage };
     } finally {
       setLoading(false);
     }
   };
 
-  const signIn = async (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => { // Added searchParams
+  const signIn = async (email: string, password_1: string, searchParams?: ReadonlyURLSearchParams | null) => {
     setLoading(true);
     setError(null);
     try {
@@ -118,21 +114,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1 }),
       });
-      const data = await response.json();
-      if (response.ok) {
-        setUser(data.user);
-        const redirectUrl = searchParams?.get('redirect') || '/dashboard'; // Handle redirect
-        router.push(redirectUrl);
-        router.refresh();
-        return { user: data.user, error: null };
-      } else {
-        setError(data.error || 'Login failed');
-        return { user: null, error: data.error || 'Login failed' };
+
+      if (!response.ok) {
+        let errorMsg = `Login failed: ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          errorMsg = errorData.error || errorMsg;
+        } catch (e) {
+          // If parsing error JSON fails, stick with the status text or a generic message
+          console.warn("Failed to parse error response as JSON during sign-in:", e);
+        }
+        setError(errorMsg);
+        toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
+        return { user: null, error: errorMsg };
       }
+
+      const data = await response.json();
+      setUser(data.user);
+      const redirectUrl = searchParams?.get('redirect') || '/dashboard';
+      router.push(redirectUrl);
+      router.refresh();
+      toast({ title: 'Login Successful', description: 'Welcome back!' });
+      return { user: data.user, error: null };
+
     } catch (e: any) {
-      console.error("Login API error:", e);
-      setError(e.message || 'An error occurred during login.');
-      return { user: null, error: e.message || 'An error occurred during login.' };
+      console.error("Login API call error (e.g., network issue or unparseable response):", e);
+      const errorMessage = e.message || 'An error occurred during login.';
+      setError(errorMessage);
+      toast({ title: 'Login Error', description: errorMessage, variant: 'destructive' });
+      return { user: null, error: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -150,9 +160,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return { error: null };
     } catch (e: any) {
       console.error("Logout API error:", e);
-      setError(e.message || 'An error occurred during logout.');
-      toast({ title: 'Logout Failed', description: e.message || 'An error occurred.', variant: 'destructive' });
-      return { error: e.message || 'An error occurred during logout.' };
+      const errorMessage = e.message || 'An error occurred during logout.';
+      setError(errorMessage);
+      toast({ title: 'Logout Failed', description: errorMessage, variant: 'destructive' });
+      return { error: errorMessage };
     } finally {
       setLoading(false);
     }
@@ -162,30 +173,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return { error: 'No user logged in' };
     setError(null);
     setLoading(true);
-    try {
-      const response = await fetch('/api/user/profile', { // Assuming an API route for profile updates
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
-      });
-      const data = await response.json();
-      if (response.ok) {
-        setUser(data.user); // Update user state with new profile data
-        toast({ title: 'Profile Updated', description: 'Your profile has been successfully updated.' });
-        return { error: null };
-      } else {
-        setError(data.error || 'Profile update failed');
-        toast({ title: 'Update Failed', description: data.error || 'Could not update profile.', variant: 'destructive' });
-        return { error: data.error || 'Profile update failed' };
-      }
-    } catch (e: any) {
-      console.error("Profile update API error:", e);
-      setError(e.message || 'An error occurred during profile update.');
-      toast({ title: 'Update Error', description: e.message || 'An error occurred.', variant: 'destructive' });
-      return { error: e.message || 'An error occurred during profile update.' };
-    } finally {
-      setLoading(false);
-    }
+    // This needs an API endpoint, e.g., /api/user/profile
+    // For now, this is a placeholder as the endpoint is not implemented
+    console.warn("updateUserProfile: API endpoint not implemented. Simulating local update.");
+    const updatedUser = { ...user, ...profileData };
+    setUser(updatedUser); 
+    setLoading(false);
+    toast({ title: 'Profile Updated (Locally)', description: 'Your profile information has been saved (simulated).' });
+    return { error: null }; 
+    // TODO: Implement /api/user/profile PUT endpoint
   };
   
   const refreshUser = async () => {
@@ -195,29 +191,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const sendPasswordReset = async (email_1: string) => {
      setLoading(true);
      setError(null);
-     try {
-       const response = await fetch('/api/auth/forgot-password', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({ email: email_1 }),
-       });
-       const data = await response.json();
-       if (response.ok) {
-         toast({ title: 'Password Reset Email Sent', description: data.message || 'If an account exists, a reset link has been sent.'});
-         return { error: null };
-       } else {
-         setError(data.error || 'Failed to send password reset email.');
-         toast({ title: 'Error', description: data.error || 'Failed to send password reset email.', variant: 'destructive' });
-         return { error: data.error || 'Failed to send password reset email.' };
-       }
-     } catch (e: any) {
-       console.error("Password reset API error:", e);
-       setError(e.message || 'An error occurred.');
-       toast({ title: 'Error', description: e.message || 'An error occurred.', variant: 'destructive' });
-       return { error: e.message || 'An error occurred.' };
-     } finally {
-       setLoading(false);
-     }
+     // TODO: Implement actual password reset email sending via Brevo
+     console.warn("sendPasswordReset: Email sending not implemented yet. Using placeholder logic.");
+     await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+     setLoading(false);
+     toast({ title: 'Password Reset Email Sent (Placeholder)', description: 'If an account exists for this email, a password reset link would have been sent.'});
+     return { error: null };
+     // Placeholder for Brevo integration
+     // try {
+     //   const response = await fetch('/api/auth/forgot-password', {
+     //     method: 'POST',
+     //     headers: { 'Content-Type': 'application/json' },
+     //     body: JSON.stringify({ email: email_1 }),
+     //   });
+     //   const data = await response.json();
+     //   if (response.ok) {
+     //     toast({ title: 'Password Reset Email Sent', description: data.message || 'If an account exists, a reset link has been sent.'});
+     //     return { error: null };
+     //   } else {
+     //     setError(data.error || 'Failed to send password reset email.');
+     //     toast({ title: 'Error', description: data.error || 'Failed to send password reset email.', variant: 'destructive' });
+     //     return { error: data.error || 'Failed to send password reset email.' };
+     //   }
+     // } catch (e: any) {
+     //   console.error("Password reset API error:", e);
+     //   setError(e.message || 'An error occurred.');
+     //   toast({ title: 'Error', description: e.message || 'An error occurred.', variant: 'destructive' });
+     //   return { error: e.message || 'An error occurred.' };
+     // } finally {
+     //   setLoading(false);
+     // }
   };
 
   return (
