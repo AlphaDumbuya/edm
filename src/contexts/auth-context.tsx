@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
       toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-      router.push('/auth/login'); // Redirect to login page
+      router.push('/'); // Redirect to homepage
       // No need for router.refresh() here as middleware will handle the redirect from protected routes if any.
       return { error: null };
     } catch (e: any) {
