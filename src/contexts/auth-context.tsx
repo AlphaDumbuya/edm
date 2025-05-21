@@ -9,9 +9,9 @@ export interface User {
   id: string;
   email?: string | null;
   name?: string | null;
-  photoURL?: string | null;
-  emailVerified?: boolean;
-  metadata?: { creationTime?: string };
+  photoURL?: string | null; // We are not using this yet from custom auth
+  // emailVerified?: boolean; // Not part of our custom session payload yet
+  // metadata?: { creationTime?: string }; // Not part of our custom session payload yet
 }
 
 interface AuthContextType {
@@ -37,15 +37,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { toast } = useToast();
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
-    if (!isInitialLoad) setLoading(true); // Only set loading for subsequent fetches
+    if (!isInitialLoad) setLoading(true);
     setError(null);
     console.log('[AuthContext] fetchSession called. Initial load:', isInitialLoad);
     try {
       const response = await fetch('/api/auth/session');
       console.log('[AuthContext] /api/auth/session response status:', response.status);
       
-      const responseText = await response.text(); // Get text first to avoid JSON parse error on empty/non-JSON body
-      console.log('[AuthContext] /api/auth/session raw response text:', responseText);
+      const responseText = await response.text();
+      console.log('[AuthContext] /api/auth/session raw response text:', responseText.substring(0, 200) + (responseText.length > 200 ? "..." : ""));
 
       if (response.ok) {
         if (responseText) {
@@ -58,8 +58,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } else {
         setUser(null);
-        console.error(`[AuthContext] Error fetching session. Status: ${response.status}, Text: ${responseText}`);
-        setError(`Failed to fetch session: ${response.statusText} - ${responseText.substring(0,100)}`);
+        // Try to parse error if it's JSON
+        try {
+          const errorData = JSON.parse(responseText);
+          console.error(`[AuthContext] Error fetching session. Status: ${response.status}, Error: ${errorData.error || responseText}`);
+          setError(errorData.error || `Failed to fetch session: ${response.statusText}`);
+        } catch (e) {
+          console.error(`[AuthContext] Error fetching session. Status: ${response.status}, Text: ${responseText}`);
+          setError(`Failed to fetch session: ${response.statusText} - ${responseText.substring(0,100)}`);
+        }
       }
     } catch (e: any) {
       console.error('[AuthContext] Exception in fetchSession:', e.message, e.stack);
@@ -67,13 +74,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(null);
     } finally {
       setLoading(false);
-      console.log('[AuthContext] fetchSession finished. Loading set to false. User state:', user);
+      console.log('[AuthContext] fetchSession finished. Loading set to false. Current user state:', user);
     }
-  }, [user]); // Added user to dependency array for logging current state, though fetchSession typically doesn't depend on it.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Removed `user` from deps to avoid loop based on stale closure
+
 
   useEffect(() => {
     fetchSession(true);
-  }, [fetchSession]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // fetchSession is memoized with useCallback
 
   const signUp = async (email: string, password_1: string, name: string) => {
     setLoading(true);
@@ -91,11 +101,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { user: null, error: data.error || `Signup failed: ${response.statusText}` };
       }
       
-      setUser(data.user);
+      setUser(data.user); // Set user state immediately
       toast({ title: 'Signup Successful', description: 'Welcome! You are now logged in.' });
       router.push('/dashboard');
       await new Promise(resolve => setTimeout(resolve, 150)); 
-      router.refresh();
+      router.refresh(); // This should trigger middleware with new cookie
       return { user: data.user, error: null };
 
     } catch (e: any) {
@@ -122,7 +132,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         data = JSON.parse(responseText);
       } catch (jsonError: any) {
-        console.error("signIn: Failed to parse JSON response from /api/auth/login", jsonError.message, response.status, response.statusText, "Response text:", responseText);
         const errorMsg = `Login failed: Server returned an invalid response (status: ${response.status}). Check server logs.`;
         setError(errorMsg);
         toast({ title: 'Login Failed', description: 'An unexpected error occurred. Please try again.', variant: 'destructive' });
@@ -138,18 +147,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         return { user: null, error: errorMsg };
       }
       
-      setUser(data.user);
+      setUser(data.user); // Set user state immediately
       toast({ title: 'Login Successful', description: 'Welcome back!' });
       
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
+      // Adding a delay before router.refresh() to allow cookie to settle and context to potentially update
       await new Promise(resolve => setTimeout(resolve, 150)); 
-      router.refresh(); 
-      setLoading(false);
+      router.refresh(); // This should trigger middleware with new cookie
+      setLoading(false); // Ensure loading is false after navigation attempts
       return { user: data.user, error: null };
 
     } catch (e: any) {
-      console.error("signIn: API call error:", e);
       const errorMessage = e.message || 'An error occurred during login.';
       setError(errorMessage);
       toast({ title: 'Login Error', description: errorMessage, variant: 'destructive' });
@@ -165,8 +174,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await fetch('/api/auth/logout', { method: 'POST' });
       setUser(null);
       toast({ title: 'Logged Out', description: 'You have been successfully logged out.' });
-      router.push('/auth/login');
-      router.refresh();
+      router.push('/auth/login'); // Redirect to login page
+      // No need for router.refresh() here as middleware will handle the redirect from protected routes if any.
       return { error: null };
     } catch (e: any) {
       const errorMessage = e.message || 'An error occurred during logout.';
@@ -177,16 +186,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
     }
   };
-
+  
   const updateUserProfile = async (profileData: { name?: string; photoURL?: string }) => {
     if (!user) return { error: 'No user logged in' };
     setLoading(true);
     setError(null);
     try {
+      // This API route needs to be implemented to update user in Neon DB
       const response = await fetch('/api/auth/profile', { 
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(profileData),
+        body: JSON.stringify({ ...profileData, userId: user.id }), // Send userId for server to identify user
       });
 
       const data = await response.json();
@@ -194,12 +204,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         throw new Error(data.error || 'Failed to update profile.');
       }
       
-      await fetchSession();
+      await fetchSession(); // Refresh user data in context
       toast({ title: 'Profile Updated', description: 'Your profile information has been saved.' });
       return { error: null };
 
-    } catch (e: any)
-{
+    } catch (e: any) {
       const errorMessage = e.message || 'An error occurred while updating profile.';
       setError(errorMessage);
       toast({ title: 'Profile Update Failed', description: errorMessage, variant: 'destructive' });
@@ -209,14 +218,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
   
-  const refreshUser = async () => {
+  const refreshUser = useCallback(async () => {
     console.log('[AuthContext] refreshUser called, will call fetchSession.');
     await fetchSession();
-  };
+  }, [fetchSession]);
 
   const sendPasswordReset = async (email_1: string) => {
      setLoading(true);
      setError(null);
+     // TODO: Implement actual email sending with Brevo via an API route
      console.warn("[AuthContext] sendPasswordReset: Brevo email sending not implemented yet. Placeholder logic.");
      await new Promise(resolve => setTimeout(resolve, 1000)); 
      setLoading(false);
