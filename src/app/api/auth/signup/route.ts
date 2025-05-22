@@ -24,29 +24,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'User creation failed' }, { status: 500 });
     }
 
-    const sessionPayload = {
-      userId: newUser.id,
-      email: newUser.email,
-      name: newUser.name,
-    };
-
-    const encryptedSession = await encrypt(sessionPayload);
-
-    // ✅ Correct usage, with temporary bypass for potential Promise issue
-    (await cookies() as any).set('session', encryptedSession, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: SESSION_MAX_AGE,
-      path: '/',
-      sameSite: 'lax',
-    });
-
+    // Redirect to login page after successful signup, do not set session here
     const { hashedPassword, ...userWithoutPassword } = newUser;
 
-    return NextResponse.json(
-      { message: 'User created successfully', user: userWithoutPassword },
-      { status: 201 }
-    );
+ return NextResponse.redirect(new URL('/auth/login', req.url), { status: 302 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

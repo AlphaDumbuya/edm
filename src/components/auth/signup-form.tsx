@@ -57,13 +57,12 @@ export default function SignupForm() {
     } else {
       toast({
         title: 'Signup Successful',
-        description: 'Welcome! Please check your email to verify your account if applicable. You are now logged in.',
+ description: 'Signup successful. Please log in with your new account.',
       });
-      // Redirect to dashboard or a welcome page
-      router.push('/dashboard'); 
-      router.refresh(); // Ensures middleware re-evaluates for protected routes
+      // Redirect to signin page
+      router.push('/auth/login');
     }
-  };
+ };
 
   return (
     <Card className="w-full max-w-md shadow-xl">

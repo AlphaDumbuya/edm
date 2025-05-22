@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     const encryptedSession = await encrypt(sessionPayload);
 
-    cookies().set('session', encryptedSession, {
+    (await cookies()).set('session', encryptedSession, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: SESSION_MAX_AGE,

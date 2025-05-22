@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 export async function POST() {
   try {
     // Clear the session cookie
-    cookies().set('session', '', {
+    (await cookies()).set('session', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: -1, // Expire the cookie immediately

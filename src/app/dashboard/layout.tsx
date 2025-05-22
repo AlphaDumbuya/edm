@@ -18,7 +18,7 @@ export default function DashboardLayout({
   const [isOpen, setIsOpen] = useState(false); // Sidebar state
   const { user, loading } = useAuth();
 
-  if (loading) {
+ if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
         <Loader2 className="h-12 w-12 animate-spin text-primary" />
@@ -27,7 +27,7 @@ export default function DashboardLayout({
     );
   }
 
-  if (!user) {
+ if (!user) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-background">
         <LayoutDashboard className="h-16 w-16 text-destructive mb-4" />
@@ -42,6 +42,7 @@ export default function DashboardLayout({
     );
   }
 
+  // If loading is false and user exists, render the dashboard
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
       <DashboardHeader isOpen={isOpen} setIsOpen={setIsOpen} />

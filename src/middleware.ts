@@ -14,7 +14,7 @@ export default async function middleware(req: NextRequest) {
   const isPublicRoute = publicRoutes.includes(path);
 
   // 3. Decrypt the session from the cookie
-  const sessionCookie = cookies().get('session')?.value;
+  const sessionCookie = (await cookies()).get('session')?.value;
   console.log('[Middleware] Path:', path);
   console.log('[Middleware] Session cookie value:', sessionCookie ? 'Exists' : 'Does not exist');
   

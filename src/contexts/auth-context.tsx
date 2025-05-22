@@ -34,6 +34,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { toast } = useToast();
+  const searchParams = useSearchParams(); // Moved useSearchParams to the top level
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
     if (!isInitialLoad) setLoading(true);
@@ -93,23 +94,35 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password: password_1, name }),
       });
-      const data = await response.json();
 
-      if (!response.ok) {
-        setError(data.error || `Signup failed: ${response.statusText}`);
-        return { user: null, error: data.error || `Signup failed: ${response.statusText}` };
+      // Check if the response is a redirect (3xx status)
+      if (response.redirected || (response.status >= 300 && response.status < 400)) { // Handles 302 Redirect
+        // Handle successful signup and redirect
+        toast({ title: 'Signup Successful', description: 'Please sign in with your new account.' });
+        // Client-side redirect to login page if API didn't fully handle it
+        router.push('/auth/login');
+        setUser(null); // Ensure user state is null after signup
+        return { user: null, error: null }; // Indicate success
+      } else if (!response.ok) {
+        // Handle API errors if not a redirect or not OK
+        // Handle API errors if not a redirect
+        const data = await response.json();
+        const errorMessage = data.error || `Signup failed: ${response.statusText}`;
+        setError(errorMessage);
+        return { user: null, error: errorMessage };
+      } else { // Handle unexpected non-redirect success responses (shouldn't happen with the current API)
+        // If the API were to somehow return 200 with a user object, handle it here
+        const data = await response.json();
+        setUser(data.user || null);
+        toast({ title: 'Signup Successful', description: 'Please sign in with your new account.' });
+        router.push('/auth/login');
+        return { user: data.user || null, error: null };
       }
-      
-      setUser(data.user); // Set user state immediately
-      toast({ title: 'Signup Successful', description: 'Welcome! You are now logged in.' });
-      router.push('/dashboard');
-      await new Promise(resolve => setTimeout(resolve, 150)); 
-      router.refresh(); // This should trigger middleware with new cookie
-      return { user: data.user, error: null };
 
     } catch (e: any) {
       const errorMessage = e.message || 'An error occurred during signup.';
       setError(errorMessage);
+      toast({ title: 'Signup Failed', description: errorMessage, variant: 'destructive' });
       return { user: null, error: errorMessage };
     } finally {
       setLoading(false);
@@ -148,8 +161,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setUser(data.user); // Set user state immediately
       toast({ title: 'Login Successful', description: 'Welcome back!' });
-      
-      const searchParams = useSearchParams();
+
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
       // Adding a delay before router.refresh() to allow cookie to settle and context to potentially update

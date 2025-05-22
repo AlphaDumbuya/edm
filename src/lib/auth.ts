@@ -10,7 +10,7 @@ export const auth = betterAuth({
   // Configure authentication methods
   emailAndPassword: {
     enabled: true,
-    autoSignIn: true,
+    autoSignIn: false,
     requireEmailVerification: true,
     sendResetPassword: async ({
       user,
