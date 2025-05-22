@@ -6,7 +6,6 @@ import { Suspense } from 'react';
 
 function NotFoundContent() {
   // If you were using useSearchParams(), it would go here
-  // const searchParams = useSearchParams();
   return ( 
     <div className="flex flex-col items-center justify-center min-h-[calc(100vh-10rem)] text-center">
       <Frown className="w-12 h-12 text-primary mb-4" />
