@@ -74,7 +74,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
         <h2 className="text-lg font-semibold text-sidebar-foreground truncate">{user?.name || user?.email || 'User'}</h2>
         <p className="text-xs text-muted-foreground">Member</p>
       </div>
-      <nav className="flex-grow">
+  <nav>
         <ul className="space-y-2">
           {navItems.map(item => (
             <li key={item.href}>

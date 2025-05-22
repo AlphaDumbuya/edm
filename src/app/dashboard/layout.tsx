@@ -47,7 +47,7 @@ export default function DashboardLayout({
       <DashboardHeader isOpen={isOpen} setIsOpen={setIsOpen} />
       <div className="flex flex-1">
         <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
-        <main className="flex-1 p-4 sm:p-6 md:p-8 bg-background overflow-y-auto">
+        <main className="flex-grow flex-1 p-4 sm:p-6 md:p-8 bg-background overflow-y-auto">
           {children}
         </main>
       </div>

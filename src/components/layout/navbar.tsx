@@ -295,7 +295,7 @@ export default function Navbar() {
                   <span className="sr-only">Toggle navigation menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-card">
+              <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-card h-full overflow-y-auto">
                 <SheetHeader className="mb-6 text-left">
                   <SheetTitle>
                     <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
