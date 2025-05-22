@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Link from 'next/link'; // Keep Link for other uses
 import { Button, buttonVariants } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import MissionsMapClient from '@/components/missions/missions-map-client';
 
 export default function TheMissionPage() {
   return (
@@ -100,6 +101,8 @@ export default function TheMissionPage() {
           </CardHeader>
           <CardContent className="p-0">
             {/* Content for future cities/regional impact can go here */}
+            {/* The map will show key locations including EDM Marifa School and areas of future focus */}
+ <MissionsMapClient />
           </CardContent>
            <CardFooter className="p-2 sm:p-3 md:p-4 pt-2 sm:pt-3">
             <p className="text-[10px] sm:text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations including EDM Marifa School and areas of future focus.</p>
