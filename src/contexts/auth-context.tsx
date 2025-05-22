@@ -33,7 +33,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { toast } = useToast();
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
@@ -150,6 +149,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user); // Set user state immediately
       toast({ title: 'Login Successful', description: 'Welcome back!' });
       
+      const searchParams = useSearchParams();
       const redirectUrl = searchParams?.get('redirect') || '/dashboard';
       router.push(redirectUrl);
       // Adding a delay before router.refresh() to allow cookie to settle and context to potentially update
