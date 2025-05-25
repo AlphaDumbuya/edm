@@ -92,14 +92,17 @@ export default function Home() {
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-2 sm:space-x-3">
             <Link
-              href="/about" className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2')}>
+              href="/about"
+              className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2')}
+              legacyBehavior>
               <span>
                 Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
             </Link>
             <Link
               href="/donate"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white')}>
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white')}
+              legacyBehavior>
               <span>
  Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
  </span>
@@ -124,7 +127,9 @@ export default function Home() {
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4 border-t flex justify-center">
                 <Link
-                  href={href} className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}>
+                  href={href}
+                  className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
+                  legacyBehavior>
                   <span>
                     Learn More <ArrowRight className="ml-1 h-3 w-3" />
                   </span>
