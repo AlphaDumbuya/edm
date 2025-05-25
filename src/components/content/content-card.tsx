@@ -45,7 +45,7 @@ export default function ContentCard({ item }: ContentCardProps) {
         <p className="text-sm text-muted-foreground line-clamp-3">{item.excerpt}</p>
       </CardContent>
       <CardFooter className="p-4 border-t">
-        <Link href={item.slug} className="w-full">
+        <Link href={item.slug} className="w-full" legacyBehavior>
           <Button variant="outline" className="w-full">
             Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

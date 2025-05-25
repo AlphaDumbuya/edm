@@ -102,7 +102,7 @@ export default function AboutPage() {
         </Card>
       </section>
       <section className="text-center">
-        <Link href="/about/what-we-believe">
+        <Link href="/about/what-we-believe" legacyBehavior>
           <Button variant="default" size="lg">
             What We Believe
           </Button>

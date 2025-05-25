@@ -170,8 +170,8 @@ export default function Navbar() {
                     </NavigationMenuContent>
                   </>
                 ) : (
-                  <NavigationMenuLink asChild >
-                    <Link href={item.href!} >
+                  <NavigationMenuLink asChild>
+                    <Link href={item.href!} legacyBehavior>
                       {item.title}
                     </Link>
                   </NavigationMenuLink>
@@ -228,10 +228,10 @@ export default function Navbar() {
             </DropdownMenu>
           ) : ( // Render Login and Sign Up buttons when not logged in
             (<>
-              <Link href="/login" legacyBehavior>
+              <Link href="/login">
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link href="/auth/signup" legacyBehavior>
+              <Link href="/auth/signup">
                 <Button variant="default">Sign Up</Button>
               </Link>
             </>)
@@ -256,7 +256,7 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                    legacyBehavior>
+>
                     <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                     <span className="text-lg font-bold">EDM</span>
                   </Link>
@@ -267,10 +267,10 @@ export default function Navbar() {
                   <div key={i} className="space-y-2">
  {item.href && (
  <Link
- href={item.href}
- className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
- onClick={() => setMobileMenuOpen(false)}
- >
+   href={item.href}
+   className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
+   onClick={() => setMobileMenuOpen(false)}
+>
  {item.icon && <item.icon size={18} />}
  {item.title}
  </Link>
@@ -288,7 +288,7 @@ export default function Navbar() {
                                 href={link.href}
                                 className="text-sm hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
-                                legacyBehavior>
+>
                                 {link.title}
                               </Link>
                             </li>

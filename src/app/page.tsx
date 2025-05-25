@@ -95,11 +95,11 @@ export default function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-            >Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Link>
+              ><span>Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></span></Link>
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
-            >Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+              ><span>Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></span>
 
             </Link>
          </div>
@@ -124,8 +124,8 @@ export default function Home() {
                 <Link
                   href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
- > Learn More <ArrowRight className="ml-1 h-3 w-3" />
- </Link>
+                  ><span> Learn More <ArrowRight className="ml-1 h-3 w-3" /></span>
+ </Link> // This link was already updated in a previous turn. No diff needed here.
               </CardFooter>
             </Card>
           ))}
@@ -200,8 +200,8 @@ export default function Home() {
              <Link
                href="/the-mission"
                className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full md:w-auto text-sm sm:text-base")}
- >Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
- </Link>
+               ><span>Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" /></span>
+ </Link> // This link was already updated in a previous turn. No diff needed here.
           </div>
         </div>
       </section>
@@ -225,11 +225,11 @@ export default function Home() {
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors">
  <Link href={item.slug} legacyBehavior>{item.title}</Link>
-                </h3>                <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
+                </h3> <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
                 <Link
                   href={item.slug}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs sm:text-sm")}
- >Read More <ArrowRight className="ml-2 h-4 w-4" /> </Link>
+                  ><span>Read More <ArrowRight className="ml-2 h-4 w-4" /> </span></Link>
               </CardContent>
             </Card>
           ))}
@@ -237,9 +237,8 @@ export default function Home() {
         <div className="text-center mt-6 md:mt-8">
           <Link
             href="/news"
-            className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}
- >All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
- </Link>
+            className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}><span>All News & Updates <ArrowRight className="ml-2 h-4 w-4" /></span>
+ </Link> // This link was already updated in a previous turn. No diff needed here.
         </div>
       </section>
       {/* Partner CTA Section */}
@@ -253,13 +252,12 @@ export default function Home() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
- >Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /> </Link>
+              ><span>Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /> </span></Link>
             <Link
               href="/get-involved"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
- >Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-
-            </Link>
+              ><span>Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></span>
+            </Link> // This link was already updated in a previous turn. No diff needed here.
           </div>
         </div>
       </section>

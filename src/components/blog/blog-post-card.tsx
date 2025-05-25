@@ -27,7 +27,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
       <Link
         href={`/news/${post.slug}`}
         className="block relative w-full h-48 sm:h-56 group"
-      >
+        legacyBehavior>
  <Image
           src={post.imageUrl}
           alt={post.title}
@@ -38,7 +38,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         />
       </Link>
       <CardHeader className="p-3 sm:p-4">
- <Link href={`/news/${post.slug}`}>
+ <Link href={`/news/${post.slug}`} legacyBehavior>
  <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
       </Link>
         <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
@@ -57,7 +57,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         )}
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
- <Link href={`/news/${post.slug}`} className="w-full">
+ <Link href={`/news/${post.slug}`} className="w-full" legacyBehavior>
  <Button variant="outline" className="w-full text-xs sm:text-sm">
  Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
