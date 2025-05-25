@@ -1,5 +1,6 @@
 "use client";
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { getEventById } from "@/lib/db/events";
 import { updateEventAction } from "@/app/admin/events/actions";
@@ -119,9 +120,10 @@ export default function EditEventPage({ params }: EditEventPageProps) {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
           />
         </div>
-        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-          Update Event
-        </button>
+ <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Update Event</button>
+ <Link href="/admin/events">
+          Back to Events
+ </Link>
       </form>
     </div>
   );

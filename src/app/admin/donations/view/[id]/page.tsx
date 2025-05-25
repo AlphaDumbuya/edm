@@ -51,7 +51,7 @@ export default function DonationDetailsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-4">Donation Details: {donation.id}</h1>
+      <h1 className="text-2xl font-semibold mb-4">Donation Details: {donation.id}</h1>git
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>

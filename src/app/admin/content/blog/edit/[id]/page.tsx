@@ -10,8 +10,6 @@ import { Input } from '@/components/ui/input'; // Keep Input
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { updateBlogPostAction } from '@/app/admin/content/blog/actions'; // Import the server action
-import ReactQuill from 'react-quill'; // Import ReactQuill
-import 'react-quill/dist/quill.snow.css'; // Import styles
 
 interface BlogPostData {
   id: string;

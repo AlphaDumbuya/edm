@@ -99,8 +99,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
                         ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
                         : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground'
                     )}
-                    legacyBehavior>
-                    <item.icon className="mr-2 h-5 w-5" />
+                  >
                     {item.label}
                   </Link>
                 </li>

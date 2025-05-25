@@ -86,7 +86,7 @@ export default function ViewPrayerRequestPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-4">Prayer Request Details: {prayerRequest.id}</h1>
-
+ 
       <div className="mb-4">
         <h2 className="text-xl font-medium">{prayerRequest.title}</h2>
         {/* Replace p with ReactQuill */}

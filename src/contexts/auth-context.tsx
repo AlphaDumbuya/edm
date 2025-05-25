@@ -10,6 +10,7 @@ export interface User {
   email?: string | null;
   name?: string | null;
   photoURL?: string | null; // We are not using this yet from custom auth
+  role?: string | null;
   // emailVerified?: boolean; // Not part of our custom session payload yet
   // metadata?: { creationTime?: string }; // Not part of our custom session payload yet
 }

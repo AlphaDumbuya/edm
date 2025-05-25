@@ -87,7 +87,7 @@ export default function Home() {
         <div className="container mx-auto px-4 text-center relative z-10">
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">
             Welcome to <span className="text-primary">EDM</span>
-          </h1>
+ </h1>
           <p className="text-sm sm:text-md md:text-lg lg:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
@@ -95,14 +95,12 @@ export default function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-            </Link>
+            >Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Link>
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white")}
-              legacyBehavior>
-              Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+            >Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+
             </Link>
          </div>
         </div>
@@ -126,8 +124,8 @@ export default function Home() {
                 <Link
                   href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
-                  legacyBehavior>                  Learn More <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
+ > Learn More <ArrowRight className="ml-1 h-3 w-3" />
+ </Link>
               </CardFooter>
             </Card>
           ))}
@@ -202,9 +200,8 @@ export default function Home() {
              <Link
                href="/the-mission"
                className={cn(buttonVariants({ variant: "default", size: "lg" }), "w-full md:w-auto text-sm sm:text-base")}
-               legacyBehavior>
-                Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
+ >Learn More About Our Mission <ArrowRight className="ml-2 h-4 w-4" />
+ </Link>
           </div>
         </div>
       </section>
@@ -213,7 +210,7 @@ export default function Home() {
         <SectionTitle title="News & Updates" subtitle="Latest from EDM" />
         <div className="grid md:grid-cols-2 gap-6 md:gap-8">
           {recentNews.map((item) => (
-            <Card key={item.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+ <Card key={item.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
               <Link href={item.slug} className="block" legacyBehavior>
                 <div className="relative w-full h-40 sm:h-48">
                   <Image
@@ -227,14 +224,12 @@ export default function Home() {
               </Link>
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors">
-                  <Link href={item.slug} legacyBehavior>{item.title}</Link>
+ <Link href={item.slug} legacyBehavior>{item.title}</Link>
                 </h3>                <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
                 <Link
                   href={item.slug}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs sm:text-sm")}
-                  legacyBehavior>
-                  Read More <ArrowRight className="ml-2 h-4 w-4" />
-                </Link>
+ >Read More <ArrowRight className="ml-2 h-4 w-4" /> </Link>
               </CardContent>
             </Card>
           ))}
@@ -243,9 +238,8 @@ export default function Home() {
           <Link
             href="/news"
             className={cn(buttonVariants({ variant: "default" }), "text-sm sm:text-base")}
-            legacyBehavior>
-            All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
+ >All News & Updates <ArrowRight className="ml-2 h-4 w-4" />
+ </Link>
         </div>
       </section>
       {/* Partner CTA Section */}
@@ -259,14 +253,12 @@ export default function Home() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: "default", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
-            </Link>
+ >Donate Now <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /> </Link>
             <Link
               href="/get-involved"
               className={cn(buttonVariants({ variant: "outline", size: "sm" }), "whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2")}
-              legacyBehavior>
-              Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+ >Get Involved <Users className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
+
             </Link>
           </div>
         </div>

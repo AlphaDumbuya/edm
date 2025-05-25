@@ -16,7 +16,7 @@ interface Session {
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard', '/dashboard/profile', '/dashboard/settings'];
-const publicRoutes = ['/auth/login', '/auth/signup', '/auth/forgot-password', '/'];
+const publicRoutes = ['/login', '/auth/signup', '/auth/forgot-password', '/'];
 // Make sure all your admin paths start with /admin
 const adminRoutes = ['/admin', '/admin/events', '/admin/prayer-requests', '/admin/users'];
 
@@ -65,17 +65,17 @@ export default async function middleware(req: NextRequest) {
   // 2. If trying to access a protected route without authentication, redirect to login
   // This applies to both standard protected routes AND admin routes if not authenticated
   if ((isProtectedRoute || isAdminRoute) && !session?.userId) {
-      console.log('[Middleware] Accessing protected or admin route without session. Redirecting to login.');
-      return NextResponse.redirect(new URL('/auth/login?redirect=' + path, req.nextUrl));
+      console.log('[Middleware] Accessing protected or admin route without session. Redirecting to /login.');
+      return NextResponse.redirect(new URL('/login?redirect=' + path, req.nextUrl));
   }
 
   // 3. If trying to access an admin route with authentication, check role-based access
   if (isAdminRoute && session?.userId) { // Only check role if it's an admin route and user is authenticated
       const allowedAdminRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'VIEWER']; // Define roles allowed to access ANY admin route
       if (!userRole || !allowedAdminRoles.includes(userRole)) {
-          console.log('[Middleware] Accessing admin route with insufficient privileges. Redirecting to login.');
+          console.log('[Middleware] Accessing admin route with insufficient privileges. Redirecting to /login.');
           // Redirect to login, or potentially an unauthorized page (login is safer as it handles unauthenticated state too)
-          return NextResponse.redirect(new URL('/auth/login?redirect=' + path, req.nextUrl));
+          return NextResponse.redirect(new URL('/login?redirect=' + path, req.nextUrl));
       }
       // If authenticated and role is allowed, proceed
       console.log('[Middleware] Accessing admin route with sufficient privileges. Allowing access.');

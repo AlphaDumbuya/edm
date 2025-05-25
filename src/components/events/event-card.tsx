@@ -59,8 +59,8 @@ export default function EventCard({ event }: EventCardProps) {
           src={event.imageUrl}
           alt={event.title}
           layout="fill"
-          objectFit="cover"
-          data-ai-hint={event.dataAiHint}
+
+ data-ai-hint={event.dataAiHint}
         />
       </div>
       <CardHeader className="p-3 sm:p-4">

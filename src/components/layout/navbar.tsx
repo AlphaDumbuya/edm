@@ -139,7 +139,7 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2" legacyBehavior>
+        <Link href="/" className="flex items-center gap-2">
           <span className="flex items-center gap-2">
             <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
             <span className="text-xl font-bold">EDM</span>
@@ -160,7 +160,7 @@ export default function Navbar() {
                             key={link.title}
                             href={link.href}
                             className={cn("block p-3 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground")}
-                            legacyBehavior>
+>
                             <ListItem title={link.title} >
  {link.description}
  </ListItem>
@@ -170,8 +170,10 @@ export default function Navbar() {
                     </NavigationMenuContent>
                   </>
                 ) : (
-                  <NavigationMenuLink asChild>
-                    <Link href={item.href!} legacyBehavior>{item.title}</Link>
+                  <NavigationMenuLink asChild >
+                    <Link href={item.href!} >
+                      {item.title}
+                    </Link>
                   </NavigationMenuLink>
                 )}
               </NavigationMenuItem>
@@ -191,8 +193,36 @@ export default function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                {/* User Info */}
                 <DropdownMenuLabel>{typedUser.name || "User"}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+ <Link href="/dashboard">
+ Dashboard
+ </Link>
+ </DropdownMenuItem>
+ <DropdownMenuItem asChild>
+ <Link href="/dashboard/profile">
+ Profile
+ </Link>
+ </DropdownMenuItem>
+ <DropdownMenuItem asChild>
+ <Link href="/dashboard/settings">
+ Settings
+ </Link>
+ </DropdownMenuItem>
+                {/* Admin Dashboard Link (Conditional) */}
+                {(() => {
+                  const allowedAdminRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'VIEWER'];
+                  if (typedUser?.role && allowedAdminRoles.includes(typedUser.role)) {
+                    return (
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin">Admin Dashboard</Link>
+                      </DropdownMenuItem>
+                    );
+                  }
+                })()}
+ <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOutAuth}>Sign Out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -234,19 +264,18 @@ export default function Navbar() {
               </SheetHeader>
               <nav className="flex flex-col gap-4">
                 {mainNavItems.map((item, i) => (
-                  <div key={i}>
-                    {item.href ? (
-                      <Link
-                        href={item.href}
-                        className="text-base font-medium hover:text-primary transition-colors"
-                        onClick={() => setMobileMenuOpen(false)}
-                        legacyBehavior>
-                        <span className="flex items-center gap-2">
-                          {item.icon && <item.icon size={18} />}
-                          {item.title}
-                        </span>
-                      </Link>
-                    ) : (
+                  <div key={i} className="space-y-2">
+ {item.href && (
+ <Link
+ href={item.href}
+ className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
+ onClick={() => setMobileMenuOpen(false)}
+ >
+ {item.icon && <item.icon size={18} />}
+ {item.title}
+ </Link>
+ )}
+                    {item.links && (
                       <div>
                         <h4 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
                           {item.icon && <item.icon size={16} />}

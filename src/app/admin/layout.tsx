@@ -1,7 +1,7 @@
 'use client'; // Make the layout a client component to manage sidebar state
 
 import React, { useState } from 'react';
-import { Menu } from 'lucide-react'; // Assuming lucide-react for icons
+import { Menu, MenuIcon } from 'lucide-react'; // Assuming lucide-react for icons
 import AdminSidebar from '@/components/admin/sidebar'; // Assuming lucide-react for icons
 import { Button } from '@/components/ui/button';
 
@@ -16,8 +16,8 @@ export default function AdminLayout({
     <div className="flex min-h-screen">
       {/* Sidebar - hidden on small screens, flex on medium and larger */}
       <aside
-        className={`w-64 bg-gray-800 text-white p-4 flex-shrink-0 transform transition-transform duration-300 ease-in-out
-          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
+ className={`w-64 bg-gray-800 text-white p-4 flex-shrink-0 md:flex transform transition-transform duration-300 ease-in-out
+ ${isSidebarOpen ? 'translate-x-0 fixed inset-y-0 left-0 z-50' : '-translate-x-full fixed inset-y-0 left-0 z-50'}
           md:translate-x-0 md:static fixed inset-y-0 left-0`}
       >
         <AdminSidebar />
@@ -33,8 +33,7 @@ export default function AdminLayout({
         {/* Mobile Sidebar Toggle Button */}
         <header className="bg-gray-900 text-white p-4 md:hidden flex items-center justify-between z-50">
           <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-white">
-            {/* Replace with an actual icon later (e.g., hamburger icon) */}
-            Toggle Sidebar
+            <MenuIcon className="h-6 w-6" />
           </Button>
           <div className="text-xl font-bold">Admin Dashboard</div>
         </header>

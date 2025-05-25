@@ -74,8 +74,7 @@ export default function EditUserPage() {
     <div>
       <h1 className="text-2xl font-bold mb-4">Edit User: {userId}</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+        <div><label htmlFor="name" className="block text-sm font-medium text-gray-700">
             Name
           </label>
           <input

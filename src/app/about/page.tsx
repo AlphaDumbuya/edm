@@ -45,10 +45,9 @@ export default function AboutPage() {
           <Image
             src="https://code-alpha-image-gallary.vercel.app/edwin-kargbo.png"
             alt="Edwin Kargbo, Founder of EDM"
-            layout="fill"
-            objectFit="cover"
+            fill
             data-ai-hint="Edwin Kargbo founder"
-            className="object-top"
+            className="object-cover object-top"
           />
         </div>
       </section>
@@ -103,12 +102,10 @@ export default function AboutPage() {
         </Card>
       </section>
       <section className="text-center">
-        <Link href="/about/what-we-believe" legacyBehavior>
-          <div>
-            <Button variant="default" size="lg">
-              What We Believe
-            </Button>
-          </div>
+        <Link href="/about/what-we-believe">
+          <Button variant="default" size="lg">
+            What We Believe
+          </Button>
         </Link>
      </section>
     </div>

@@ -1,6 +1,5 @@
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { UserCircle, CalendarDays, Tag, Heart } from 'lucide-react';
-import type { PrayerRequest } from '@/app/prayer/page';
 import { formatDistanceToNow, format } from 'date-fns';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
@@ -9,6 +8,7 @@ interface PrayerRequestCardProps {
   request: PrayerRequest;
 }
 
+type PrayerRequest = any //TODO: Add prayer request type definition
 export default function PrayerRequestCard({ request }: PrayerRequestCardProps) {
   const timeAgo = formatDistanceToNow(new Date(request.timestamp), { addSuffix: true });
   const fullDate = format(new Date(request.timestamp), 'MMMM d, yyyy \'at\' h:mm a');

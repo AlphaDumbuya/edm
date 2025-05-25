@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
 import { updateNewsArticleAction } from '../../actions'; // Assuming this action will be created
@@ -18,6 +17,7 @@ export default function EditNewsArticlePage() {
   const router = useRouter();
   const params = useParams();
   const newsArticleId = params.id as string;
+  const { useEffect, useState } = require('react'); // Keeping this line for now, will remove if not needed after reviewing context
 
   const [newsArticle, setNewsArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
