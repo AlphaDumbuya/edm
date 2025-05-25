@@ -3,15 +3,14 @@
 import { useParams, useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth-context';
-import { findUserById, updateUser } from "@/lib/db/users";
 import { useSession } from 'next-auth/react';
 
 type UserRole = 'SUPER_ADMIN' | 'ADMIN' | 'EDITOR' | 'VIEWER' | 'USER';
 
 interface UserData { id: string; name: string | null; email: string; role: UserRole }
 export default function EditUserPage() {
-  const params = useParams();
-  const userId = params.userId as string;
+  const params = useParams<{ id: string }>();
+  const userId = params.id;
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,21 +18,30 @@ export default function EditUserPage() {
   const [error, setError] = useState<string | null>(null);
 
   const { data: session } = useSession();
-  const { fetchCurrentUser } = useAuth();
+  const { refreshUser } = useAuth();
   const currentUserRole = session?.user?.role;
   const router = useRouter();
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const user = await findUserById(userId) as UserData; // Cast to UserData
-        if (user) {
-          setName(user.name || '');
-          setEmail(user.email);
+        setLoading(true); // Set loading to true at the start of fetch
+        console.log('Fetching user data from API for ID:', userId);
+        const response = await fetch(`/api/admin/users/${userId}`);
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          setError(errorData.error || 'Failed to fetch user data');
         } else {
-          setError('User not found');
+          const user = await response.json();
+          console.log('API fetch result:', user);
+          if (user) {
+            setName(user.name || '');
+            setEmail(user.email);
+          } else {
+            setError('User not found'); // Should not happen if API returns 200, but as a fallback
+          }
         }
       } catch (err) {
-        setError('Failed to load user data');
       } finally {
         setLoading(false);
       }
@@ -46,20 +54,36 @@ export default function EditUserPage() {
     }
   }, [userId]);
 
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await updateUser(userId, { name, email });
-      fetchCurrentUser(); // Refresh current user's data in auth context
-      // Optional: show a success message
+      const response = await fetch(`/api/admin/users/${userId}`, {
+        method: 'PUT', // Or PATCH, depending on your API route implementation
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to update user');
+      }
+
+      // If the API returns the updated user, you might want to use it
+      // const updatedUser = await response.json();
+      // console.log('User updated successfully:', updatedUser);
+
+      refreshUser(); // Refresh current user's data in auth context
       console.log('User updated successfully');
       router.push('/admin/users'); // Redirect to user list
+
     } catch (err) {
       console.error('Error updating user:', err);
       setError('Failed to update user'); // Display an error message
     }
   };
+
 
   if (loading) {
     return <div>Loading user data...</div>;
@@ -81,8 +105,8 @@ export default function EditUserPage() {
             type="text"
             id="name"
             value={name}
-            onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+            onChange={(e) => setName(e.target.value)} // Changed from sm:text-sm to text-base, added py-2 px-3 for padding
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
           />
         </div>
         <div>
@@ -93,8 +117,8 @@ export default function EditUserPage() {
             type="email"
             id="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm"
+            onChange={(e) => setEmail(e.target.value)} // Changed from sm:text-sm to text-base, added py-2 px-3 for padding
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
           />
         </div>
         <button

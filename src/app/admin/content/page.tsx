@@ -9,15 +9,17 @@ export default function ContentManagementPage() {
           href="/admin/content/blog"
           className="border rounded-lg p-4 hover:shadow-md transition-shadow"
           legacyBehavior>
-          <h2 className="text-xl font-semibold">Manage Blog Posts</h2>
-          <p className="text-muted-foreground">Create, edit, and delete blog posts.</p>
+          <div>
+            <h2 className="text-xl font-semibold">Manage Blog Posts</h2>
+            <p className="text-muted-foreground">Create, edit, and delete blog posts.</p>
+          </div>
         </Link>
         <Link
           href="/admin/content/news"
           className="border rounded-lg p-4 hover:shadow-md transition-shadow"
           legacyBehavior>
-          <h2 className="text-xl font-semibold">Manage News Articles</h2>
-          <p className="text-muted-foreground">Create, edit, and delete news articles.</p>
+            <h2 className="text-xl font-semibold">Manage News Articles</h2>
+            <p className="text-muted-foreground">Create, edit, and delete news articles.</p>
         </Link>
         {/* Add links for other content types if needed */}
       </div>

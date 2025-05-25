@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link, { LinkProps } from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { GoHome, GoPerson, GoBook, GoCalendar, GoHeart, GoCreditCard } from 'react-icons/go';
@@ -42,21 +42,20 @@ const AdminSidebar: React.FC = () => {
         <ul>
           {navItems.map((item) => (
             <li key={item.name} className="mb-2">
-              <Link href={item.href} passHref legacyBehavior>
-                <div
-                  className={`flex items-center py-2 px-4 rounded ${
-                    pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
-                  }`}
-                >
-                  {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
-                  {item.name}
-                </div>
+              <Link
+                href={item.href}
+                className={`flex items-center py-2 px-4 rounded ${
+                  pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
+                }`}>
+                {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
+                {item.name}
+
               </Link>
               {item.nested && (
                 <ul className="ml-4 mt-1">
                   {item.nested.map((nestedItem) => (
                     <li key={nestedItem.name} className="mb-1 text-gray-400">
-                      <Link href={nestedItem.href} passHref legacyBehavior>
+                      <Link href={nestedItem.href}>
                         <div
                           // Add padding to nested items for visual separation
                           className={`block py-1 px-3 text-sm rounded ${

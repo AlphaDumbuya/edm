@@ -4,8 +4,6 @@ import { createUser, findUserByEmail } from '@/lib/db/users';
 import { encrypt } from '@/lib/auth/session';
 import { cookies } from 'next/headers';
 
-const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
-
 export async function POST(req: NextRequest) {
   try {
     const { email, password, name } = await req.json();
@@ -23,11 +21,9 @@ export async function POST(req: NextRequest) {
     if (!newUser) {
       return NextResponse.json({ error: 'User creation failed' }, { status: 500 });
     }
+    const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // Ensure SESSION_MAX_AGE is declared within the function if used here
 
-    // Redirect to login page after successful signup, do not set session here
-    const { hashedPassword, ...userWithoutPassword } = newUser;
-
- return NextResponse.redirect(new URL('/auth/login', req.url), { status: 302 });
+    return NextResponse.json({ message: 'Signup successful. Please log in.' }, { status: 200 });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
