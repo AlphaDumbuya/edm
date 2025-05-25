@@ -1,8 +1,12 @@
+/// <reference types="@prisma/client" />
 // src/lib/db/users.ts
 import prisma from './prisma';
 import bcrypt from 'bcryptjs';
-import type { User as PrismaUser } from '@prisma/client'; // Import Prisma-generated User type
+import { Prisma } from '@prisma/client';
+// @ts-ignore
+type PrismaUser = Prisma.User; // Import User type from Prisma namespace
 
+// @ts-ignore
 // Define a slightly simplified User type for application use if needed, or use PrismaUser directly
 export interface AppUser {
   id: string;
@@ -16,6 +20,7 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
     const user = await prisma.user.findUnique({
       where: { email },
     });
+    console.log('[findUserByEmail] User fetched from DB:', user);
     return user;
   } catch (error) {
     console.error('Error finding user by email:', error);
@@ -23,6 +28,13 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
   }
 }
 
+interface GetAllUsersOptions {
+  search?: string;
+  role?: string; // Assuming you'll add a role field later
+  offset?: number;
+  limit?: number;
+  orderBy?: any; // Prisma orderBy type
+}
 export async function findUserById(id: string): Promise<AppUser | null> {
   try {
     const user = await prisma.user.findUnique({
@@ -37,6 +49,41 @@ export async function findUserById(id: string): Promise<AppUser | null> {
   } catch (error) {
     console.error('Error finding user by ID:', error);
     return null;
+  }
+}
+
+export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{ users: AppUser[], totalCount: number }> {
+  const { search, role, offset, limit, orderBy } = options;
+
+  const where: any = {};
+
+  if (search) {
+    where.OR = [
+      { email: { contains: search, mode: 'insensitive' } },
+      { name: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
+  if (role) {
+    where.role = role; // Assuming a 'role' field exists in your User model
+  }
+
+  try {
+    const users = await prisma.user.findMany({
+      where,
+      select: { // Only select fields safe to expose
+        id: true,
+        email: true,
+        name: true,
+      },
+      skip: offset,
+      take: limit,
+    });
+    const totalCount = await prisma.user.count({ where });
+    return { users, totalCount };
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return { users: [], totalCount: 0 };
   }
 }
 
@@ -64,6 +111,32 @@ export async function verifyPassword(plainPassword_1: string, hashedPassword_1: 
   } catch (error) {
     console.error('Error verifying password:', error);
     return false;
+  }
+}
+
+export async function deleteUser(userId: string): Promise<PrismaUser | null> {
+  try {
+    const deletedUser = await prisma.user.delete({
+      where: { id: userId },
+    });
+    return deletedUser;
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return null;
+  }
+}
+
+export async function updateUser(userId: string, data: { name?: string | null; email?: string }): Promise<PrismaUser | null> {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data,
+    });
+    return updatedUser;
+  } catch (error) {
+    console.error('Error updating user:', error);
+    // Consider more specific error handling, e.g., for unique constraint violation on email
+    return null;
   }
 }
 
@@ -111,6 +184,16 @@ export async function deleteDbSession(sessionId: string) {
   } catch (error) {
     console.error('Error deleting DB session:', error);
     // Fail silently or handle as appropriate
+  }
+}
+
+export async function getUserCount() {
+  try {
+    const count = await prisma.user.count();
+    return count;
+  } catch (error) {
+    console.error("Error getting user count:", error);
+    throw error;
   }
 }
 

@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       }
     } catch (e: any) {
-      console.error('[AuthContext] Exception in fetchSession:', e.message, e.stack);
+      console.error('[AuthContext] Exception in fetchSession:', e.message);
       setError(e.message || 'An error occurred while fetching session.');
       setUser(null);
     } finally {

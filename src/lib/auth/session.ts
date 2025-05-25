@@ -1,5 +1,6 @@
 // src/lib/auth/session.ts
 import 'server-only';
+import { cookies } from 'next/headers';
 import { SignJWT, jwtVerify, type JWTPayload } from 'jose';
 
 const secretKey = process.env.SESSION_SECRET;
@@ -17,6 +18,7 @@ export interface SessionPayload extends JWTPayload {
   userId: string;
   email?: string | null;
   name?: string | null;
+  role: string;
   // iat (issuedAt) and exp (expirationTime) will be set by jose
 }
 
@@ -43,4 +45,13 @@ export async function decrypt(sessionCookieValue: string | undefined): Promise<S
     // console.error('Failed to verify or decrypt session:', error); // Log specific JWT errors for debugging
     return null; // Treat as invalid session if any error occurs
   }
+}
+
+export async function getCurrentUserId(): Promise<string | null> {
+  const sessionCookie = await (await cookies()).get('session'); // Assuming 'session' is the name of your session cookie
+  const session = await decrypt(sessionCookie?.value);
+  if (!session) {
+    return null;
+  }
+  return session.userId;
 }

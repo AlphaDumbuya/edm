@@ -1,6 +1,5 @@
 
-"use client";
-
+'use client';
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -258,6 +257,7 @@ export default function Navbar() {
                         </div>
                       </DropdownMenuLabel>
                       <DropdownMenuSeparator />
+
                       <DropdownMenuItem asChild>
                         <Link href="/dashboard" className="flex items-center w-full">
                           <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard

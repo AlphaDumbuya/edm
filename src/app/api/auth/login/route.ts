@@ -34,6 +34,7 @@ export async function POST(req: NextRequest) {
       userId: user.id,
       email: user.email,
       name: user.name,
+      role: user.role, // Include the user's role
       // emailVerified: user.emailVerified, // Include if you have email verification
     };
 

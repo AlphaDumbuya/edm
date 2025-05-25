@@ -16,6 +16,7 @@ const navItems = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/profile', label: 'Profile', icon: UserCircle },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+  { href: '/admin', label: 'Admin Dashboard', icon: LayoutDashboard },
 ];
 
 export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: (isOpen: boolean) => void }) {
@@ -57,8 +58,14 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
     };
   }, [isOpen]);
 
+  // Conditional rendering for admin dashboard link
+  const allowedAdminRoles = ['SUPER_ADMIN', 'ADMIN', 'EDITOR', 'VIEWER'];
+  const filteredNavItems = navItems.filter(item =>
+    item.href !== '/admin' || (item.href === '/admin' && allowedAdminRoles.includes(user?.role as string))
+  );
+  console.log('User object:', user);
+  console.log('User role:', user?.role);
   return (
-    <>
     <aside
       className={cn(
         "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-sidebar-border flex-col p-4 space-y-6 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:flex", // Ensure lg:flex is always present
@@ -76,13 +83,13 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
       </div>
   <nav>
         <ul className="space-y-2">
-          {navItems.map(item => (
+          {filteredNavItems.map(item => (
             <li key={item.href}>
               <Link
                 onClick={() => {
- if (window.innerWidth < 1024) { // Check for small screens
- setIsOpen(false);
- }
+                  if (window.innerWidth < 1024) { // Check for small screens
+                    setIsOpen(false);
+                  }
                 }}
                 href={item.href}
                 className={cn(
@@ -112,7 +119,6 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
         </Button>
       </div>
       </aside>
-      </>
   );
 }
 
@@ -122,5 +128,6 @@ interface User {
   email?: string | null;
   name?: string | null;
   photoURL?: string | null;
+  role?: string | null; // Add role property
   // Add any other fields you expect on the user object
 }

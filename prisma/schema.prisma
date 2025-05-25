@@ -12,7 +12,7 @@ datasource db {
 }
 
 model User {
-  id             String    @id @default(cuid())
+  id             String    @id @default(uuid()) @map("_id") @db.Uuid
   email          String    @unique
   name           String?
   hashedPassword String
@@ -23,12 +23,15 @@ model User {
   // Optional fields for future enhancements
   // emailVerified  DateTime?
   // image          String?   // For profile picture URL (e.g., from Uploadthing)
-  // role           UserRole  @default(USER) // If you implement roles
+  role           UserRole  @default(USER)
+  blogPosts      BlogPost[]
+  newsArticles   NewsArticle[]
+  auditLogs      AuditLog[]
 }
 
 model Session {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String @db.Uuid // Add @db.Uuid to match User id type
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
@@ -37,8 +40,82 @@ model Session {
   @@index([userId])
 }
 
-// Example for User Roles if needed in the future
-// enum UserRole {
-//   USER
-//   ADMIN
-// }
+// User Roles for access control
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
+  USER
+}
+
+model BlogPost {
+  id        String    @id @default(uuid()) @db.Uuid
+  title     String
+  slug      String    @unique
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  published Boolean   @default(false)
+}
+
+model Event {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  description String
+  date        DateTime
+  time        String
+  location    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model AuditLog {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  user        User      @relation(fields: [userId], references: [id])
+  action      String    // e.g., "Created Blog Post", "Deleted User"
+  entityType  String    // e.g., "BlogPost", "User"
+  entityId    String?   @db.Uuid // ID of the affected entity
+  timestamp   DateTime  @default(now())
+  details     Json?     // Store additional details (e.g., old and new values for updates)
+
+  @@index([userId, timestamp])
+}
+
+model Donation {
+  id            String    @id @default(uuid()) @db.Uuid
+  donorName     String?
+  donorEmail    String?
+  amount        Float
+  date          DateTime  @default(now())
+  paymentMethod String
+  campaign      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model NewsArticle {
+  id        String    @id @default(uuid()) @db.Uuid
+  title     String
+  slug      String    @unique
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  published Boolean   @default(false)
+}
+
+model PrayerRequest {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  body        String
+  authorName  String?
+  authorEmail String?
+  status      String    @default("pending") // e.g., "pending", "completed"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}

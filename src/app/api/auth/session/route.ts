@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { decrypt, type SessionPayload } from '@/lib/auth/session';
 
+import { prisma } from '@/lib/db/prisma'; // Assuming your prisma client is exported from here
 export async function GET(req: NextRequest) {
   console.log('[/api/auth/session] GET request received.');
   const sessionCookie = (await cookies()).get('session')?.value;
@@ -20,11 +21,21 @@ export async function GET(req: NextRequest) {
     if (decryptedSession && decryptedSession.userId) {
       console.log('[/api/auth/session] Session decrypted successfully. User ID:', decryptedSession.userId);
       // Return only necessary user fields
+
+      // Fetch the latest user data from the database
+      const latestUser = await prisma.user.findUnique({ where: { id: decryptedSession.userId } });
+
+      if (!latestUser) {
+        console.log('[/api/auth/session] User not found in database for ID:', decryptedSession.userId);
+        // Clear invalid session cookie if user not found
+        const response = NextResponse.json({ user: null, error: 'User not found' }, { status: 200 });
+        response.cookies.set('session', '', { httpOnly: true, maxAge: 0, path: '/' });
+        return response;
+      }
+
       const userForClient = {
-        id: decryptedSession.userId,
-        email: decryptedSession.email,
-        name: decryptedSession.name,
-        // Add other relevant fields from SessionPayload if needed by client
+        // Use data from the latest user fetch
+        ...latestUser, // Spread all properties from the latest user
       };
       return NextResponse.json({ user: userForClient }, { status: 200 });
     } else {
