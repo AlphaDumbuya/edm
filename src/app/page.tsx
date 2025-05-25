@@ -31,13 +31,13 @@ const recentNews = [
   },
   {
     id: 2,
-    title: 'Ministry Van & Equipment Arriving Soon!',
+    title: 'Ministry Van & Equipment Have Arrived!',
     excerpt:
-      'The van and musical instruments shipped from our Oregon partners are expected to arrive in Freetown soon. These tools are vital for our outreach.',
+      'The van and musical instruments shipped from our Oregon partners have arrived in Freetown! These tools are vital for our outreach.',
     slug: '/news/van-equipment-arrival-news',
     image: 'https://source.unsplash.com/random/400x250/?shipping,logistics,port,africa',
-    dataAiHint: 'shipping logistics port',
-    date: 'September 25, 2024',
+    dataAiHint: 'shipping logistics port', 
+    date: 'Arrived 2023', // Updated date to reflect arrival year
     author: 'EDM Operations',
   },
 ];
@@ -68,6 +68,7 @@ const pillars = [
 
 export default function Home() {
   return (
+    // ✅ this was the missing closing tag!
     <div className="space-y-12 md:space-y-16">
       {/* Hero Section */}
       <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-12 md:py-20 lg:py-28 rounded-lg shadow-lg overflow-hidden">
@@ -93,7 +94,7 @@ export default function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2')}
-            >
+              >
               <span>
                 Our Story <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
@@ -101,7 +102,7 @@ export default function Home() {
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 whitespace-nowrap text-xs px-3 py-1.5 sm:text-sm sm:px-4 sm:py-2 border border-white text-white hover:bg-white/20 hover:text-white hover:border-white')}
-            >
+              >
               <span>
                 Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
               </span>
@@ -109,7 +110,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Core Pillars Section */}
       <section>
         <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry in Sierra Leone" />
@@ -126,7 +126,10 @@ export default function Home() {
                 <p className="text-muted-foreground text-sm">{description}</p>
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 sm:pt-4 border-t flex justify-center">
-                <Link href={href} className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}>
+                <Link
+                  href={href}
+                  className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
+                  >
                   <span>
                     Learn More <ArrowRight className="ml-1 h-3 w-3" />
                   </span>
@@ -136,7 +139,6 @@ export default function Home() {
           ))}
         </div>
       </section>
-
       {/* Mission Statement & Motto Section */}
       <section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <div className="text-center max-w-3xl mx-auto">
@@ -153,7 +155,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Vision Section */}
       <section>
         <SectionTitle title="Our Vision for EDM" subtitle="Building a legacy of faith and service" />
@@ -207,6 +208,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-    </div> // ✅ this was the missing closing tag!
+    </div>
   );
 }

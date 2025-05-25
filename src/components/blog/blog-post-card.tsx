@@ -24,19 +24,6 @@ interface NewsPostCardProps {
 export default function NewsPostCard({ post }: NewsPostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <Link
-        href={`/news/${post.slug}`}
-        className="block relative w-full h-48 sm:h-56 group"
-        legacyBehavior>
- <Image
-          src={post.imageUrl}
-          alt={post.title}
-          fill={true}
-          style={{ objectFit: 'cover' }}
-          data-ai-hint={post.dataAiHint}
-          className="transition-transform duration-300 group-hover:scale-105"
-        />
-      </Link>
       <CardHeader className="p-3 sm:p-4">
  <Link href={`/news/${post.slug}`} legacyBehavior>
  <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
@@ -46,6 +33,19 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
           <span className="flex items-center"><CalendarDays className="mr-1 h-3 w-3 text-primary" /> {post.date}</span>
         </div>
       </CardHeader>
+      <Link
+        href={`/news/${post.slug}`}
+        className="block relative w-full h-32 sm:h-40 group"
+        legacyBehavior>
+ <Image
+          src={post.imageUrl}
+          alt={post.title}
+          fill={true}
+          style={{ objectFit: 'contain' }}
+          data-ai-hint={post.dataAiHint}
+          className="transition-transform duration-300 group-hover:scale-105"
+        />
+      </Link>
       <CardContent className="p-3 sm:p-4 flex-grow">
         <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
         {post.tags && post.tags.length > 0 && (

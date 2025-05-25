@@ -129,7 +129,7 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
         </div>
       </div>
       {post.imageUrl && (
-        <div className="relative w-full h-64 md:h-96 rounded-lg overflow-hidden shadow-lg mb-8">
+        <div className="relative w-full h-40 md:h-60 rounded-lg overflow-hidden shadow-lg mb-8">
           <Image
             src={post.imageUrl}
             alt={post.title}

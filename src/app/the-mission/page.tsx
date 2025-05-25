@@ -45,7 +45,7 @@ export default function TheMissionPage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-3 sm:mb-4">
-                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school), lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school). This future Bible school is being established in partnership with Reformed Gospel Mission (ReGom) as the REGOM/EDM Bible Institute. <Link href="/ministries" className="text-primary hover:underline">Learn more about our ministries.</Link> lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
                 <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
@@ -63,11 +63,7 @@ export default function TheMissionPage() {
                 </CardHeader>
                 <CardContent className="p-4 sm:p-6">
                 <ul className="list-none text-xs sm:text-sm text-muted-foreground space-y-1 sm:space-y-1.5">
-                    <li className="flex items-start"><School className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Support and develop the operational EDM Marifa Secondary School.</li>
-                    <li className="flex items-start"><CheckCircle className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Get the van and equipment through customs in Freetown.</li>
-                    <li className="flex items-start"><CheckCircle className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Finalize land acquisition for the main EDM campus.</li>
                     <li className="flex items-start"><CheckCircle className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Establish international board members to provide oversight and support.</li>
-                    <li className="flex items-start"><CheckCircle className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Conduct comprehensive evangelism training for local leaders and volunteers.</li>
                     <li className="flex items-start"><CheckCircle className="h-3 w-3 sm:h-4 text-green-500 mr-2 shrink-0 mt-0.5 sm:mt-1" /> Show the "Jesus" movie for evangelism in various communities.</li>
                 </ul>
                 </CardContent>
@@ -116,9 +112,9 @@ export default function TheMissionPage() {
                <CardTitle className="text-primary text-base sm:text-lg md:text-xl">Progress and Support Opportunities</CardTitle>
            </CardHeader>
            <CardContent className="space-y-1.5 sm:space-y-2 p-4 sm:p-6 text-xs sm:text-sm md:text-base text-muted-foreground">
-               <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational! <Link href="/ministries/education/marifa-school" className="text-primary hover:underline font-semibold">Learn more and support the school.</Link></p>
-               <p><strong className="text-foreground">Land Acquired:</strong> We have acquired land for the main EDM campus and retreat center for the Body of Christ in Sierra Leone!</p>
-               <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and are expected to arrive soon. These are vital for our outreach efforts. Your prayers and support for their effective deployment are appreciated.</p>
+               <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational!</p>
+               <p><strong className="text-foreground">Land Acquired:</strong> We praise God that land has been acquired for the main EDM campus and retreat center!</p>
+               <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and have arrived in Freetown, enhancing our outreach capabilities. Your prayers and support for their effective deployment are appreciated.</p>
            </CardContent>
            <CardFooter className="p-4 sm:p-6">
                <Link href="/donate?reason=general_support" className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}>
