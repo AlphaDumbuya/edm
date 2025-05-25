@@ -97,27 +97,22 @@ const mainNavItems = [
 
 interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
   title: string;
-  children: React.ReactNode;
 }
 
 const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
   ({ className, title, children, ...props }, ref) => {
     return (
-      <li>
-        <NavigationMenuLink asChild>
-          <a
-            ref={ref}
-            className={cn(
-              "block p-3 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground",
-              className
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium">{title}</div>
-            <p className="text-sm text-muted-foreground">{children}</p>
-          </a>
-        </NavigationMenuLink>
-      </li>
+      <NavigationMenuLink
+ ref={ref}
+ className={cn(
+ "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+ className
+ )}
+ {...props}
+ >
+ <div className="text-sm font-medium leading-none">{title}</div>
+ <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+ </NavigationMenuLink>
     );
   }
 );
@@ -157,24 +152,18 @@ export default function Navbar() {
                       <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
                         {item.links.map((link) => (
                           <Link
-                            key={link.title}
+ key={link.title}
                             href={link.href}
-                            className={cn("block p-3 rounded-md transition-colors hover:bg-accent hover:text-accent-foreground")}
->
-                            <ListItem title={link.title} >
- {link.description}
- </ListItem>
-                          </Link>
+ asChild // Use asChild here to pass the Link's href to the ListItem
+                          ><ListItem title={link.title}>{link.description}</ListItem></Link>
                         ))}
                       </ul>
                     </NavigationMenuContent>
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!} legacyBehavior>
-                      {item.title}
-                    </Link>
-                  </NavigationMenuLink>
+                    <Link href={item.href!}>
+ {item.title}</Link></NavigationMenuLink>
                 )}
               </NavigationMenuItem>
             ))}
@@ -256,7 +245,7 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
->
+                  >
                     <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                     <span className="text-lg font-bold">EDM</span>
                   </Link>
@@ -265,16 +254,16 @@ export default function Navbar() {
               <nav className="flex flex-col gap-4">
                 {mainNavItems.map((item, i) => (
                   <div key={i} className="space-y-2">
- {item.href && (
- <Link
-   href={item.href}
-   className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
-   onClick={() => setMobileMenuOpen(false)}
->
- {item.icon && <item.icon size={18} />}
- {item.title}
- </Link>
- )}
+                    {item.href && (
+                      <Link
+                        href={item.href}
+                        className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        {item.icon && <item.icon size={18} />}
+                        {item.title}
+                      </Link>
+                    )}
                     {item.links && (
                       <div>
                         <h4 className="text-sm font-semibold text-muted-foreground mb-2 flex items-center gap-2">
@@ -288,7 +277,7 @@ export default function Navbar() {
                                 href={link.href}
                                 className="text-sm hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
->
+                              >
                                 {link.title}
                               </Link>
                             </li>
