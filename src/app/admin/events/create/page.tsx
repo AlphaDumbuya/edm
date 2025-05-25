@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { createEventAction } from "../actions"; // Adjust path as needed
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import dynamic from 'next/dynamic';
 import { useRouter } from "next/navigation";
 // Removed unused formData state and handleChange function as we will use FormData directly with server actions
 export default function CreateEventPage() {
@@ -21,6 +21,7 @@ export default function CreateEventPage() {
       [name]: value,
     }));
   };
+  const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
   const [description, setDescription] = useState('');
   const router = useRouter();

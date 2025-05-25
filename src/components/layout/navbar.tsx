@@ -134,7 +134,7 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2" legacyBehavior>
           <span className="flex items-center gap-2">
             <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
             <span className="text-xl font-bold">EDM</span>
@@ -152,17 +152,18 @@ export default function Navbar() {
                       <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
                         {item.links.map((link) => (
                           <Link
- key={link.title}
+                            key={link.title}
                             href={link.href}
- asChild // Use asChild here to pass the Link's href to the ListItem
-                          ><ListItem title={link.title}>{link.description}</ListItem></Link>
+                            // Use asChild here to pass the Link's href to the ListItem
+                            asChild
+                            legacyBehavior><ListItem title={link.title}>{link.description}</ListItem></Link>
                         ))}
                       </ul>
                     </NavigationMenuContent>
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!}>
+                    <Link href={item.href!} legacyBehavior>
  {item.title}</Link></NavigationMenuLink>
                 )}
               </NavigationMenuItem>
@@ -217,10 +218,10 @@ export default function Navbar() {
             </DropdownMenu>
           ) : ( // Render Login and Sign Up buttons when not logged in
             (<>
-              <Link href="/login">
+              <Link href="/login" legacyBehavior>
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/auth/signup" legacyBehavior>
                 <Button variant="default">Sign Up</Button>
               </Link>
             </>)
@@ -245,7 +246,7 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                  >
+                    legacyBehavior>
                     <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                     <span className="text-lg font-bold">EDM</span>
                   </Link>
@@ -259,7 +260,7 @@ export default function Navbar() {
                         href={item.href}
                         className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
                         onClick={() => setMobileMenuOpen(false)}
-                      >
+                        legacyBehavior>
                         {item.icon && <item.icon size={18} />}
                         {item.title}
                       </Link>
@@ -277,7 +278,7 @@ export default function Navbar() {
                                 href={link.href}
                                 className="text-sm hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
-                              >
+                                legacyBehavior>
                                 {link.title}
                               </Link>
                             </li>
