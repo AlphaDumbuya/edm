@@ -103,11 +103,13 @@ export default function AboutPage() {
         </Card>
       </section>
       <section className="text-center">
-       <Link href="/about/what-we-believe" legacyBehavior>
-         <Button variant="default" size="lg">
-           What We Believe
-         </Button>
-       </Link>
+        <Link href="/about/what-we-believe" legacyBehavior>
+          <div>
+            <Button variant="default" size="lg">
+              What We Believe
+            </Button>
+          </div>
+        </Link>
      </section>
     </div>
   );

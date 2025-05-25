@@ -101,14 +101,14 @@ export default function Footer() {
               href="/terms-and-conditions"
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
               legacyBehavior>
-              <FileText size={14} className="mr-1" /> Terms & Conditions
+              <span><FileText size={14} className="mr-1" /> Terms & Conditions</span>
             </Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
             <Link
               href="/privacy-policy"
               className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
               legacyBehavior>
-              <ShieldAlert size={14} className="mr-1" /> Privacy Policy
+              <span><ShieldAlert size={14} className="mr-1" /> Privacy Policy</span>
             </Link>
           </div>
           <p className="text-xs sm:text-sm text-muted-foreground">

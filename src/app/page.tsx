@@ -104,7 +104,7 @@ export default function Home() {
               legacyBehavior>
               Support EDM <HelpingHand className="ml-1 h-3 w-3 sm:h-4 sm:w-4" />
             </Link>
-          </div>
+         </div>
         </div>
       </section>
       {/* Core Pillars Section */}
@@ -126,12 +126,12 @@ export default function Home() {
                 <Link
                   href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
-                  legacyBehavior>
-                  Learn More <ArrowRight className="ml-1 h-3 w-3" />
+                  legacyBehavior>                  Learn More <ArrowRight className="ml-1 h-3 w-3" />
                 </Link>
               </CardFooter>
             </Card>
           ))}
+
         </div>
       </section>
       {/* Mission Statement & Motto Section */}
@@ -228,8 +228,7 @@ export default function Home() {
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-base sm:text-lg md:text-xl font-semibold mb-2 hover:text-primary transition-colors">
                   <Link href={item.slug} legacyBehavior>{item.title}</Link>
-                </h3>
-                <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
+                </h3>                <p className="text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm line-clamp-2 sm:line-clamp-3">{item.excerpt}</p>
                 <Link
                   href={item.slug}
                   className={cn(buttonVariants({ variant: "outline", size: "sm" }), "w-full text-xs sm:text-sm")}
