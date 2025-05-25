@@ -188,9 +188,14 @@ export default function Navbar() {
     <header className="bg-card shadow-md sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
-            <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+          <Link
+            href="/"
+            className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+            legacyBehavior>
+            <div> {/* Wrap children in a div */}
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={28} height={28} className="h-7 w-7 md:h-8 md:w-8" />
+ <span className="text-xl md:text-2xl font-bold text-primary">EDM</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -221,7 +226,10 @@ export default function Navbar() {
                   return (
                     <NavigationMenuItem key={itemKey}>
                       <NavigationMenuLink asChild>
-                        <Link href={item.href || '#'} className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 h-9 md:text-sm md:px-2 md:py-1.5")}>
+                        <Link
+                          href={item.href || '#'}
+                          className={cn(navigationMenuTriggerStyle(), "flex items-center text-xs px-1.5 py-1 h-9 md:text-sm md:px-2 md:py-1.5")}
+                          legacyBehavior>
                           {IconComponent && <IconComponent className="h-3 w-3 md:h-4 md:w-4 mr-1 md:mr-1.5" />}
                           {item.title}
                         </Link>
@@ -259,12 +267,15 @@ export default function Navbar() {
                       <DropdownMenuSeparator />
 
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard" className="flex items-center w-full">
+                        <Link href="/dashboard" className="flex items-center w-full" legacyBehavior>
                           <LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/dashboard/profile" className="flex items-center w-full">
+                        <Link
+                          href="/dashboard/profile"
+                          className="flex items-center w-full"
+                          legacyBehavior>
                           <UserCircle className="mr-2 h-4 w-4" /> Profile
                         </Link>
                       </DropdownMenuItem>
@@ -276,10 +287,16 @@ export default function Navbar() {
                   </DropdownMenu>
                 ) : (
                   <>
-                    <Link href="/auth/login" className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-xs md:text-sm")}>
+                    <Link
+                      href="/auth/login"
+                      className={cn(buttonVariants({ variant: "ghost", size: "sm" }), "text-xs md:text-sm")}
+                      legacyBehavior>
                       <LogIn className="mr-1 h-4 w-4" />Log In
                     </Link>
-                    <Link href="/auth/signup" className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs md:text-sm")}>
+                    <Link
+                      href="/auth/signup"
+                      className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs md:text-sm")}
+                      legacyBehavior>
                       <UserPlus className="mr-1 h-4 w-4" />Sign Up
                     </Link>
                   </>
@@ -298,9 +315,15 @@ export default function Navbar() {
               <SheetContent side="left" className="w-3/4 sm:w-1/2 bg-card h-full overflow-y-auto">
                 <SheetHeader className="mb-6 text-left">
                   <SheetTitle>
-                    <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                      <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
-                      <span className="text-lg font-bold text-primary">EDM</span>
+                    <Link
+                      href="/"
+                      className="flex items-center gap-2"
+                      onClick={() => setMobileMenuOpen(false)}
+                      legacyBehavior>
+                      <div> {/* Wrap children in a div */}
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={24} height={24} className="h-6 w-6" />
+ <span className="text-lg font-bold text-primary">EDM</span>
+                      </div>
                     </Link>
                   </SheetTitle>
                 </SheetHeader>
@@ -322,7 +345,7 @@ export default function Navbar() {
                                   href={subLink.href}
                                   onClick={() => setMobileMenuOpen(false)}
                                   className="block rounded-md px-2 py-1.5 text-sm text-foreground hover:bg-accent hover:text-accent-foreground"
-                                >
+                                  legacyBehavior>
                                   {subLink.title}
                                 </Link>
                               </li>
@@ -337,7 +360,7 @@ export default function Navbar() {
                         href={item.href || '#'}
                         onClick={() => setMobileMenuOpen(false)}
                         className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
-                      >
+                        legacyBehavior>
                         {IconComponent && <IconComponent className="h-5 w-5 mr-3" />}
                         {item.title}
                       </Link>
@@ -358,7 +381,11 @@ export default function Navbar() {
                                 <p className="text-xs leading-none text-muted-foreground truncate">{typedUser.email}</p>
                             </div>
                         </div>
-                        <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)} className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground">
+                        <Link
+                          href="/dashboard"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="flex items-center rounded-md px-2 py-2 text-sm font-medium text-foreground hover:bg-accent hover:text-accent-foreground"
+                          legacyBehavior>
                             <LayoutDashboard className="mr-3 h-5 w-5" />Dashboard
                         </Link>
                         <Button variant="ghost" onClick={() => { signOutAuth(); setMobileMenuOpen(false); }} className="w-full justify-start flex items-center text-sm font-medium">
@@ -367,10 +394,18 @@ export default function Navbar() {
                       </div>
                     ) : (
                       <div className="space-y-2">
-                        <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)} className={cn(buttonVariants({ variant: "outline" }), "w-full justify-center")}>
+                        <Link
+                          href="/auth/login"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={cn(buttonVariants({ variant: "outline" }), "w-full justify-center")}
+                          legacyBehavior>
                            <LogIn className="mr-2 h-4 w-4" />Log In
                         </Link>
-                        <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)} className={cn(buttonVariants({ variant: "default" }), "w-full justify-center")}>
+                        <Link
+                          href="/auth/signup"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className={cn(buttonVariants({ variant: "default" }), "w-full justify-center")}
+                          legacyBehavior>
                            <UserPlus className="mr-2 h-4 w-4" />Sign Up
                         </Link>
                       </div>

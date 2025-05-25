@@ -92,14 +92,12 @@ export default function BlogManagementPage() { // Changed to a client component
   return (
     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-6">Blog Management</h1>
-      
       {allowedToCreate && (
         <div className="flex justify-end mb-4">
           <Button asChild>
             <Link href="/admin/content/blog/create">Create New Blog Post</Link>
           </Button>
         </div>)}
-
       <div className="mb-4">
         <Input
           placeholder="Search blog posts by title or slug..."
@@ -132,7 +130,7 @@ export default function BlogManagementPage() { // Changed to a client component
  </Button>
  )}
                     {hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (/* For now, keeping it as a placeholder */
-                    <Button variant="destructive" size="sm">Delete</Button>
+                    (<Button variant="destructive" size="sm">Delete</Button>)
                   )}
                  </div>
                 </TableCell>
@@ -141,9 +139,7 @@ export default function BlogManagementPage() { // Changed to a client component
           </TableBody>
         </Table>
       )}
-
       {loading && <p>Loading...</p>}
-
       <Pagination className="mt-4">
         <PaginationContent>
           <PaginationItem>

@@ -81,32 +81,32 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
         <h2 className="text-lg font-semibold text-sidebar-foreground truncate">{user?.name || user?.email || 'User'}</h2>
         <p className="text-xs text-muted-foreground">Member</p>
       </div>
-  <nav>
-        <ul className="space-y-2">
-          {filteredNavItems.map(item => (
-            <li key={item.href}>
-              <Link
-                onClick={() => {
-                  if (window.innerWidth < 1024) { // Check for small screens
-                    setIsOpen(false);
-                  }
-                }}
-                href={item.href}
-                className={cn(
-                  buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
-                  'w-full justify-start text-left', // Ensure text aligns left
-                  pathname === item.href
-                    ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                    : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground'
-                )}
-              >
-                <item.icon className="mr-2 h-5 w-5" />
-                {item.label}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
+      <nav>
+            <ul className="space-y-2">
+              {filteredNavItems.map(item => (
+                <li key={item.href}>
+                  <Link
+                    onClick={() => {
+                      if (window.innerWidth < 1024) { // Check for small screens
+                        setIsOpen(false);
+                      }
+                    }}
+                    href={item.href}
+                    className={cn(
+                      buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
+                      'w-full justify-start text-left', // Ensure text aligns left
+                      pathname === item.href
+                        ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
+                        : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground'
+                    )}
+                    legacyBehavior>
+                    <item.icon className="mr-2 h-5 w-5" />
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
       <div>
         <Button
           variant="outline"
@@ -118,7 +118,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
           Log Out
         </Button>
       </div>
-      </aside>
+    </aside>
   );
 }
 

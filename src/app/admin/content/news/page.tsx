@@ -93,7 +93,7 @@ const NewsManagementPage = () => {
         <div className="mb-4 flex space-x-4">
 
           {session?.user?.role && hasRole(session.user.role, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
-            <Link href="/admin/content/news/create">
+            <Link href="/admin/content/news/create" legacyBehavior>
               <Button>Create New News Article</Button>
             </Link>
           )}
@@ -162,26 +162,26 @@ const NewsManagementPage = () => {
           </>
         )}
       </div>
-        <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-              <AlertDialogDescription>
-                This action cannot be undone. This will permanently delete the
-                news article.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel onClick={() => setNewsArticleToDeleteId(null)}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={async () => {
-                if (newsArticleToDeleteId) {
-                  await deleteNewsArticleAction(newsArticleToDeleteId);
-                  // Optionally re-fetch data or update state
-                }
-              }}>Delete</AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the
+              news article.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setNewsArticleToDeleteId(null)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={async () => {
+              if (newsArticleToDeleteId) {
+                await deleteNewsArticleAction(newsArticleToDeleteId);
+                // Optionally re-fetch data or update state
+              }
+            }}>Delete</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
