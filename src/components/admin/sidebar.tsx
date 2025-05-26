@@ -46,26 +46,22 @@ const AdminSidebar: React.FC = () => {
                 href={item.href}
                 className={`flex items-center py-2 px-4 rounded ${
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
-                }`}>
+                }`}
+              >
                 {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
                 {item.name}
-
               </Link>
               {item.nested && (
                 <ul className="ml-4 mt-1">
                   {item.nested.map((nestedItem) => (
                     <li key={nestedItem.name} className="mb-1 text-gray-400">
-                      <Link href={nestedItem.href}>
-                        <div
-                          // Add padding to nested items for visual separation
-                          className={`block py-1 px-3 text-sm rounded ${
-                            pathname.startsWith(nestedItem.href)
-                              ? 'bg-gray-700 text-white'
-                              : 'hover:bg-gray-700 hover:text-white'
-                          }`}
-                        >
-                          {nestedItem.name}
-                        </div>
+                      <Link
+                        href={nestedItem.href}
+                        className={`block py-1 px-3 text-sm rounded ${
+                          pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
+                        }`}
+                      >
+                        {nestedItem.name}
                       </Link>
                     </li>
                   ))}

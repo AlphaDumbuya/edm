@@ -23,7 +23,10 @@ export default function CreateBlogPostPage() {
   }, []);
 
   const handleCreate = async (formData: FormData) => {
+    formData.append('title', title); // Append title
+    formData.append('slug', slug); // Append slug
     formData.append('content', stateToHTML(convertToRaw(editorState.getCurrentContent()))); // Convert and append HTML content
+    formData.append('published', published.toString()); // Append published status
     await createBlogPostAction(formData);
     router.push('/admin/content/blog');
   }

@@ -14,10 +14,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="space-y-2">
             <Link href="/" className="flex items-center gap-2">
-              <div className="flex items-center gap-2">
-                <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
-                <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
-              </div>
+              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
+              <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
             </Link>
             <p className="text-xs sm:text-sm text-muted-foreground">
               Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
@@ -98,14 +96,16 @@ export default function Footer() {
         <div className="mt-8 md:mt-12 border-t border-border pt-6 md:pt-8 text-center">
  <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-1 sm:mb-2">
  <Link
-   href="/terms-and-conditions"
-   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-   ><span><FileText size={14} className="mr-1" /> Terms & Conditions</span></Link>
+ href="/terms-and-conditions"
+ className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center">
+ <FileText size={14} className="mr-1" /> Terms & Conditions
+ </Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
  <Link
-   href="/privacy-policy"
-   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-   ><span><ShieldAlert size={14} className="mr-1" /> Privacy Policy</span></Link>
+ href="/privacy-policy"
+ className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center">
+ <ShieldAlert size={14} className="mr-1" /> Privacy Policy
+ </Link>
  </div>
           <p className="text-xs sm:text-sm text-muted-foreground">
             &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
