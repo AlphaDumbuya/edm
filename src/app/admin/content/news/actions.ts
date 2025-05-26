@@ -1,6 +1,7 @@
 'use server';
 
 import { createNewsArticle, deleteNewsArticle, updateNewsArticle } from "@/lib/db/news";
+import { getAllNewsArticles } from "@/lib/db/newsArticles";
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 import { redirect } from 'next/navigation';
 
@@ -16,7 +17,6 @@ export async function createNewsArticleAction(formData: FormData) {
     // In a real application, you'd handle this with user feedback
     return { error: 'Missing required fields' };
   }
-
   try {
     // You'll need the authorId. In a real app, you'd get this from the authenticated user session.
     // For now, using a placeholder. Replace 'YOUR_AUTHOR_ID' with actual logic.
@@ -53,12 +53,24 @@ export async function createNewsArticleAction(formData: FormData) {
       details: { title: newNewsArticle.title },
     });
     // Redirect on success
-    redirect('/admin/content/news');
+    redirect('/admin/content/news'); // Moved inside the try block
+
 
   } catch (error) {
     console.error('Error creating news article:', error);
     // In a real application, you'd handle this with user feedback
     return { error: 'Failed to create news article' };
+  }
+}
+
+export async function getNewsArticlesAction({ search, limit, offset, orderBy }: { search?: string; limit?: number; offset?: number; orderBy?: { createdAt: string } }) {
+  try {
+    const result = await getAllNewsArticles({ search, limit, offset });
+    return result;
+  } catch (error) {
+    console.error('Error fetching news articles:', error);
+    // In a real application, you'd handle this with user feedback
+    throw new Error('Failed to fetch news articles.');
   }
 }
 

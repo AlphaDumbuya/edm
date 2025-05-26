@@ -47,10 +47,11 @@ const AdminSidebar: React.FC = () => {
                 className={`flex items-center py-2 px-4 rounded ${
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                 }`}
-              >
-                {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
-                {item.name}
-
+>
+                <span>
+ {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
+ {item.name}
+ </span>
               </Link>
               {item.nested && (
                 <ul className="ml-4 mt-1">
@@ -61,8 +62,10 @@ const AdminSidebar: React.FC = () => {
                         className={`block py-1 px-3 text-sm rounded ${
                           pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white cursor-pointer' : 'hover:bg-gray-700 hover:text-white cursor-pointer'
                         }`}
-                      >
-                        {nestedItem.name}
+>
+                        <span>
+ {nestedItem.name}
+ </span>
                       </Link>
                     </li>
                   ))}

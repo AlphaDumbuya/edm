@@ -7,7 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { getAllNewsArticles } from "@/lib/db/newsArticles";
+import { getNewsArticlesAction } from "./actions"; // Import the new server action
 import { deleteNewsArticleAction } from "./actions";
 import Link from "next/link";
 import { useState, useEffect } from "react";
@@ -53,7 +53,7 @@ const NewsManagementPage = () => {
       setError(null);
       try {
         const offset = (currentPage - 1) * itemsPerPage;
-        const { newsArticles: fetchedArticles, totalCount } = await getAllNewsArticles({
+        const { newsArticles: fetchedArticles, totalCount } = await getNewsArticlesAction({
           search: searchQuery,
           limit: itemsPerPage,
           offset,
@@ -93,7 +93,7 @@ const NewsManagementPage = () => {
         <div className="mb-4 flex space-x-4">
 
           {session?.user?.role && hasRole(session.user.role, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
-            <Link href="/admin/content/news/create" legacyBehavior>
+            <Link href="/admin/content/news/create">
               <Button>Create New News Article</Button>
             </Link>
           )}
