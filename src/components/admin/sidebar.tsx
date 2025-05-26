@@ -48,8 +48,10 @@ const AdminSidebar: React.FC = () => {
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                 }`}
                 legacyBehavior>
+                <span>
                 {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
                 {item.name}
+                </span>
               </Link>
               {item.nested && (
                 <ul className="ml-4 mt-1">
@@ -61,7 +63,9 @@ const AdminSidebar: React.FC = () => {
                           pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                         }`}
                         legacyBehavior>
+                        <span>
                         {nestedItem.name}
+                        </span>
                       </Link>
                     </li>
                   ))}
