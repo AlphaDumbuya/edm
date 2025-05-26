@@ -108,7 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       if (result.error === null) {
         console.log('Signup successful, preparing redirect and toast'); // Add this line
         toast({ title: 'Signup Successful', description: 'Please sign in with your new account.' });
-        router.push('/auth/login');
+        router.push('/login');
       }
     }
     return result;

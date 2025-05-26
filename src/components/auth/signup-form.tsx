@@ -62,7 +62,7 @@ export default function SignupForm() {
  description: 'Signup successful. Please log in with your new account.',
       });
       // Redirect to signin page
-      router.push('/auth/login');
+      router.push('/login');
     }
  };
 
