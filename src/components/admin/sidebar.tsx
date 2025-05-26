@@ -36,7 +36,7 @@ const AdminSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-gray-900 text-gray-200 p-4 h-screen flex flex-col shadow-lg">
+    <aside className="hidden lg:flex w-64 bg-gray-900 text-gray-200 p-4 h-screen flex-col shadow-lg">
       <div className="text-2xl font-bold mb-6">Admin Dashboard</div>
       <nav>
         <ul>
@@ -47,7 +47,7 @@ const AdminSidebar: React.FC = () => {
                 className={`flex items-center py-2 px-4 rounded ${
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                 }`}
-                legacyBehavior>
+>
                 <span>
                 {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
                 {item.name}
@@ -60,9 +60,9 @@ const AdminSidebar: React.FC = () => {
                       <Link
                         href={nestedItem.href}
                         className={`block py-1 px-3 text-sm rounded ${
-                          pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
+                          pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white cursor-pointer' : 'hover:bg-gray-700 hover:text-white cursor-pointer'
                         }`}
-                        legacyBehavior>
+>
                         <span>
                         {nestedItem.name}
                         </span>
