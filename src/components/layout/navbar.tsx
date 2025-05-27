@@ -102,11 +102,11 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
 const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
   ({ className, title, children, ...props }, ref) => {
     return (
- <NavigationMenuLink
- ref={ref}
-        asChild
-      >
- <Link
+      <NavigationMenuLink
+      ref={ref}
+             asChild
+           >
+        <Link
           // Use href from props, default to # if not provided
           href={props.href || "#"}
           ref={ref}
@@ -115,12 +115,12 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
             className
           )}
           {...props}
- >
- <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
- <div className="text-sm font-medium leading-none">{title}</div>
- <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
- </div>
-        </Link>
+          legacyBehavior>
+        <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
+        <div className="text-sm font-medium leading-none">{title}</div>
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+        </div>
+               </Link>
       </NavigationMenuLink>
     );
   }
@@ -143,7 +143,7 @@ export default function Navbar() {
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2" legacyBehavior>
           <div>
  <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
             <span className="text-xl font-bold">EDM</span>
@@ -173,7 +173,7 @@ export default function Navbar() {
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!}>{item.title}</Link>
+                    <Link href={item.href!} legacyBehavior>{item.title}</Link>
                   </NavigationMenuLink>
                 )}
               </NavigationMenuItem>
@@ -227,10 +227,10 @@ export default function Navbar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : ( // Render Login and Sign Up buttons when not logged in
-            <>
-              <Link href="/login"><Button variant="outline">Login</Button></Link>
+            (<>
+              <Link href="/login" legacyBehavior><Button variant="outline">Login</Button></Link>
               <Link href="/auth/signup" legacyBehavior><Button variant="default">Sign Up</Button></Link>
-            </>
+            </>)
           )}
         </div>
 

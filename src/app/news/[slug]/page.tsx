@@ -51,7 +51,7 @@ export default async function NewsPostPage({ params }: { params: { slug:string }
       )}
       <article className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: post.content }} />
       <div className="text-center mt-12">
-        <Link href="/news">
+        <Link href="/news" legacyBehavior>
           <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM News & Updates</Button>
         </Link>
       </div>

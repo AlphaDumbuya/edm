@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import { Frown } from 'lucide-react';
 import { Suspense } from 'react';
