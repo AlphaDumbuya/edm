@@ -93,7 +93,7 @@ const NewsManagementPage = () => {
         <div className="mb-4 flex space-x-4">
 
           {session?.user?.role && hasRole(session.user.role, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
-            <Link href="/admin/content/news/create">
+            <Link href="/admin/content/news/create" legacyBehavior>
               <Button>Create New News Article</Button>
             </Link>
           )}
