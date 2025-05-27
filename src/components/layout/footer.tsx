@@ -14,16 +14,17 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="space-y-2">
             <Link href="/" className="flex items-center gap-2">
-              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
-              <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
+              <div>
+                <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
+                <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
+              </div>
             </Link>
-
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
-            </p>
-            <p className="text-xs text-muted-foreground mt-1 sm:mt-2">
-              EDM is a registered 501(c)(3) non-profit organization.
-            </p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 sm:mt-2">
+                EDM is a registered 501(c)(3) non-profit organization.
+              </p>
           </div>
           <div>
             <h3 className="text-md sm:text-lg font-semibold mb-3 md:mb-4">About EDM</h3>
@@ -99,7 +100,7 @@ export default function Footer() {
  <Link
    href="/terms-and-conditions"
    className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
- >
+   legacyBehavior>
  <span>
  <FileText size={14} className="mr-1" /> Terms & Conditions
  </span>
@@ -108,7 +109,7 @@ export default function Footer() {
  <Link
    href="/privacy-policy"
    className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
- >
+   legacyBehavior>
  <span>
  <ShieldAlert size={14} className="mr-1" /> Privacy Policy
 
