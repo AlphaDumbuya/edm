@@ -2,9 +2,10 @@
 
 import { createBlogPost, deleteBlogPost, updateBlogPost } from "@/lib/db/blog";
 import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Import the audit log function
-import { getCurrentUserId } from '@/lib/auth/session'; // Assuming you have a function to get the current user ID
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { getServerSession } from 'next-auth'; // Import getServerSession
+import { authOptions } from '@/lib/auth'; // Import your auth options
 
 export async function createBlogPostAction(formData: FormData) {
   const title = formData.get('title') as string;
@@ -19,9 +20,9 @@ export async function createBlogPostAction(formData: FormData) {
   }
 
   try {
-    const userId = await getCurrentUserId(); // Get the current user's ID
-    if (!userId) {
-      throw new Error("User not authenticated"); // Or handle appropriately
+    const session = await getServerSession(authOptions);
+    if (!session || !session.user || !session.user.id) {
+ throw new Error("User not authenticated"); // Or handle appropriately
     }
 
     const newBlogPost = await createBlogPost({
@@ -29,14 +30,14 @@ export async function createBlogPostAction(formData: FormData) {
       slug,
       content,
       published,
-      authorId: userId, // Add authorId
+      authorId: session.user.id, // Add authorId
     });
 
     if (newBlogPost) {
       // Create audit log entry for creation
       await createAuditLogEntry({
-        userId: userId,
-        action: 'Created Blog Post',
+        userId: session.user.id, // Use the user ID from the session
+        action: 'Created Blog Post', // Ensure action is specific to blog posts
         entityType: 'BlogPost',
         entityId: newBlogPost.id,
         details: { title: newBlogPost.title },

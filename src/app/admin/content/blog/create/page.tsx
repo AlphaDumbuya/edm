@@ -1,8 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
+import dynamic from 'next/dynamic'; // Import dynamic
+import convertToHTML from 'draftjs-to-html'; // Import convertToHTML
 import { createBlogPostAction } from './actions';
 import { useRouter } from 'next/navigation';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'; // Import editor styles
 
 export default function CreateBlogPostPage() {
   const router = useRouter();
@@ -10,18 +14,25 @@ export default function CreateBlogPostPage() {
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [content, setContent] = useState(''); // State for textarea content
+  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // State for editor content
 
   useEffect(() => {
     // Set isClient to true after a small delay
-    const timer = setTimeout(() => {
-      setIsClient(true);
-    }, 100); // Adjust delay if needed
-    return () => {
-      clearTimeout(timer);
-      setIsClient(false);
-    };
+    setIsClient(true);
   }, []);
+
+  // Dynamic import for the Editor component
+  const Editor = dynamic(
+    () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
+    { ssr: false } // Disable server-side rendering for the editor
+  );
+
+  // Function to handle editor state changes
+  const onEditorStateChange = (newState: EditorState) => {
+    setEditorState(newState);
+  };
+
+
 
   const handleCreate = async (formData: FormData) => {
     formData.append('title', title); // Append title

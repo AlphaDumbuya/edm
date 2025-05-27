@@ -1,6 +1,6 @@
 'use server'; // This marks the file as server-only code
 
-import { createAuditLogEntry } from '@/lib/db/auditLogs';
+import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Assuming this import is correct
 import { createEvent, deleteEvent } from "@/lib/db/events";
 import { redirect } from 'next/navigation';
 
@@ -105,5 +105,17 @@ export async function updateEventAction(id: string, formData: FormData) {
   } catch (error) {
     console.error(`Error updating event with ID ${id}:`, error);
     throw new Error(`Failed to update event with ID ${id}.`);
+  }
+}
+
+// New server action to fetch events
+export async function fetchEventsAction() {
+  try {
+    // Assuming getAllEvents is available and imports prisma instance correctly
+    const events = await getAllEvents(); 
+    return events;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    throw new Error('Failed to fetch events.');
   }
 }
