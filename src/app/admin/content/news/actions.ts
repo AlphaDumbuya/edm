@@ -2,36 +2,54 @@
 
 import { createNewsArticle, deleteNewsArticle, updateNewsArticle } from "@/lib/db/news";
 import { getAllNewsArticles } from "@/lib/db/newsArticles";
-import { createAuditLogEntry } from '@/lib/db/auditLogs';
-import { redirect } from 'next/navigation';
+import { createAuditLogEntry } from "@/lib/db/auditLogs";
+import { redirect } from "next/navigation";
 
+import { decrypt } from '@/lib/auth/session'; // Import decrypt
+import { cookies } from 'next/headers'; // Import cookies
 export async function createNewsArticleAction(formData: FormData) {
+ console.log('createNewsArticleAction started');
+  console.log(formData);
+ 
   const title = formData.get('title') as string;
-  const slug = formData.get('slug') as string;
-  const content = formData.get('content') as string;
-  const published = formData.get('published') === 'on'; // Checkbox value
+  const slug = formData.get('slug') as string; // Extract slug
+  const published = formData.get('published') === 'on'; // Extract published status (boolean)
+  const contentFromEditor = formData.get('content') as string; // Content is from the rich text editor
 
-  if (!title || !slug || !content) {
+ // 2. TODO: Validate the extracted data (highly recommended)
+
+  if (!title || !slug) {
     // Basic validation
     console.error('Missing required fields');
     // In a real application, you'd handle this with user feedback
     return { error: 'Missing required fields' };
   }
   try {
-    // You'll need the authorId. In a real app, you'd get this from the authenticated user session.
-    // For now, using a placeholder. Replace 'YOUR_AUTHOR_ID' with actual logic.
-    const authorId = 'YOUR_AUTHOR_ID'; // Replace with actual author ID logic
-
-    if (authorId === 'YOUR_AUTHOR_ID') {
-        console.error('Author ID not set');
-        return { error: 'Author ID not set' };
+    // Get the authorId from the authenticated user session
+    const sessionCookie = (await cookies()).get('session');
+    if (!sessionCookie) {
+      console.error('Session cookie not found');
+      return { error: 'Authentication failed' };
     }
+    const session = await decrypt(sessionCookie.value);
+    if (!session || !session.userId) {
+      console.error('Invalid session or user ID not found');
+      return { error: 'Authentication failed' };
+    }
+    const authorId = session.userId;
 
+
+    // Content transformation now happens on the client side in create/page.tsx
+    // The contentFromEditor is already the transformed HTML string
+    const transformedContent = contentFromEditor;
+
+    // Call your database function to create the news article
+ console.log('Attempting to create news article in DB');
 
     const newNewsArticle = await createNewsArticle({
       title,
       slug,
-      content,
+      content: transformedContent,
       published,
       authorId, // Pass the authorId
     });
@@ -41,24 +59,35 @@ export async function createNewsArticleAction(formData: FormData) {
       // In a real application, you'd handle this with user feedback
       return { error: 'Failed to create news article' };
     }
+    // Check for any errors returned by the database function itself
 
     console.log('News Article created:', newNewsArticle);
 
     // Create audit log entry
+ console.log('Creating audit log entry');
+
     await createAuditLogEntry({
       userId: authorId, // Use the actual author ID
       action: 'Created News Article',
+      // Consider adding entity type and ID if you have a structured audit log
       entityType: 'NewsArticle',
       entityId: newNewsArticle.id,
+      // You might want to include a snapshot of the created data
+      // but be mindful of storing potentially large content in audit logs
+      // snapshot: newNewsArticle,
       details: { title: newNewsArticle.title },
     });
     // Redirect on success
+ console.log('Redirecting to news listing page');
+
     redirect('/admin/content/news'); // Moved inside the try block
+
+ console.log('createNewsArticleAction finished successfully');
 
 
   } catch (error) {
     console.error('Error creating news article:', error);
-    // In a real application, you'd handle this with user feedback
+    // Provide more specific error handling or feedback here if needed
     return { error: 'Failed to create news article' };
   }
 }
