@@ -102,11 +102,11 @@ interface ListItemProps extends React.ComponentPropsWithoutRef<"a"> {
 const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
   ({ className, title, children, ...props }, ref) => {
     return (
-      <NavigationMenuLink
+ <NavigationMenuLink
  ref={ref}
         asChild
       >
-        <Link
+ <Link
           // Use href from props, default to # if not provided
           href={props.href || "#"}
           ref={ref}
@@ -115,10 +115,10 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
             className
           )}
           {...props}
-        >
+ >
  <div className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground">
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+ <div className="text-sm font-medium leading-none">{title}</div>
+ <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
  </div>
         </Link>
       </NavigationMenuLink>
@@ -144,10 +144,10 @@ export default function Navbar() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <span className="flex items-center gap-2">
-            <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
+          <div>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
             <span className="text-xl font-bold">EDM</span>
-          </span> {/* Wrap the children in a single element */}
+          </div>
         </Link>
 
         <NavigationMenu className="hidden lg:flex">
@@ -160,7 +160,6 @@ export default function Navbar() {
                     <NavigationMenuContent>
                       <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
                         {item.links.map((link) => (
-
                           <ListItem
                             key={link.title}
                             href={link.href}
@@ -174,7 +173,8 @@ export default function Navbar() {
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!}>{item.title}</Link></NavigationMenuLink>
+                    <Link href={item.href!}>{item.title}</Link>
+                  </NavigationMenuLink>
                 )}
               </NavigationMenuItem>
             ))}
@@ -229,7 +229,7 @@ export default function Navbar() {
           ) : ( // Render Login and Sign Up buttons when not logged in
             <>
               <Link href="/login"><Button variant="outline">Login</Button></Link>
- <Link href="/auth/signup"><Button variant="default">Sign Up</Button></Link>
+              <Link href="/auth/signup" legacyBehavior><Button variant="default">Sign Up</Button></Link>
             </>
           )}
         </div>
@@ -252,7 +252,7 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                    ><Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                    legacyBehavior><Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                     <span className="text-lg font-bold">EDM</span>
                   </Link>
                 </SheetTitle>
@@ -265,7 +265,7 @@ export default function Navbar() {
                         href={item.href}
                         className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
                         onClick={() => setMobileMenuOpen(false)}
-                        >{item.icon && <item.icon size={18} />}
+                        legacyBehavior>{item.icon && <item.icon size={18} />}
                         {item.title}
                       </Link>
                     )}
@@ -282,7 +282,7 @@ export default function Navbar() {
                                 href={link.href}
                                 className="text-sm hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
-                                >{link.title}
+                                legacyBehavior>{link.title}
                               </Link>
                             </li>
                           ))}

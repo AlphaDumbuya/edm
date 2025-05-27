@@ -17,6 +17,15 @@ export type UpdateNewsArticleData = {
   published?: boolean;
 };
 
+// Define a type that extends PrismaNewsArticle to include the author
+export type NewsArticleWithAuthor = PrismaNewsArticle & {
+  author: {
+    id: string;
+    name: string;
+    email: string;
+  };
+};
+
 export async function getAllNewsArticles(): Promise<PrismaNewsArticle[]> {
   try {
     const newsArticles = await prisma.newsArticle.findMany({
@@ -57,6 +66,27 @@ export async function getNewsArticleById(id: string): Promise<PrismaNewsArticle 
     return newsArticle;
   } catch (error) {
     console.error(`Error fetching news article with ID ${id}:`, error);
+    return null;
+  }
+}
+
+export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWithAuthor | null> {
+  try {
+    const newsArticle = await prisma.newsArticle.findUnique({
+      where: { slug },
+      include: { // Include author data if needed
+        author: {
+          select: {
+            id: true,
+            name: true,
+            email: true, // Be cautious about exposing email
+          },
+        },
+      },
+    });
+    return newsArticle as NewsArticleWithAuthor | null; // Cast the result to the new type
+  } catch (error) {
+    console.error(`Error fetching news article with slug ${slug}:`, error);
     return null;
   }
 }
