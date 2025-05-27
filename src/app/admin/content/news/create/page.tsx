@@ -1,23 +1,18 @@
 'use client';
 
 import { createNewsArticleAction } from '../actions';
-import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import dynamic from 'next/dynamic'; // Import useEffect
-import convertToHTML from 'draftjs-to-html'; // Import convertToHTML
+import dynamic from 'next/dynamic';
 
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'; // Import styles
-
-const Editor = dynamic(() => import('react-draft-wysiwyg').then((mod) => mod.Editor), { ssr: false });
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 export default function CreateNewsArticlePage() {
   const router = useRouter();
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  // State to track if the component has mounted on the client
+  const [content, setContent] = useState('');
   const [isClient, setIsClient] = useState(false);
 
-  // Set isClient to true after the component mounts
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -28,9 +23,7 @@ export default function CreateNewsArticlePage() {
       <h1 className="text-2xl font-bold mb-6">Create New News Article</h1>
       <form
         action={async (formData: FormData) => {
-          const rawContentState = convertToRaw(editorState.getCurrentContent());
-          const transformedContent = convertToHTML(rawContentState);
-          formData.append('content', transformedContent);
+          formData.append('content', content);
           await createNewsArticleAction(formData); router.push('/admin/content/news'); }}
         className="space-y-6"
       >
@@ -103,10 +96,11 @@ export default function CreateNewsArticlePage() {
             Content
           </label>
           <div className="mt-1 border rounded-md shadow-sm"> {/* Added border and shadow for professional look */}
-            <Editor
-              editorState={isClient ? editorState : undefined} // Conditionally pass editorState
-              onEditorStateChange={isClient ? setEditorState : undefined} // Conditionally pass setEditorState
-              editorClassName="px-3 py-2 h-96" // Increased height
+            <ReactQuill
+
+              value={content}
+              onChange={setContent}
+              className="h-96" // Adjusted height for react-quill
             />
           </div>
         </div>

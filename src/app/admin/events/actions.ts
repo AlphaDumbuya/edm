@@ -1,12 +1,10 @@
 'use server'; // This marks the file as server-only code
 
-import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Assuming this import is correct
-import { getAllEvents } from '@/lib/db/events'; // Import getAllEvents
-import { createEvent, deleteEvent } from "@/lib/db/events";
+import { createAuditLogEntry } from '@/lib/db/auditLogs';
+import { getAllEvents, createEvent, deleteEvent, updateEvent } from '@/lib/db/events';
 import { redirect } from 'next/navigation';
 
-// Define the type for the event data expected by createEvent
-
+// Create Event Action
 export async function createEventAction(formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
@@ -14,27 +12,14 @@ export async function createEventAction(formData: FormData) {
   const time = formData.get('time') as string;
   const location = formData.get('location') as string;
 
-  // Basic validation (you'll want more robust validation)
   if (!title || !description || !dateString || !time || !location) {
-    // In a real application, you'd handle this with form state or a message
     console.error("Missing required fields");
     return;
   }
 
   try {
-    // Assuming the date string is in a format that the Date constructor can parse
-    // You might need more robust date handling depending on your date input
     const date = new Date(dateString);
-/*
-    const eventData: CreateEventData = {
-      title,
-      description,
-      date,
-      time,
-      location,
-    });
 
-    await createEvent(eventData); */
     await createEvent({
       title,
       description,
@@ -43,41 +28,38 @@ export async function createEventAction(formData: FormData) {
       location,
     });
 
-    // Replace 'YOUR_USER_ID' with logic to get the current user's ID
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID', 
+      userId: 'YOUR_USER_ID',
       action: 'Created Event',
       entityType: 'Event',
     });
 
-    // Redirect to the events list page after successful creation
     redirect('/admin/events');
 
   } catch (error) {
     console.error('Error creating event:', error);
-    // In a real application, you'd handle this with error messages
     throw new Error('Failed to create event.');
   }
 }
 
+// Delete Event Action
 export async function deleteEventAction(id: string) {
   try {
     await deleteEvent(id);
 
-    // Replace 'YOUR_USER_ID' with logic to get the current user's ID
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID', 
+      userId: 'YOUR_USER_ID',
       action: 'Deleted Event',
       entityType: 'Event',
     });
-    // Optionally revalidate path or return success status
+
   } catch (error) {
     console.error(`Error deleting event with ID ${id}:`, error);
-    // In a real application, you'd handle this with error messages
     throw new Error(`Failed to delete event with ID ${id}.`);
   }
 }
 
+// Update Event Action
 export async function updateEventAction(id: string, formData: FormData) {
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
@@ -85,7 +67,6 @@ export async function updateEventAction(id: string, formData: FormData) {
   const time = formData.get('time') as string;
   const location = formData.get('location') as string;
 
-  // Prepare data for update, only include fields that are present
   const updateData: {
     title?: string;
     description?: string;
@@ -96,24 +77,31 @@ export async function updateEventAction(id: string, formData: FormData) {
 
   if (title) updateData.title = title;
   if (description) updateData.description = description;
-  if (dateString) updateData.date = new Date(dateString); // Assuming date string is parseable
+  if (dateString) updateData.date = new Date(dateString);
   if (time) updateData.time = time;
   if (location) updateData.location = location;
 
   try {
-    await deleteEvent(id);
-    redirect('/admin/events'); // Redirect to the events list page after successful update
+    await updateEvent(id, updateData);
+
+    await createAuditLogEntry({
+      userId: 'YOUR_USER_ID',
+      action: 'Updated Event',
+      entityType: 'Event',
+    });
+
+    redirect('/admin/events');
+
   } catch (error) {
     console.error(`Error updating event with ID ${id}:`, error);
     throw new Error(`Failed to update event with ID ${id}.`);
   }
 }
 
-// New server action to fetch events
-export async function fetchEventsAction() {
+// Get All Events Action
+export async function getAllEventsAction() {
   try {
-    // Assuming getAllEvents is available and imports prisma instance correctly
-    const events = await getAllEvents(); 
+    const events = await getAllEvents();
     return events;
   } catch (error) {
     console.error('Error fetching events:', error);

@@ -2,10 +2,14 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
-import { updateNewsArticleAction } from '../../actions'; // Assuming this action will be created
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { updateNewsArticleAction } from '../../actions';
+import dynamic from 'next/dynamic';
+import { useEffect, useState } from 'react';
 
-interface NewsArticle {
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles to be available globally or per component if needed.
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+// Ensure React and its hooks are imported correctly
+export interface NewsArticle {
   id: string;
   title: string;
   slug: string;
@@ -17,8 +21,6 @@ export default function EditNewsArticlePage() {
   const router = useRouter();
   const params = useParams();
   const newsArticleId = params.id as string;
-  const { useEffect, useState } = require('react'); // Keeping this line for now, will remove if not needed after reviewing context
-
   const [newsArticle, setNewsArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -56,6 +58,13 @@ export default function EditNewsArticlePage() {
       fetchNewsArticle();
     }
   }, [newsArticleId]);
+
+  const handleContentChange = (html: string) => {
+    setFormData({
+      ...formData,
+      content: html,
+    });
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -107,13 +116,16 @@ export default function EditNewsArticlePage() {
         </div>
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">Content</label>
-          <textarea
-            id="content" // Should be 'content'
-            name="content" // Should be 'content'
+          {/* Use ReactQuill component */}
+          <ReactQuill
             value={formData.content}
-            onChange={handleInputChange} // Should be handleInputChange
+            onChange={handleContentChange}
+            theme="snow" // or "bubble"
+            modules={{
+              toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image']]
+            }}
             required
-          ></textarea>
+          />
         </div>
         <div className="flex items-center">
           <input

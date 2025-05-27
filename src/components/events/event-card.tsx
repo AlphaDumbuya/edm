@@ -18,16 +18,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-
-interface Event {
-  id: string;
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-  imageUrl: string;
-  dataAiHint?: string;
-}
+import { Event } from '@prisma/client';
 
 interface EventCardProps {
   event: Event;

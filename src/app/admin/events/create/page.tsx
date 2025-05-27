@@ -21,11 +21,6 @@ export default function CreateEventPage() {
       [name]: value,
     }));
   };
-  const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-
-  const [description, setDescription] = useState('');
-  const router = useRouter();
-
   const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
@@ -43,6 +38,11 @@ export default function CreateEventPage() {
       // Optionally, display an error message to the user
     }
   };
+  const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+
+  const [description, setDescription] = useState('');
+  const router = useRouter();
+
 
   // Define modules for the rich text editor
   const modules = {
@@ -86,7 +86,7 @@ export default function CreateEventPage() {
           <ReactQuill
             theme="snow"
             value={description}
-            onChange={setDescription}
+            onChange={(content, delta, source, editor) => setDescription(content)}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
 
           ></ReactQuill>

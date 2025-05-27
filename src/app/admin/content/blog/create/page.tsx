@@ -1,25 +1,17 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { EditorState, convertToRaw, convertFromRaw, ContentState } from 'draft-js';
-import dynamic from 'next/dynamic'; // Import dynamic
-import convertToHTML from 'draftjs-to-html'; // Import convertToHTML
+import ReactQuill from 'react-quill'; // Import ReactQuill directly
 import { createBlogPostAction } from './actions';
 import { useRouter } from 'next/navigation';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css'; // Import editor styles
+import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 export default function CreateBlogPostPage() {
   const router = useRouter();
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
-  const [isClient, setIsClient] = useState(false);
-  const [editorState, setEditorState] = useState(EditorState.createEmpty()); // State for editor content
-
-  useEffect(() => {
-    // Set isClient to true after a small delay
-    setIsClient(true);
-  }, []);
+  const [content, setContent] = useState(''); // State for editor content
 
   // Dynamic import for the Editor component
   const Editor = dynamic(
@@ -28,15 +20,11 @@ export default function CreateBlogPostPage() {
   );
 
   // Function to handle editor state changes
-  const onEditorStateChange = (newState: EditorState) => {
-    setEditorState(newState);
+  const handleContentChange = (value: string) => {
+    setContent(value);
   };
 
-
-
   const handleCreate = async (formData: FormData) => {
-    formData.append('title', title); // Append title
-    formData.append('slug', slug); // Append slug
     formData.append('content', content); // Append content from textarea
     formData.append('published', published.toString()); // Append published status
     await createBlogPostAction(formData);
@@ -74,19 +62,15 @@ export default function CreateBlogPostPage() {
             required
           />
         </div>
-        <div className="mb-4 flex-grow"> {/* Increased bottom margin and allow content to grow */}
+        <div className="mb-4 flex-grow">
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <textarea
+          <ReactQuill
             id="content"
-            name="content" // Added name attribute
-            value={content} // Bind value to state
-            onChange={(e) => setContent(e.target.value)} // Update state on change
-            rows={10} // Set number of rows
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2 px-3 min-h-[200px]" // Added styling classes
-            required // Add required if necessary
-          ></textarea>
+            value={content}
+            onChange={handleContentChange}
+          />
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input

@@ -14,17 +14,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "types": [
- "node",
- "react",
- "react-dom",
- "@types/bcryptjs",
- "@types/cookie",
- "@types/leaflet",
- "@types/pg",
- "@types/next-auth"
-    ],
-    "typeRoots": ["./node_modules/@types", "./node_modules"],
+    "types": ["node", "react", "react-dom", "react-quill"],    "typeRoots": ["./node_modules/@types", "./node_modules"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
@@ -37,9 +27,10 @@
   },
   "include": [
     "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".",
+ "**/*.ts",
+ "**/*.tsx",
+ ".next/types/**/*.ts"
   ],
   "exclude": ["node_modules"]
 }
