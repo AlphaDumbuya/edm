@@ -1,6 +1,7 @@
 'use server'; // This marks the file as server-only code
 
 import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Assuming this import is correct
+import { getAllEvents } from '@/lib/db/events'; // Import getAllEvents
 import { createEvent, deleteEvent } from "@/lib/db/events";
 import { redirect } from 'next/navigation';
 
