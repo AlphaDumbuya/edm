@@ -1,14 +1,16 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
 import { updateNewsArticleAction } from '../../actions';
-import dynamic from 'next/dynamic';
 import { useEffect, useState } from 'react';
+import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles to be available globally or per component if needed.
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-// Ensure React and its hooks are imported correctly
+// TipTap styles (optional, you can add your own)
+import '@tiptap/core'; // Minimal core styles if needed
+// import '@tiptap/starter-kit'; // Starter kit styles
+
 export interface NewsArticle {
   id: string;
   title: string;
@@ -16,7 +18,6 @@ export interface NewsArticle {
   content: string;
   published: boolean;
 }
-
 export default function EditNewsArticlePage() {
   const router = useRouter();
   const params = useParams();
@@ -31,17 +32,31 @@ export default function EditNewsArticlePage() {
     published: false,
   });
 
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      // Add other TipTap extensions you need here (e.g., Heading, Bold, Italic, Link)
+    ],
+    content: formData.content, // Use formData.content for initial content
+    onUpdate: ({ editor }) => {
+      // Update form data with the latest HTML content from the editor
+      setFormData((prevData) => ({ ...prevData, content: editor.getHTML() }));
+    },
+    editorProps: { attributes: { class: 'prose max-w-none border p-4 rounded-md' } }, // Basic styling
+  });
+
   useEffect(() => {
     const fetchNewsArticle = async () => {
       try {
         const article = await getNewsArticleById(newsArticleId);
         if (article) {
+          // Initialize form data with fetched content
           setNewsArticle(article);
           setFormData({
             title: article.title,
             slug: article.slug,
-            content: article.content,
             published: article.published,
+ content: article.content,
           });
         } else {
           setError('News article not found.');
@@ -59,13 +74,6 @@ export default function EditNewsArticlePage() {
     }
   }, [newsArticleId]);
 
-  const handleContentChange = (html: string) => {
-    setFormData({
-      ...formData,
-      content: html,
-    });
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     setFormData({
@@ -73,6 +81,10 @@ export default function EditNewsArticlePage() {
       [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
     });
   };
+
+  useEffect(() => {
+    if (editor && formData.content !== editor.getHTML()) editor.commands.setContent(formData.content || '');
+  }, [editor, formData.content]); // Sync formData.content with editor content
 
   if (loading) {
     return <div>Loading...</div>;
@@ -116,16 +128,12 @@ export default function EditNewsArticlePage() {
         </div>
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">Content</label>
-          {/* Use ReactQuill component */}
-          <ReactQuill
-            value={formData.content}
-            onChange={handleContentChange}
-            theme="snow" // or "bubble"
-            modules={{
-              toolbar: [['bold', 'italic', 'underline'], [{ 'list': 'ordered'}, { 'list': 'bullet' }], ['link', 'image']]
-            }}
-            required
-          />
+          {/* Use TipTap EditorContent component */}
+          {editor ? (
+            <EditorContent editor={editor} />
+          ) : (
+            <div>Loading editor...</div> // Optional loading state for the editor
+          )}
         </div>
         <div className="flex items-center">
           <input

@@ -9,10 +9,10 @@ import { Badge } from '@/components/ui/badge';
 interface NewsPost {
   slug: string;
   title: string;
+  author: { name: string };
   date: string;
-  author: string;
-  excerpt: string;
   imageUrl: string;
+  excerpt: string;
   dataAiHint?: string;
   tags?: string[];
 }
@@ -25,11 +25,11 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
       <CardHeader className="p-3 sm:p-4">
- <Link href={`/news/${post.slug}`} legacyBehavior>
- <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
-      </Link>
+        <Link href={`/news/${post.slug}`} legacyBehavior>
+          <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
+        </Link>
         <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
-          <span className="flex items-center"><User className="mr-1 h-3 w-3 text-primary" /> By {post.author}</span>
+          <span className="flex items-center"><User className="mr-1 h-3 w-3 text-primary" /> By {post.author.name}</span>
           <span className="flex items-center"><CalendarDays className="mr-1 h-3 w-3 text-primary" /> {post.date}</span>
         </div>
       </CardHeader>
@@ -37,17 +37,19 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         href={`/news/${post.slug}`}
         className="block relative w-full h-32 sm:h-40 group"
         legacyBehavior>
+        {post.imageUrl && (
  <Image
-          src={post.imageUrl}
-          alt={post.title}
-          fill={true}
-          style={{ objectFit: 'contain' }}
-          data-ai-hint={post.dataAiHint}
-          className="transition-transform duration-300 group-hover:scale-105"
-        />
+ src={post.imageUrl}
+ alt={post.title}
+ fill={true}
+ style={{ objectFit: 'contain' }}
+ data-ai-hint={post.dataAiHint}
+ className="transition-transform duration-300 group-hover:scale-105"
+ />
+ )}
       </Link>
       <CardContent className="p-3 sm:p-4 flex-grow">
-        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{post.excerpt}</p>
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
         {post.tags && post.tags.length > 0 && (
           <div className="mt-2 sm:mt-3 flex flex-wrap gap-1 sm:gap-1.5">
             {post.tags.map(tag => (
@@ -57,8 +59,8 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         )}
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
- <Link href={`/news/${post.slug}`} className="w-full" legacyBehavior>
- <Button variant="outline" className="w-full text-xs sm:text-sm">
+        <Link href={`/news/${post.slug}`} className="w-full" legacyBehavior>
+ <Button className="w-full text-sm">
  Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
  </Link>

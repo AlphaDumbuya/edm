@@ -1,4 +1,3 @@
-// src/lib/db/news.ts
 import prisma from './prisma';
 import { NewsArticle as PrismaNewsArticle } from '@prisma/client';
 
@@ -6,7 +5,7 @@ export type CreateNewsArticleData = {
   title: string;
   slug: string;
   content: string;
-  authorId: string; // Assuming authorId is required on creation
+  authorId: string;
   published?: boolean;
 };
 
@@ -17,126 +16,120 @@ export type UpdateNewsArticleData = {
   published?: boolean;
 };
 
-// Define a type that extends PrismaNewsArticle to include the author
-export type NewsArticleWithAuthor = PrismaNewsArticle & {
+export type NewsArticleWithAuthor = Omit<PrismaNewsArticle, 'authorId'> & {
   author: {
     id: string;
-    name: string;
+    name: string | null;
     email: string;
+    image?: string | null;
   };
+  imageUrl?: string | null; // Added imageUrl property
 };
 
-export async function getAllNewsArticles(): Promise<PrismaNewsArticle[]> {
+export async function getAllNewsArticles(): Promise<NewsArticleWithAuthor[]> {
   try {
-    const newsArticles = await prisma.newsArticle.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
-      include: { // Include author data if needed
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true, // Be cautious about exposing email
-          },
-        },
-      },
+    const articles = await prisma.newsArticle.findMany({
+      orderBy: { createdAt: 'desc' },
     });
-    return newsArticles;
-  } catch (error) {
-    console.error('Error fetching all news articles:', error);
+
+    const enriched = await Promise.all(
+      articles.map(async (article) => {
+        const author = await prisma.user.findUnique({
+          where: { id: article.authorId },
+          select: { id: true, name: true, email: true, image: true },
+        });
+
+        return {
+          ...article,
+          author: author || {
+            id: 'unknown',
+            name: 'Unknown Author',
+            email: 'unknown@example.com',
+            image: null,
+          },
+        };
+      })
+    );
+
+    return enriched;
+  } catch (err) {
+    console.error('Error fetching all news articles:', err);
     return [];
   }
 }
 
-export async function getNewsArticleById(id: string): Promise<PrismaNewsArticle | null> {
+export async function getNewsArticleById(id: string): Promise<NewsArticleWithAuthor | null> {
   try {
-    const newsArticle = await prisma.newsArticle.findUnique({
+    const article = await prisma.newsArticle.findUnique({
       where: { id },
-      include: { // Include author data if needed
+      include: {
         author: {
-          select: {
-            id: true,
-            name: true,
-            email: true, // Be cautious about exposing email
-          },
+          select: { id: true, name: true, email: true, image: true },
         },
       },
     });
-    return newsArticle;
-  } catch (error) {
-    console.error(`Error fetching news article with ID ${id}:`, error);
+
+    return article as NewsArticleWithAuthor | null;
+  } catch (err) {
+    console.error(`Error fetching news article with ID ${id}:`, err);
     return null;
   }
 }
 
 export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWithAuthor | null> {
   try {
-    const newsArticle = await prisma.newsArticle.findUnique({
+    const article = await prisma.newsArticle.findUnique({
       where: { slug },
-      include: { // Include author data if needed
+      include: {
         author: {
-          select: {
-            id: true,
-            name: true,
-            email: true, // Be cautious about exposing email
-          },
+          select: { id: true, name: true, email: true, image: true },
         },
       },
     });
-    return newsArticle as NewsArticleWithAuthor | null; // Cast the result to the new type
-  } catch (error) {
-    console.error(`Error fetching news article with slug ${slug}:`, error);
+
+    return article as NewsArticleWithAuthor | null;
+  } catch (err) {
+    console.error(`Error fetching news article with slug ${slug}:`, err);
     return null;
   }
 }
 
 export async function createNewsArticle(data: CreateNewsArticleData): Promise<PrismaNewsArticle | null> {
   try {
-    const newsArticle = await prisma.newsArticle.create({
+    return await prisma.newsArticle.create({
       data: {
         title: data.title,
         slug: data.slug,
         content: data.content,
-        author: {
-          connect: { id: data.authorId }, // Connect to an existing author
-        },
         published: data.published ?? false,
+        author: { connect: { id: data.authorId } },
       },
     });
-    return newsArticle;
-  } catch (error) {
-    console.error('Error creating news article:', error);
+  } catch (err) {
+    console.error('Error creating news article:', err);
     return null;
   }
 }
 
 export async function updateNewsArticle(id: string, data: UpdateNewsArticleData): Promise<PrismaNewsArticle | null> {
   try {
-    const newsArticle = await prisma.newsArticle.update({
+    return await prisma.newsArticle.update({
       where: { id },
-      data: {
-        title: data.title,
-        slug: data.slug,
-        content: data.content,
-        published: data.published,
-      },
+      data,
     });
-    return newsArticle;
-  } catch (error) {
-    console.error(`Error updating news article with ID ${id}:`, error);
+  } catch (err) {
+    console.error(`Error updating news article with ID ${id}:`, err);
     return null;
   }
 }
 
 export async function deleteNewsArticle(id: string): Promise<PrismaNewsArticle | null> {
   try {
-    const newsArticle = await prisma.newsArticle.delete({
+    return await prisma.newsArticle.delete({
       where: { id },
     });
-    return newsArticle;
-  } catch (error) {
-    console.error(`Error deleting news article with ID ${id}:`, error);
+  } catch (err) {
+    console.error(`Error deleting news article with ID ${id}:`, err);
     return null;
   }
 }

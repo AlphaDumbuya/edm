@@ -1,17 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { createEventAction } from "../actions"; // Adjust path as needed
-import "react-quill/dist/quill.snow.css";
-import dynamic from 'next/dynamic';
 import { useRouter } from "next/navigation";
+import { EditorState, convertToRaw } from 'draft-js';
+import dynamic from 'next/dynamic';
+import draftToHtml from 'draftjs-to-html';
+const Editor = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false });
 // Removed unused formData state and handleChange function as we will use FormData directly with server actions
-export default function CreateEventPage() {
-  const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    date: '',
-    time: '',
+export default function CreateEventPage() {const [formData, setFormData] = useState({    title: '',    description: '',    date: '',
+ time: '',
     location: '',
   });
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -20,28 +18,38 @@ export default function CreateEventPage() {
       ...prevState,
       [name]: value,
     }));
-  };
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  };const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    // Append the rich text editor content to FormData
-    formData.append('description', description);
+    const data = new FormData();
+    data.append('title', formData.title);
+    data.append('date', formData.date);
+    data.append('time', formData.time);
+    data.append('location', formData.location);
 
     try {
-      await createEventAction(formData);
-      router.push('/admin/events');
+      const rawContentState = convertToRaw(editorState.getCurrentContent());
+      // Convert editor state to HTML and append to FormData
+      data.append('description', draftToHtml(rawContentState));
+      await createEventAction(data);router.push('/admin/events');
     } catch (error) {
       console.error('Error creating event:', error);
       // Optionally, display an error message to the user
     }
   };
-  const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-  const [description, setDescription] = useState('');
+
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const router = useRouter();
+
+  useEffect(() => {
+    // Import CSS on the client side
+    import('react-draft-wysiwyg/dist/react-draft-wysiwyg.css' as any);
+  }, []);
+
+  const handleEditorStateChange = (newEditorState: EditorState) => {
+    setEditorState(newEditorState);
+  };
 
 
   // Define modules for the rich text editor
@@ -61,7 +69,7 @@ export default function CreateEventPage() {
     <div className="container mx-auto py-10">
       <h1 className="text-2xl font-semibold mb-6">Create New Event</h1>
 
-      <form action={createEventAction} className="space-y-4">
+      <form onSubmit={handleFormSubmit} className="space-y-4">
         <div>
           {/* Retained basic input fields for simplicity with FormData */}
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -79,17 +87,14 @@ export default function CreateEventPage() {
         </div>
 
         <div>
-          {/* Replaced textarea with ReactQuill */}
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">
             Description
           </label>
-          <ReactQuill
-            theme="snow"
-            value={description}
-            onChange={(content, delta, source, editor) => setDescription(content)}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-
-          ></ReactQuill>
+          <Editor
+            editorState={editorState}            
+            onEditorStateChange={handleEditorStateChange}
+            editorClassName="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+          />
         </div>
 
         <div>

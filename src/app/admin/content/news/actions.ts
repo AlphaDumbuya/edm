@@ -88,7 +88,7 @@ export async function createNewsArticleAction(formData: FormData) {
   } catch (error) {
     console.error('Error creating news article:', error);
     // Provide more specific error handling or feedback here if needed
-    return { error: 'Failed to create news article' };
+ throw new Error('Failed to create news article');
   }
 }
 

@@ -50,6 +50,7 @@ const mainNavItems = [
     links: [ // Keep this as a list of links
       { href: "/about", title: "Our Story & Foundations", description: "EDM's history, beliefs, and structure in Sierra Leone and Oregon." },
       { href: "/about/what-we-believe", title: "What We Believe", description: "Our core doctrinal statements." },
+      { href: "/events", title: "Events", description: "Upcoming and past events organized by EDM." },
       { href: "/international-board", title: "International Board", description: "Meet our leadership team for Sierra Leone and Oregon." },
     ],
   },
@@ -63,15 +64,38 @@ const mainNavItems = [
     title: "Ministries",
     icon: HeartHandshake,
     links: [
-      { href: "/ministries", title: "Ministries Overview", description: "Explore all EDM ministry areas." },
-      { href: "/ministries/evangelism", title: "Evangelism", description: "Sharing the Gospel through various outreaches in Sierra Leone." },
+      {
+        href: "/ministries",
+        title: "Ministries Overview",
+        description: "Explore all EDM ministry areas.",
+      },
+      {
+        href: "/ministries/evangelism",
+        title: "Evangelism",
+        description: "Sharing the Gospel through various outreaches in Sierra Leone.",
+      },
+      {
+        href: "/ministries/discipleship",
+        title: "Discipleship",
+        description: "Training believers to become strong and mature in their faith.",
+      },
+      {
+        href: "/ministries/education",
+        title: "Education",
+        description: "Providing quality education to children.",
+      },
+      { href: "/ministries/missions-outreach", title: "Missions Outreach", description: "Local and international mission efforts." },
+      { href: "/ministries/discipleship", title: "Discipleship", description: "Training believers to become strong and mature in their faith." },
     ],
   },
   {
     title: "Get Involved",
     icon: Users,
     links: [
-      { href: "/get-involved", title: "Get Involved Overview", description: "Discover ways to contribute to EDM." },
+      { href: "/get-involved", title: "Get Involved Overview", description: "Discover ways to contribute to EDM." }, // Keep overview link
+      { href: "/get-involved/volunteer", title: "Volunteer", description: "Offer your time and skills to support our work." },
+      { href: "/get-involved/partner", title: "Partner", description: "Learn about partnership opportunities with individuals, churches, and organizations." },
+      { href: "/get-involved/prayer", title: "Prayer", description: "Join us in prayer for our ministry and the people of Sierra Leone." },
     ],
   },
   {
@@ -85,6 +109,7 @@ const mainNavItems = [
     icon: Newspaper,
     links: [
       { href: "/news", title: "News & Updates", description: "Latest articles, reports, and testimonies from Sierra Leone." },
+ { href: "/gallery", title: "Media Gallery", description: "View photos and videos from our events and ministries." },
     ],
   },
   {
@@ -112,7 +137,7 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
+            className,
           )}
           {...props}
           legacyBehavior>
@@ -142,10 +167,12 @@ export default function Navbar() {
 
   return (
     <header className="bg-white shadow sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center\">
         <Link href="/" className="flex items-center gap-2" legacyBehavior>
-          <div>
- <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
+          <div className="flex items-center gap-2">
+ <div className='h-8 w-8 md:h-10 md:w-10 relative'>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" fill objectFit="contain" />
+ </div>
             <span className="text-xl font-bold">EDM</span>
           </div>
         </Link>
@@ -156,13 +183,18 @@ export default function Navbar() {
               <NavigationMenuItem key={i}>
                 {item.links ? (
                   <>
-                    <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
+                    <NavigationMenuTrigger className="flex items-center gap-1">
+                      {item.icon && <item.icon size={18} />}
+                      {item.title}
+                    </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
+                      <ul className="grid gap-3 p-4 w-[500px] md:grid-cols-2">
                         {item.links.map((link) => (
                           <ListItem
-                            key={link.title}
+                            key={link.href} // Using href as key for uniqueness
                             href={link.href}
+                            // Ensure icon is passed if needed in ListItem, though it's not currently used there
+                            // icon={item.icon}
                             title={link.title} // Pass href directly to ListItem
                           >
                             {link.description}
@@ -173,7 +205,12 @@ export default function Navbar() {
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!} legacyBehavior>{item.title}</Link>
+                    <Link href={item.href!} legacyBehavior>
+                      <div className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1")}>
+                        {item.icon && <item.icon size={18} />}
+                        {item.title}
+                      </div>
+                    </Link>
                   </NavigationMenuLink>
                 )}
               </NavigationMenuItem>

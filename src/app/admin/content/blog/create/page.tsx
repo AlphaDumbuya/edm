@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill'; // Import ReactQuill directly
 import { createBlogPostAction } from './actions';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 
 export default function CreateBlogPostPage() {
@@ -67,7 +68,6 @@ export default function CreateBlogPostPage() {
             Content
           </label>
           <ReactQuill
-            id="content"
             value={content}
             onChange={handleContentChange}
           />

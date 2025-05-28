@@ -46,18 +46,19 @@ export default function EventCard({ event }: EventCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
       <div className="relative w-full h-48 sm:h-56">
-        <Image
-          src={event.imageUrl}
-          alt={event.title}
-          layout="fill"
-
- data-ai-hint={event.dataAiHint}
-        />
+        {event.imageUrl && (
+          <Image
+            src={event.imageUrl}
+            alt={event.title}
+            layout="fill"
+          />
+        )}
       </div>
+
       <CardHeader className="p-3 sm:p-4">
         <CardTitle className="text-lg sm:text-xl line-clamp-2">{event.title}</CardTitle>
         <CardDescription className="text-xs sm:text-sm text-muted-foreground flex items-center mt-1">
-          <CalendarDays className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {event.date}
+          <CalendarDays className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {new Date(event.date).toLocaleDateString()}
         </CardDescription>
         <CardDescription className="text-xs sm:text-sm text-muted-foreground flex items-center mt-1">
           <MapPin className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {event.location}
@@ -65,7 +66,7 @@ export default function EventCard({ event }: EventCardProps) {
       </CardHeader>
       <CardContent className="p-3 sm:p-4 flex-grow">
         <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{event.description}</p>
-      </CardContent>
+ </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
@@ -79,7 +80,7 @@ export default function EventCard({ event }: EventCardProps) {
                 <Info className="mr-2 h-5 w-5" /> {event.title}
               </DialogTitle>
               <DialogDescription className="text-xs sm:text-sm">
-                <div className="mt-2 text-muted-foreground"><CalendarDays className="inline mr-1 h-4 w-4" /> {event.date}</div>
+                <div className="mt-2 text-muted-foreground"><CalendarDays className="inline mr-1 h-4 w-4" /> {new Date(event.date).toLocaleDateString()}</div>
                 <div className="text-muted-foreground"><MapPin className="inline mr-1 h-4 w-4" /> {event.location}</div>
                 <div className="mt-4">{event.description}</div>
               </DialogDescription>

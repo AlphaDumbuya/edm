@@ -22,7 +22,7 @@ model User {
 
   // Optional fields for future enhancements
   // emailVerified  DateTime?
-  // image          String?   // For profile picture URL (e.g., from Uploadthing)
+  image          String?   // For profile picture URL (e.g., from Uploadthing)
   role           UserRole  @default(USER)
   blogPosts      BlogPost[]
   newsArticles   NewsArticle[]

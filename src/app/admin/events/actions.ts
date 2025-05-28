@@ -2,10 +2,18 @@
 
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 import { getAllEvents, createEvent, deleteEvent, updateEvent } from '@/lib/db/events';
+import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 // Create Event Action
 export async function createEventAction(formData: FormData) {
+  const session = await getServerSession();
+  console.log('Session:', session);
+  console.log('Session User:', session?.user);
+  if (!session || !session.user) {
+    throw new Error('User not authenticated.');
+  }
+  const userId = session.user.id as string;
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const dateString = formData.get('date') as string;
@@ -29,7 +37,7 @@ export async function createEventAction(formData: FormData) {
     });
 
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+ userId: userId,
       action: 'Created Event',
       entityType: 'Event',
     });
@@ -44,11 +52,14 @@ export async function createEventAction(formData: FormData) {
 
 // Delete Event Action
 export async function deleteEventAction(id: string) {
+  // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
+  const someUserIdVariable = 'placeholder_user_id'; 
   try {
     await deleteEvent(id);
 
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
+      userId: someUserIdVariable,
       action: 'Deleted Event',
       entityType: 'Event',
     });
@@ -61,6 +72,8 @@ export async function deleteEventAction(id: string) {
 
 // Update Event Action
 export async function updateEventAction(id: string, formData: FormData) {
+  // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
+  const someUserIdVariable = 'placeholder_user_id'; 
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const dateString = formData.get('date') as string;
@@ -85,7 +98,7 @@ export async function updateEventAction(id: string, formData: FormData) {
     await updateEvent(id, updateData);
 
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: someUserIdVariable,
       action: 'Updated Event',
       entityType: 'Event',
     });
@@ -100,8 +113,22 @@ export async function updateEventAction(id: string, formData: FormData) {
 
 // Get All Events Action
 export async function getAllEventsAction() {
+  // This action will be used for the initial load and should return all events for the server component.
+  // Client-side pagination and search will use getPaginatedEventsAction.
   try {
     const events = await getAllEvents();
+    return events;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    throw new Error('Failed to fetch events.');
+  }
+}
+
+// Get Paginated Events Action for client-side fetching
+export async function getPaginatedEventsAction(page: number, search: string) {
+  const itemsPerPage = 10; // Define items per page consistently
+  try {
+    const events = await getAllEvents({ search, limit: itemsPerPage, offset: (page - 1) * itemsPerPage });
     return events;
   } catch (error) {
     console.error('Error fetching events:', error);

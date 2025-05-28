@@ -2,23 +2,25 @@
 
 import { createNewsArticleAction } from '../actions';
 import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 export default function CreateNewsArticlePage() {
   const router = useRouter();
   const [content, setContent] = useState('');
-  const [isClient, setIsClient] = useState(false);
 
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-  
+  const editor = useEditor({
+    extensions: [StarterKit],
+    content: '', // Empty initial content for create page
+    onUpdate: ({ editor }) => {
+      setContent(editor.getHTML()); // Update state with HTML content
+    },
+  });
+
   return (
-
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <h1 className="text-2xl font-bold mb-6">Create New News Article</h1>
       <form
@@ -96,12 +98,12 @@ export default function CreateNewsArticlePage() {
             Content
           </label>
           <div className="mt-1 border rounded-md shadow-sm"> {/* Added border and shadow for professional look */}
-            <ReactQuill
-
-              value={content}
-              onChange={setContent}
-              className="h-96" // Adjusted height for react-quill
-            />
+            {/* Render the Editor component only if the editor is loaded */}
+            {editor ? (
+              <EditorContent editor={editor} className="prose max-w-none" />
+            ) : (
+              <div>Loading editor...</div>
+            )}
           </div>
         </div>
         {/* Render the Editor component only on the client side */}
