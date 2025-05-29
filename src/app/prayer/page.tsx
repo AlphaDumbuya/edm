@@ -17,31 +17,47 @@ export interface PrayerRequest {
   category?: string; // e.g., Healing, Guidance, Family
 }
 
-const initialRequests: PrayerRequest[] = [
-  { id: '1', name: 'Anonymous', requestText: 'Please pray for healing for my mother who is unwell.', isPublic: true, timestamp: new Date(Date.now() - 86400000 * 2), category: 'Healing' },
-  { id: '2', name: 'Sarah P.', requestText: 'Praying for guidance as I make a major career decision.', isPublic: true, timestamp: new Date(Date.now() - 86400000), category: 'Guidance' },
-  { id: '3', name: 'Anonymous', requestText: 'For peace and comfort for a grieving family in our community.', isPublic: true, timestamp: new Date(), category: 'Comfort' },
-];
+// Assume these functions interact with your actual database
+// Replace these with your actual database interaction logic
+const fetchPrayerRequests = async (): Promise<PrayerRequest[]> => {
+  // Example: Fetch from an API endpoint
+  // const res = await fetch('/api/prayer-requests');
+  // if (!res.ok) throw new Error('Failed to fetch prayer requests');
+  // return res.json();
+  console.log("Simulating fetching prayer requests from database...");
+  // In a real app, replace this with actual database fetching
+  return Promise.resolve([]); // Return an empty array for now
+};
+
+const addPrayerRequestToDatabase = async (request: Omit<PrayerRequest, 'id' | 'timestamp'>): Promise<void> => {
+  console.log("Simulating adding prayer request to database:", request);
+  // In a real app, replace this with actual database insertion
+  return Promise.resolve();
+};
 
 export default function PrayerPage() {
   const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
-  
-  useEffect(() => {
-    // In a real app, fetch from a database. For now, use initial requests.
-    // Add a delay to simulate fetching
-    const timer = setTimeout(() => {
-      setPrayerRequests(initialRequests.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
-    }, 500);
-    return () => clearTimeout(timer);
+
+    fetchRequests();
+
   }, []);
 
-  const addPrayerRequest = (request: Omit<PrayerRequest, 'id' | 'timestamp'>) => {
-    const newRequest: PrayerRequest = {
-      ...request,
-      id: Math.random().toString(36).substr(2, 9),
-      timestamp: new Date(),
-    };
-    setPrayerRequests(prevRequests => [newRequest, ...prevRequests].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
+  const fetchRequests = async () => {
+    try {
+      const fetchedRequests = await fetchPrayerRequests();
+      setPrayerRequests(fetchedRequests.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()));
+    } catch (error) {
+      console.error('Error fetching prayer requests:', error);
+    }
+  };
+
+  const addPrayerRequest = async (request: Omit<PrayerRequest, 'id' | 'timestamp'>) => {
+    try {
+      await addPrayerRequestToDatabase(request);
+      await fetchRequests(); // Refresh the list after adding
+    } catch (error) {
+      console.error('Error adding prayer request:', error);
+    }
   };
 
   const publicRequests = prayerRequests.filter(req => req.isPublic);
