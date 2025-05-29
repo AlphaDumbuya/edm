@@ -7,9 +7,9 @@ export async function submitPublicPrayerRequestAction(request: PrayerRequestData
   try {
     // Call the database function to create the prayer request
     const newPrayerRequest = await createPrayerRequest({
-      name: request.name,
-      email: request.email,
-      request: request.request,
+ title: 'Public Prayer Request', // Add a title
+      authorName: request.name,
+      authorEmail: request.email,
       isPublic: true, // Mark as public
       status: 'Pending', // Set initial status
     });
