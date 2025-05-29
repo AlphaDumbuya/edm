@@ -9,19 +9,14 @@ export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState(''); // Add state for content
 
-  // Function to handle editor state changes
-  const handleContentChange = (value: string) => {
-    setContent(value);
-  };
   const handleCreate = async (formData: FormData) => {
     formData.append('content', content); // Append content from textarea
     formData.append('published', published.toString()); // Append published status
- await createBlogPostAction(formData);
- redirect('/admin/content/blog');
-  }
-
+    await createBlogPostAction(formData);
+    redirect('/admin/content/blog');
+  };
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <h1 className="text-2xl font-bold mb-6">Create New Blog Post</h1>
@@ -57,7 +52,7 @@ export default function CreateBlogPostPage() {
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <TipTapEditor content={content} onContentChange={handleContentChange} />
+          <TipTapEditor value={content} onContentChange={(newContent: string) => setContent(newContent)} />
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input

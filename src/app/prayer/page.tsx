@@ -1,10 +1,7 @@
-'use client';
-
 import PageHeader from '@/components/shared/page-header';
 import PrayerRequestForm from '@/components/prayer/prayer-request-form';
 import PrayerRequestCard from '@/components/prayer/prayer-request-card';
-import { Handshake, HeartHandshake } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { HeartHandshake } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import SectionTitle from '@/components/shared/section-title';
 
@@ -17,34 +14,27 @@ export interface PrayerRequest {
   category?: string; // e.g., Healing, Guidance, Family
 }
 
-const initialRequests: PrayerRequest[] = [
-  { id: '1', name: 'Anonymous', requestText: 'Please pray for healing for my mother who is unwell.', isPublic: true, timestamp: new Date(Date.now() - 86400000 * 2), category: 'Healing' },
-  { id: '2', name: 'Sarah P.', requestText: 'Praying for guidance as I make a major career decision.', isPublic: true, timestamp: new Date(Date.now() - 86400000), category: 'Guidance' },
-  { id: '3', name: 'Anonymous', requestText: 'For peace and comfort for a grieving family in our community.', isPublic: true, timestamp: new Date(), category: 'Comfort' },
-];
+interface PrayerRequestData {
+  name: string;
+  requestText: string;
+  isPublic: boolean;
+}
 
-export default function PrayerPage() {
-  const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
-  
-  useEffect(() => {
-    // In a real app, fetch from a database. For now, use initial requests.
-    // Add a delay to simulate fetching
-    const timer = setTimeout(() => {
-      setPrayerRequests(initialRequests.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
+// Assume this function exists and fetches public prayer requests from your database
+async function fetchPublicPrayerRequests(): Promise<PrayerRequest[]> {
+  // Replace with your actual database fetching logic
+  return []; // Return an empty array for now
+}
 
-  const addPrayerRequest = (request: Omit<PrayerRequest, 'id' | 'timestamp'>) => {
-    const newRequest: PrayerRequest = {
-      ...request,
-      id: Math.random().toString(36).substr(2, 9),
-      timestamp: new Date(),
-    };
-    setPrayerRequests(prevRequests => [newRequest, ...prevRequests].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
+export default async function PrayerPage() {
+  // Fetch prayer requests from the database
+  const publicRequests = await fetchPublicPrayerRequests();
+
+  const handleSubmitPrayerRequest = async (request: PrayerRequestData) => {
+    // TODO: Implement logic to submit prayer request to the database
+    console.log('Submitting prayer request:', request);
+    // You might want to revalidate the data or update the UI after submission
   };
-
-  const publicRequests = prayerRequests.filter(req => req.isPublic);
 
   return (
     <div className="space-y-12">
@@ -56,7 +46,7 @@ export default function PrayerPage() {
 
       <section>
         <SectionTitle title="Submit Your Prayer Request" />
-        <PrayerRequestForm onSubmit={addPrayerRequest} />
+        <PrayerRequestForm onSubmit={handleSubmitPrayerRequest} /> {/* Modify PrayerRequestForm to handle submission */}
       </section>
 
       <Separator />
