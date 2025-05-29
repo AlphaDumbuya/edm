@@ -132,7 +132,7 @@ export default function EditNewsArticlePage() {
           {editor ? (
             <EditorContent editor={editor} />
           ) : (
-            <div>Loading editor...</div> // Optional loading state for the editor
+            (<div>Loading editor...</div>) // Optional loading state for the editor
           )}
         </div>
         <div className="flex items-center">

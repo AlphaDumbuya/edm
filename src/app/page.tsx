@@ -70,19 +70,22 @@ export default async function Home() {
             <Link
               href="/about"
               className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm')}
-            >
-              Our Story <ArrowRight className="ml-1 h-4 w-4" />
+              legacyBehavior>
+              <span>
+ Our Story <ArrowRight className="ml-1 h-4 w-4" />
+              </span>
             </Link>
             <Link
               href="/donate"
               className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 border border-white text-white hover:bg-white/20')}
-            >
-              Support EDM <HelpingHand className="ml-1 h-4 w-4" />
+              legacyBehavior>
+              <span>
+ Support EDM <HelpingHand className="ml-1 h-4 w-4" />
+              </span>
             </Link>
           </div>
         </div>
       </section>
-
       {/* Core Pillars */}
       <section>
         <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry in Sierra Leone" />
@@ -99,15 +102,19 @@ export default async function Home() {
                 <p className="text-muted-foreground text-sm">{description}</p>
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 border-t flex justify-center">
-                <Link href={href} className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}>
-                  Learn More <ArrowRight className="ml-1 h-3 w-3" />
+                <Link
+                  href={href}
+                  className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
+                  legacyBehavior>
+                  <span>
+                    Learn More <ArrowRight className="ml-1 h-3 w-3" />
+                  </span>
                 </Link>
               </CardFooter>
             </Card>
           ))}
         </div>
       </section>
-
       {/* Mission Statement & Motto */}
       <section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <div className="text-center max-w-3xl mx-auto">
@@ -124,7 +131,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
       {/* Vision */}
       <section>
         <SectionTitle title="Our Vision for EDM" subtitle="Building a legacy of faith and service" />
@@ -175,7 +181,6 @@ export default async function Home() {
           </Card>
         </div>
       </section>
-
       {/* News Section */}
       <section>
         <SectionTitle title="News & Updates" subtitle="Stay informed with the latest from EDM" />
@@ -201,34 +206,33 @@ export default async function Home() {
           )}
         </div>
       </section>
-
- {/* Blog Section */}
- <section>
- <SectionTitle title="Latest Blog Posts" subtitle="Insights and stories from the EDM community" />
- <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-          {/* Access blogPosts array from the returned object and add type annotation */}
-          {/* TODO: Define a proper type for the blog post object */}
-          {blogPosts.blogPosts.length === 0 ? (
-            <p className="text-muted-foreground">No blog posts available yet.</p>
-          ) : (
-            blogPosts.blogPosts.map((post: any) => (
-              <BlogPostCard
-                key={post.id}
-                post={{
-                  slug: post.slug,
-                  title: post.title,
-                  date: post.createdAt.toLocaleDateString(),
-                  author: {
-                    name: post.author?.name || 'Unknown Author',
-                  },
-                  excerpt: post.content.substring(0, 150) + '...',
-                  imageUrl: post.imageUrl || '',
-                }}
-              />
-            ))
-          )}
- </div>
- </section>
+      {/* Blog Section */}
+      <section>
+      <SectionTitle title="Latest Blog Posts" subtitle="Insights and stories from the EDM community" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+               {/* Access blogPosts array from the returned object and add type annotation */}
+               {/* TODO: Define a proper type for the blog post object */}
+               {blogPosts.blogPosts.length === 0 ? (
+                 <p className="text-muted-foreground">No blog posts available yet.</p>
+               ) : (
+                 blogPosts.blogPosts.map((post: any) => (
+                   <BlogPostCard
+                     key={post.id}
+                     post={{
+                       slug: post.slug,
+                       title: post.title,
+                       date: post.createdAt.toLocaleDateString(),
+                       author: {
+                         name: post.author?.name || 'Unknown Author',
+                       },
+                       excerpt: post.content.substring(0, 150) + '...',
+                       imageUrl: post.imageUrl || '',
+                     }}
+                   />
+                 ))
+               )}
+      </div>
+      </section>
     </div>
   );
 }

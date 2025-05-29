@@ -1,35 +1,25 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import ReactQuill from 'react-quill'; // Import ReactQuill directly
+import { useState } from 'react';
 import { createBlogPostAction } from './actions';
-import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
-import 'react-quill/dist/quill.snow.css'; // Import Quill styles
+import { redirect } from 'next/navigation';
+import TipTapEditor from '@/components/TipTapEditor'; // Assuming TipTapEditor component exists
 
 export default function CreateBlogPostPage() {
-  const router = useRouter();
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
-  const [content, setContent] = useState(''); // State for editor content
-
-  // Dynamic import for the Editor component
-  const Editor = dynamic(
-    () => import('react-draft-wysiwyg').then((mod) => mod.Editor),
-    { ssr: false } // Disable server-side rendering for the editor
-  );
+  const [content, setContent] = useState('');
 
   // Function to handle editor state changes
   const handleContentChange = (value: string) => {
     setContent(value);
   };
-
   const handleCreate = async (formData: FormData) => {
     formData.append('content', content); // Append content from textarea
     formData.append('published', published.toString()); // Append published status
-    await createBlogPostAction(formData);
-    router.push('/admin/content/blog');
+ await createBlogPostAction(formData);
+ redirect('/admin/content/blog');
   }
 
   return (
@@ -67,10 +57,7 @@ export default function CreateBlogPostPage() {
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <ReactQuill
-            value={content}
-            onChange={handleContentChange}
-          />
+          <TipTapEditor content={content} onContentChange={handleContentChange} />
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input
