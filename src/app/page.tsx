@@ -68,10 +68,8 @@ export default async function Home() {
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-3">
             <Link
-              href="/about"
-              className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm')}
-              legacyBehavior>
- Our Story <ArrowRight className="ml-1 h-4 w-4" />
+              href="/about">
+ <span className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm')}>Our Story <ArrowRight className="ml-1 h-4 w-4" /></span>
 
             </Link>
             <Link
@@ -103,10 +101,8 @@ export default async function Home() {
                 <Link
                   href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
-                  legacyBehavior>
-                  <span>
-                    Learn More <ArrowRight className="ml-1 h-3 w-3" />
-                  </span>
+ >
+ <span className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}>Learn More <ArrowRight className="ml-1 h-3 w-3" /></span>
                 </Link>
               </CardFooter>
             </Card>
