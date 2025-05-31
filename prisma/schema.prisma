@@ -108,6 +108,7 @@ model NewsArticle {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   published Boolean   @default(false)
+  imageUrl    String?   // Add this line
 }
 
 model PrayerRequest {

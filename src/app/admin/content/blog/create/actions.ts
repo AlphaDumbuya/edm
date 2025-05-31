@@ -1,13 +1,11 @@
 'use server';
 
-import { prisma } from '@/lib/db/prisma'; // Corrected import for named export 'prisma'
-import { authOptions } from '@/lib/auth'; // Import authOptions
+import { prisma } from '@/lib/db/prisma';
 import { auth } from '@/lib/auth'; // Import auth
-// import { revalidatePath } from 'next/cache';
-
+import { type NextRequest } from 'next/server';
 console.log('createBlogPostAction: NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET ? 'Set' : 'Not Set');
 
-export async function createBlogPostAction(formData: FormData) {
+export async function createBlogPostAction(formData: FormData, request: NextRequest) { // Changed order of parameters
   console.log('createBlogPostAction: Function started'); // Added log
   // 1. Extract data from formData
   const title = formData.get('title');
@@ -30,10 +28,23 @@ export async function createBlogPostAction(formData: FormData) {
   try {
     // 3. Interact with your database (using Prisma) to save the blog post
 
-    const session = await getServerSession(auth); // Use getServerSession with auth
+    // Read the session cookie from the request headers
+    const cookieHeader = request.headers.get('Cookie');
+    if (!cookieHeader) {
+ return { error: 'Session cookie not found' };
+    }
+
+    // Extract the 'session' cookie value from the Cookie header
+    const sessionCookie = getCookieValue(cookieHeader, 'session'); // Implement this helper function
+
+    if (!sessionCookie) {
+ return { error: 'Session cookie not found' };
+    }
+
+    // Decrypt the session cookie using the decrypt function
+    const session = await decrypt(sessionCookie);
 
     console.log('createBlogPostAction: Full session object:', JSON.stringify(session, null, 2));
-
     console.log('createBlogPostAction: After getting session', {
       sessionExists: !!session,
       userId: session?.user?.id,
@@ -49,7 +60,7 @@ export async function createBlogPostAction(formData: FormData) {
       slug: slug as string,
       content: content as string,
       published: published === 'on',
-      authorId: session.user.id,
+      authorId: session.userId,
     });
     const newPost = await prisma.blogPost.create({
       data: {
@@ -58,7 +69,7 @@ export async function createBlogPostAction(formData: FormData) {
         content: content as string, // Cast to string
         published: published === 'on', // Assuming checkbox value is 'on' when checked and schema is boolean
         // Add the author ID field based on your schema:
-        // Add any other required fields from your Prisma schema
+
  authorId: session.user.id, // Use the authenticated user's ID
       },
     });
@@ -85,4 +96,16 @@ export async function createBlogPostAction(formData: FormData) {
     // Example: return { error: 'Failed to create blog post' };
     throw error; // Re-throwing the error for now, but consider returning an error object
   }
+}
+
+// Helper function to extract a cookie value from the Cookie header
+function getCookieValue(cookieHeader: string, name: string): string | null {
+  const cookies = cookieHeader.split(';');
+  for (const cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=');
+    if (cookieName.trim() === name) {
+      return cookieValue;
+    }
+  }
+  return null;
 }

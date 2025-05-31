@@ -1,20 +1,34 @@
 'use server';
 
-import { createNewsArticle, deleteNewsArticle, updateNewsArticle } from "@/lib/db/news";
-import { getAllNewsArticles } from "@/lib/db/newsArticles";
-import { createAuditLogEntry } from "@/lib/db/auditLogs";
+// Assuming your audit log function is correctly typed elsewhere
+import { createAuditLogEntry, CreateAuditLogEntryParams } from "@/lib/db/auditLogs"; // Import CreateAuditLogEntryParams if you have it
 import { redirect } from "next/navigation";
 
-import { decrypt } from '@/lib/auth/session'; // Import decrypt
+import { decrypt } from '@/lib/auth/session';
+import { getNewsArticleById, createNewsArticle, getAllNewsArticles, deleteNewsArticle, updateNewsArticle } from "@/lib/db/newsArticles";
+
 import { cookies } from 'next/headers'; // Import cookies
+
+export async function fetchNewsArticleAction(id: string) {
+  try {
+    const newsArticle = await getNewsArticleById(id);
+    return newsArticle; // Return the fetched data
+  } catch (error) {
+    console.error(`Error fetching news article with ID ${id} in server action:`, error);
+    // Handle or re-throw the error as needed
+    throw error;
+  }
+}
+
 export async function createNewsArticleAction(formData: FormData) {
  console.log('createNewsArticleAction started');
   console.log(formData);
- 
+
   const title = formData.get('title') as string;
   const slug = formData.get('slug') as string; // Extract slug
   const published = formData.get('published') === 'on'; // Extract published status (boolean)
   const contentFromEditor = formData.get('content') as string; // Content is from the rich text editor
+  const imageUrl = formData.get('imageUrl') as string | null; // Get the image URL from the form data
 
  // 2. TODO: Validate the extracted data (highly recommended)
 
@@ -42,17 +56,15 @@ export async function createNewsArticleAction(formData: FormData) {
     // Content transformation now happens on the client side in create/page.tsx
     // The contentFromEditor is already the transformed HTML string
     const transformedContent = contentFromEditor;
-
     // Call your database function to create the news article
  console.log('Attempting to create news article in DB');
-
     const newNewsArticle = await createNewsArticle({
       title,
       slug,
       content: transformedContent,
       published,
-      authorId, // Pass the authorId
     });
+
 
     if (!newNewsArticle) {
       console.error('Failed to create news article: createNewsArticle returned null');
@@ -75,16 +87,9 @@ export async function createNewsArticleAction(formData: FormData) {
       // You might want to include a snapshot of the created data
       // but be mindful of storing potentially large content in audit logs
       // snapshot: newNewsArticle,
-      details: { title: newNewsArticle.title },
     });
-    // Redirect on success
- console.log('Redirecting to news listing page');
-
-    redirect('/admin/content/news'); // Moved inside the try block
-
  console.log('createNewsArticleAction finished successfully');
-
-
+ return { success: true }; // Return success indicator
   } catch (error) {
     console.error('Error creating news article:', error);
     // Provide more specific error handling or feedback here if needed

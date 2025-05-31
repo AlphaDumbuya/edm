@@ -8,9 +8,12 @@ import dynamic from 'next/dynamic';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 
+import { UploadButton } from "@uploadthing/react";
+import { OurFileRouter } from "../../../../api/uploadthing/core";
 export default function CreateNewsArticlePage() {
   const router = useRouter();
   const [content, setContent] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // State to store image URL
 
   const editor = useEditor({
     extensions: [StarterKit],
@@ -26,7 +29,14 @@ export default function CreateNewsArticlePage() {
       <form
         action={async (formData: FormData) => {
           formData.append('content', content);
-          await createNewsArticleAction(formData); router.push('/admin/content/news'); }}
+          if (imageUrl) {
+            formData.append('imageUrl', imageUrl); // Append imageUrl to formData
+          }
+          const result = await createNewsArticleAction(formData);
+          if (result && result.success) {
+            router.push('/admin/content/news');
+          }
+        }}
         className="space-y-6"
       >
         {/* Form elements will be added here */}

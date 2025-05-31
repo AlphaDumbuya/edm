@@ -1,6 +1,6 @@
 import prisma from './prisma';
 
-interface CreateAuditLogEntryParams {
+export interface CreateAuditLogEntryParams {
   userId: string;
   action: string;
   entityType: string;

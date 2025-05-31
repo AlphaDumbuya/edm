@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { updateNewsArticleAction } from '../../actions';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -10,6 +10,8 @@ import StarterKit from '@tiptap/starter-kit';
 // TipTap styles (optional, you can add your own)
 import '@tiptap/core'; // Minimal core styles if needed
 // import '@tiptap/starter-kit'; // Starter kit styles
+
+import { fetchNewsArticleAction } from '../../actions'; // Import the server action
 
 export interface NewsArticle {
   id: string;
@@ -48,19 +50,18 @@ export default function EditNewsArticlePage() {
   useEffect(() => {
     const fetchNewsArticle = async () => {
       try {
-        const article = await getNewsArticleById(newsArticleId);
-        if (article) {
-          // Initialize form data with fetched content
-          setNewsArticle(article);
-          setFormData({
+        const article = await fetchNewsArticleAction(newsArticleId); // Call the server action
+        if (!article) {
+          setError('News article not found.');
+          return; // Exit the function if article is null
+        }
+        // Initialize form data with fetched content
+        setFormData({
             title: article.title,
             slug: article.slug,
             published: article.published,
- content: article.content,
+            content: article.content,
           });
-        } else {
-          setError('News article not found.');
-        }
       } catch (err) {
         setError('Failed to fetch news article.');
         console.error(err);

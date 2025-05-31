@@ -5,6 +5,7 @@ export type CreateNewsArticleData = {
   slug: string;
   content: string;
   authorId: string;
+  imageUrl?: string | null;
   published?: boolean;
 };
 
