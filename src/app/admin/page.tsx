@@ -35,9 +35,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
-      <p className="text-gray-600 mb-6">Welcome back! Here's a quick overview of your ministry.</p>
+    <div className="mx-auto py-6">
       {/* Responsive Grid Layout for Dashboard Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 

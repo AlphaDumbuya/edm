@@ -119,3 +119,4 @@ export const auth = betterAuth({
     expiresIn: 3600, // 1 hour
   },
 });
+export const authOptions: NextAuthOptions = { providers: [] };

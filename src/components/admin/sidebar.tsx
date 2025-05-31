@@ -36,22 +36,21 @@ const AdminSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="hidden lg:flex w-64 bg-gray-900 text-gray-200 p-4 h-screen flex-col shadow-lg">
+    <aside className="w-64 bg-gray-900 text-gray-200 p-4 h-screen flex-col shadow-lg lg:flex">
       <div className="text-2xl font-bold mb-6">Admin Dashboard</div>
       <nav>
         <ul>
           {navItems.map((item) => (
             <li key={item.name} className="mb-2">
               <Link
-                href={item.href}
-                className={`flex items-center py-2 px-4 rounded ${
+                href={item.href}                className={`py-2 px-4 rounded ${
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                 }`}
                 legacyBehavior>
-                <span>
- {item.icon && React.createElement(item.icon, { className: 'mr-2' })}
- {item.name}
- </span>
+ <div className="flex items-center whitespace-nowrap">
+ {item.icon && React.createElement(item.icon, { className: 'mr-2' })} {/* Icon with margin */}
+ {item.name} {/* Text */}
+ </div>
               </Link>
               {item.nested && (
                 <ul className="ml-4 mt-1">
@@ -59,13 +58,13 @@ const AdminSidebar: React.FC = () => {
                     <li key={nestedItem.name} className="mb-1 text-gray-400">
                       <Link
                         href={nestedItem.href}
-                        className={`block py-1 px-3 text-sm rounded ${
-                          pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white cursor-pointer' : 'hover:bg-gray-700 hover:text-white cursor-pointer'
+                        className={`block py-1 px-3 text-sm rounded cursor-pointer ${
+                          pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                         }`}
                         legacyBehavior>
-                        <span>
- {nestedItem.name}
- </span>
+ <div className="whitespace-nowrap">
+ {nestedItem.name} {/* Nested item text */}
+ </div>
                       </Link>
                     </li>
                   ))}

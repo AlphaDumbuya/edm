@@ -1,5 +1,7 @@
+'use client';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { usePathname } from 'next/navigation';
 import './globals.css';
 import Footer from '@/components/layout/footer';
 import { AppProviders } from '@/components/layout/app-providers';
@@ -15,24 +17,20 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'EDM',
-  description: 'Evangelism Discipleship Missions - Transforming lives in Sierra Leone, Oregon, and beyond.',
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) { 
-  return (
+}>) {
+ const pathname = usePathname();
+ return (
     <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}>
         <ClientSessionProvider>
           <AppProviders>
             <NavRenderer /> {/* Use the NavRenderer component here */}
-            <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>
-            <Footer />
+            <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>{
+ !pathname.startsWith('/admin') && <Footer />}
           </AppProviders>
         </ClientSessionProvider>
       </body>

@@ -29,17 +29,24 @@ export default function AdminLayout({
       )}
 
       {/* Main Content Area */}
-      <div className={`flex-1 flex flex-col transition-all duration-200 ${isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}`}>
+      <div className={`flex-1 flex flex-col transition-all duration-200 lg:overflow-y-auto ${isSidebarOpen ? 'md:ml-64' : 'md:ml-0'}`}>
         {/* Mobile Sidebar Toggle Button */}
+        {/* This header is for the mobile toggle */}
         <header className="bg-gray-900 text-white p-4 md:hidden flex items-center justify-between z-50">
-          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-white">
+          <Button variant="ghost" size="icon" onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="text-white cursor-pointer">
             <MenuIcon className="h-6 w-6" />
           </Button>
           <div className="text-xl font-bold">Admin Dashboard</div>
         </header>
+        
+        {/* This header is for the fixed admin title on large screens */}
+        <header className="hidden lg:block bg-gray-100 p-6">
+          <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
+          <p className="text-gray-600 mb-6">Welcome back! Here&apos;s a quick overview of your ministry.</p>
+        </header>
 
         {/* Main Content Area */}
-        <main className="flex-grow p-6 bg-gray-100">
+        <main className="flex-grow p-6 bg-gray-100 lg:p-0">
           {children}
         </main>
       </div>

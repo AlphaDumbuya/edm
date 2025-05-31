@@ -8,6 +8,12 @@ import { useRouter } from 'next/navigation';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+
+// Define a type for the PageProps to match Next.js expected type
+interface PageProps {
+  params: { id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}
 interface EditEventPageProps {
   params: {
     id: string;
@@ -84,10 +90,8 @@ export default function EditEventPage({ params }: EditEventPageProps) {
         <div>
           <label htmlFor="description" className="block text-sm font-medium text-gray-700">Description</label>{' '}
           <ReactQuill
-            id="description"
             value={description}
             onChange={setDescription}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
           />
         </div>
         <div>
