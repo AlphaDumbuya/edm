@@ -24,8 +24,8 @@ interface NewsPostCardProps {
 export default function NewsPostCard({ post }: NewsPostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <CardHeader className="p-3 sm:p-4">
-        <Link href={`/news/${post.slug}`} legacyBehavior>
+      <CardHeader className="p-3 sm:p-4 flex flex-col">
+        <Link href={`/news/${post.slug}`}>
           <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
         </Link>
         <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
@@ -36,7 +36,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
       <Link
         href={`/news/${post.slug}`}
         className="block relative w-full h-32 sm:h-40 group"
-        legacyBehavior>
+      >
         {post.imageUrl && (
  <Image
  src={post.imageUrl}

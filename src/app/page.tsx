@@ -74,10 +74,8 @@ export default async function Home() {
             </Link>
             <Link
               href="/donate"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 border border-white text-white hover:bg-white/20')}
-              legacyBehavior>
- Support EDM <HelpingHand className="ml-1 h-4 w-4" />
-
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 border border-white text-white hover:bg-white/20')}>
+                Support EDM <HelpingHand className="ml-1 h-4 w-4" />
             </Link>
           </div>
         </div>

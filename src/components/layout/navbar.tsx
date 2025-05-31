@@ -52,8 +52,10 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          <div>
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          </div>
         </a>
       </NavigationMenuLink>
     </li>
@@ -199,10 +201,12 @@ export default function Navbar() {
                 ) : (
                   <NavigationMenuLink asChild>
                     <Link href={item.href!}>
-                      <div className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1")}>
-                        {item.icon && <item.icon size={18} />}
-                        {item.title}
-                      </div>
+                      <span>
+ <div className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1")}>
+ {item.icon && <item.icon size={18} />}
+ {item.title}
+ </div>
+                      </span>
                     </Link>
                   </NavigationMenuLink>
                 )}
@@ -297,7 +301,9 @@ export default function Navbar() {
                         className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        {item.title}
+                        <span>
+ {item.title}
+                        </span>
                       </Link>
                     )}
                     {item.links && (
