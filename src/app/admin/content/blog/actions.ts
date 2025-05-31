@@ -4,8 +4,7 @@ import { createBlogPost, deleteBlogPost, updateBlogPost } from "@/lib/db/blog";
 import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Import the audit log function
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { getServerSession } from 'next-auth'; // Import getServerSession
-import { authOptions } from '@/lib/auth'; // Import your auth options
+import { auth } from '@/lib/auth'; // Keep import for potential future use or other actions
 
 export async function createBlogPostAction(formData: FormData) {
   const title = formData.get('title') as string;
@@ -19,25 +18,26 @@ export async function createBlogPostAction(formData: FormData) {
     return; // Or throw an error
   }
 
-  try {
-    const session = await getServerSession(authOptions);
-    if (!session || !session.user || !session.user.id) {
- throw new Error("User not authenticated"); // Or handle appropriately
-    }
+  console.log("createBlogPostAction: Function started");
+  console.log("createBlogPostAction: Extracted form data", { title, slug, published });
 
+  // Receive authorId from client-side FormData
+  const authorId = formData.get('authorId') as string;
+
+  if (!authorId) {
+    console.error("User not authenticated: authorId is missing");
+    throw new Error("User not authenticated"); // Or handle appropriately
+  }
+
+  try {
     const newBlogPost = await createBlogPost({
-      title,
-      slug,
-      content,
-      published,
-      authorId: session.user.id, // Add authorId
+      title, slug, content, published, authorId,
     });
 
-    if (newBlogPost) {
-      // Create audit log entry for creation
+    if (newBlogPost) { // Create audit log entry for creation
       await createAuditLogEntry({
-        userId: session.user.id, // Use the user ID from the session
-        action: 'Created Blog Post', // Ensure action is specific to blog posts
+        userId: authorId, // Use the received authorId
+        action: 'Created Blog Post', // Ensure action is specific to blog posts// Use the received authorId
         entityType: 'BlogPost',
         entityId: newBlogPost.id,
         details: { title: newBlogPost.title },
@@ -55,60 +55,50 @@ export async function createBlogPostAction(formData: FormData) {
   }
 }
 
-export async function deleteBlogPostAction(blogPostId: string) {
+export async function deleteBlogPostAction(blogPostId: string, userId: string) {
   try {
-    const userId = await getCurrentUserId(); // Get the current user's ID
-     if (!userId) {
-      throw new Error("User not authenticated"); // Or handle appropriately
+    if (!userId) {
+      throw new Error("User not authenticated: userId is missing");
     }
-    
- const deletedPost = await deleteBlogPost(blogPostId);
 
- if (deletedPost) {
-      // Create audit log entry for deletion
+    const deletedPost = await deleteBlogPost(blogPostId);
+
+    if (deletedPost) { // Create audit log entry for deletion
  await createAuditLogEntry({
- userId: userId,
- action: 'Deleted Blog Post',
+ userId: userId, // Use the received user ID
+        action: 'Deleted Blog Post',
  entityType: 'BlogPost',
  entityId: deletedPost.id,
  });
- revalidatePath('/admin/content/blog'); // Revalidate the blog list page
+ revalidatePath('/admin/content/blog');
  } else {
       console.error(`Failed to delete blog post with ID: ${blogPostId}`);
  }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error deleting blog post:", error);
     // Handle error
   }
 }
 
-export async function updateBlogPostAction(blogPostId: string, formData: FormData) {
-  const title = formData.get('title') as string;
-  const slug = formData.get('slug') as string;
-  const content = formData.get('content') as string;
-  const published = formData.get('published') === 'on'; // Checkbox value
-
-  if (!title || !slug || !content) {
-    // Handle missing fields error
-    console.error("Missing required fields for update");
-    return; // Or throw an error
-  }
-
+export async function updateBlogPostAction(blogPostId: string, formData: FormData, userId: string) {
   try {
-     const userId = await getCurrentUserId(); // Get the current user's ID
-      if (!userId) {
+    if (!userId) {
       throw new Error("User not authenticated"); // Or handle appropriately
     }
-    
-    const updatedPost = await updateBlogPost(blogPostId, { title, slug, content, published });
+
+    const title = formData.get('title') as string | undefined; // Define variables and extract from formData
+    const slug = formData.get('slug') as string | undefined;
+    const content = formData.get('content') as string | undefined;
+    const published = formData.get('published') === 'on'; // Checkbox value
+ const updatedPost = await updateBlogPost(blogPostId, { title, slug, content, published }); // Now shorthand works
 
     if (updatedPost) {
       // Create audit log entry for update
       await createAuditLogEntry({
         userId: userId,
-        action: 'Updated Blog Post',
+ action: 'Updated Blog Post', // Use the received user ID
         entityType: 'BlogPost',
-        entityId: updatedPost.id,
+ entityId: updatedPost.id,
         details: { title: updatedPost.title, published: updatedPost.published }, // Example details
       });
       revalidatePath('/admin/content/blog'); // Revalidate the blog list page
@@ -116,7 +106,7 @@ export async function updateBlogPostAction(blogPostId: string, formData: FormDat
     } else {
       console.error(`Failed to update blog post with ID: ${blogPostId}`);
     }
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating blog post:", error);
     // Handle error (e.g., show error message)
   }

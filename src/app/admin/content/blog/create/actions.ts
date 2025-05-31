@@ -1,9 +1,8 @@
 'use server';
 
-import { prisma } from '@/lib/db/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from 'src/app/api/auth/[...nextauth]/route'; // Adjust the import path to your NextAuth.js config
-// You might also need to import revalidatePath from 'next/cache' if you plan to use it
+import { prisma } from '@/lib/db/prisma'; // Corrected import for named export 'prisma'
+import { authOptions } from '@/lib/auth'; // Import authOptions
+import { auth } from '@/lib/auth'; // Import auth
 // import { revalidatePath } from 'next/cache';
 
 console.log('createBlogPostAction: NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET ? 'Set' : 'Not Set');
@@ -31,7 +30,7 @@ export async function createBlogPostAction(formData: FormData) {
   try {
     // 3. Interact with your database (using Prisma) to save the blog post
 
-    const session = await getServerSession(authOptions); // Get the user session
+    const session = await getServerSession(auth); // Use getServerSession with auth
 
     console.log('createBlogPostAction: Full session object:', JSON.stringify(session, null, 2));
 

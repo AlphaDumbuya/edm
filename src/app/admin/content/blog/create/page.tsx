@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { createBlogPostAction } from './actions';
 import { redirect } from 'next/navigation';
-import TipTapEditor from '@/components/TipTapEditor'; // Assuming TipTapEditor component exists
+
+import { useAuth } from '@/contexts/auth-context'; // Import the useAuth hook
+import { useToast } from '@/hooks/use-toast'; // Import the useToast hook
 
 export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
@@ -11,8 +13,24 @@ export default function CreateBlogPostPage() {
   const [published, setPublished] = useState(false);
   const [content, setContent] = useState(''); // Add state for content
 
-  const handleCreate = async (formData: FormData) => {
-    formData.append('content', content); // Append content from textarea
+  const { user } = useAuth(); // Get the user from the useAuth hook
+  const { toast } = useToast(); // Get the toast function
+
+  const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault(); // Prevent the default form submission
+
+    // Check if user exists before proceeding
+    if (!user) {
+      // Handle case where user is not logged in (e.g., show an error message)
+      toast({
+        title: 'Authentication Error',
+        description: 'You must be logged in to create a blog post.',
+        variant: 'destructive',
+      });
+      return; // Stop the function execution
+    }
+    const formData = new FormData(event.currentTarget); // Create FormData from the form
+    formData.append('content', content); // Append content
     formData.append('published', published.toString()); // Append published status
     await createBlogPostAction(formData);
     redirect('/admin/content/blog');
@@ -20,7 +38,7 @@ export default function CreateBlogPostPage() {
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
       <h1 className="text-2xl font-bold mb-6">Create New Blog Post</h1>
-      <form action={handleCreate} className="space-y-4 flex flex-col"> {/* Added flex and flex-col for layout */}
+      <form onSubmit={handleCreate} className="space-y-4 flex flex-col"> {/* Added flex and flex-col for layout */}
         <div className="mb-4">
           {/* Increased bottom margin */}
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">
@@ -29,6 +47,7 @@ export default function CreateBlogPostPage() {
           <input
             type="text"
             id="title"
+            name="title"
             value={title}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2" // Increased vertical padding
             onChange={(e) => setTitle(e.target.value)}
@@ -42,6 +61,7 @@ export default function CreateBlogPostPage() {
           <input
             type="text"
             id="slug"
+            name="slug"
             value={slug}
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2" // Increased vertical padding
             onChange={(e) => setSlug(e.target.value)}
@@ -52,7 +72,14 @@ export default function CreateBlogPostPage() {
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <TipTapEditor value={content} onContentChange={(newContent: string) => setContent(newContent)} />
+          <textarea
+            id="content"
+            name="content" // Added name attribute for FormData
+            value={content}
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2"
+            rows={10} // Adjust rows as needed
+            onChange={(e) => setContent(e.target.value)}
+          ></textarea>
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input

@@ -198,8 +198,8 @@ export default function Navbar() {
                   </>
                 ) : (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href!}> {/* Fix: remove legacyBehavior here */}
-                      <div className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1")}> {/* Fix: remove legacyBehavior here */}
+                    <Link href={item.href!}>
+                      <div className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1")}>
                         {item.icon && <item.icon size={18} />}
                         {item.title}
                       </div>
@@ -282,9 +282,10 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                  ><Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
-                    <span className="text-lg font-bold">EDM</span>
-                  </Link>
+                  >
+                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                    <span className="text-lg font-bold">EDM</span>\
+ </Link>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-4">
@@ -295,7 +296,7 @@ export default function Navbar() {
                         href={item.href}
                         className="text-base font-medium hover:text-primary transition-colors flex items-center gap-2"
                         onClick={() => setMobileMenuOpen(false)}
->
+                      >
                         {item.title}
                       </Link>
                     )}
