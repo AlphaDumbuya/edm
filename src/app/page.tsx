@@ -67,15 +67,15 @@ export default async function Home() {
             Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
           <div className="flex flex-nowrap justify-center items-center space-x-3">
-            <Link
-              href="/about">
+            <Link href="/about" legacyBehavior>
  <span className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm')}>Our Story <ArrowRight className="ml-1 h-4 w-4" /></span>
 
             </Link>
             <Link
               href="/donate"
-              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 border border-white text-white hover:bg-white/20')}>
-                Support EDM <HelpingHand className="ml-1 h-4 w-4" />
+              className={cn(buttonVariants({ variant: 'ghost', size: 'sm' }), 'flex items-center gap-1 border border-white text-white hover:bg-white/20')}
+              legacyBehavior>
+                <span>Support EDM <HelpingHand className="ml-1 h-4 w-4" /></span>
             </Link>
           </div>
         </div>
@@ -99,7 +99,7 @@ export default async function Home() {
                 <Link
                   href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
- >
+                  legacyBehavior>
  <span className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}>Learn More <ArrowRight className="ml-1 h-3 w-3" /></span>
                 </Link>
               </CardFooter>
