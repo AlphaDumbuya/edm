@@ -14,13 +14,7 @@ interface PageProps {
   params: { id: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
-interface EditEventPageProps {
-  params: {
-    id: string;
-  };
-}
-
-export default function EditEventPage({ params }: EditEventPageProps) {
+export default function EditEventPage({ params }: { params: { id: string } }) {
   const router = useRouter();
   const eventId = params.id;
   const [event, setEvent] = useState<any>(null);

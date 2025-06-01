@@ -4,7 +4,6 @@ import { createBlogPost, deleteBlogPost, updateBlogPost } from "@/lib/db/blog";
 import { createAuditLogEntry } from '@/lib/db/auditLogs'; // Import the audit log function
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { auth } from '@/lib/auth'; // Keep import for potential future use or other actions
 
 export async function createBlogPostAction(formData: FormData) {
   const title = formData.get('title') as string;
