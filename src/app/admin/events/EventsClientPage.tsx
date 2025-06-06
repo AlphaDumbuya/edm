@@ -14,8 +14,8 @@ interface EventsClientPageProps {
 }
 
 export default function EventsClientPage({ events: initialEvents, itemsPerPage }: EventsClientPageProps) {
+  console.log('initialEvents:', initialEvents);
   const { data: session } = useSession();
-
   // You can add client-side logic here, e.g., for handling deletions or other interactions
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -51,6 +51,7 @@ export default function EventsClientPage({ events: initialEvents, itemsPerPage }
     ).slice((page - 1) * itemsPerPage, page * itemsPerPage);
 
     setEvents(fetchedEvents);
+    console.log('events state after fetchEvents:', fetchedEvents);
     // Simulate fetching total count
     setTotalEvents(initialEvents.filter(event =>
       event.title.toLowerCase().includes(query.toLowerCase())
@@ -64,6 +65,7 @@ export default function EventsClientPage({ events: initialEvents, itemsPerPage }
     const query = searchParams.get("search") || "";
     setSearchQuery(query);
     fetchEvents(page, query);
+    console.log('events state in useEffect:', events);
   }, [searchParams]); // Re-run effect when search params change
 
   const handlePageChange = (page: number) => {

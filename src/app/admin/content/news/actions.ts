@@ -56,6 +56,7 @@ export async function createNewsArticleAction(formData: FormData) {
     // Content transformation now happens on the client side in create/page.tsx
     // The contentFromEditor is already the transformed HTML string
     const transformedContent = contentFromEditor;
+    console.log('Data being sent to createNewsArticle:', { title, slug, content: transformedContent, published });
     // Call your database function to create the news article
  console.log('Attempting to create news article in DB');
     const newNewsArticle = await createNewsArticle({
@@ -63,6 +64,7 @@ export async function createNewsArticleAction(formData: FormData) {
       slug,
       content: transformedContent,
       published,
+      authorId, // Pass authorId here
     });
 
 

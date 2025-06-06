@@ -1,11 +1,13 @@
 'use server';
 
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 import { auth } from '@/lib/auth'; // Import auth
 import { type NextRequest } from 'next/server';
+import { headers } from 'next/headers'; // Import headers
+import { decrypt } from '@/lib/auth/session';
 console.log('createBlogPostAction: NEXTAUTH_SECRET:', process.env.NEXTAUTH_SECRET ? 'Set' : 'Not Set');
 
-export async function createBlogPostAction(formData: FormData, request: NextRequest) { // Changed order of parameters
+export async function createBlogPostAction(formData: FormData) { // Removed request parameter
   console.log('createBlogPostAction: Function started'); // Added log
   // 1. Extract data from formData
   const title = formData.get('title');
@@ -28,8 +30,9 @@ export async function createBlogPostAction(formData: FormData, request: NextRequ
   try {
     // 3. Interact with your database (using Prisma) to save the blog post
 
-    // Read the session cookie from the request headers
-    const cookieHeader = request.headers.get('Cookie');
+    // Read the session cookie using headers()
+    const headersList = await headers(); // Get headers
+    const cookieHeader = headersList.get('Cookie'); // Access Cookie header
     if (!cookieHeader) {
  return { error: 'Session cookie not found' };
     }
@@ -44,24 +47,27 @@ export async function createBlogPostAction(formData: FormData, request: NextRequ
     // Decrypt the session cookie using the decrypt function
     const session = await decrypt(sessionCookie);
 
+ console.log('createBlogPostAction: After decrypt - raw session object:', session);
+ console.log('createBlogPostAction: After decrypt - stringified session object:', JSON.stringify(session, null, 2));
+
     console.log('createBlogPostAction: Full session object:', JSON.stringify(session, null, 2));
     console.log('createBlogPostAction: After getting session', {
       sessionExists: !!session,
-      userId: session?.user?.id,
+      userId: session?.userId,
     }); // Added log
-    if (!session || !session.user || !session.user.id) {
-      return { error: 'User not authenticated' }; // Return error if user is not authenticated
+    if (!session || !session.userId) {
+ return { error: 'User not authenticated' }; // Return error if user is not authenticated
     }
 
+    const authorId: string = session.userId; // Declare authorId with type and assign session.userId
 
     // Log data before sending to Prisma
     console.log('Data being sent to prisma.blogPost.create:', {
       title: title as string,
       slug: slug as string,
       content: content as string,
-      published: published === 'on',
       authorId: session.userId,
-    });
+ });
     const newPost = await prisma.blogPost.create({
       data: {
         title: title as string, // Cast to string, assuming it's required and present after validation
@@ -70,7 +76,7 @@ export async function createBlogPostAction(formData: FormData, request: NextRequ
         published: published === 'on', // Assuming checkbox value is 'on' when checked and schema is boolean
         // Add the author ID field based on your schema:
 
- authorId: session.user.id, // Use the authenticated user's ID
+ authorId: authorId, // Use the authenticated user's ID
       },
     });
 

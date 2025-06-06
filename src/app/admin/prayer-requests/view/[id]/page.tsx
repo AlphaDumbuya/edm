@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getPrayerRequestById } from '@/lib/db/prayerRequests'; // Assuming the path to your data access file
+// Remove the direct import of getPrayerRequestById from '@/lib/db/prayerRequests'
 import { updatePrayerRequestAction } from '@/app/admin/prayer-requests/actions';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
 interface PrayerRequest {
   id: string;
   title: string;
@@ -15,6 +15,11 @@ interface PrayerRequest {
   createdAt: Date;
   updatedAt: Date;
 }
+
+// Dynamically import ReactQuill with ssr: false
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+});
 
 export default function ViewPrayerRequestPage() {
   const params = useParams();
@@ -35,10 +40,12 @@ export default function ViewPrayerRequestPage() {
 
       setLoading(true); // Set loading to true before fetching
       try {
-        const data = await getPrayerRequestById(requestId);
-        if (data) {
-          setPrayerRequest(data);
-          setCurrentStatus(data.status);
+        // Call the server action instead of the database function directly
+        const result = await getPrayerRequestByIdAction(requestId);
+
+        if (result.success && result.data) {
+          setPrayerRequest(result.data);
+          setCurrentStatus(result.data.status);
         } else { // Handle the case where data is null/undefined for a string ID
           setError('Prayer request not found.');
         }

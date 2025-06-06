@@ -12,6 +12,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
 import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation'; // Import useSearchParams
 import Link from 'next/link'; // Import Link from next/link
 import { Loader2, LogIn } from 'lucide-react';
 
@@ -28,6 +29,7 @@ export default function LoginForm() {
   const { signIn } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
+  const searchParams = useSearchParams(); // Call useSearchParams here
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -39,7 +41,8 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
-    const { error } = await signIn(data.email, data.password);
+    // Corrected line: Pass searchParams as the third argument
+    const { error } = await signIn(data.email, data.password, searchParams);
     setIsLoading(false);
 
     if (error) {
@@ -53,7 +56,9 @@ export default function LoginForm() {
         title: 'Login Successful',
         description: 'Welcome back!',
       });
-      router.push('/dashboard');
+      // The redirect is now handled within the signIn function in auth-context.tsx
+      // based on the searchParams or defaults to /dashboard
+      // router.push('/dashboard'); // This line can be removed or kept depending on desired behavior after successful login
     }
   };
 

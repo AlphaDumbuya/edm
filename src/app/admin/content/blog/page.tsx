@@ -22,26 +22,28 @@ import {
 import { fetchBlogPosts } from "./fetchBlogPosts"; // Import the server action
 import Link from "next/link";
 import { deleteBlogPostAction } from "./actions";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, Suspense } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
 import { useSession } from 'next-auth/react';
 import { hasRole } from '@/lib/utils';
 
 export default function BlogManagementPage() { // Changed to a client component
-  const searchParams = useSearchParams();
-  const router = useRouter();
+  const searchParams = useSearchParams(); // Call useSearchParams directly
+  const router = useRouter(); // Call useRouter directly
 
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
   const [totalBlogPosts, setTotalBlogPosts] = useState(0);
   const [loading, setLoading] = useState(true);
+
   let error = null;
-  
+
   const { data: session } = useSession();
   const userRole = session?.user?.role; // Assuming role is on user object in session
   const allowedToCreate = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']);
-
-  const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
-  const [currentPage, setCurrentPage] = useState(parseInt(searchParams.get('page') || '1'));
+  // Initialize state only after searchParams is available
+  const [searchQuery, setSearchQuery] = useState(searchParams ? searchParams.get('search') || '' : '');
+  const [currentPage, setCurrentPage] = useState(searchParams ? parseInt(searchParams.get('page') || '1') : 1);
   const [itemsPerPage, setItemsPerPage] = useState(10); // You can make this dynamic
 
   useEffect(() => {
@@ -61,7 +63,7 @@ export default function BlogManagementPage() { // Changed to a client component
       }
     };
 
-    fetchPosts();
+    if (searchParams) fetchPosts(); // Fetch data only after searchParams is initialized
   }, [searchQuery, currentPage, itemsPerPage]);
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,7 +92,8 @@ export default function BlogManagementPage() { // Changed to a client component
   const totalPages = Math.ceil(totalBlogPosts / itemsPerPage);
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <Suspense fallback={<div>Loading...</div>}>
+     <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-6">Blog Management</h1>
       {allowedToCreate && (
         <div className="flex justify-end mb-4">
@@ -157,6 +160,7 @@ export default function BlogManagementPage() { // Changed to a client component
           </PaginationItem>
         </PaginationContent>
       </Pagination>
-    </div>
+     </div>
+    </Suspense>
   );
 }

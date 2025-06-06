@@ -21,10 +21,10 @@ interface NewsPostCardProps {
   post: NewsPost;
 }
 
-export default function NewsPostCard({ post }: NewsPostCardProps) {
+export default function BlogPostCard({ post }: NewsPostCardProps) {
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <CardHeader className="p-3 sm:p-4 flex flex-col">
+      <CardHeader className="p-3 sm:p-4 flex flex-col"> 
         <Link href={`/news/${post.slug}`} legacyBehavior>
           <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
         </Link>
@@ -34,7 +34,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         </div>
       </CardHeader>
       <Link
-        href={`/news/${post.slug}`}
+        href={`/blog/${post.slug}`}
         className="block relative w-full h-32 sm:h-40 group"
         legacyBehavior>
         {post.imageUrl && (
@@ -59,7 +59,7 @@ export default function NewsPostCard({ post }: NewsPostCardProps) {
         )}
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
-        <Link href={`/news/${post.slug}`} className="w-full" legacyBehavior>
+        <Link href={`/blog/${post.slug}`} className="w-full" legacyBehavior>
  <Button className="w-full text-sm">
  Read More <ArrowRight className="ml-2 h-4 w-4" />
           </Button>

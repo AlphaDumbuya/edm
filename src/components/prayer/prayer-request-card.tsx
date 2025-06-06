@@ -3,15 +3,22 @@ import { UserCircle, CalendarDays, Tag, Heart } from 'lucide-react';
 import { formatDistanceToNow, format } from 'date-fns';
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
+import { PrayerRequestData } from '@/types/prayerRequest';
 
 interface PrayerRequestCardProps {
-  request: PrayerRequest;
+  request: PrayerRequestData;
 }
 
-type PrayerRequest = any //TODO: Add prayer request type definition
 export default function PrayerRequestCard({ request }: PrayerRequestCardProps) {
-  const timeAgo = formatDistanceToNow(new Date(request.timestamp), { addSuffix: true });
-  const fullDate = format(new Date(request.timestamp), 'MMMM d, yyyy \'at\' h:mm a');
+  const validCreatedAt = request.createdAt instanceof Date && !isNaN(request.createdAt.getTime());
+
+  const timeAgo = validCreatedAt
+    ? formatDistanceToNow(request.createdAt, { addSuffix: true })
+    : 'Invalid date';
+
+  const fullDate = validCreatedAt
+    ? format(request.createdAt, 'MMMM d, yyyy \'at\' h:mm a')
+    : 'Invalid date';
 
   return (
     <Card className="flex flex-col shadow-md hover:shadow-lg transition-shadow duration-300 h-full bg-background">
@@ -22,12 +29,12 @@ export default function PrayerRequestCard({ request }: PrayerRequestCardProps) {
           </CardTitle>
           {request.category && <Badge variant="secondary">{request.category}</Badge>}
         </div>
-        <CardDescription className="text-xs text-muted-foreground flex items-center pt-1" title={fullDate}>
+        <CardDescription className="text-xs text-muted-foreground flex items-center pt-1" title={request.formattedFullDate}>
           <CalendarDays className="mr-1 h-3 w-3" /> {timeAgo}
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow pb-4">
-        <p className="text-sm text-foreground whitespace-pre-wrap">{request.requestText}</p>
+        <p className="text-sm text-foreground whitespace-pre-wrap">{request.request}</p>
       </CardContent>
       <CardFooter className="border-t pt-3 pb-3">
         <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10 w-full">

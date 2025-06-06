@@ -1,4 +1,4 @@
-import { prisma } from '../db/prisma'; // Assuming your prisma client is exported from here
+import prisma from '../db/prisma'; // Assuming your prisma client is exported from here
 
 export async function getAllDonations(options: {
  search?: string;
@@ -9,7 +9,7 @@ export async function getAllDonations(options: {
       orderBy?: { [key: string]: 'asc' | 'desc' };
     }) {
   try {
-    const { search, paymentMethod, offset = 0, limit = 10, orderBy = { createdAt: 'desc' } } = options || {};
+    const { search, status, paymentMethod, offset = 0, limit = 10, orderBy = { createdAt: 'desc' } } = options || {};
     const where: any = {};
 
     if (search) {

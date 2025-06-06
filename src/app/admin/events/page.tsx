@@ -42,6 +42,8 @@ function EventsClientPage({ events }: { events: Event[] }) {
   const userRole = session?.user?.role;
 
   return (
+    <div>
+      <h1 className="text-blue-500 text-4xl font-bold mb-6">THIS IS THE EVENTS PAGE</h1>
     <Table>
       <TableHeader>
         <TableRow>
@@ -95,6 +97,7 @@ function EventsClientPage({ events }: { events: Event[] }) {
         ))}
       </TableBody>
     </Table>
+    </div>
   );
 }
 
@@ -113,10 +116,16 @@ export default function EventsPageWrapper() {
 
   useEffect(() => {
     const fetchEvents = async () => {
-      const data = await getPaginatedEventsAction(page, search);
-      setEvents(data.events || []); // Ensure events is always an array
-      // You might want to set totalEvents here too if you need it in the wrapper
-      setLoading(false);
+      try {
+        const data = await getPaginatedEventsAction(page, search);
+        console.log("Fetched events data:", data); // Log fetched data
+        setEvents(data.events || []); // Ensure events is always an array
+        // You might want to set totalEvents here too if you need it in the wrapper
+      } catch (error) {
+        console.error("Error fetching events:", error); // Log any errors
+      } finally {
+        setLoading(false);
+      }
     };
     fetchEvents();
   }, [search, page]);

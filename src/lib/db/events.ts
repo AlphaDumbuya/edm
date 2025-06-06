@@ -1,4 +1,4 @@
-import { prisma } from '../db/prisma'; // Assuming your prisma client is exported from here
+import prisma from '../db/prisma'; // Assuming your prisma client is exported as default
 import { Event } from '@prisma/client';
 
 export interface CreateEventInput {
@@ -27,6 +27,11 @@ export async function getAllEvents(options?: {
         }
       : {};
 
+    console.log('getAllEvents - limit:', limit);
+    console.log('getAllEvents - search:', search);
+    console.log('getAllEvents - offset:', offset);
+    console.log('getAllEvents - limit:', limit);
+    console.log('getAllEvents - where:', where);
     const [events, totalEvents] = await prisma.$transaction([
       prisma.event.findMany({
         where,
@@ -38,6 +43,9 @@ export async function getAllEvents(options?: {
         where,
       }),
     ]);
+    // Add console log for fetched events count
+    console.log('getAllEvents - fetched events count:', events.length);
+    console.log('getAllEvents - fetched events count:', events.length);
 
     return { events, totalEvents };
   } catch (error) {

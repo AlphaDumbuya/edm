@@ -18,7 +18,7 @@ interface AuthContextType {
   loading: boolean;
   error: string | null;
   signUp: (email: string, password_1: string, name: string) => Promise<{ user: User | null; error: string | null }>;
-  signIn: (email: string, password_1: string) => Promise<{ user: User | null; error: string | null }>;
+  signIn: (email: string, password_1: string, searchParams: ReturnType<typeof useSearchParams>) => Promise<{ user: User | null; error: string | null }>;
   signOutAuth: () => Promise<{ error: string | null }>;
   updateUserProfile: (profileData: { name?: string; photoURL?: string }) => Promise<{ error: string | null }>;
   sendPasswordReset: (email: string) => Promise<{ error: string | null }>;
@@ -34,7 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const { toast } = useToast();
-  const searchParams = useSearchParams();
 
   const fetchSession = useCallback(async (isInitialLoad = false) => {
     if (!isInitialLoad) setLoading(true);
@@ -115,7 +114,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
-  const signIn = async (email: string, password_1: string) => {
+  const signIn = async (email: string, password_1: string, searchParams: ReturnType<typeof useSearchParams>) => {
     setLoading(true);
     setError(null);
     try {

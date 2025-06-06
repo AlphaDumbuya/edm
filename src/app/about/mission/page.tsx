@@ -15,27 +15,6 @@ export default function OurMissionPage() {
         subtitle="EDM is a Christian organization in Sierra Leone, West Africa, called to evangelism, discipleship, and missions in that part of the world. EDM is a registered 501(c)(3) non-profit organization."
         icon={Target}
       />
-      <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-        <div className="space-y-3 md:space-y-4">
-          <SectionTitle title="Who We Are" />
-          <p className="text-base sm:text-lg text-muted-foreground mb-4">
-            Evangelism, Discipleship, Missions (EDM) is a Christian organization rooted in Sierra Leone, West Africa. We are committed to fulfilling the Great Commission through dynamic Evangelism in local communities, intentional Discipleship to build strong believers, and impactful Missions to serve those in need.
-          </p>
-          <p className="text-base sm:text-lg text-muted-foreground">
-            Our work is driven by the belief in the transformative power of the Gospel to change lives, build communities, and bring hope to Sierra Leone and beyond, with key partnerships extending to Oregon, USA. EDM is a registered 501(c)(3) non-profit organization.
-          </p>
-        </div>
-        <div className="rounded-lg overflow-hidden shadow-xl h-64 sm:h-80 relative">
-          <Image
-            src="https://source.unsplash.com/random/600x400/?sierra,leone,mission,team"
-            alt="EDM team working in Sierra Leone"
-            layout="fill"
-            objectFit="cover"
-            className="object-cover w-full h-full"
-            data-ai-hint="sierra leone mission team"
-          />
-        </div>
-      </section>
       <section>
         <SectionTitle title="Our Journey: How It All Started" />
         <Card className="shadow-lg">
@@ -45,19 +24,19 @@ export default function OurMissionPage() {
                 <p>
                   "Years ago God put a burden on my heart for issues I noticed in the church.
                   The church was focused inwardly (programs, budgets, activities), while neglecting others outside.
-                  This concern resonated with <Link href="https://www.biblegateway.com/passage/?search=Ephesians+2%3A3-4&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Ephesians 2:3-4</Link>."
+                  This concern resonated with Ephesians 2:3-4."
                 </p>
                 <p>
                   "There was no formal training structure for new converts to grow in maturity in the faith.
                   The purpose of God for our salvation is to grow to become like Christ Jesus.
-                  This aligns with the Great Commission in <Link href="https://www.biblegateway.com/passage/?search=Matthew+28%3A18-20&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Matthew 28:18-20</Link>."
+                  This aligns with the Great Commission in Matthew 28:18-20."
                 </p>
                 <p>
                   "When I look at the church, priority is not given to evangelism.
                   This is despite the clear call in <Link href="https://www.biblegateway.com/passage/?search=Romans+10%3A13-15&version=NIV" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Romans 10:13-15</Link>."
                 </p>
                 <p>
-                  "As I was studying and praying I began to form the organization and came up with the structure of EDM: Evangelism, Discipleship, and Missions."
+                  "As I was studying and praying I began to form the organization and came up with the structure of EDM: Evangelism, Discipleship, and Missions.\"
                 </p>
             </blockquote>
           </CardContent>

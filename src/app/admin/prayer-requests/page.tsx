@@ -1,5 +1,6 @@
 'use client';
-import { getAllPrayerRequests, deletePrayerRequest } from "@/lib/db/prayerRequests";
+
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -16,15 +17,19 @@ import {
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
- AlertDialogHeader,
- AlertDialogTitle,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { deletePrayerRequestAction } from "./actions";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from 'next-auth/react';
+
+import {
+  deletePrayerRequestAction,
+  getAllPrayerRequestsAction,
+} from "./actions";
 import { hasRole } from '@/lib/utils';
-import { useRouter } from "next/navigation";
+
 interface PrayerRequest {
   id: string;
   title: string;
@@ -33,97 +38,84 @@ interface PrayerRequest {
   status: string;
   createdAt: Date;
   updatedAt: Date;
-  // Add any other properties that exist on a prayer request object
 }
 
-export default function PrayerRequestsPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default function PrayerRequestsPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: session } = useSession();
+
+  const userRole = session?.user?.role;
+  const canManagePrayerRequests = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']);
+  const canCreatePrayerRequest = canManagePrayerRequests;
+
+  const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
   const [totalPrayerRequests, setTotalPrayerRequests] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('search') || '');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || '');
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParams.get('page') || '1', 10));
+  const [itemsPerPage] = useState<number>(10);
 
-  const [searchQuery, setSearchQuery] = useState<string>(searchParams?.search as string || '');
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams?.status as string || '');
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParams?.page as string || '1'));
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10); // Or any default you prefer
-
-  const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null); // Moved declaration here
-
+  const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
-  const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]); // Typed as PrayerRequest[]
+
   const handleDeleteClick = (prayerRequestId: string) => {
     setPrayerRequestToDelete(prayerRequestId);
     setIsDeleteDialogOpen(true);
   };
 
+  // Fetch prayer requests
   useEffect(() => {
     const fetchPrayerRequests = async () => {
       setLoading(true);
       setError(null);
       try {
         const offset = (currentPage - 1) * itemsPerPage;
-        const { prayerRequests, totalCount } = await getAllPrayerRequests({
+        const result = await getAllPrayerRequestsAction({
           search: searchQuery,
           status: statusFilter,
           offset,
           limit: itemsPerPage,
           orderBy: { createdAt: 'desc' },
         });
-        setPrayerRequests(prayerRequests); // Removed as any cast
-        setTotalPrayerRequests(totalCount);
-      } catch (e) {
-        console.error("Failed to fetch prayer requests:", e);
+
+        if (result.success && result.data) {
+ setPrayerRequests(result.data.prayerRequests);
+ setTotalPrayerRequests(result.data.totalCount);
+ } else {
+ setError(result.error || 'An unknown error occurred during fetching.');
+ }
+      } catch (err) {
         setError("Failed to fetch prayer requests.");
       } finally {
         setLoading(false);
       }
     };
-    
+
     fetchPrayerRequests();
   }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
 
+  // Sync URL query params with state
   useEffect(() => {
     const params = new URLSearchParams();
-    // Iterate over searchParams to construct URLSearchParams
-    if (searchParams) {
-      Object.entries(searchParams).forEach(([key, value]) => {
-        if (value !== undefined) { // Only add parameters with defined values
-          if (Array.isArray(value)) {
-            value.forEach(val => params.append(key, val));
-          } else {
-            params.set(key, value);
-          }
-        }
-      });
-    }
-
-    if (searchQuery) params.set('search', searchQuery); else params.delete('search');
-    if (statusFilter) params.set('status', statusFilter); else params.delete('status');
+    if (searchQuery) params.set('search', searchQuery);
+    if (statusFilter) params.set('status', statusFilter);
     params.set('page', currentPage.toString());
-    // Assuming itemsPerPage is constant for now, you might add it to params if needed
-    router.push(`?${params.toString()}`); // Use replace instead of push to avoid excessive history entries
-  }, [searchQuery, statusFilter, currentPage, itemsPerPage, router, searchParams]); // searchParams in dependency array
-
-  const { data: session } = useSession();
-  const userRole = session?.user?.role; // Assuming role is available in session.user.role
-
-  const canManagePrayerRequests = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']);
-  const canCreatePrayerRequest = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']); // Defined canCreatePrayerRequest
-
+    router.push(`?${params.toString()}`);
+  }, [searchQuery, statusFilter, currentPage, router]);
 
   return (
     <div>
- <h1 className="text-2xl font-semibold mb-4">Prayer Request Management</h1>
+      <h1 className="text-2xl font-semibold mb-4">Prayer Request Management</h1>
 
- {canCreatePrayerRequest && (
- <Button asChild className="mb-4">
- <Link href="/admin/prayer-requests/create">Create New Prayer Request</Link>
- </Button>
- )} {/* Corrected closing tag */}
-
-      {/* Search and Filter Controls */}
-      {/* Pagination Controls */}
+      {canCreatePrayerRequest && (
+        <Button asChild className="mb-4">
+          <Link href="/admin/prayer-requests/create">Create New Prayer Request</Link>
+        </Button>
+      )}
 
       {error ? (
         <p className="text-red-500">{error}</p>
@@ -146,34 +138,30 @@ export default function PrayerRequestsPage({ searchParams }: { searchParams: { [
                 <TableCell>{request.title}</TableCell>
                 <TableCell>{request.authorName}</TableCell>
                 <TableCell>{request.status}</TableCell>
-                <TableCell>{request.createdAt.toDateString()}</TableCell>
+                <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
- <div className="flex space-x-2">
-                    {/* Always allow viewing */}
- <Button variant="outline" size="sm" asChild>
- <Link href={`/admin/prayer-requests/view/${request.id}`}>View</Link>
- </Button>
-
-                    {/* Conditionally render Edit and Delete buttons */}
+                  <div className="flex space-x-2">
+                    <Button variant="outline" size="sm" asChild>
+                      <Link href={`/admin/prayer-requests/view/${request.id}`}>View</Link>
+                    </Button>
                     {canManagePrayerRequests && (
                       <Button
                         variant="destructive"
                         size="sm"
                         onClick={() => handleDeleteClick(request.id)}
                       >
- Delete
+                        Delete
                       </Button>
- )}{/* Added closing parenthesis here */}
- </div>
- </TableCell> {/* Added closing tag for TableCell */}
+                    )}
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       )}
 
-      {/* Pagination Controls */}
-      {/* You'll need to add buttons/logic here to change currentPage */}
+      {/* Pagination Controls (implement actual logic/buttons for navigation here) */}
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
@@ -181,17 +169,23 @@ export default function PrayerRequestsPage({ searchParams }: { searchParams: { [
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the prayer request.\n
+              This action cannot be undone. This will permanently delete the prayer request.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={async () => {
-              if (prayerRequestToDelete) {
-                await deletePrayerRequestAction(prayerRequestToDelete);
-                router.refresh(); // Refresh the page to show the updated list
-              }
-            }}>Delete</AlertDialogAction>
+            <AlertDialogAction
+              onClick={async () => {
+                if (prayerRequestToDelete) {
+                  await deletePrayerRequestAction(prayerRequestToDelete);
+                  setIsDeleteDialogOpen(false);
+                  setPrayerRequestToDelete(null);
+                  router.refresh(); // Refresh data
+                }
+              }}
+            >
+              Delete
+            </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>

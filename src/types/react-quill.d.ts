@@ -3,10 +3,11 @@ declare module 'react-quill' {
 
   interface ReactQuillProps {
     value: string;
-    onChange: (html: string) => void;
+    onChange?: (html: string) => void;
     theme?: string;
     bounds?: string | HTMLElement;
     modules?: {
+      [key: string]: any;
       formula?: boolean;
       syntax?: boolean;
       sanitize?: boolean;
@@ -14,9 +15,9 @@ declare module 'react-quill' {
       imageResize?: {}; // You might want to define a more specific type for imageResize
       toolbar?: (string | string[] | { [key: string]: any })[];
       [key: string]: any;
-    };
-    required?: boolean;
+    };    readOnly?: boolean; // Added readOnly property
     // Add other commonly used props if needed
+    className?: string;
   }
 
   interface ReactQuill extends React.ComponentClass<ReactQuillProps> {

@@ -1,4 +1,5 @@
 "use client";
+'use client';
 import { getAllDonations } from "@/lib/db/donations";
 import {
   Table,
@@ -21,6 +22,7 @@ export default async function DonationsPage() {
   } catch (e: any) {
     error = e.message;
     console.error("Error fetching donations:", e);
+    donations = []; // Ensure donations is an empty array on error
   }
 
   return (

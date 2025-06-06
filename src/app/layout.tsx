@@ -3,10 +3,10 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import './globals.css';
-import Footer from '@/components/layout/footer';
 import { AppProviders } from '@/components/layout/app-providers';
-import NavRenderer from '@/components/layout/nav-renderer'; // Import the new NavRenderer componentimport { ClientSessionProvider } from '@/components/providers/client-session-provider'; // Import ClientSessionProvider as a named export
-import { ClientSessionProvider } from '@/components/providers/client-session-provider';
+import NavRenderer from '@/components/layout/nav-renderer'; // Import the new NavRenderer component
+import FooterVisibility from '@/components/layout/FooterVisibility'; // Import the new FooterVisibility component
+import { ClientSessionProvider } from '@/components/providers/client-session-provider'; // Import the ClientSessionProvider
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -22,17 +22,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
- const pathname = usePathname();
  return (
     <html lang='en'>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}>
-        <ClientSessionProvider>
+ <ClientSessionProvider>
           <AppProviders>
             <NavRenderer /> {/* Use the NavRenderer component here */}
             <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>{
- !pathname.startsWith('/admin') && <Footer />}
+ <FooterVisibility />}
           </AppProviders>
-        </ClientSessionProvider>
+ </ClientSessionProvider>
       </body>
     </html>
   )

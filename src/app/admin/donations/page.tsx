@@ -27,17 +27,16 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 
-export default function DonationsPage() {
-  const router = useRouter();
+function DonationsContent() {
   const searchParamsHook = useSearchParams();
+  const router = useRouter();
 
   const [donations, setDonations] = useState<any[]>([]);
   const [totalDonations, setTotalDonations] = useState(0);
-  const [searchQuery, setSearchQuery] = useState<string>(searchParamsHook.get('search') || '');
-  const [statusFilter, setStatusFilter] = useState<string>(searchParamsHook.get('status') || '');
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParamsHook.get('page') || '1'));
+  const [searchQuery, setSearchQuery] = useState<string>('');
+  const [statusFilter, setStatusFilter] = useState<string>('');
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -46,7 +45,17 @@ export default function DonationsPage() {
   const { data: session } = useSession();
   const userRole = session?.user?.role;
 
+  console.log(session);
+
   useEffect(() => {
+    if (typeof window === 'undefined') {
+      // Only run this effect on the client side
+      return;
+    }
+    setSearchQuery(searchParamsHook.get('search') || '');
+    setStatusFilter(searchParamsHook.get('status') || '');
+    setCurrentPage(parseInt(searchParamsHook.get('page') || '1'));
+
     const fetchDonations = async () => {
       setLoading(true);
       setError(null);
@@ -67,6 +76,7 @@ export default function DonationsPage() {
         }
 
         const data = await response.json();
+        setDonations(data.donations);
         const { donations: fetchedDonations, totalCount } = data;
 
         setTotalDonations(totalCount);
@@ -174,5 +184,15 @@ export default function DonationsPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function DonationsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <DonationsContent />
+    </Suspense>
   );
 }

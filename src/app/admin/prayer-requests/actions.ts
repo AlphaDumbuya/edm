@@ -1,9 +1,6 @@
 'use server';
-
-import { createPrayerRequest, deletePrayerRequest, updatePrayerRequest } from "@/lib/db/prayerRequests";
-import { createAuditLogEntry } from '@/lib/db/auditLogs';
-
-export async function createPrayerRequestAction(formData: FormData) {
+import { createPrayerRequest, deletePrayerRequest, updatePrayerRequest, getAllPrayerRequests, getPrayerRequestById as getPrayerRequestByIdFromDb } from "@/lib/db/prayerRequests";
+import { createAuditLogEntry } from '@/lib/db/auditLogs'; export async function createPrayerRequestAction(formData: FormData) {
   try {
     const title = formData.get('title') as string;
     const body = formData.get('body') as string;
@@ -74,3 +71,36 @@ export async function updatePrayerRequestAction(id: string, formData: FormData) 
     return { error: `Failed to update prayer request with ID ${id}.` };
   }
 }
+
+interface GetAllPrayerRequestsOptions {
+  search?: string;
+  status?: string;
+  offset?: number;
+  limit?: number;
+  orderBy?: any; // You might want to define a more specific type for orderBy
+}
+
+export async function getAllPrayerRequestsAction(options: GetAllPrayerRequestsOptions = {}) {
+  try {
+    // Pass the options directly to your getAllPrayerRequests function
+    // Assuming getAllPrayerRequests is designed to accept these parameters
+    const prayerRequests = await getAllPrayerRequests(options);
+    // Note: Your getAllPrayerRequests function in /lib/db/prayerRequests
+    // also needs to be updated to accept and utilize these parameters
+    return { success: true, data: prayerRequests };
+  } catch (error) {
+    console.error('Error fetching prayer requests:', error);
+    return { error: 'Failed to fetch prayer requests.' };
+  }
+}
+
+export async function getPrayerRequestByIdAction(id: string) {
+  try {
+    const prayerRequest = await getPrayerRequestByIdFromDb(id);
+    return { success: true, data: prayerRequest };
+  } catch (error) {
+    console.error(`Error fetching prayer request with ID ${id}:`, error);
+    return { error: `Failed to fetch prayer request with ID ${id}.` };
+  }
+}
+

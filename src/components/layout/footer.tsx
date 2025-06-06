@@ -86,10 +86,10 @@ export default function Footer() {
               </div>
             </address>
             <div className="flex space-x-2 sm:space-x-3 mt-3 md:mt-4">
-              <a href="https://facebook.com/EDMSierraLeone" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={18} /></a>
+              <a href="https://www.facebook.com/EDMmissions/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={18} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={18} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={18} /></a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={18} /></a>
+              <a href="https://www.youtube.com/@EvangelismDiscipleshipMissions" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={18} /></a>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 
 export async function getAllNewsArticles(options?: {
   search?: string;
@@ -52,10 +52,17 @@ export async function createNewsArticle(data: {
   slug: string;
   content: string;
   published?: boolean;
+  authorId: string; // Add authorId here
 }) {
   try {
     const newNewsArticle = await prisma.newsArticle.create({
-      data,
+      data: {
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        published: data.published,
+        authorId: data.authorId, // Pass authorId here
+      },
     });
     return newNewsArticle;
   } catch (error) {
