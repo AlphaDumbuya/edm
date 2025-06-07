@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import {
   Home,
   Info,
@@ -58,7 +59,7 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
           )}
           href={href}
           {...props}
-        >
+          legacyBehavior>
           {/* Wrap children in a single span */}
           <span>
  <div className="text-sm font-medium leading-none">{title}</div>
@@ -159,6 +160,7 @@ const mainNavItems: NavItem[] = [
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOutAuth, loading } = useAuth();
+  const [isClient, setIsClient] = useState(false);
   const typedUser = user as AuthUserType | null;
 
   const getInitials = (name?: string | null, email?: string | null) => {
@@ -169,18 +171,24 @@ export default function Navbar() {
     return email?.[0].toUpperCase() || "U";
   };
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 md:h-10 md:w-10 relative">
-            <Image
-              src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
-              alt="EDM Logo"
-              fill
-              className="object-contain"
-            />
-          </div>
+          <>
+ <div className="h-8 w-8 md:h-10 md:w-10 relative">
+ <Image
+ src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+ alt="EDM Logo"
+ fill
+ className="object-contain"
+ />
+ </div>
+          </>
           <span className="text-xl font-bold">EDM</span>
         </Link>
 
@@ -191,7 +199,7 @@ export default function Navbar() {
                 {item.links ? (
                   <>
                     <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap">
-                      {item.icon && <item.icon size={18} />}
+                      {isClient && item.icon && <item.icon size={18} />}
                       {item.title}
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
@@ -206,10 +214,12 @@ export default function Navbar() {
                   </>
                 ) : item.href ? (
                   <NavigationMenuLink asChild>
-                    <Link href={item.href} className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}>
-                      <div className="flex items-center gap-1">
-                        {item.icon && <item.icon size={18} />}{item.title}
-                      </div>
+                    <Link
+                      href={item.href}
+                      className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
+>
+                      {isClient && item.icon && <item.icon size={18} />}{item.title}
+
                     </Link>
                   </NavigationMenuLink>
                 ) : null}
@@ -258,10 +268,10 @@ export default function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/login">
+              <Link href="/login" legacyBehavior>
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link href="/auth/signup">
+              <Link href="/auth/signup" legacyBehavior>
                 <Button variant="default">Sign Up</Button>
               </Link>
             </div>
@@ -282,9 +292,15 @@ export default function Navbar() {
             <SheetContent side="left" className="w-64 overflow-y-auto sm:max-w-sm">
               <SheetHeader className="mb-6">
                 <SheetTitle>
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
-                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
-                    <span className="text-lg font-bold">EDM</span>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+ <span className="text-lg font-bold">EDM</span>
+                    </>
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -292,29 +308,43 @@ export default function Navbar() {
                 {mainNavItems.map((item: NavItem, i) => (
                   <div key={i}>
                     {item.href ? (
-                      <Link href={item.href} className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap" onClick={() => setMobileMenuOpen(false)}>
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
+                        onClick={() => setMobileMenuOpen(false)}
+>
                         <div className="flex items-center gap-2">
-                          {item.icon && <item.icon size={20} />}{item.title}
+ {isClient && item.icon && <item.icon size={20} />}{item.title}
                         </div>
                       </Link>
                     ) : (
                       <>
                         <h3 className="flex items-center gap-2 text-lg font-semibold mb-2">
-                          {item.icon && <item.icon size={16} />}
+                          {isClient && item.icon && <item.icon size={16} />}
                           {item.title}
                         </h3>
                         <ul className="ml-4 space-y-2 border-l pl-4">
                           {item.links && item.links.map((link, j) => (
                             <div key={j}>
-                              <Link href={link.href} className="text-base font-medium hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
-                                {link.icon && <link.icon size={16} className="inline mr-2" />}
+                              <Link
+                                href={link.href}
+                                className="text-base font-medium hover:text-primary transition-colors"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
                                 {link.title}
                               </Link>
+
+                              {/* Check if link.links exist before rendering the nested ul */}
                               {link.links && (
                                 <ul className="ml-4 space-y-2 border-l pl-4 mt-2">
                                   {link.links.map((subLink, k) => (
                                     <li key={k}>
-                                      <Link href={subLink.href} className="text-sm hover:text-primary transition-colors" onClick={() => setMobileMenuOpen(false)}>
+                                      <Link
+                                        href={subLink.href}
+                                        className="text-sm hover:text-primary transition-colors"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                      >
                                         {subLink.title}
                                       </Link>
                                     </li>

@@ -82,7 +82,7 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
           The news article you're looking for could not be found.
         </p>
         <Button asChild>
-          <Link href="/news">
+          <Link href="/news" legacyBehavior>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to News
           </Link>
@@ -96,16 +96,14 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
       {/* Back button */}
       <div className="mb-6">
         <Button asChild variant="outline" size="sm">
-          <Link href="/news">
+          <Link href="/news" legacyBehavior>
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to News
           </Link>
         </Button>
       </div>
-
       {/* Article title */}
       <h1 className="text-3xl md:text-4xl font-bold mb-6">{news.title}</h1>
-
       {/* Article metadata */}
       <div className="flex flex-wrap gap-4 items-center mb-6 text-muted-foreground">
         <div className="flex items-center">
@@ -117,7 +115,6 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
           <span>{format(new Date(news.createdAt), "MMMM d, yyyy")}</span>
         </div>
       </div>
-
       {/* Article featured image */}
       {news.coverImage && (
         <div className="mb-8">
@@ -132,14 +129,12 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
           </div>
         </div>
       )}
-
       {/* Article content */}
       <div className="prose prose-lg max-w-none mb-12">
         {news.content.split("\n").map((paragraph, index) => (
           <p key={index}>{paragraph}</p>
         ))}
       </div>
-
       {/* Related Articles */}
       {relatedNews.length > 0 && (
         <div className="mt-12">

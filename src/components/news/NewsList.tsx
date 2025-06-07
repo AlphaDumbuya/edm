@@ -61,7 +61,6 @@ export function NewsList() {
   return (
     <div className="space-y-8">
       <h2 className="text-3xl font-bold">Latest News</h2>
-
       {/* Featured News (first item) */}
       {news.length > 0 && (
         <div className="relative overflow-hidden rounded-xl">
@@ -95,7 +94,7 @@ export function NewsList() {
                   {news[0].content.length > 150 ? "..." : ""}
                 </p>
                 <Button asChild variant="secondary" className="w-fit">
-                  <Link href={`/news/${news[0].id}`}>
+                  <Link href={`/news/${news[0].id}`} legacyBehavior>
                     Read More <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -104,7 +103,6 @@ export function NewsList() {
           </div>
         </div>
       )}
-
       {/* Other News List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {news.slice(1).map((item) => (
@@ -136,7 +134,7 @@ export function NewsList() {
                 {item.content.length > 100 ? "..." : ""}
               </p>
               <Button asChild variant="outline" size="sm" className="w-fit">
-                <Link href={`/news/${item.id}`}>
+                <Link href={`/news/${item.id}`} legacyBehavior>
                   Read More <ArrowRight className="ml-1 h-3 w-3" />
                 </Link>
               </Button>

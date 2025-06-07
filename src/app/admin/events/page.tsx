@@ -1,10 +1,7 @@
 // EventsPage.tsx (or .jsx depending on your setup)
 
 'use client';
-
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 import {
   AlertDialog,
@@ -26,110 +23,15 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table";
+} from "@/components/ui/table"; // Keep imports for table components if needed elsewhere or remove if not
 
-import { deleteEventAction, getPaginatedEventsAction } from "./actions";
-import { type Event } from "@prisma/client";
+import { type Event } from "@prisma/client"; // Keep type import if needed
 
-// Utility function for checking role
-function hasRole(role: string, allowedRoles: string[]) {
-  return allowedRoles.includes(role);
-}
+import EventsClientPage from "./EventsClientPage";
 
-// Client Component
-function EventsClientPage({ events }: { events: Event[] }) {
-  const { data: session } = useSession();
-  const userRole = session?.user?.role;
 
-  return (
-    <div>
-      <h1 className="text-blue-500 text-4xl font-bold mb-6">THIS IS THE EVENTS PAGE</h1>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Title</TableHead>
-          <TableHead>Date</TableHead>
-          <TableHead>Time</TableHead>
-          <TableHead>Location</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {events.map((event) => (
-          <TableRow key={event.id}>
-            <TableCell>{event.title}</TableCell>
-            <TableCell>{new Date(event.date).toLocaleDateString()}</TableCell>
-            <TableCell>{event.time}</TableCell>
-            <TableCell>{event.location}</TableCell>
-            <TableCell className="text-right">
-              {userRole && hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
-                <>
-                  <button className="text-blue-600 hover:underline mr-2">Edit</button>
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <button className="text-red-600 hover:underline">Delete</button>
-                    </AlertDialogTrigger>
-                    <AlertDialogContent>
-                      <AlertDialogHeader>
-                        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                        <AlertDialogDescription>
-                          This action cannot be undone. This will permanently delete the
-                          event and remove its data from our servers.
-                        </AlertDialogDescription>
-                      </AlertDialogHeader>
-                      <AlertDialogFooter>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogAction
-                          onClick={async () => {
-                            await deleteEventAction(event.id);
-                            window.location.reload();
-                          }}
-                        >
-                          Continue
-                        </AlertDialogAction>
-                      </AlertDialogFooter>
-                    </AlertDialogContent>
-                  </AlertDialog>
-                </>
-              )}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-    </div>
-  );
-}
-
+// Wrap the client component with Suspense
 export default function EventsPageWrapper() {
-  const searchParams = useSearchParams();
-  // Ensure search is always a string, defaulting to empty if null or undefined
-  const searchParam = searchParams.get('search');
-  const search = searchParam === null || searchParam === undefined
-    ? ''
-    : searchParam;
-
-  const page = parseInt(searchParams.get('page') || '1');
-
-  const [events, setEvents] = useState<Event[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-        const data = await getPaginatedEventsAction(page, search);
-        console.log("Fetched events data:", data); // Log fetched data
-        setEvents(data.events || []); // Ensure events is always an array
-        // You might want to set totalEvents here too if you need it in the wrapper
-      } catch (error) {
-        console.error("Error fetching events:", error); // Log any errors
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchEvents();
-  }, [search, page]);
-
-  if (loading) return <div>Loading...</div>;
-  return <EventsClientPage events={events} />;
+  // EventsClientPage will handle its own data fetching based on search params
+  return <Suspense fallback={<div>Loading...</div>}><EventsClientPage /></Suspense>;
 }

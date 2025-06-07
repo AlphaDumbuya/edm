@@ -58,7 +58,6 @@ export default async function NewsPage() {
   return (
     <div className="container mx-auto py-12 px-4">
       <h1 className="text-3xl font-bold mb-10">Latest News</h1>
-
       {/* News Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {news?.map((item) => (
@@ -97,7 +96,7 @@ export default async function NewsPage() {
             </CardContent>
             <CardFooter className="pt-0">
               <Button asChild variant="outline" size="sm">
-                <Link href={`/news/${item?.id}`}>
+                <Link href={`/news/${item?.id}`} legacyBehavior>
                   Read More <ArrowRight className="ml-1 h-3 w-3" />
                 </Link>
               </Button>
