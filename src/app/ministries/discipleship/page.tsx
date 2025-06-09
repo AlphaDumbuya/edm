@@ -23,7 +23,7 @@ export default function DiscipleshipPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://images.unsplash.com/photo-1663686694463-cb9e207154f3?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTJ8fERpc2NpcGxlc2hpcCUyMGluJTIwYWZyaWNhfGVufDB8fDB8fHww"
+            src="https://media.istockphoto.com/id/187567942/photo/religious-assembly.webp?a=1&b=1&s=612x612&w=0&k=20&c=Q24eZTQX3ZUCBX1vXnydeYObj4weaD24taaJaSrstIA="
             alt="Discipleship group studying together in Sierra Leone"
             layout="fill"
             objectFit="cover"

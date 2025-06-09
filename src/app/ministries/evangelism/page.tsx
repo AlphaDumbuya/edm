@@ -23,8 +23,8 @@ export default function EvangelismPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://plus.unsplash.com/premium_photo-1723759212099-d33000267d6f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8RGlzY2lwbGVzaGlwfGVufDB8fDB8fHww"
-            alt="EDM evangelism team sharing the Gospel"
+            src="https://images.unsplash.com/photo-1551191003-82ee872a093b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJsYWNrJTIwcGVvcGxlJTIwZXZhbmdhbGlzaW5nJTIwdGhlJTIwZ29zcGVsfGVufDB8fDB8fHww"
+            alt="Man reading a book beside people"
             layout="fill"
             objectFit="cover"
             data-ai-hint="sierra leone evangelism outreach"

@@ -21,7 +21,7 @@ export default function MarifaSchoolPage() {
     <div className="space-y-12">
       <PageHeader
         title="EDM Marifa Secondary School"
-        subtitle="A Beacon of Hope and Learning in Marifa (Rosortta Village), Sierra Leone. School Building Project ongoing."
+        subtitle="A Beacon of Hope and Learning in koya chiefdom, port loko distrct, Sierra Leone. School Building Project ongoing."
         icon={School}
       />
       <section>
@@ -47,7 +47,7 @@ export default function MarifaSchoolPage() {
               </CardHeader>
               <CardContent className="space-y-3 text-muted-foreground">
                 <p>
-                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) established the EDM Marifa Secondary School and is continuing the school building project at Marifa (Rosortta Village), Sierra Leone. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
+                  As part of the evangelism mandate given by the Lord Jesus Christ to go out and share the Gospel of Salvation to the lost, Evangelism, Discipleship, & Missions (EDM) established the EDM Marifa Secondary School and is continuing the school building project at koya chiefdom, port loko distrct. This school addresses a keenly felt need not only for Marifa Village but also for all the surrounding villages.
                 </p>
                 <p>
                   The purpose of the EDM Marifa School is multifaceted:

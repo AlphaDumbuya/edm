@@ -11,10 +11,18 @@ const educationProjects = [
   {
     title: 'EDM Marifa Secondary School',
     icon: School,
-    description: 'Our operational secondary school in Marifa (Rosortta Village), providing quality education and sharing the Gospel with pupils from surrounding communities.',
+    description: 'Our operational secondary school in koya chiefdom, port loko distrct, providing quality education and sharing the Gospel with pupils from surrounding communities.',
     link: '/ministries/education/marifa-school',
     imageUrl: 'https://code-alpha-image-gallary.vercel.app/edm-marifa1.JPG',
     dataAiHint: 'sierra leone school students',
+  },
+  {
+    title: 'EDM Rosortta School',
+    icon: Building, // Using Building icon to represent construction
+    description: 'A new mission project under construction in Rosortta Village, building a middle school for children without access to education beyond primary level.',
+    link: '/ministries/education/rosortta-school',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1713890423188-01590e2422de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGJpYmxlJTIwc2Nob29sJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D', // Placeholder image, can be updated
+    dataAiHint: 'school construction africa', // Placeholder alt text hint
   },
   {
     title: 'Future Bible School',
@@ -23,6 +31,7 @@ const educationProjects = [
     link: '#', // Update once a page exists
     imageUrl: 'https://plus.unsplash.com/premium_photo-1713890423188-01590e2422de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGJpYmxlJTIwc2Nob29sJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D',
     dataAiHint: 'bible school africa students',
+
   },
 ];
 
@@ -59,7 +68,7 @@ export default function EducationOverviewPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://images.unsplash.com/photo-1523580846011-d3a5bc25702b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8ZWR1Y2F0aW9ufGVufDB8fDB8fHww"
+            src="https://code-alpha-image-gallary.vercel.app/edm-marifa4.JPG"
             alt="Students engaged in learning in Sierra Leone"
             layout="fill"
             objectFit="cover"
