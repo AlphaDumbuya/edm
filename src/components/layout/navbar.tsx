@@ -359,6 +359,22 @@ export default function Navbar() {
                   </div>
                 ))}
               </nav>
+              {/* Authentication Buttons for Mobile */}
+              <div className="flex flex-col gap-4 mt-6">
+                {!loading && typedUser ? (
+                  // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
+                  <Link href="/dashboard" legacyBehavior>
+                    <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/login" legacyBehavior>
+                      <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
+                    </Link>
+                    <Link href="/auth/signup" legacyBehavior><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
+                  </>
+                )}
+              </div>
             </SheetContent>
           </Sheet>
         </div>
