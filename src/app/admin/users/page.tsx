@@ -1,5 +1,6 @@
 import UserManagementClient from './user-management-client'; // Ensure this import is correct
 import { getAllUsers } from '@/lib/db/users';
+import { Suspense } from 'react';
 
 const UserManagementPage = async () => {
   const data = await getAllUsers({}); // Fetch all users initially on the server
@@ -9,7 +10,9 @@ const UserManagementPage = async () => {
   return (
     <div>
       <h1>User Management</h1>
-      <UserManagementClient initialUsers={initialUsers} initialTotalCount={initialTotalCount} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <UserManagementClient initialUsers={initialUsers} initialTotalCount={initialTotalCount} />
+ </Suspense>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 declare module 'react-quill' {
   import * as React from 'react';
 
-  interface ReactQuillProps {
+  export interface ReactQuillProps {
     value: string;
     onChange?: (html: string) => void;
     theme?: string;
@@ -18,6 +18,7 @@ declare module 'react-quill' {
     };    readOnly?: boolean; // Added readOnly property
     // Add other commonly used props if needed
     className?: string;
+    id?: string; // Add the id property here
   }
 
   interface ReactQuill extends React.ComponentClass<ReactQuillProps> {
@@ -28,3 +29,8 @@ declare module 'react-quill' {
   class ReactQuill extends React.Component<ReactQuillProps> {}
   export default ReactQuill;
 }
+
+
+
+
+

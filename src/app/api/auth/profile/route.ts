@@ -53,9 +53,6 @@ export async function PUT(req: NextRequest) {
 
   } catch (error: any) {
     console.error('[/api/auth/profile PUT] Error updating profile:', error);
-    if (error instanceof SyntaxError) {
-      return NextResponse.json({ error: 'Invalid request body. Expected JSON.' }, { status: 400 });
-    }
     return NextResponse.json({ error: 'Failed to update profile. Please try again.' }, { status: 500 });
   }
 }

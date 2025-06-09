@@ -85,8 +85,10 @@ export async function createDonation(data: {
       },
     });
     return newDonation;
-  } catch (error) {
+  } catch (error: any) { // Catch the error with type 'any' to access properties
     console.error('Error creating donation:', error);
+    console.error('Error message:', error.message); // Log error message
+    console.error('Error stack:', error.stack); // Log error stack trace
     throw new Error('Failed to create donation.');
   }
 }

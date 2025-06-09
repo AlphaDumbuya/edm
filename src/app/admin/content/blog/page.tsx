@@ -28,8 +28,7 @@ import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.
 import { useSession } from 'next-auth/react';
 import { hasRole } from '@/lib/utils';
 
-export default function BlogManagementPage() { // Changed to a client component
-  const searchParams = useSearchParams(); // Call useSearchParams directly
+function BlogContent() {
   const router = useRouter(); // Call useRouter directly
 
   const [blogPosts, setBlogPosts] = useState<any[]>([]);
@@ -38,9 +37,10 @@ export default function BlogManagementPage() { // Changed to a client component
 
   let error = null;
 
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
   const userRole = session?.user?.role; // Assuming role is on user object in session
-  const allowedToCreate = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']);
+  const canManageBlogPosts = hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']);
   // Initialize state only after searchParams is available
   const [searchQuery, setSearchQuery] = useState(searchParams ? searchParams.get('search') || '' : '');
   const [currentPage, setCurrentPage] = useState(searchParams ? parseInt(searchParams.get('page') || '1') : 1);
@@ -92,13 +92,13 @@ export default function BlogManagementPage() { // Changed to a client component
   const totalPages = Math.ceil(totalBlogPosts / itemsPerPage);
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-     <div className="container mx-auto px-4 py-6">
+    <div className="container mx-auto px-4 py-6">
       <h1 className="text-2xl font-bold mb-6">Blog Management</h1>
-      {allowedToCreate && (
+
+      {canManageBlogPosts && (
         <div className="flex justify-end mb-4">
           <Button asChild>
-            <Link href="/admin/content/blog/create">Create New Blog Post</Link>
+            <Link href="/admin/content/blog/create">Create New Blog Post </Link>
           </Button>
         </div>)}
       <div className="mb-4">
@@ -126,13 +126,13 @@ export default function BlogManagementPage() { // Changed to a client component
                 <TableCell>{post.slug}</TableCell>
                 <TableCell>{post.published ? "Yes" : "No"}</TableCell>
                 <TableCell>
-                  <div className="flex space-x-2">
-                    {hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
+                  <div className="flex space-x-2 ">
+                    {canManageBlogPosts && (
  <Button variant="outline" size="sm" asChild>
  <Link href={`/admin/content/blog/edit/${post.id}`}>Edit</Link>
  </Button>
  )}
-                    {hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (/* For now, keeping it as a placeholder */
+                    {canManageBlogPosts && (/* For now, keeping it as a placeholder */
                     (<Button variant="destructive" size="sm">Delete</Button>)
                   )}
                  </div>
@@ -161,6 +161,13 @@ export default function BlogManagementPage() { // Changed to a client component
         </PaginationContent>
       </Pagination>
      </div>
+  );
+}
+
+export default function BlogManagementPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BlogContent />
     </Suspense>
   );
 }

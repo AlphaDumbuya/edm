@@ -2,9 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic'; // Import dynamic from next/dynamic
+import { type ReactQuillProps } from 'react-quill'; // Import the type
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { createPrayerRequestAction } from '../actions';
+
+// Dynamically import ReactQuill with ssr: false
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false }) as React.ComponentType<ReactQuillProps>;
 
 export default function CreatePrayerRequestPage() {
   const router = useRouter();
@@ -35,10 +39,11 @@ export default function CreatePrayerRequestPage() {
           <label htmlFor="body" className="block text-sm font-medium text-gray-700">
  Prayer Request Body
           </label>
- <ReactQuill
+ {/* Use the dynamically imported ReactQuill */}
+          <ReactQuill
             id="body"
- value={body}
- onChange={setBody}
+            value={body}
+            onChange={setBody}
  />
         </div>
         <div>

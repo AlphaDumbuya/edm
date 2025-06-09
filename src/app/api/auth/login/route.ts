@@ -57,11 +57,7 @@ export async function POST(req: NextRequest) {
 
   } catch (error: any) {
     console.error('Login API error:', error.message, error.stack);
-    if (error instanceof SyntaxError && error.message.toLowerCase().includes('json')) {
-      // This error would be from `await req.json()`
-      return NextResponse.json({ error: 'Invalid request format. Expected JSON.' }, { status: 400 });
-    }
-    // For other errors (like SESSION_SECRET issues from encrypt, or DB issues)
-    return NextResponse.json({ error: 'An internal server error occurred during login. Please try again or contact support if the issue persists.' }, { status: 500 });
+    // Always return a JSON response in case of any error
+    return NextResponse.json({ error: 'An internal server error occurred.' }, { status: 500 });
   }
 }

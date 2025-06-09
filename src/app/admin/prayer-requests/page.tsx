@@ -40,7 +40,7 @@ interface PrayerRequest {
   updatedAt: Date;
 }
 
-export default function PrayerRequestsPage() {
+function PrayerRequestsContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
@@ -190,5 +190,15 @@ export default function PrayerRequestsPage() {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+}
+
+import { Suspense } from 'react';
+
+export default function PrayerRequestsPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PrayerRequestsContent />
+    </Suspense>
   );
 }

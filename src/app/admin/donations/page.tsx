@@ -1,9 +1,6 @@
 'use client';
 
 import {
-  Table,
-  TableBody,
-  TableCell,
   TableHead,
   TableHeader,
   TableRow,
@@ -11,7 +8,6 @@ import {
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSession } from 'next-auth/react';
-import { hasRole } from '@/lib/utils';
 import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -26,6 +22,22 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { TableBody, TableCell } from "@/components/ui/table";
+import { Table } from "@/components/ui/table";
+
+interface Donation {
+ id: string;
+ amount: number;
+ currency: string;
+ donorEmail: string | null;
+ createdAt: string; // Assuming createdAt is returned as a string
+}
+
+interface DonationsApiResponse {
+ donations: Donation[];
+ totalCount: number;
+}
+
 
 function DonationsContent() {
   const searchParamsHook = useSearchParams();
@@ -44,8 +56,6 @@ function DonationsContent() {
 
   const { data: session } = useSession();
   const userRole = session?.user?.role;
-
-  console.log(session);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -75,7 +85,7 @@ function DonationsContent() {
  throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
+        const data: DonationsApiResponse = await response.json();
         setDonations(data.donations);
         const { donations: fetchedDonations, totalCount } = data;
 
@@ -109,8 +119,16 @@ function DonationsContent() {
   const totalPages = Math.ceil(totalDonations / itemsPerPage);
 
   return (
-    <div>
-      <h1 className="text-2xl font-semibold mb-4">Donation Management</h1>
+    <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8">
+ <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
+ <h1 className="text-2xl font-semibold">Donation Management</h1>
+ <Button asChild>
+ <Link href="/admin/donations/create">
+ Create New Donation
+ </Link>
+ </Button>
+ </div>
+
 
       <Input
         placeholder="Search donations..."
@@ -127,9 +145,9 @@ function DonationsContent() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>ID</TableHead>
+              <TableHead className="hidden md:table-cell">ID</TableHead>
               <TableHead>Amount</TableHead>
-              <TableHead>Currency</TableHead>
+              <TableHead className="hidden md:table-cell">Currency</TableHead>
               <TableHead>Donor Email</TableHead>
               <TableHead>Date</TableHead>
               <TableHead>Actions</TableHead>
@@ -139,19 +157,17 @@ function DonationsContent() {
             {donations.map((donation) => (
               <TableRow key={donation.id}>
                 <TableCell>{donation.id}</TableCell>
-                <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell>
+                <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell> {/* Amount is always visible */}
                 <TableCell>{donation.currency.toUpperCase()}</TableCell>
-                <TableCell>{donation.donorEmail || 'N/A'}</TableCell>
+                <TableCell>{donation.donorEmail || 'N/A'}</TableCell> {/* Donor Email is always visible */}
                 <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
                 <TableCell>
-                  {userRole && hasRole(userRole, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
                     <div className="flex space-x-2">
                       <Button variant="outline" size="sm" asChild>
                         <Link href={`/admin/donations/view/${donation.id}`}>View</Link>
                       </Button>
                     </div>
-                  )}
-                </TableCell>
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>
