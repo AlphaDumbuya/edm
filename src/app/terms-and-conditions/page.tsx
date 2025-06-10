@@ -5,7 +5,7 @@ import { FileText } from 'lucide-react';
 
 export default function TermsAndConditionsPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-12" style={{ display: 'none' }}>
       <PageHeader
         title="Terms and Conditions"
         subtitle="Please read these terms and conditions carefully before using Our Service for our mission based in Sierra Leone with Oregon partnerships."
@@ -168,7 +168,7 @@ export default function TermsAndConditionsPage() {
         <SectionTitle title="Contact Us" />
         <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
         <ul>
-          <li>By email: contact@edm.org</li>
+          <li>By email: contact@edmmission.org</li>
           <li>By visiting this page on our website: [Your Contact Page URL]</li>
           <li>By mail: 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</li>
         </ul>

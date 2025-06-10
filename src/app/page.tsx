@@ -15,19 +15,19 @@ const pillars: Pillar[] = [
   {
     title: 'Evangelism',
     description: 'Spreading the message of hope to unreached communities.',
-    icon: BookOpenText,
-    href: '/evangelism',
+ icon: BookOpenText,
+ href: '/ministries/evangelism',
   },
   {
     title: 'Discipleship',
     description: 'Training believers to become strong and mature in their faith.',
-    icon: School,
-    href: '/discipleship',
+ icon: School,
+ href: '/ministries/discipleship',
   },
   {
     title: 'Missions',
     description: 'Serving communities through outreach and love.',
-    icon: HeartHandshake,
+ icon: HeartHandshake,
     href: '/missions',
   },
 ];
