@@ -28,7 +28,7 @@ const pillars: Pillar[] = [
     title: 'Missions',
     description: 'Serving communities through outreach and love.',
  icon: HeartHandshake,
-    href: '/missions',
+    href: '/the-mission',
   },
 ];
 
@@ -92,7 +92,7 @@ export default async function Home() {
               </CardContent>
               <CardFooter className="p-4 sm:p-6 pt-2 border-t flex justify-center">
                 <Link
-                  href={href}
+ href={href}
                   className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
                   legacyBehavior>
  <span className={cn(buttonVariants({ variant: 'link' }), 'text-sm whitespace-nowrap')}>Learn More <ArrowRight className="ml-1 h-3 w-3" /></span>
@@ -178,6 +178,7 @@ export default async function Home() {
             recentNews.map((post) => (
               <BlogPostCard
                 key={post.id}
+                itemType='news' // Specify item type as 'news'
                 post={{
                   slug: post.slug,
                   title: post.title,
@@ -203,8 +204,10 @@ export default async function Home() {
                  <p className="text-muted-foreground">No blog posts available yet.</p>
                ) : (
                  blogPosts.blogPosts.map((post: any) => (
+                   console.log('Blog post slug:', post.slug),
                    <BlogPostCard
                      key={post.id}
+                     itemType='blog' // Specify item type as 'blog' (or omit as it's the default)
                      post={{
                        slug: post.slug,
                        title: post.title,
@@ -216,7 +219,7 @@ export default async function Home() {
                        imageUrl: post.imageUrl || '',
                      }}
                    />
-                 ))
+                 )) // Closing parenthesis for map function
                )}
       </div>
       </section>

@@ -80,6 +80,7 @@ export async function getNewsArticleById(id: string): Promise<NewsArticleWithAut
 
 export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWithAuthor | null> {
   const { default: prisma } = await import('./prisma');
+  console.log('Fetching news article with slug:', slug);
   try {
     const article = await prisma.newsArticle.findUnique({
       where: { slug },
@@ -90,6 +91,7 @@ export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWit
       },
     });
 
+    console.log('Database query result:', article);
     return article as NewsArticleWithAuthor | null;
   } catch (err) {
     console.error(`Error fetching news article with slug ${slug}:`, err);

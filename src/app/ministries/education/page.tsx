@@ -21,17 +21,8 @@ const educationProjects = [
     icon: Building, // Using Building icon to represent construction
     description: 'A new mission project under construction in Rosortta Village, building a middle school for children without access to education beyond primary level.',
     link: '/ministries/education/rosortta-school',
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1713890423188-01590e2422de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGJpYmxlJTIwc2Nob29sJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D', // Placeholder image, can be updated
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/rosetta1.jpg',
     dataAiHint: 'school construction africa', // Placeholder alt text hint
-  },
-  {
-    title: 'Future Bible School',
-    icon: Building,
-    description: 'Planning for a future Bible school on the main EDM campus to provide in-depth theological training for pastors, leaders, and missionaries in Sierra Leone.',
-    link: '#', // Update once a page exists
-    imageUrl: 'https://plus.unsplash.com/premium_photo-1713890423188-01590e2422de?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjF8fGJpYmxlJTIwc2Nob29sJTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D',
-    dataAiHint: 'bible school africa students',
-
   },
 ];
 

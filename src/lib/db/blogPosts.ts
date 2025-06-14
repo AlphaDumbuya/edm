@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import prisma from '../db/prisma';
 
 export async function getAllBlogPosts(options?: {
@@ -8,7 +9,7 @@ export async function getAllBlogPosts(options?: {
 }) {
   const { search, offset, limit, orderBy } = options || {};
 
-  const where = search
+  const where: Prisma.BlogPostWhereInput | undefined = search
     ? {
         OR: [
           {
@@ -25,7 +26,7 @@ export async function getAllBlogPosts(options?: {
           },
         ],
       }
-    : {};
+    : undefined;
 
   try {
     const blogPosts = await prisma.blogPost.findMany({
@@ -58,15 +59,32 @@ export async function getBlogPostById(id: string) {
   }
 }
 
+export async function getBlogPostBySlug(slug: string) {
+  try {
+    const blogPost = await prisma.blogPost.findUnique({
+      where: { slug: slug },
+      select: { imageUrl: true, id: true, title: true, slug: true, content: true, authorId: true, createdAt: true, updatedAt: true, published: true, author: { select: { name: true } } }
+    });
+    return blogPost;
+  } catch (error) {
+    console.error(`Error fetching blog post with slug ${slug}:`, error);
+    throw new Error(`Failed to fetch blog post with slug ${slug}.`);
+  }
+}
+
 export async function createBlogPost(data: {
   title: string;
   slug: string;
-  content: string;
+  content: string; // Add authorId here
   published: boolean;
+  authorId: string;
 }) {
+  const { authorId, ...restOfData } = data;
   try {
     const newBlogPost = await prisma.blogPost.create({
-      data,
+      data: {
+ author: { connect: { id: data.authorId } },
+      },
     });
     return newBlogPost;
   } catch (error) {

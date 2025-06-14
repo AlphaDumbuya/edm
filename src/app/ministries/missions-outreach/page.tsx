@@ -23,7 +23,7 @@ export default function MissionsOutreachPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://images.unsplash.com/photo-1742659655731-c049e25b6644?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmxhY2slMjBwZW9wbGUlMjBjaHJpc3RpYW4lMjBvdXRyZWFjaCUyMG1pc3Npb25zfGVufDB8fDB8fHww"
+            src="https://code-alpha-image-gallary.vercel.app/images/edm1.jpg"
             alt="EDM mission team serving a community in Sierra Leone"
             layout="fill"
             objectFit="cover"

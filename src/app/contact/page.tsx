@@ -102,9 +102,9 @@ export default function ContactPage() {
               <CardTitle className="flex items-center text-primary text-lg sm:text-xl"><Building className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Sierra Leone Headquarters</CardTitle>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
-              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> (+232) XX-XXX-XXX</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.sl@edm.org" className="hover:underline">contact.sl@edm.org</a></p>
+              <p className="flex items-start"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> +232 76 781153</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.sl@edmmission.org" className="hover:underline">contact.sl@edmmission.org</a></p>
             </CardContent>
           </Card>
           <Card className="shadow-md">
@@ -112,9 +112,9 @@ export default function ContactPage() {
               <CardTitle className="flex items-center text-primary text-lg sm:text-xl"><Users className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Oregon, USA Partnership Office</CardTitle>
             </CardHeader>
             <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
-              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 12301 South East Stephens Street, Portland, Oregon 97233, USA</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> (USA Contact Number Placeholder)</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.us@edm.org" className="hover:underline">contact.us@edm.org</a></p>
+              <p className="flex items-start"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 12301 South East Stephens Street, Portland, Oregon 97233, USA</p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> 503-505-8884</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.us@edmmission.org" className="hover:underline">contact.us@edmmission.org</a></p>
             </CardContent>
           </Card>
         </div>
