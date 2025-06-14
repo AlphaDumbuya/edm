@@ -1,4 +1,5 @@
 
+
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { ShieldAlert } from 'lucide-react';
@@ -147,7 +148,7 @@ export default function PrivacyPolicyPage() {
         <SectionTitle title="Contact Us" />
         <p>If you have any questions about this Privacy Policy, please contact us:</p>
         <ul>
-          <li>By email: contact@edm.org</li>
+          <li>By email: contact@edmmission.org</li>
           <li>By visiting this page on our website: [Your Contact Page URL]</li>
           <li>By mail: 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</li>
         </ul>

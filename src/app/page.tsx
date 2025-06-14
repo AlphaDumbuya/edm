@@ -15,19 +15,19 @@ const pillars: Pillar[] = [
   {
     title: 'Evangelism',
     description: 'Spreading the message of hope to unreached communities.',
-    icon: BookOpenText,
-    href: '/evangelism',
+ icon: BookOpenText,
+ href: '/ministries/evangelism',
   },
   {
     title: 'Discipleship',
     description: 'Training believers to become strong and mature in their faith.',
-    icon: School,
-    href: '/discipleship',
+ icon: School,
+ href: '/ministries/discipleship',
   },
   {
     title: 'Missions',
     description: 'Serving communities through outreach and love.',
-    icon: HeartHandshake,
+ icon: HeartHandshake,
     href: '/missions',
   },
 ];
@@ -69,8 +69,8 @@ export default async function Home() {
           </p>
           <div className="flex justify-center items-center space-x-3">
             <Button asChild><Link href="/about" className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm md:text-base whitespace-nowrap')}>Our Story <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
-            <Link href="/donate" className="bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap" legacyBehavior>
-                <Button size="sm" className="bg-primary text-primary-foreground flex items-center gap-1 whitespace-nowrap">Support EDM <HelpingHand className="ml-1 h-4 w-4" /></Button>
+            <Link href="/donate" legacyBehavior>
+                <Button size="sm" className="bg-transparent border text-primary-foreground flex items-center gap-1 whitespace-nowrap">Support EDM <HelpingHand className="ml-1 h-4 w-4" /></Button>
             </Link>
           </div>
         </div>

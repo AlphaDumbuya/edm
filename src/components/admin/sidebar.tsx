@@ -5,7 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 import { GoHome, GoPerson, GoBook, GoCalendar, GoHeart, GoCreditCard } from 'react-icons/go';
 
-const AdminSidebar: React.FC = () => {
+const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) => {
   const pathname = usePathname();
 
   const navItems = [
@@ -36,7 +36,7 @@ const AdminSidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 bg-gray-900 text-gray-200 p-4 h-screen flex-col shadow-lg lg:flex">
+    <aside className="w-64 bg-gray-900 text-gray-200 p-4 h-screen flex-col shadow-lg lg:flex pt-[96px]">
       <div className="text-2xl font-bold mb-6">Admin Dashboard</div>
       <nav>
         <ul>
@@ -46,7 +46,8 @@ const AdminSidebar: React.FC = () => {
                 href={item.href}                className={`py-2 px-4 rounded ${
                   pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                 }`}
-                legacyBehavior>
+                legacyBehavior
+                onClick={onLinkClick}>
  <div className="flex items-center whitespace-nowrap">
  {item.icon && React.createElement(item.icon, { className: 'mr-2' })} {/* Icon with margin */}
  {item.name} {/* Text */}
@@ -61,7 +62,8 @@ const AdminSidebar: React.FC = () => {
                         className={`block py-1 px-3 text-sm rounded cursor-pointer ${
                           pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'
                         }`}
-                        legacyBehavior>
+                        legacyBehavior
+                        onClick={onLinkClick}>
  <div className="whitespace-nowrap">
  {nestedItem.name} {/* Nested item text */}
  </div>

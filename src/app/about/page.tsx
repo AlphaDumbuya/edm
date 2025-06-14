@@ -101,6 +101,57 @@ export default function AboutPage() {
           </CardContent>
         </Card>
       </section>
+
+      <section>
+        <SectionTitle title="EDM Hierarchy - Sierra Leone" subtitle="Understanding the organizational structure guiding our ministry." />
+        <Card className="bg-card shadow-lg">
+          <CardContent className="p-4 md:p-6 text-sm sm:text-base text-muted-foreground space-y-3 md:space-y-4">
+            <p>The leadership and operational structure of EDM in Sierra Leone is organized to ensure effective ministry and stewardship:</p>
+            <ul className="list-disc pl-4 sm:pl-5 space-y-1 md:space-y-2 text-foreground">
+              <li><strong>CEO</strong></li>
+              <li><strong>Country Director</strong></li>
+              <li><strong>Administrator</strong></li>
+              <li><strong>Finance</strong></li>
+              <li><strong>Secretary to the Executive</strong></li>
+              <li>
+                <strong>Regional Coordinators</strong>
+                <ul className="list-circle pl-4 sm:pl-5 space-y-1 text-muted-foreground">
+                  <li>Northern Region</li>
+                  <li>Southern Region</li>
+                  <li>Eastern Region</li>
+                  <li>Western Region</li>
+                </ul>
+              </li>
+              <li>
+                <strong>Programs Coordinators</strong>
+                <ul className="list-circle pl-4 sm:pl-5 space-y-1 text-muted-foreground">
+                  <li>Evangelism, Discipleship, Missions, Education Secretary, Project Manager, Building and Maintenance, P. R.O, Prayer</li>
+                </ul>
+              </li>
+              <li><strong>ReGom/EDM Bible institute (West Region and North Region)</strong> (Under Discipleship)</li>
+              <li><strong>Marifa School (Primary and Junior Secondary), Rosortta School (Junior Secondary)</strong> (Under Education)</li>
+              <li><strong>Chief Corner Stone Construction Company</strong> (Under Building and Maintenance)</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </section>
+
+ <section>
+ <SectionTitle title="EDM Hierarchy Portland Oregon" subtitle="The leadership structure for our base in Portland, Oregon." />
+        <Card className="bg-card shadow-lg">
+ <CardContent className="p-4 md:p-6 text-sm sm:text-base text-muted-foreground space-y-3 md:space-y-4">
+ <p>The leadership team in Portland, Oregon supports the overall mission and activities of EDM:</p>
+ <ul className="list-disc pl-4 sm:pl-5 space-y-1 md:space-y-2 text-foreground">
+ <li><strong>President</strong></li>
+ <li><strong>Vice President</strong></li>
+ <li><strong>Secretary</strong></li>
+ <li><strong>Treasure</strong></li>
+ <li><strong>Adviser</strong></li>
+ </ul>
+ </CardContent>
+ </Card>
+ </section>
+
       <section className="text-center">
         <Link href="/about/what-we-believe" legacyBehavior>
           <Button variant="default" size="lg">

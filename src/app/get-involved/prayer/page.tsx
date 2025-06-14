@@ -39,22 +39,25 @@ export default async function PrayerPage() {
         icon={HeartHandshake}
       />
 
-      <div className="space-y-4">
-        <SectionTitle title="The Power of Prayer" />
-        <p className="text-muted-foreground">
-          Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon.
-        </p>
-        <p className="text-muted-foreground">
-          Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
-        </p>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+        {/* Left Column: Text Content */}
+        <div className="space-y-4">
+          <SectionTitle title="The Power of Prayer" subtitle="Share your requests and join us in praying for one another, our mission in Sierra Leone, and our Oregon partners."/>
+          <p className="text-muted-foreground">
+            Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon. Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
+          </p>
+        </div>
+
+        {/* Right Column: Image Card */}
+        <div className="rounded-lg overflow-hidden shadow-md">
+          <img
+            src="https://plus.unsplash.com/premium_photo-1725408009157-3e89fa57f253?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGJsYWNrJTIwcGVvcGxlJTIwcHJheWluZ3xlbnwwfHwwfHx8MA%3D%3D"
+            alt="Black people praying"
+            className="w-full h-auto object-cover"
+          />
+        </div>
       </div>
-
       <Separator className="my-8" />
-
-      <SectionTitle title="Submit Your Prayer Request" />
-      <p className="text-muted-foreground mt-2 mb-6">
-        We are here to pray with you and for you.
-      </p>
 
       <PrayerClient initialPrayerRequests={formattedPublicPrayerRequests} />
     </div>

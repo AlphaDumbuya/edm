@@ -13,7 +13,7 @@ const ministryAreas = [
     icon: BookOpenText,
     description: 'Actively sharing the Gospel through street outreach, the "Jesus" film project, music, and media to reach every corner of Sierra Leone.',
     link: '/ministries/evangelism',
-    imageUrl: 'https://placehold.co/600x400.png',
+          imageUrl: 'https://images.unsplash.com/photo-1551191003-82ee872a093b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJsYWNrJTIwcGVvcGxlJTIwZXZhbmdhbGlzaW5nJTIwdGhlJTIwZ29zcGVsfGVufDB8fDB8fHww',
     dataAiHint: 'sierra leone evangelism street',
   },
   {
@@ -21,7 +21,7 @@ const ministryAreas = [
     icon: Users,
     description: 'Nurturing believers to spiritual maturity with structured training paths, curriculum, and mentorship programs, equipping them to train others.',
     link: '/ministries/discipleship',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://media.istockphoto.com/id/187567942/photo/religious-assembly.webp?a=1&b=1&s=612x612&w=0&k=20&c=Q24eZTQX3ZUCBX1vXnydeYObj4weaD24taaJaSrstIA=',
     dataAiHint: 'bible study group africa',
   },
   {
@@ -29,7 +29,7 @@ const ministryAreas = [
     icon: HeartHandshake,
     description: 'Engaging in church planting, local and rural community outreach, and partnering with local churches to extend God\'s kingdom tangibly.',
     link: '/ministries/missions-outreach',
-    imageUrl: 'https://placehold.co/600x400.png',
+ imageUrl: 'https://images.unsplash.com/photo-1742659655731-c049e25b6644?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8YmxhY2slMjBwZW9wbGUlMjBjaHJpc3RpYW4lMjBvdXRyZWFjaCUyMG1pc3Npb25zfGVufDB8fDB8fHww',
     dataAiHint: 'community service africa church',
   },
   {
@@ -37,7 +37,7 @@ const ministryAreas = [
     icon: GraduationCap,
     description: 'Developing our school construction projects, partnering with Reformed Gospel Mission (ReGom) to provide a Christ-centered Bible school (REGOM/EDM Bible Institute), and focusing on Christian curriculum and teacher training.',
     link: '/ministries/education',
-    imageUrl: 'https://placehold.co/600x400.png',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/edm-marifa4.JPG',
     dataAiHint: 'school children africa classroom',
   },
 ];

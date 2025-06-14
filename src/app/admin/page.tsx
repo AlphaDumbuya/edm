@@ -35,7 +35,7 @@ export default async function AdminDashboardPage() {
   ];
 
   return (
-    <div className="mx-auto py-6">
+    <div className="mx-auto mt-0"> {/* Added mt-0 to remove top margin */}
       {/* Responsive Grid Layout for Dashboard Sections */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 

@@ -12,6 +12,9 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { TriangleAlert } from 'lucide-react';
+import { ComponentInstanceIcon } from '@radix-ui/react-icons';
 
 // Ensure your Stripe publishable key is set in .env as NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -43,7 +46,7 @@ export default function DonationFormWrapper() {
     }
     setIsLoadingClientSecret(true);
     try {
-      const { clientSecret: newClientSecret, error } = await createPaymentIntent({ amount });
+      const { clientSecret: newClientSecret, error } = await createPaymentIntent({ amount, currency: 'usd' });
       if (error) {
         toast({ title: 'Error', description: error, variant: 'destructive' });
         setClientSecret(null);
@@ -98,8 +101,13 @@ export default function DonationFormWrapper() {
   };
 
   if (!stripePromise) {
-    return <p className="text-destructive text-center p-4 text-sm sm:text-base">Stripe is not configured. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.</p>;
-  }
+    return (
+      <Alert variant="destructive">
+        <ComponentInstanceIcon className="h-4 w-4 mr-2" />
+        <AlertTitle>Stripe Configuration Error</AlertTitle>
+        <AlertDescription>Stripe is not configured. Please set the <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> environment variable to enable donations.</AlertDescription>
+      </Alert>
+    );  }
 
   if (paymentSuccessful) {
     return (
