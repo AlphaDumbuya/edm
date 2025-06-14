@@ -23,7 +23,7 @@ export default function EvangelismPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://images.unsplash.com/photo-1551191003-82ee872a093b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJsYWNrJTIwcGVvcGxlJTIwZXZhbmdhbGlzaW5nJTIwdGhlJTIwZ29zcGVsfGVufDB8fDB8fHww"
+            src="https://code-alpha-image-gallary.vercel.app/images/edm30.jpg"
             alt="Man reading a book beside people"
             layout="fill"
             objectFit="cover"

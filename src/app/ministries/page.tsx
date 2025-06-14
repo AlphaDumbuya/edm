@@ -13,7 +13,7 @@ const ministryAreas = [
     icon: BookOpenText,
     description: 'Actively sharing the Gospel through street outreach, the "Jesus" film project, music, and media to reach every corner of Sierra Leone.',
     link: '/ministries/evangelism',
-          imageUrl: 'https://images.unsplash.com/photo-1551191003-82ee872a093b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTZ8fGJsYWNrJTIwcGVvcGxlJTIwZXZhbmdhbGlzaW5nJTIwdGhlJTIwZ29zcGVsfGVufDB8fDB8fHww',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/edm30.jpg',
     dataAiHint: 'sierra leone evangelism street',
   },
   {
@@ -21,7 +21,7 @@ const ministryAreas = [
     icon: Users,
     description: 'Nurturing believers to spiritual maturity with structured training paths, curriculum, and mentorship programs, equipping them to train others.',
     link: '/ministries/discipleship',
-    imageUrl: 'https://media.istockphoto.com/id/187567942/photo/religious-assembly.webp?a=1&b=1&s=612x612&w=0&k=20&c=Q24eZTQX3ZUCBX1vXnydeYObj4weaD24taaJaSrstIA=',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/edm22.jpg',
     dataAiHint: 'bible study group africa',
   },
   {
