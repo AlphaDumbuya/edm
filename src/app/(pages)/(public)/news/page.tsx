@@ -39,6 +39,10 @@ export default async function NewsPage() {
     );
   }
 
+  console.log('Type of news:', typeof news);
+  console.log('Length of news:', news.length);
+  if (news.length > 0) console.log('First news item:', news[0]);
+
   if (!news || news.length === 0) {
     return (
       <div className="container mx-auto py-12 px-4">
@@ -54,6 +58,8 @@ export default async function NewsPage() {
   const stripHtml = (html: string): string => {
     return html.replace(/<[^>]*>/g, "");
   };
+
+  console.log('Rendering news grid. News variable:', news);
 
   return (
     <div className="container mx-auto py-12 px-4">

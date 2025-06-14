@@ -15,6 +15,6 @@ export type NewsExt = {
   author: string;
   published: boolean;
   createdAt: Date; // Or string, depending on how you handle dates
-  coverImage: Prisma.JsonValue | null;
+  coverImage: FileUploadThing | null;
   // Add other fields from your News model if they exist
 };

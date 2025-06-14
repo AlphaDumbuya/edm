@@ -34,7 +34,7 @@ export default function DonatePage() {
         </div>
         <div className="relative h-64 sm:h-72 md:h-80 w-full max-w-md mx-auto md:mx-0 rounded-lg overflow-hidden shadow-xl">
           <Image
-            src="https://source.unsplash.com/random/800x600/?sierra,leone,children,community,hope"
+            src="https://plus.unsplash.com/premium_photo-1661962927450-d5f7c9267ca2?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8Z2l2aW5nfGVufDB8fDB8fHww"
             alt="Children in Sierra Leone benefiting from EDM's work"
             layout="fill"
             objectFit="cover"
@@ -84,7 +84,22 @@ export default function DonatePage() {
          <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
       </section>
       <section id="more-support-options" className="bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
-        <SectionTitle title="More Ways to Support EDM" subtitle="Beyond online donations" />
+ <SectionTitle title="More Ways to Support EDM" subtitle="Beyond credit card donations" />
+ <div className="space-y-4 sm:space-y-6">
+ <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center"><CreditCard className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Donate with PayPal</h3>
+ <p className="text-sm sm:text-base text-muted-foreground">
+ You can also support EDM's mission by donating via PayPal.
+ </p>
+ <div className="bg-muted p-3 sm:p-4 rounded-md shadow-sm">
+ <p className="text-foreground font-medium text-sm sm:text-base">PayPal Email: <a href="mailto:your-paypal-email@edm.org" className="text-primary hover:underline">your-paypal-email@edm.org</a></p>
+ <p className="text-xs text-muted-foreground mt-1">(Or provide a direct PayPal.Me link if you have one)</p>
+ <Button variant="link" asChild className="mt-1 sm:mt-2 px-0 text-xs sm:text-sm">
+ <a href="#" target="_blank" rel="noopener noreferrer" className="text-primary">
+                        Go to PayPal Donation Page <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4"/>
+ </a>
+ </Button>
+ </div>
+ </div>
         <div className="grid md:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 items-start">
           
           <div className="space-y-4 sm:space-y-6">
@@ -106,30 +121,7 @@ export default function DonatePage() {
               </Link>
           </div>
 
-          <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center"><CreditCard className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Donate by Zelle</h3>
-             <p className="text-sm sm:text-base text-muted-foreground">
-              You can also send donations via Zelle to:
-            </p>
-            <div className="bg-muted p-3 sm:p-4 rounded-md shadow-sm text-sm sm:text-base">
-                <p className="text-foreground font-medium">Account Name: Evangelism, Discipleship, Missions</p>
-                <p className="text-foreground font-medium">Email: <a href="mailto:edmsierraleone@gmail.com" className="text-primary hover:underline">edmsierraleone@gmail.com</a></p>
-            </div>
-
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-2 sm:pt-4"><ExternalLink className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Donate with PayPal</h3>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              You can also support EDM's mission by donating via PayPal.
-            </p>
-            <div className="bg-muted p-3 sm:p-4 rounded-md shadow-sm">
-                <p className="text-foreground font-medium text-sm sm:text-base">PayPal Email: <a href="mailto:your-paypal-email@edm.org" className="text-primary hover:underline">your-paypal-email@edm.org</a></p>
-                <p className="text-xs text-muted-foreground mt-1">(Or provide a direct PayPal.Me link if you have one)</p>
-                 <Button variant="link" asChild className="mt-1 sm:mt-2 px-0 text-xs sm:text-sm">
-                    <a href="#" target="_blank" rel="noopener noreferrer" className="text-primary">
-                        Go to PayPal Donation Page <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4"/>
-                    </a>
-                </Button>
-            </div>
-
+ <div className="space-y-4 sm:space-y-6">
             <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-2 sm:pt-4"><Heart className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Other Ways to Get Involved</h3>
             <p className="text-sm sm:text-base text-muted-foreground">
               Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
