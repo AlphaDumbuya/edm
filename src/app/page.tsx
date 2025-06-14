@@ -1,164 +1,225 @@
-
 import Image from 'next/image';
 import Link from 'next/link';
+import React from 'react';
+import { buttonVariants } from '@/components/ui/button';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import SectionTitle from '@/components/shared/section-title';
-import PageHeader from '@/components/shared/page-header';
-import { ArrowRight, CalendarDays, Users, BookOpenText, HeartHandshake, MapPin, Images, HelpingHand } from 'lucide-react';
+import { ArrowRight, BookOpenText, HeartHandshake, HelpingHand, Milestone, School, Target, } from 'lucide-react';
+import BlogPostCard from '@/components/blog/blog-post-card';
+import { cn } from '@/lib/utils';
+import { getAllNewsArticles } from '@/lib/db/news';
+import { fetchBlogPosts } from '@/app/admin/content/blog/fetchBlogPosts';
 
-// Dummy data for previews
-const upcomingEvents = [
-  { id: 1, title: 'EDM Annual Conference', date: 'October 15-17, 2024', location: 'Freetown & Online', image: 'https://picsum.photos/seed/event1/400/250', dataAiHint: 'conference crowd sierra leone' },
-  { id: 2, title: 'Ohio Community Outreach', date: 'November 5, 2024', location: 'Columbus, OH', image: 'https://picsum.photos/seed/event2/400/250', dataAiHint: 'community volunteering ohio' },
+const pillars: Pillar[] = [
+  {
+    title: 'Evangelism',
+    description: 'Spreading the message of hope to unreached communities.',
+ icon: BookOpenText,
+ href: '/ministries/evangelism',
+  },
+  {
+    title: 'Discipleship',
+    description: 'Training believers to become strong and mature in their faith.',
+ icon: School,
+ href: '/ministries/discipleship',
+  },
+  {
+    title: 'Missions',
+    description: 'Serving communities through outreach and love.',
+ icon: HeartHandshake,
+    href: '/missions',
+  },
 ];
 
-const recentBlogPosts = [
-  { id: 1, title: 'The Heart of Evangelism in Sierra Leone', excerpt: 'Exploring core principles of sharing faith effectively in our local context...', slug: 'the-heart-of-evangelism', image: 'https://picsum.photos/seed/blog1/400/250', dataAiHint: 'open bible african context' },
-  { id: 2, title: 'Discipleship: Bridging Freetown and Ohio', excerpt: 'Navigating mentorship challenges and opportunities across continents...', slug: 'discipleship-modern-age', image: 'https://picsum.photos/seed/blog2/400/250', dataAiHint: 'mentor diverse background' },
-];
+interface Pillar {
+  title: string;
+  description: string;
+  icon: React.ElementType;
+  href: string;
+}
 
-export default function Home() {
+
+export default async function Home() {
+  const recentNews = (await getAllNewsArticles()).slice(0, 4);
+  // Fetch blog posts before the return statement
+  // Provide searchQuery and offset arguments
+  const blogPosts = await fetchBlogPosts('', 0, 3);
+
   return (
-    <div className="space-y-16">
+    <div className="space-y-12 md:space-y-16">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-primary/10 to-secondary/10 py-20 md:py-32 rounded-lg shadow-lg overflow-hidden">
+      <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-12 md:py-20 lg:py-28 rounded-lg shadow-lg overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="https://picsum.photos/seed/heroSL/1200/800"
-            alt="Mission work in Sierra Leone"
-            layout="fill"
-            objectFit="cover"
-            className="opacity-20"
-            data-ai-hint="sierra leone community"
+            src="https://images.unsplash.com/photo-1572061486195-d811e12d0a10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHw%3D"
+            alt="Evangelism and community work in Sierra Leone"
+            fill
+            className="object-cover opacity-40"
+            priority
           />
-          <div className="absolute inset-0 bg-background/30"></div>
+          <div className="absolute inset-0 bg-black/60" />
         </div>
         <div className="container mx-auto px-4 text-center relative z-10">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-foreground mb-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4 md:mb-6">
             Welcome to <span className="text-primary">EDM</span>
           </h1>
-          <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, Ohio, and beyond.
+          <p className="text-sm sm:text-md md:text-lg lg:text-xl text-gray-200 max-w-xl md:max-w-3xl mx-auto mb-6 md:mb-8">
+            Evangelism, Discipleship, Missions: Spreading hope, building faith, and transforming lives in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
           </p>
-          <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
-            <Link href="/about/mission">
-              <Button size="sm" variant="default" className="whitespace-nowrap text-xs sm:text-sm">
-                Learn More <ArrowRight className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
-            </Link>
-            <Link href="/donate">
-              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
-                Support Us <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
+          <div className="flex justify-center items-center space-x-3">
+            <Button asChild><Link href="/about" className={cn(buttonVariants({ variant: 'default', size: 'sm' }), 'flex items-center gap-1 text-xs sm:text-sm md:text-base whitespace-nowrap')}>Our Story <ArrowRight className="ml-1 h-4 w-4" /></Link></Button>
+            <Link href="/donate" legacyBehavior>
+                <Button size="sm" className="bg-transparent border text-primary-foreground flex items-center gap-1 whitespace-nowrap">Support EDM <HelpingHand className="ml-1 h-4 w-4" /></Button>
             </Link>
           </div>
         </div>
       </section>
-
-      {/* Core Pillars Section */}
+      {/* Core Pillars */}
       <section>
-        <SectionTitle title="Our Core Pillars" subtitle="The foundation of our ministry in Sierra Leone and Ohio" />
-        <div className="grid md:grid-cols-3 gap-8">
-          {[
-            { title: 'Evangelism', description: 'Sharing the good news of Jesus Christ with communities in Sierra Leone and our partners in Ohio.', icon: BookOpenText },
-            { title: 'Discipleship', description: 'Nurturing believers in Freetown, Bo, Columbus, and beyond to grow in their faith.', icon: Users },
-            { title: 'Missions', description: 'Reaching out with compassion and service, from local projects in Sierra Leone to collaborative efforts in the US.', icon: HeartHandshake },
-          ].map((pillar) => (
-            <Card key={pillar.title} className="text-center shadow-md hover:shadow-xl transition-shadow duration-300">
-              <CardHeader>
-                <div className="mx-auto bg-primary/10 p-4 rounded-full w-fit mb-4">
-                  <pillar.icon className="h-10 w-10 text-primary" />
+        <SectionTitle title="Our Three Pillars" subtitle="The foundation of EDM's ministry in Sierra Leone" />
+        <div className="grid md:grid-cols-3 gap-6 md:gap-8">
+          {pillars.map(({ title, description, icon: Icon, href }) => (
+            <Card key={title} className="text-center shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
+              <CardHeader className="p-4 sm:p-6">
+                <div className="mx-auto bg-primary/10 p-3 sm:p-4 rounded-full w-fit mb-3">
+                  <Icon className="h-10 w-10 text-primary" />
                 </div>
-                <CardTitle>{pillar.title}</CardTitle>
+                <CardTitle className="text-xl sm:text-2xl">{title}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground">{pillar.description}</p>
+              <CardContent className="p-4 sm:p-6 flex-grow">
+                <p className="text-muted-foreground text-sm">{description}</p>
               </CardContent>
-            </Card>
-          ))}
-        </div>
-      </section>
-
-      {/* Upcoming Events Preview */}
-      <section>
-        <SectionTitle title="Upcoming Events" subtitle="Join us for fellowship and service" />
-        <div className="grid md:grid-cols-2 gap-8">
-          {upcomingEvents.map(event => (
-            <Card key={event.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Image src={event.image} alt={event.title} width={400} height={250} className="w-full h-48 object-cover" data-ai-hint={event.dataAiHint} />
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{event.title}</h3>
-                <p className="text-sm text-muted-foreground mb-1 flex items-center"><CalendarDays className="mr-2 h-4 w-4 text-primary" /> {event.date}</p>
-                <p className="text-sm text-muted-foreground mb-4 flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary" /> {event.location}</p>
-                <Link href="/events">
-                  <Button variant="outline" className="w-full">
-                    View Details <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
+              <CardFooter className="p-4 sm:p-6 pt-2 border-t flex justify-center">
+                <Link
+                  href={href}
+                  className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
+                  legacyBehavior>
+ <span className={cn(buttonVariants({ variant: 'link' }), 'text-sm whitespace-nowrap')}>Learn More <ArrowRight className="ml-1 h-3 w-3" /></span>
                 </Link>
-              </CardContent>
+              </CardFooter>
             </Card>
           ))}
         </div>
-        <div className="text-center mt-8">
-          <Link href="/events">
-            <Button variant="default">
-              View All Events <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
       </section>
-
-      {/* Recent Blog Posts Preview */}
-      <section>
-        <SectionTitle title="From Our Blog" subtitle="Insights, stories, and updates from Sierra Leone & Ohio" />
-        <div className="grid md:grid-cols-2 gap-8">
-          {recentBlogPosts.map(post => (
-            <Card key={post.id} className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-              <Image src={post.image} alt={post.title} width={400} height={250} className="w-full h-48 object-cover" data-ai-hint={post.dataAiHint} />
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-2">{post.title}</h3>
-                <p className="text-muted-foreground mb-4 text-sm">{post.excerpt}</p>
-                <Link href={`/blog/${post.slug}`}>
-                  <Button variant="outline" className="w-full">
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-        <div className="text-center mt-8">
-          <Link href="/blog">
-            <Button variant="default">
-              Visit Our Blog <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
-          </Link>
-        </div>
-      </section>
-
-      {/* Call to Action - Donate / Get Involved */}
-      <section className="bg-card py-16 rounded-lg shadow-lg">
-        <div className="container mx-auto px-4 text-center">
-          <SectionTitle title="Partner With Us" subtitle="Your support makes a difference in Sierra Leone and Ohio" className="text-center" />
-          <p className="text-muted-foreground max-w-2xl mx-auto mb-8">
-            Join us in our mission to spread the Gospel and make a lasting impact. Whether through prayer, giving, or volunteering, your contribution is invaluable.
-          </p>
-          <div className="flex flex-nowrap justify-center space-x-2 sm:space-x-4">
-            <Link href="/donate">
-              <Button size="sm" variant="default" className="whitespace-nowrap text-xs sm:text-sm">
-                Donate Now <HelpingHand className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
-            </Link>
-            <Link href="/partnership"> 
-              <Button size="sm" variant="outline" className="whitespace-nowrap text-xs sm:text-sm">
-                Get Involved <Users className="ml-1 sm:ml-2 h-3 w-3 sm:h-4 sm:w-4" />
-              </Button>
-            </Link>
+      {/* Mission Statement & Motto */}
+      <section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
+        <div className="text-center max-w-3xl mx-auto">
+          <SectionTitle title="Our Guiding Words" />
+          <div className="mb-6 md:mb-8">
+            <h3 className="text-2xl font-semibold text-primary mb-2">Purpose Statement</h3>
+            <blockquote className="text-lg italic text-foreground border-l-4 border-primary pl-4 py-2">
+              "In our acts of obedience and worship to God, we will go out and share the good news to the unbelievers, train them to maturity so they will train others."
+            </blockquote>
+          </div>
+          <div>
+            <h3 className="text-2xl font-semibold text-primary mb-2">Motto</h3>
+            <p className="text-lg italic text-foreground">"Love God and love others."</p>
           </div>
         </div>
+      </section>
+      {/* Vision */}
+      <section>
+        <SectionTitle title="Our Vision for EDM" subtitle="Building a legacy of faith and service" />
+        <div className="grid md:grid-cols-2 gap-6 md:gap-8 items-start">
+          <Card className="shadow-lg">
+            <CardHeader className="p-6">
+              <div className="flex items-center gap-3">
+                <Target className="h-8 w-8 text-primary" />
+                <CardTitle className="text-xl">Campus for Christ in Sierra Leone</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="p-6">
+              <p className="text-muted-foreground text-sm mb-4">
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This hub will feature a retreat center, the EDM Marifa School (now operational), future Bible school, lodging, recreation facilities, a chapel, and more.
+              </p>
+              <div className="relative w-full aspect-video rounded-md overflow-hidden shadow-md">
+                <Image
+                  src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community"
+                  alt="EDM Campus Vision"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="shadow-md">
+            <CardHeader className="p-6">
+              <div className="flex items-center gap-3">
+                <Milestone className="h-7 w-7 text-primary" />
+                <CardTitle className="text-xl">Key Goals</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent className="text-sm p-6">
+              <h4 className="font-semibold mb-2">Short-Term:</h4>
+              <ul className="list-disc list-inside text-muted-foreground space-y-1 mb-4">
+                <li>Support the ongoing development of EDM Marifa School.</li>
+                <li>Strengthen local and international partnerships.</li>
+                <li>Expand discipleship training across rural areas.</li>
+              </ul>
+              <h4 className="font-semibold mb-2">Long-Term:</h4>
+              <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                <li>Construct the full EDM Campus in Sierra Leone.</li>
+                <li>Establish a Bible college and training institute.</li>
+                <li>Develop sustainable outreach and social impact programs.</li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+      {/* News Section */}
+      <section>
+        <SectionTitle title="News & Updates" subtitle="Stay informed with the latest from EDM" />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+          {recentNews.length === 0 ? (
+            <p className="text-muted-foreground">No news articles available yet.</p>
+          ) : (
+            recentNews.map((post) => (
+              <BlogPostCard
+                key={post.id}
+                post={{
+                  slug: post.slug,
+                  title: post.title,
+                  date: post.createdAt.toLocaleDateString(),
+                  author: {
+                    name: post.author?.name || 'Unknown Author',
+                  },
+                  excerpt: post.content.substring(0, 150) + '...',
+                  imageUrl: post.imageUrl || '',
+                }}
+              />
+            ))
+          )}
+        </div>
+      </section>
+      {/* Blog Section */}
+      <section>
+      <SectionTitle title="Latest Blog Posts" subtitle="Insights and stories from the EDM community" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+               {/* Access blogPosts array from the returned object and add type annotation */}
+               {/* TODO: Define a proper type for the blog post object */}
+               {blogPosts.blogPosts.length === 0 ? (
+                 <p className="text-muted-foreground">No blog posts available yet.</p>
+               ) : (
+                 blogPosts.blogPosts.map((post: any) => (
+                   <BlogPostCard
+                     key={post.id}
+                     post={{
+                       slug: post.slug,
+                       title: post.title,
+                       date: post.createdAt.toLocaleDateString(),
+                       author: {
+                         name: post.author?.name || 'Unknown Author',
+                       },
+                       excerpt: post.content.substring(0, 150) + '...',
+                       imageUrl: post.imageUrl || '',
+                     }}
+                   />
+                 ))
+               )}
+      </div>
       </section>
     </div>
   );
 }
-

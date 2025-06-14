@@ -1,0 +1,136 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // This will be your Neon DB connection string
+  directUrl = env("DIRECT_DATABASE_URL") // For migrations, often same as DATABASE_URL for Neon
+}
+
+model User {
+  id             String    @id @default(uuid()) @db.Uuid
+  email          String    @unique
+  name           String?
+  hashedPassword String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessions       Session[]
+
+  // Optional fields for future enhancements
+  // emailVerified  DateTime?
+  image          String?   // For profile picture URL (e.g., from Uploadthing)
+  role           UserRole  @default(USER)
+  blogPosts      BlogPost[]
+  newsArticles   NewsArticle[]
+  auditLogs      AuditLog[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String @db.Uuid // Add @db.Uuid to match User id type
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// User Roles for access control
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
+  USER
+}
+
+model BlogPost {
+  id        String    @id @default(uuid()) @db.Uuid
+  title     String
+  slug      String    @unique
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  published Boolean   @default(false)
+}
+
+model Event {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  description String
+  date        DateTime
+  time        String
+  location    String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  imageUrl    String? // Optional URL for event image
+}
+
+model AuditLog {
+  id          String    @id @default(uuid()) @db.Uuid
+  userId      String    @db.Uuid
+  user        User      @relation(fields: [userId], references: [id])
+  action      String    // e.g., "Created Blog Post", "Deleted User"
+  entityType  String    // e.g., "BlogPost", "User"
+  entityId    String?   @db.Uuid // ID of the affected entity
+  timestamp   DateTime  @default(now())
+  details     Json?     // Store additional details (e.g., old and new values for updates)
+
+  @@index([userId, timestamp])
+}
+
+model Donation {
+  id            String    @id @default(uuid()) @db.Uuid
+  donorName     String?
+  donorEmail    String?
+  amount        Float
+  date          DateTime  @default(now())
+  paymentMethod String
+  campaign      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model NewsArticle {
+  id        String    @id @default(uuid()) @db.Uuid
+  title     String
+  slug      String    @unique
+  content   String
+  author    User      @relation(fields: [authorId], references: [id])
+  authorId  String    @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  published Boolean   @default(false)
+}
+
+model PrayerRequest {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  body        String
+  authorName  String?
+  authorEmail String?
+  status      String    @default("pending") // e.g., "pending", "completed"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model News {
+  id          String    @id @default(uuid()) @db.Uuid
+  title       String
+  slug        String    @unique
+  content     String
+  author      String // Assuming author is a string for flexibility, adjust if linking to User model
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  coverImage  Json?
+
+  @@map("news")
+}

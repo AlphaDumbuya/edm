@@ -1,17 +1,28 @@
-// src/components/layout/navbar.tsx
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { Menu, X, Church, Handshake, Globe, Users, BookOpen, DollarSign, Sparkles, Search, LogIn, UserPlus, LayoutDashboard, LogOut, UserCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetClose } from '@/components/ui/sheet';
+import Link from "next/link";
+import Image from "next/image";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import {
+  Home,
+  Info,
+  Target,
+  HeartHandshake,
+  Users,
+  DollarSign,
+  Newspaper,
+  Phone,
+  LucideProps,
+} from "lucide-react";
+
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuLink,
-  NavigationMenuList,
+  NavigationMenuItem,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
@@ -24,273 +35,350 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { cn } from '@/lib/utils';
-import * as React from 'react';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth, User as AuthUserType } from "@/contexts/auth-context";
+import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
+import { cn } from "@/lib/utils";
 
-const mainNavItems = [
-  {
-    title: 'About',
-    icon: Handshake,
-    links: [
-      { href: '/about/mission', title: 'Our Mission', description: 'Learn about our core values and goals.' },
-      { href: '/about/leadership', title: 'Leadership', description: 'Meet the team guiding our mission.' },
-    ],
-  },
-  {
-    title: 'Ministries',
-    icon: Users,
-    links: [
-      { href: '/events', title: 'Events', description: 'Upcoming mission events and activities.' },
-      { href: '/content', title: 'Content Hub', description: 'Articles, testimonies, and resources.' },
-      { href: '/blog', title: 'Blog', description: 'Insights, updates, and stories from the field.' },
-    ],
-  },
-  {
-    title: 'Connect',
-    icon: Globe,
-    links: [
-      { href: '/prayer', title: 'Prayer Wall', description: 'Submit and view prayer requests.' },
-      { href: '/missions', title: 'Missions Map', description: 'See where we are actively involved.' },
-      { href: '/gallery', title: 'Media Gallery', description: 'Photos and videos from our work.' },
-    ],
-  },
-  {
-    title: 'Tools',
-    icon: Sparkles,
-    href: '/scripture-generator',
-  },
-];
-
-
-export default function Navbar() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, signOutAuth, loading } = useAuth();
-
-  const getInitials = (name?: string | null) => {
-    if (!name) return 'U';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
-  };
-  
-  const dynamicNavItems = user 
-  ? [
-      ...mainNavItems,
-      { title: 'Dashboard', icon: LayoutDashboard, href: '/dashboard' },
-    ]
-  : mainNavItems;
-
-
-  return (
-    <header className="bg-card shadow-md sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-20">
-          <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-primary hover:text-primary/90 transition-colors">
-            <Church className="h-8 w-8" />
-            <span>EDM</span>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList className="space-x-4"> {/* Increased spacing here */}
-              {dynamicNavItems.map((item) => (
-                <NavigationMenuItem key={item.title}>
-                  {item.links ? (
-                    <>
-                      <NavigationMenuTrigger>
-                        <item.icon className="h-4 w-4 mr-2" />
-                        {item.title}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] ">
-                          {item.links.map((link) => (
-                            <ListItem key={link.title} title={link.title} href={link.href}>
-                              {link.description}
-                            </ListItem>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </>
-                  ) : (
-                    <Link href={item.href || '#'} legacyBehavior passHref>
-                      <NavigationMenuLink className={cn(navigationMenuTriggerStyle(), "flex items-center")}>
-                        <item.icon className="h-4 w-4 mr-2" />
-                        {item.title}
-                      </NavigationMenuLink>
-                    </Link>
-                  )}
-                </NavigationMenuItem>
-              ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-          
-          <div className="hidden lg:flex items-center gap-2">
-            <Button variant="ghost" size="icon" aria-label="Search">
-              <Search className="h-5 w-5" />
-            </Button>
-            {loading ? (
-              <Button variant="outline" disabled>Loading...</Button>
-            ) : user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-                    <Avatar className="h-9 w-9">
-                      <AvatarImage src={user.photoURL || undefined} alt={user.displayName || user.email || "User Avatar"} data-ai-hint="user avatar"/>
-                      <AvatarFallback>{getInitials(user.displayName || user.email)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-56">
-                  <DropdownMenuLabel>
-                    <p className="font-medium truncate">{user.displayName || 'User Profile'}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4" /> Dashboard</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4" /> My Profile</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={signOutAuth} className="text-destructive focus:bg-destructive/10 focus:text-destructive cursor-pointer">
-                    <LogOut className="mr-2 h-4 w-4" /> Log Out
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="icon" aria-label="User account options">
-                    <UserCircle className="h-6 w-6" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/auth/login" className="flex items-center cursor-pointer">
-                      <LogIn className="mr-2 h-4 w-4" /> Login
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/auth/signup" className="flex items-center cursor-pointer">
-                      <UserPlus className="mr-2 h-4 w-4" /> Sign Up
-                    </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-          </div>
-
-          {/* Mobile Navigation Trigger */}
-          <div className="lg:hidden">
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" aria-label="Open menu">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] sm:w-[400px] bg-card p-0 flex flex-col">
-                <SheetHeader className="p-4 border-b">
-                   <SheetClose asChild>
-                    <Link href="/" className="flex items-center gap-2 text-xl font-bold text-primary" onClick={() => setMobileMenuOpen(false)}>
-                      <Church className="h-7 w-7" />
-                      <span>EDM</span>
-                    </Link>
-                  </SheetClose>
-                  <SheetTitle className="sr-only">Mobile Menu</SheetTitle> 
-                </SheetHeader>
-                <ScrollArea className="flex-1">
-                  <div className="p-4">
-                    <nav className="flex flex-col gap-2">
-                      {dynamicNavItems.map((item) => (
-                        item.links ? (
-                          <div key={item.title}>
-                            <h3 className="font-semibold text-muted-foreground mb-1 mt-3 flex items-center"><item.icon className="h-4 w-4 mr-2" />{item.title}</h3>
-                            {item.links.map((link) => (
-                              <SheetClose asChild key={link.href}>
-                              <Link href={link.href || '#'} className="block py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors text-sm" onClick={() => setMobileMenuOpen(false)}>
-                                {link.title}
-                              </Link>
-                              </SheetClose>
-                            ))}
-                          </div>
-                        ) : (
-                          <SheetClose asChild key={item.title}>
-                            <Link href={item.href || '#'} className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors" onClick={() => setMobileMenuOpen(false)}>
-                              <item.icon className="h-4 w-4 mr-2" />{item.title}
-                            </Link>
-                          </SheetClose>
-                        )
-                      ))}
-                    </nav>
-                    <div className="mt-6 border-t pt-6">
-                      {loading ? (
-                        <Button variant="outline" disabled className="w-full">Loading...</Button>
-                      ): user ? (
-                        <>
-                          <SheetClose asChild>
-                            <Link href="/dashboard/profile" className="flex items-center py-2 px-3 rounded-md hover:bg-accent hover:text-accent-foreground transition-colors mb-2" onClick={() => setMobileMenuOpen(false)}>
-                              <UserCircle className="mr-2 h-4 w-4" /> My Profile
-                            </Link>
-                          </SheetClose>
-                          <SheetClose asChild>
-                            <Button variant="outline" className="w-full text-destructive hover:bg-destructive/10" onClick={() => { signOutAuth(); setMobileMenuOpen(false); }}>
-                              <LogOut className="mr-2 h-4 w-4" /> Log Out
-                            </Button>
-                          </SheetClose>
-                        </>
-                      ) : (
-                        <div className="space-y-2">
-                          <SheetClose asChild>
-                            <Link href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
-                              <Button variant="outline" className="w-full">
-                                <LogIn className="mr-2 h-4 w-4" /> Login
-                              </Button>
-                            </Link>
-                          </SheetClose>
-                          <SheetClose asChild>
-                            <Link href="/auth/signup" onClick={() => setMobileMenuOpen(false)}>
-                              <Button className="w-full">
-                                <UserPlus className="mr-2 h-4 w-4" /> Sign Up
-                              </Button>
-                            </Link>
-                          </SheetClose>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </ScrollArea>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-      </div>
-    </header>
-  );
+// ListItem Component
+interface ListItemProps {
+  className?: string;
+  title: string;
+  children: React.ReactNode;
+  href: string;
 }
 
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
+const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+  ({ className, title, children, href, ...props }, ref) => {
+    return (
+      <li>
+        <Link
           ref={ref}
           className={cn(
             "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
             className
           )}
+          href={href}
           {...props}
-        >
-          <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  )
-})
-ListItem.displayName = "ListItem"
+          legacyBehavior>
+          {/* Wrap children in a single span */}
+          <span>
+ <div className="text-sm font-medium leading-none">{title}</div>
+ <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          </span>
+        </Link>
+      </li>
+    );
+  }
+);
+ListItem.displayName = "ListItem";
+
+// Define the type for the navigation items
+interface NavItem {
+  title: string;
+  icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+  href?: string;
+  description?: string;
+  links?: {
+    href: string;
+    title: string;
+    icon?: React.ForwardRefExoticComponent<Omit<LucideProps, "ref"> & React.RefAttributes<SVGSVGElement>>;
+    description?: string;
+    links?: {
+      href: string;
+      title: string;
+      description?: string;
+    }[];
+  }[];
+}
+
+const mainNavItems: NavItem[] = [
+  {
+    title: "Home",
+    icon: Home,
+    href: "/",
+    description: "Return to the EDM homepage.",
+  },
+  {
+    title: "About",
+    icon: Info,
+    links: [
+      { href: "/about", title: "Our Story & Foundations", description: "EDM's history, beliefs, and structure in Sierra Leone and Oregon." },
+      { href: "/about/what-we-believe", title: "What We Believe", description: "Our core doctrinal statements." },
+      { href: "/events", title: "Events", description: "Upcoming and past events organized by EDM." },
+      { href: "/international-board", title: "International Board", description: "Meet our leadership team for Sierra Leone and Oregon." },
+    ],
+  },
+  {
+    title: "The Mission",
+    icon: Target,
+    href: "/the-mission",
+    description: "Our overall mission, vision, and goals for Sierra Leone and Oregon.",
+  },
+  {
+    title: "Ministries",
+    icon: HeartHandshake,
+    links: [
+      { href: "/ministries", title: "Ministries Overview", description: "Explore all EDM ministry areas." },
+      { href: "/ministries/evangelism", title: "Evangelism", description: "Sharing the Gospel through various outreaches in Sierra Leone." },
+      { href: "/ministries/discipleship", title: "Discipleship", description: "Training believers to become strong and mature in their faith." },
+      { href: "/ministries/education", title: "Education", description: "Providing quality education to children." },
+      { href: "/ministries/missions-outreach", title: "Missions Outreach", description: "Local and international mission efforts." },
+    ],
+  },
+  {
+    title: "Get Involved",
+    icon: Users,
+    links: [
+      { href: "/get-involved", title: "Get Involved Overview", description: "Discover ways to contribute to EDM." },
+      { href: "/get-involved/volunteer", title: "Volunteer", description: "Offer your time and skills to support our work." },
+      { href: "/get-involved/partner", title: "Partner", description: "Learn about partnership opportunities with individuals, churches, and organizations." },
+      { href: "/get-involved/prayer", title: "Prayer", description: "Join us in prayer for our ministry and the people of Sierra Leone." },
+    ],
+  },
+  {
+    title: "Donate",
+    icon: DollarSign,
+    href: "/donate",
+    description: "Support our work financially in Sierra Leone and Oregon.",
+  },
+  {
+    title: "News & Media",
+    icon: Newspaper,
+    links: [
+      { href: "/news", title: "News & Updates", description: "Latest articles, reports, and testimonies from Sierra Leone." },
+      { href: "/gallery", title: "Media Gallery", description: "View photos and videos from our events and ministries." },
+    ],
+  },
+  {
+    title: "Contact",
+    icon: Phone,
+    href: "/contact",
+    description: "Reach out to EDM teams in Sierra Leone or Oregon.",
+  },
+];
+
+export default function Navbar() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { user, signOutAuth, loading } = useAuth();
+  const [isClient, setIsClient] = useState(false);
+  const typedUser = user as AuthUserType | null;
+
+  const getInitials = (name?: string | null, email?: string | null) => {
+    if (name) {
+      const parts = name.split(" ");
+      return (parts[0]?.[0] + (parts[1]?.[0] || parts[0]?.[1] || "")).toUpperCase();
+    }
+    return email?.[0].toUpperCase() || "U";
+  };
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  return (
+    <header className="bg-white shadow sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+        <Link href="/" className="flex items-center gap-2">
+          <>
+ <div className="h-8 w-8 md:h-10 md:w-10 relative">
+ <Image
+ src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+ alt="EDM Logo"
+ fill
+ className="object-contain"
+ />
+ </div>
+          </>
+          <span className="text-xl font-bold">EDM</span>
+        </Link>
+
+        <NavigationMenu className="hidden lg:flex">
+          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center">
+            {mainNavItems.map((item: NavItem, i) => (
+              <NavigationMenuItem key={i}>
+                {item.links ? (
+                  <>
+                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap">
+                      {isClient && item.icon && <item.icon size={18} />}
+                      {item.title}
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid gap-3 p-4 w-[500px] md:grid-cols-2">
+                        {item.links.map((link) => (
+                          <ListItem key={link.href} href={link.href} title={link.title}>
+                            {link.description}
+                          </ListItem>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </>
+                ) : item.href ? (
+                  <NavigationMenuLink asChild>
+                    <Link
+                      href={item.href}
+                      className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
+>
+                      {isClient && item.icon && <item.icon size={18} />}{item.title}
+
+                    </Link>
+                  </NavigationMenuLink>
+                ) : null}
+              </NavigationMenuItem>
+            ))}
+          </NavigationMenuPrimitive.List>
+        </NavigationMenu>
+
+        <div className="hidden lg:flex items-center gap-2">
+          {!loading && typedUser ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-9 w-9 rounded-full">
+                  <Avatar>
+                    <AvatarImage src={typedUser.photoURL || undefined} />
+                    <AvatarFallback>{getInitials(typedUser.name, typedUser.email)}</AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{typedUser.name || "User"}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/profile">Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/dashboard/settings">Settings</Link>
+                </DropdownMenuItem>
+                {(() => {
+                  const allowedAdminRoles = ["SUPER_ADMIN", "ADMIN", "EDITOR", "VIEWER"];
+                  if (typedUser?.role && allowedAdminRoles.includes(typedUser.role)) {
+                    return (
+                      <DropdownMenuItem asChild>
+                        <Link href="/admin">Admin Dashboard</Link>
+                      </DropdownMenuItem>
+                    );
+                  }
+                  return null;
+                })()}
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={signOutAuth}>Sign Out</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <div className="flex items-center gap-2">
+              <Link href="/login" legacyBehavior>
+                <Button variant="outline">Login</Button>
+              </Link>
+              <Link href="/auth/signup" legacyBehavior>
+                <Button variant="default">Sign Up</Button>
+              </Link>
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Menu */}
+        <div className="lg:hidden">
+          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+                <span className="sr-only">Toggle mobile menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64 overflow-y-auto sm:max-w-sm">
+              <SheetHeader className="mb-6">
+                <SheetTitle>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    <>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+ <span className="text-lg font-bold">EDM</span>
+                    </>
+                  </Link>
+                </SheetTitle>
+              </SheetHeader>
+              <nav className="flex flex-col gap-4">
+                {mainNavItems.map((item: NavItem, i) => (
+                  <div key={i}>
+                    {item.href ? (
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
+                        onClick={() => setMobileMenuOpen(false)}
+>
+                        <div className="flex items-center gap-2">
+ {isClient && item.icon && <item.icon size={20} />}{item.title}
+                        </div>
+                      </Link>
+                    ) : (
+                      <>
+                        <h3 className="flex items-center gap-2 text-lg font-semibold mb-2">
+                          {isClient && item.icon && <item.icon size={16} />}
+                          {item.title}
+                        </h3>
+                        <ul className="ml-4 space-y-2 border-l pl-4">
+                          {item.links && item.links.map((link, j) => (
+                            <div key={j}>
+                              <Link
+                                href={link.href}
+                                className="text-base font-medium hover:text-primary transition-colors"
+                                onClick={() => setMobileMenuOpen(false)}
+                              >
+                                {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
+                                {link.title}
+                              </Link>
+
+                              {/* Check if link.links exist before rendering the nested ul */}
+                              {link.links && (
+                                <ul className="ml-4 space-y-2 border-l pl-4 mt-2">
+                                  {link.links.map((subLink, k) => (
+                                    <li key={k}>
+                                      <Link
+                                        href={subLink.href}
+                                        className="text-sm hover:text-primary transition-colors"
+                                        onClick={() => setMobileMenuOpen(false)}
+                                      >
+                                        {subLink.title}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                            </div>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </nav>
+              {/* Authentication Buttons for Mobile */}
+              <div className="flex flex-col gap-4 mt-6">
+                {!loading && typedUser ? (
+                  // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
+                  <Link href="/dashboard" legacyBehavior>
+                    <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/login" legacyBehavior>
+                      <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
+                    </Link>
+                    <Link href="/auth/signup" legacyBehavior><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
+                  </>
+                )}
+              </div>
+            </SheetContent>
+          </Sheet>
+        </div>
+      </div>
+    </header>
+  );
+}
