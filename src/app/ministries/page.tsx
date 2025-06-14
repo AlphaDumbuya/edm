@@ -35,7 +35,7 @@ const ministryAreas = [
   {
     title: 'Education',
     icon: GraduationCap,
-    description: 'Developing our school construction project, planning for a future Bible school, and focusing on Christian curriculum and teacher training.',
+    description: 'Developing our school construction projects, partnering with Reformed Gospel Mission (ReGom) to provide a Christ-centered Bible school (REGOM/EDM Bible Institute), and focusing on Christian curriculum and teacher training.',
     link: '/ministries/education',
     imageUrl: 'https://placehold.co/600x400.png',
     dataAiHint: 'school children africa classroom',

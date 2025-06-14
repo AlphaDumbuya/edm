@@ -1,6 +1,5 @@
-
 // src/app/contact/page.tsx
-'use client';
+'use client'; // Add this directive
 
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
@@ -15,7 +14,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
-import MissionsMapClient from '@/components/missions/missions-map-client'; 
+import dynamic from 'next/dynamic';
+
+const MissionsMapClient = dynamic(() => import('@/components/missions/missions-map-client'), {
+  ssr: false,
+  loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
+});
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }),
@@ -48,18 +52,18 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="space-y-16">
+    <div className="space-y-12 md:space-y-16">
       <PageHeader
         title="Contact EDM"
         subtitle="We'd love to hear from you. Reach out with questions, partnership inquiries, or to learn more about our work in Sierra Leone and Oregon."
         icon={Mail}
       />
 
-      <section className="grid md:grid-cols-2 gap-12 items-start">
+      <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-start">
         <div>
           <SectionTitle title="Get in Touch" />
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <Card>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
+            <Card className="shadow-lg">
               <CardContent className="pt-6 space-y-4">
                 <div>
                   <Label htmlFor="name">Full Name</Label>
@@ -82,7 +86,7 @@ export default function ContactPage() {
                   {form.formState.errors.message && <p className="text-sm text-destructive mt-1">{form.formState.errors.message.message}</p>}
                 </div>
               </CardContent>
-              <CardContent className="border-t pt-6">
+              <CardContent className="border-t pt-4 sm:pt-6">
                 <Button type="submit" className="w-full" disabled={isSubmitting}>
                   {isSubmitting ? 'Sending...' : <><Send className="mr-2 h-4 w-4" /> Send Message</>}
                 </Button>
@@ -91,26 +95,26 @@ export default function ContactPage() {
           </form>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-6 md:space-y-8">
           <SectionTitle title="Our Locations" />
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-primary"><Building className="mr-2 h-6 w-6" /> Sierra Leone Headquarters</CardTitle>
+          <Card className="shadow-md">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center text-primary text-lg sm:text-xl"><Building className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Sierra Leone Headquarters</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-muted-foreground">
-              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary" /> 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary" /> (+232) XX-XXX-XXX</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary" /> <a href="mailto:contact.sl@edm.org" className="hover:underline">contact.sl@edm.org</a></p>
+            <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
+              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> (+232) XX-XXX-XXX</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.sl@edm.org" className="hover:underline">contact.sl@edm.org</a></p>
             </CardContent>
           </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center text-primary"><Users className="mr-2 h-6 w-6" /> Oregon, USA Partnership Office</CardTitle>
+          <Card className="shadow-md">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center text-primary text-lg sm:text-xl"><Users className="mr-2 h-5 w-5 sm:h-6 sm:w-6" /> Oregon, USA Partnership Office</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-2 text-muted-foreground">
-              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary" /> 12301 South East Stephens Street, Portland, Oregon 97233</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary" /> (USA Contact Number Placeholder)</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary" /> <a href="mailto:contact.us@edm.org" className="hover:underline">contact.us@edm.org</a></p>
+            <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
+              <p className="flex items-center"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 12301 South East Stephens Street, Portland, Oregon 97233, USA</p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> (USA Contact Number Placeholder)</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.us@edm.org" className="hover:underline">contact.us@edm.org</a></p>
             </CardContent>
           </Card>
         </div>
@@ -121,7 +125,6 @@ export default function ContactPage() {
          <Card className="shadow-xl">
           <CardContent className="p-0">
             <div className="aspect-[16/9] md:aspect-[2/1] bg-muted rounded-lg overflow-hidden">
-              {/* The map will show both Sierra Leone and Oregon locations */}
               <MissionsMapClient mapId="edm_contact_map" />
             </div>
           </CardContent>

@@ -15,31 +15,31 @@ const boardMembers = [
     location: 'Sierra Leone',
   },
   {
-    name: '[Oregon Partnership Lead Name]',
-    role: 'Director, Oregon Partnerships & International Support',
-    bio: 'Based in Oregon, USA, this leader facilitates crucial support from US-based partners, connecting resources, prayer, and collaborative efforts to empower EDM\'s work in Sierra Leone. Passionate about global missions and the unity of the Body of Christ.',
+    name: 'Michael Kargo',
+    role: 'Financial Secretary - Freetown',
+    bio: 'Serving EDM as the Financial Secretary based in Freetown, ensuring diligent stewardship of resources to support the ministry\'s operations and outreach in Sierra Leone.',
     imageUrl: 'https://source.unsplash.com/random/300x300/?professional,person,office,meeting',
     dataAiHint: 'professional person office',
-    contact: 'oregonpartners@edm.org',
-    location: 'Oregon, USA',
+    contact: 'michael.kargo@edm.org', // Placeholder contact
+    location: 'Freetown, Sierra Leone',
   },
   {
-    name: '[International Advisor Name 1]',
-    role: 'International Advisor & Board Member',
-    bio: 'Brings extensive experience in non-profit governance and missions strategy to the EDM board, providing guidance and oversight for international operations and partnerships.',
+    name: 'Daniel Musa Sewa',
+    role: 'Deputy Regional Coordinator for the North',
+    bio: 'Supporting regional coordination efforts for EDM in the Northern Region of Sierra Leone, assisting in overseeing ministry activities and local initiatives.',
     imageUrl: 'https://source.unsplash.com/random/300x300/?board,member,meeting',
     dataAiHint: 'board member professional',
-    contact: 'advisor1@edm.org',
-    location: 'International',
+    contact: 'daniel.sewa@edm.org', // Placeholder contact
+    location: 'Northern Region, Sierra Leone',
   },
    {
-    name: '[International Advisor Name 2]',
-    role: 'International Advisor - Finance & Stewardship',
-    bio: 'Oversees financial integrity and stewardship practices for EDM internationally, ensuring resources are managed effectively for maximum kingdom impact.',
+    name: 'Andrew Challey',
+    role: 'Secretary to the Executive',
+    bio: 'Providing essential administrative support and serving as Secretary to the Executive leadership of EDM.',
     imageUrl: 'https://source.unsplash.com/random/300x300/?finance,expert,desk',
     dataAiHint: 'finance expert professional',
-    contact: 'advisor.finance@edm.org',
-    location: 'International',
+    contact: 'andrew.challey@edm.org', // Placeholder contact
+    location: 'Sierra Leone', // Or specify a region if known
   },
 ];
 

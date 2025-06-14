@@ -10,10 +10,11 @@
     --card: 0 0% 100%; /* White */
     --card-foreground: 20 14.3% 4.1%;
 
+    --primary-color: 0 0% 100%; /* White - Style Guide Primary */
     --popover: 0 0% 100%; /* White */
     --popover-foreground: 20 14.3% 4.1%;
 
-    --primary: 193 100% 42.9%; /* Teal #00b8db */
+    --primary: 193 100% 42.9%; /* Teal #00b8db - Keep original primary value for components that might still reference it if not updated immediately */
     --primary-foreground: 0 0% 100%; /* White */
 
     --secondary: 0 0% 96.1%; /* Default light gray from shadcn, can be adjusted */
@@ -22,7 +23,8 @@
     --muted: 0 0% 96%; /* Light Gray for muted backgrounds (e.g., input) */
     --muted-foreground: 0 0% 45.1%; /* Medium Gray for muted text */
 
-    --accent: 193 100% 42.9%; /* Teal */
+    --secondary-color: 0 0% 94%; /* Light Gray - Style Guide Secondary */
+    --accent-color: 193 100% 42.9%; /* Teal - Style Guide Accent */
     --accent-foreground: 0 0% 100%; /* White */
 
     --destructive: 0 84.2% 60.2%;
@@ -62,7 +64,8 @@
     --popover: 20 14.3% 4.1%;
     --popover-foreground: 0 0% 98%;
 
-    --primary: 193 100% 52.9%; /* Brighter Teal for dark mode */
+    --primary-color: 0 0% 100%; /* White - Style Guide Primary */
+    --primary: 193 100% 52.9%; /* Brighter Teal for dark mode - Keep original primary value */
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 14.9%;
@@ -71,7 +74,8 @@
     --muted: 0 0% 14.9%;
     --muted-foreground: 0 0% 63.9%;
 
-    --accent: 193 100% 52.9%; /* Brighter Teal for dark mode */
+    --secondary-color: 0 0% 14.9%; /* Darker Gray for dark mode secondary */
+    --accent-color: 193 100% 52.9%; /* Brighter Teal for dark mode - Style Guide Accent */
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;

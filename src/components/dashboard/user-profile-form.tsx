@@ -9,15 +9,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth } from '@/contexts/auth-context';
+import { useAuth, type User } from '@/contexts/auth-context'; // Import User type
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, UserCircle } from 'lucide-react';
+import { Loader2, Save, UserCircle as UserProfileIcon } from 'lucide-react'; // Renamed to avoid conflict
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 const profileSchema = z.object({
-  displayName: z.string().min(1, { message: 'Display name cannot be empty' }).max(50, { message: 'Display name too long'}),
+  name: z.string().min(1, { message: 'Display name cannot be empty' }).max(50, { message: 'Display name too long'}),
   email: z.string().email().optional(), // Email is not editable here but shown
-  // photoURL: z.string().url({ message: "Invalid URL for photo" }).optional().or(z.literal('')),
+  // photoURL: z.string().url({ message: "Invalid URL for photo" }).optional().or(z.literal('')), // PhotoURL update deferred
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -27,28 +27,31 @@ export default function UserProfileForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  const typedUser = user as User | null; // Cast for type safety
+
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
-      displayName: '',
+      name: '',
       email: '',
       // photoURL: '',
     },
   });
 
   useEffect(() => {
-    if (user) {
+    if (typedUser) {
       form.reset({
-        displayName: user.displayName || '',
-        email: user.email || '',
-        // photoURL: user.photoURL || '',
+        name: typedUser.name || '',
+        email: typedUser.email || '',
+        // photoURL: typedUser.photoURL || '',
       });
     }
-  }, [user, form]);
+  }, [typedUser, form]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     setIsLoading(true);
-    const result = await updateUserProfile({ displayName: data.displayName /*, photoURL: data.photoURL */ });
+    // For now, we are only updating the name. PhotoURL update can be added later.
+    const result = await updateUserProfile({ name: data.name });
     setIsLoading(false);
 
     if (result.error) {
@@ -66,16 +69,27 @@ export default function UserProfileForm() {
     }
   };
 
-  const getInitials = (name?: string | null) => {
-    if (!name) return 'U';
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  const getInitials = (name?: string | null, email?: string | null) => {
+    if (name) {
+      const names = name.split(' ');
+      if (names.length > 1 && names[0] && names[names.length - 1]) {
+        return (names[0][0] + names[names.length - 1][0]).toUpperCase();
+      }
+      if (names[0]) {
+        return names[0].substring(0, 2).toUpperCase();
+      }
+    }
+    if (email) {
+      return email[0].toUpperCase();
+    }
+    return 'U';
   };
 
-  if (authLoading || !user) {
+  if (authLoading) {
     return (
       <Card className="shadow-xl">
         <CardHeader>
-          <CardTitle className="flex items-center text-xl text-primary"><UserCircle className="mr-2 h-6 w-6" /> My Profile</CardTitle>
+          <CardTitle className="flex items-center text-xl text-primary"><UserProfileIcon className="mr-2 h-6 w-6" /> My Profile</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center items-center h-40">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
@@ -84,22 +98,36 @@ export default function UserProfileForm() {
     )
   }
 
+  // Handle the case where user is null after loading
+  if (!typedUser) {
+    return (
+      <Card className="shadow-xl">
+        <CardHeader>
+          <CardTitle className="flex items-center text-xl text-destructive"><UserProfileIcon className="mr-2 h-6 w-6" /> Error</CardTitle>
+        </CardHeader>
+        <CardContent className="flex justify-center items-center h-40 text-center text-muted-foreground">
+            Could not load user profile. Please try logging in again.
+        </CardContent>
+      </Card>
+    )
+  }
+
   return (
     <Card className="shadow-xl">
       <CardHeader>
-        <CardTitle className="flex items-center text-xl text-primary"><UserCircle className="mr-2 h-6 w-6" /> My Profile</CardTitle>
+        <CardTitle className="flex items-center text-xl text-primary"><UserProfileIcon className="mr-2 h-6 w-6" /> My Profile</CardTitle>
         <CardDescription>View and update your personal information.</CardDescription>
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
-        <CardContent className="space-y-6">
-          <div className="flex items-center space-x-4">
+        <CardContent className="space-y-6 p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
             <Avatar className="h-24 w-24 border-2 border-primary">
-              <AvatarImage src={user?.photoURL || undefined} alt={user?.displayName || user?.email || 'User'} data-ai-hint="user avatar placeholder" />
-              <AvatarFallback>{getInitials(user?.displayName || user?.email)}</AvatarFallback>
+              <AvatarImage src={typedUser?.photoURL || undefined} alt={typedUser?.name || typedUser?.email || 'User'} data-ai-hint="user avatar placeholder" />
+              <AvatarFallback>{getInitials(typedUser?.name, typedUser?.email)}</AvatarFallback>
             </Avatar>
-            <div>
+            <div className="text-center sm:text-left">
                 <p className="text-sm text-muted-foreground">Profile Picture</p>
-                <Button type="button" variant="outline" size="sm" className="mt-1" disabled>Change (coming soon)</Button>
+                <Button type="button" variant="outline" size="sm" className="mt-1" disabled>Change (Uploadthing coming soon)</Button>
             </div>
           </div>
           <div className="space-y-2">
@@ -119,30 +147,15 @@ export default function UserProfileForm() {
               id="displayName"
               type="text"
               placeholder="Your Name"
-              {...form.register('displayName')}
-              disabled={isLoading}
+              {...form.register('name')}
+              disabled={isLoading || authLoading}
             />
-            {form.formState.errors.displayName && (
-              <p className="text-sm text-destructive">{form.formState.errors.displayName.message}</p>
+            {form.formState.errors.name && (
+              <p className="text-sm text-destructive">{form.formState.errors.name.message}</p>
             )}
           </div>
-          {/* 
-          <div className="space-y-2">
-            <Label htmlFor="photoURL">Photo URL (Optional)</Label>
-            <Input
-              id="photoURL"
-              type="url"
-              placeholder="https://example.com/your-photo.jpg"
-              {...form.register('photoURL')}
-              disabled={isLoading}
-            />
-            {form.formState.errors.photoURL && (
-              <p className="text-sm text-destructive">{form.formState.errors.photoURL.message}</p>
-            )}
-          </div>
-          */}
         </CardContent>
-        <CardFooter>
+        <CardFooter className="p-4 sm:p-6 flex justify-end">
           <Button type="submit" className="w-full md:w-auto" disabled={isLoading || authLoading}>
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
             {isLoading ? 'Saving...' : 'Save Changes'}

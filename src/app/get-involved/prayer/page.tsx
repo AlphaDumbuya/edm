@@ -1,104 +1,62 @@
-
-'use client';
-
 import PageHeader from '@/components/shared/page-header';
-import PrayerRequestForm from '@/components/prayer/prayer-request-form';
+import { revalidatePath, unstable_noStore as noStore } from 'next/cache';
+import PrayerClient from '@/components/prayer/PrayerClient';
 import PrayerRequestCard from '@/components/prayer/prayer-request-card';
-import { HeartHandshake } from 'lucide-react'; 
-import { useState, useEffect } from 'react';
+import { HeartHandshake } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import SectionTitle from '@/components/shared/section-title';
-import Image from 'next/image';
+import { getAllPrayerRequests, createPrayerRequest } from '@/lib/db/prayerRequests';
+import { format } from 'date-fns';
+import { PrayerRequestData } from '@/types/prayerRequest'; // Assuming PrayerRequestData is defined here
 
-export interface PrayerRequest {
-  id: string;
-  name: string; // Can be 'Anonymous'
-  requestText: string;
-  isPublic: boolean;
-  timestamp: Date;
-  category?: string; // e.g., Healing, Guidance, Family
-}
+export default async function PrayerPage() {
+  noStore(); // Opt out of caching for this data fetch
+  const { prayerRequests } = await getAllPrayerRequests();
+  const initialPublicPrayerRequests = prayerRequests.filter(request => request.status === 'Public');
 
-const initialRequests: PrayerRequest[] = [
-  { id: '1', name: 'Anonymous', requestText: 'Please pray for healing for my mother who is unwell in Freetown.', isPublic: true, timestamp: new Date(Date.now() - 86400000 * 2), category: 'Healing' },
-  { id: '2', name: 'Sarah P. (Oregon Partner)', requestText: 'Praying for guidance for EDM\'s leadership as they make strategic decisions.', isPublic: true, timestamp: new Date(Date.now() - 86400000), category: 'Guidance' },
-  { id: '3', name: 'Anonymous', requestText: 'For peace and provision for families affected by recent flooding in Sierra Leone.', isPublic: true, timestamp: new Date(), category: 'Comfort' },
-  { id: '4', name: 'John B.', requestText: 'Pray for successful customs clearance of the van and equipment for EDM Sierra Leone.', isPublic: true, timestamp: new Date(Date.now() - 3600000 * 5), category: 'EDM Projects' },
-];
-
-export default function PrayerPage() {
-  const [prayerRequests, setPrayerRequests] = useState<PrayerRequest[]>([]);
-  
-  useEffect(() => {
-    // In a real app, fetch from a database. For now, use initial requests.
-    const timer = setTimeout(() => {
-      setPrayerRequests(initialRequests.sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const addPrayerRequest = (request: Omit<PrayerRequest, 'id' | 'timestamp'>) => {
-    const newRequest: PrayerRequest = {
-      ...request,
-      id: Math.random().toString(36).substr(2, 9),
-      timestamp: new Date(),
+  // Map the fetched data to the PrayerRequestData type expected by PrayerClient
+  const formattedPublicPrayerRequests: PrayerRequestData[] = initialPublicPrayerRequests.map((request) => {
+    const createdAtDate = request.createdAt ? new Date(request.createdAt) : new Date();
+    const updatedAtDate = request.updatedAt ? new Date(request.updatedAt) : new Date();
+    return {
+      id: request.id,
+      request: request.body, // Map 'body' to 'request'
+      name: request.authorName || '', // Map 'authorName' to 'name', provide default empty string
+      email: request.authorEmail || '', // Map 'authorEmail' to 'email', provide default empty string
+      status: request.status,
+      isPublic: request.status === 'Public', // Derive 'isPublic' from 'status'
+      createdAt: createdAtDate,
+      updatedAt: updatedAtDate,
+      formattedFullDate: format(createdAtDate, 'MMMM d, yyyy \'at\' h:mm a'), // Format the date here
     };
-    setPrayerRequests(prevRequests => [newRequest, ...prevRequests].sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime()));
-  };
-
-  const publicRequests = prayerRequests.filter(req => req.isPublic);
+  });
 
   return (
     <div className="space-y-12">
       <PageHeader
-        title="EDM Prayer Wall"
+ title="EDM Prayer Wall"
         subtitle="Share your requests and join us in praying for one another, our mission in Sierra Leone, and our Oregon partners."
         icon={HeartHandshake}
       />
-      
-      <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
-         <div className="rounded-lg overflow-hidden shadow-xl h-64 md:h-80 relative">
-          <Image
-            src="https://images.unsplash.com/photo-1583090318293-ebd145b2c63f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDZ8fHByYXllcnxlbnwwfHwwfHx8MA%3D%3D"
-            alt="Hands clasped in prayer"
-            layout="fill"
-            objectFit="cover"
-            data-ai-hint="prayer hands togetherness"
-          />
-        </div>
-        <div>
-          <SectionTitle title="The Power of Prayer" />
-          <p className="text-base sm:text-lg text-muted-foreground mb-4">
-            Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon.
-          </p>
-          <p className="text-base sm:text-lg text-muted-foreground">
-            Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
-          </p>
-        </div>
-      </section>
 
+      <div className="space-y-4">
+        <SectionTitle title="The Power of Prayer" />
+        <p className="text-muted-foreground">
+          Prayer is foundational to all that EDM does. We believe in a God who hears and answers prayer, and we rely on His guidance, provision, and power to fulfill our mission in Sierra Leone and support our partnerships in Oregon.
+        </p>
+        <p className="text-muted-foreground">
+          Your prayers are a vital part of this ministry. Join us by submitting your own requests or by lifting up the needs shared by others.
+        </p>
+      </div>
 
-      <section>
-        <SectionTitle title="Submit Your Prayer Request" subtitle="We are here to pray with you and for you." />
-        <PrayerRequestForm onSubmit={addPrayerRequest} />
-      </section>
+      <Separator className="my-8" />
 
-      <Separator />
+      <SectionTitle title="Submit Your Prayer Request" />
+      <p className="text-muted-foreground mt-2 mb-6">
+        We are here to pray with you and for you.
+      </p>
 
-      <section>
-        <SectionTitle title="Community Prayer Wall" subtitle="Lifting up needs together in faith for Sierra Leone, Oregon, and beyond."/>
-        {publicRequests.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {publicRequests.map(request => (
-              <PrayerRequestCard key={request.id} request={request} />
-            ))}
-          </div>
-        ) : (
-          <p className="text-center text-muted-foreground py-8">
-            No public prayer requests at this time. Be the first to share or check back soon.
-          </p>
-        )}
-      </section>
+      <PrayerClient initialPrayerRequests={formattedPublicPrayerRequests} />
     </div>
   );
 }
