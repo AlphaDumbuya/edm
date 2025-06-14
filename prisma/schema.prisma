@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // This will be your Neon DB connection string
+  directUrl = env("DIRECT_DATABASE_URL") // For migrations, often same as DATABASE_URL for Neon
+}
+
+model User {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  hashedPassword String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  sessions       Session[]
+
+  // Optional fields for future enhancements
+  // emailVerified  DateTime?
+  // image          String?   // For profile picture URL (e.g., from Uploadthing)
+  // role           UserRole  @default(USER) // If you implement roles
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// Example for User Roles if needed in the future
+// enum UserRole {
+//   USER
+//   ADMIN
+// }

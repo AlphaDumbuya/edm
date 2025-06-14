@@ -5,35 +5,35 @@ import { useAuth } from '@/contexts/auth-context';
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { LayoutDashboard, User, Settings, Activity, ShieldCheck } from 'lucide-react';
+import { LayoutDashboard, User, Settings, Activity, ShieldCheck, Mail, UserCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function DashboardPage() {
   const { user } = useAuth();
-
+ 
   return (
     <div className="space-y-8">
       <PageHeader 
-        title={`Welcome, ${user?.displayName || user?.email || 'User'}!`}
-        subtitle="This is your personal dashboard."
+        title={`Welcome, ${user?.name || user?.email || 'User'}!`}
+        subtitle="This is your personal dashboard for EDM."
         icon={LayoutDashboard} 
       />
       <section>
         <SectionTitle title="Quick Access" />
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Link href="/dashboard/profile" legacyBehavior>
+          <Link href="/dashboard/profile">
             <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">My Profile</CardTitle>
-                <User className="h-5 w-5 text-muted-foreground" />
+                <UserCircle className="h-5 w-5 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <p className="text-xs text-muted-foreground">View and update your personal information.</p>
               </CardContent>
             </Card>
           </Link>
-          <Link href="/dashboard/settings" legacyBehavior>
+          <Link href="/dashboard/settings">
              <Card className="hover:shadow-lg transition-shadow cursor-pointer">
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Account Settings</CardTitle>
@@ -56,30 +56,33 @@ export default function DashboardPage() {
         </div>
       </section>
       <section>
-        <SectionTitle title="Account Status" />
+        <SectionTitle title="Account Information" />
          <Card>
             <CardHeader>
                 <CardTitle className="text-lg flex items-center">
-                    <ShieldCheck className="mr-2 h-6 w-6 text-green-500" /> Account Verified
+                    <UserCircle className="mr-2 h-6 w-6 text-primary" /> {user?.name || 'User Details'}
                 </CardTitle>
             </CardHeader>
-            <CardContent>
-                <p className="text-muted-foreground">
-                    Your email address <span className="font-medium text-foreground">{user?.email}</span> is {user?.emailVerified ? "verified." : "not verified yet."}
-                </p>
-                {!user?.emailVerified && (
-                    <p className="text-sm text-muted-foreground mt-2">
-                        Please check your email for a verification link, or request a new one if needed.
+            <CardContent className="space-y-2">
+                {user?.email && (
+                    <p className="text-muted-foreground flex items-center">
+                        <Mail className="mr-2 h-4 w-4 text-primary" /> Email: <span className="font-medium text-foreground ml-1">{user.email}</span>
                     </p>
                 )}
-                 <p className="text-sm text-muted-foreground mt-2">
-                    Member since: {user?.metadata.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'N/A'}
+                {/* Placeholder for when/if these fields are added to session/DB
+                <p className="text-sm text-muted-foreground">
+                    Email Verified: {user?.emailVerified ? "Yes" : "No (Verification pending)"}
                 </p>
+                 <p className="text-sm text-muted-foreground">
+                    Member since: {user?.metadata?.creationTime ? new Date(user.metadata.creationTime).toLocaleDateString() : 'N/A'}
+                </p>
+                */}
+                <p className="text-sm text-muted-foreground">More account details can be managed in your profile.</p>
             </CardContent>
          </Card>
       </section>
       <section className="text-center">
-        <Link href="/" legacyBehavior>
+        <Link href="/">
             <Button variant="outline">Back to Homepage</Button>
         </Link>
       </section>

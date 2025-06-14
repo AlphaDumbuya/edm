@@ -1,6 +1,5 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollText, CheckCircle } from 'lucide-react';
 
 const beliefs = [
@@ -15,6 +14,7 @@ const beliefs = [
 ];
 
 export default function WhatWeBelievePage() {
+  // This component is for displaying beliefs, the map is in the missions page.
   return (
     <div className="space-y-12">
       <PageHeader
@@ -23,19 +23,6 @@ export default function WhatWeBelievePage() {
         icon={ScrollText}
       />
       <div className="grid md:grid-cols-2 gap-8">
-        {beliefs.map((belief, index) => (
-          <Card key={index} className="shadow-lg hover:shadow-xl transition-shadow">
-            <CardHeader>
-              <CardTitle className="flex items-center text-xl text-primary">
-                <CheckCircle className="h-6 w-6 mr-3 text-green-500" />
-                {belief.title}
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground">{belief.text}</p>
-            </CardContent>
-          </Card>
-        ))}
       </div>
     </div>
   );

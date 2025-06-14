@@ -2,8 +2,10 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import Navbar from '@/components/layout/navbar';
+import 'leaflet/dist/leaflet.css';
 import Footer from '@/components/layout/footer';
 import { Toaster } from "@/components/ui/toaster";
+import { Suspense } from 'react';
 import { AppProviders } from '@/components/layout/app-providers';
 
 
@@ -30,14 +32,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <AppProviders>
-          <Navbar />
-          <main className="flex-grow container mx-auto px-4 py-6 sm:py-8">
-            {children}
-          </main>
-          <Footer />
-          <Toaster />
-        </AppProviders>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AppProviders>
+            <Navbar />
+            <main className="flex-grow container mx-auto px-4 py-6 sm:py-8">
+              {children}
+            </main>
+
+            <Footer />
+            <Toaster />
+          </AppProviders>
+        </Suspense>
       </body>
     </html>
   );
