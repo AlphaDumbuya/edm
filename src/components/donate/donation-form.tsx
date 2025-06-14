@@ -1,3 +1,4 @@
+
 // src/components/donate/donation-form.tsx
 'use client';
 
@@ -20,21 +21,24 @@ interface DonationFormProps {
 const cardElementOptions = {
   style: {
     base: {
-      color: '#32325d', // This should ideally use CSS variables from globals.css
-      fontFamily: 'inherit', // Use the parent font family
+      color: 'hsl(var(--foreground))', 
+      fontFamily: 'inherit', 
       fontSmoothing: 'antialiased',
-      fontSize: '16px',
+      fontSize: '16px', // Base size, Tailwind will scale it
       '::placeholder': {
-        color: '#aab7c4',
+        color: 'hsl(var(--muted-foreground))',
       },
-      iconColor: 'hsl(var(--primary))', // Use primary color for icons
+      iconColor: 'hsl(var(--primary))', 
     },
     invalid: {
-      color: '#fa755a',
-      iconColor: '#fa755a',
+      color: 'hsl(var(--destructive))',
+      iconColor: 'hsl(var(--destructive))',
     },
   },
-  hidePostalCode: true, // Optional: if you don't need postal code
+  classes: {
+    base: 'text-sm sm:text-base', // Apply Tailwind responsive font sizes
+  },
+  hidePostalCode: true, 
 };
 
 export default function DonationForm({ clientSecret, donationAmount, onSuccessfulPayment, onPaymentError }: DonationFormProps) {
@@ -78,7 +82,7 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
 
     const { error: paymentError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: paymentMethodOptions,
-      receipt_email: email.trim() || undefined, // Send receipt if email is provided
+      receipt_email: email.trim() || undefined, 
     });
 
     setIsProcessing(false);
@@ -98,7 +102,6 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
         description: `Thank you for your generous donation of $${(donationAmount / 100).toFixed(2)}.`,
       });
       onSuccessfulPayment();
-      // Reset form or redirect as needed
       setName('');
       setEmail('');
       cardElement.clear();
@@ -115,45 +118,45 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 p-6 border rounded-lg shadow-md bg-card">
+    <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 p-4 sm:p-6 border rounded-lg shadow-md bg-card">
       <div>
-        <Label htmlFor="name">Full Name (Optional)</Label>
+        <Label htmlFor="name" className="text-sm sm:text-base">Full Name (Optional)</Label>
         <Input
           id="name"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Jane Doe"
-          className="mt-1"
+          className="mt-1 text-sm sm:text-base"
           disabled={isProcessing}
         />
       </div>
       <div>
-        <Label htmlFor="email">Email Address (Optional, for receipt)</Label>
+        <Label htmlFor="email" className="text-sm sm:text-base">Email Address (Optional, for receipt)</Label>
         <Input
           id="email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="jane.doe@example.com"
-          className="mt-1"
+          className="mt-1 text-sm sm:text-base"
           disabled={isProcessing}
         />
       </div>
       <div>
-        <Label htmlFor="card-element">Card Details</Label>
-        <div id="card-element" className="mt-1 p-3 border rounded-md bg-background">
+        <Label htmlFor="card-element" className="text-sm sm:text-base">Card Details</Label>
+        <div id="card-element" className="mt-1 p-2.5 sm:p-3 border rounded-md bg-background">
           <CardElement options={cardElementOptions} />
         </div>
       </div>
       
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-xs sm:text-sm text-destructive">{error}</p>}
 
-      <Button type="submit" disabled={!stripe || isProcessing} className="w-full text-lg py-3">
+      <Button type="submit" disabled={!stripe || isProcessing} className="w-full text-base sm:text-lg py-2.5 sm:py-3">
         {isProcessing ? (
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+          <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
         ) : (
-          <CreditCard className="mr-2 h-5 w-5" />
+          <CreditCard className="mr-2 h-4 w-4 sm:h-5 sm:w-5" />
         )}
         {isProcessing ? 'Processing...' : `Donate $${(donationAmount / 100).toFixed(2)}`}
       </Button>
@@ -163,3 +166,4 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
     </form>
   );
 }
+

@@ -1,3 +1,4 @@
+
 import PageHeader from '@/components/shared/page-header';
 import ContentCard from '@/components/content/content-card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -7,24 +8,24 @@ const articles = [
   {
     id: 'article1',
     type: 'Article',
-    title: 'The Great Commission: Our Call in Sierra Leone',
-    author: 'Dr. Evelyn Reed',
+    title: 'The Great Commission: EDM\'s Mandate in Sierra Leone',
+    author: 'EDM Leadership',
     date: 'September 10, 2024',
-    excerpt: 'Understanding why the call to make disciples is deeply relevant to our context in Sierra Leone. A look at Matthew 28.',
-    imageUrl: 'https://picsum.photos/seed/articleSL1/400/300',
-    dataAiHint: 'sierra leone bible map',
-    slug: '/content/articles/urgency-great-commission', // Slug can remain general
+    excerpt: 'Understanding Matthew 28:18-20 and its driving force behind EDM\'s commitment to Evangelism, Discipleship, and Missions in Sierra Leone.',
+    imageUrl: 'https://placehold.co/400x300.png',
+    dataAiHint: 'sierra leone bible study',
+    slug: '/content/articles/urgency-great-commission', 
   },
   {
     id: 'article2',
     type: 'Article',
-    title: 'Discipleship: Ohio to Freetown & Back',
-    author: 'Maria Rodriguez',
+    title: 'Discipleship Across Borders: Sierra Leone & Ohio Connections',
+    author: 'EDM Team',
     date: 'September 15, 2024',
-    excerpt: 'Key strategies for mentoring across cultures, guiding believers in Sierra Leone with support from our Ohio partners.',
-    imageUrl: 'https://picsum.photos/seed/articleOH1/400/300',
-    dataAiHint: 'mentor teaching diverse group',
-    slug: '/content/articles/effective-discipleship', // Slug can remain general
+    excerpt: 'Exploring effective strategies for mentoring and spiritual growth, linking believers in Sierra Leone with support from our Ohio partners for a global impact.',
+    imageUrl: 'https://placehold.co/400x300.png',
+    dataAiHint: 'diverse people video call prayer',
+    slug: '/content/articles/effective-discipleship', 
   },
 ];
 
@@ -32,24 +33,24 @@ const testimonies = [
   {
     id: 'testimony1',
     type: 'Testimony',
-    title: 'Finding Light in Freetown: John\'s Story',
-    author: 'John B. (Sierra Leone)',
+    title: 'Transformed by Grace: A Story from Freetown',
+    author: 'Adama S. (Freetown)',
     date: 'August 5, 2024',
-    excerpt: 'Read how John found hope after encountering EDM missionaries in Freetown during a challenging time in his life.',
-    imageUrl: 'https://picsum.photos/seed/testimonySL1/400/300',
-    dataAiHint: 'man freetown sunrise',
-    slug: '/content/testimonies/johns-story',
+    excerpt: 'Read how an encounter with an EDM evangelism team in Freetown led Adama to new hope and purpose in Christ.',
+    imageUrl: 'https://placehold.co/400x300.png',
+    dataAiHint: 'smiling woman sierra leone',
+    slug: '/content/testimonies/johns-story', // Slug can remain generic; content will be specific
   },
   {
     id: 'testimony2',
     type: 'Testimony',
-    title: 'A Village Transformed in Rural Sierra Leone',
-    author: 'EDM Mission Team (SL)',
+    title: 'A Community Touched: EDM\'s Outreach in Rural Sierra Leone',
+    author: 'EDM Mission Team',
     date: 'August 20, 2024',
-    excerpt: 'A powerful account of how a clean water project in Sierra Leone opened doors for the Gospel, leading to lasting change.',
-    imageUrl: 'https://picsum.photos/seed/testimonySL2/400/300',
-    dataAiHint: 'sierra leone village children water',
-    slug: '/content/testimonies/sierraleone-transformation', // Updated slug
+    excerpt: 'A powerful account of how an EDM mission project brought not just practical help but the life-changing Gospel to a remote village in Sierra Leone.',
+    imageUrl: 'https://placehold.co/400x300.png',
+    dataAiHint: 'sierra leone village children playing',
+    slug: '/content/testimonies/sierraleone-transformation',
   },
 ];
 
@@ -57,8 +58,8 @@ export default function ContentPage() {
   return (
     <div className="space-y-12">
       <PageHeader
-        title="Content Hub"
-        subtitle="Explore inspiring articles and powerful testimonies from our mission in Sierra Leone and Ohio."
+        title="EDM Content Hub"
+        subtitle="Explore inspiring articles and powerful testimonies from EDM's mission in Sierra Leone."
         icon={BookOpenText}
       />
 
@@ -89,4 +90,3 @@ export default function ContentPage() {
     </div>
   );
 }
-
