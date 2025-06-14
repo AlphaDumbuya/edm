@@ -41,8 +41,7 @@ export default function MediaItem({ item }: MediaItemProps) {
               <Image
                 src={item.imageUrl}
                 alt={item.title}
-                layout="fill"
-                objectFit="cover"
+                fill
                 data-ai-hint={item.dataAiHint}
                 className="transition-transform duration-300 group-hover:scale-105"
               />
@@ -61,9 +60,9 @@ export default function MediaItem({ item }: MediaItemProps) {
         </DialogTrigger>
         <DialogContent className="max-w-3xl p-0 bg-card">
           {item.type === 'photo' && item.imageUrl && (
-            <div className="relative w-full aspect-video">
-            <Image src={item.imageUrl} alt={item.title} layout="fill" objectFit="contain" data-ai-hint={item.dataAiHint}/>
-            </div>
+            (<div className="relative w-full aspect-video">
+              <Image src={item.imageUrl} alt={item.title} layout="fill" objectFit="contain" data-ai-hint={item.dataAiHint}/>
+            </div>) // Image legacy props warning needs to be addressed
           )}
           {item.type === 'video' && item.videoUrl && (
             <div className="aspect-video">

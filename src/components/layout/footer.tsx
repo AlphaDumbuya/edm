@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Twitter, Instagram, Youtube, FileText, ShieldAlert, MapPin, Mail, Phone } from 'lucide-react';
@@ -10,17 +12,19 @@ export default function Footer() {
     <footer className="bg-card text-card-foreground border-t">
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-          <div>
-            <Link href="/" className="flex items-center gap-2 mb-3 md:mb-4">
-              <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
-              <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
+          <div className="space-y-2">
+            <Link href="/" className="flex items-center gap-2">
+              <>
+ <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
+ <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
+              </>
             </Link>
-            <p className="text-xs sm:text-sm text-muted-foreground">
-              Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
-            </p>
-            <p className="text-xs text-muted-foreground mt-1 sm:mt-2">
-              EDM is a registered 501(c)(3) non-profit organization.
-            </p>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                Evangelism, Discipleship, Missions in Sierra Leone, West Africa, with vital partnerships in Oregon, USA.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1 sm:mt-2">
+                EDM is a registered 501(c)(3) non-profit organization.
+              </p>
           </div>
           <div>
             <h3 className="text-md sm:text-lg font-semibold mb-3 md:mb-4">About EDM</h3>
@@ -84,33 +88,33 @@ export default function Footer() {
               </div>
             </address>
             <div className="flex space-x-2 sm:space-x-3 mt-3 md:mt-4">
-              <a href="https://facebook.com/EDMSierraLeone" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={18} /></a>
+              <a href="https://www.facebook.com/EDMmissions/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Facebook size={18} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Twitter size={18} /></a>
               <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Instagram size={18} /></a>
-              <a href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={18} /></a>
+              <a href="https://www.youtube.com/@EvangelismDiscipleshipMissions" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors"><Youtube size={18} /></a>
             </div>
           </div>
         </div>
         <div className="mt-8 md:mt-12 border-t border-border pt-6 md:pt-8 text-center">
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-1 sm:mb-2">
-            <Link
-              href="/terms-and-conditions"
-              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-            >
-              <span className="flex items-center">
-                <FileText size={14} className="mr-1" /> Terms & Conditions
-              </span>
-            </Link>
+ <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-1 sm:mb-2">
+ <Link
+   href="/terms-and-conditions"
+   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
+ >
+ <span>
+ <FileText size={14} className="mr-1" /> Terms & Conditions
+ </span>
+ </Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
-            <Link
-              href="/privacy-policy"
-              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-            >
-              <span className="flex items-center">
-                <ShieldAlert size={14} className="mr-1" /> Privacy Policy
-              </span>
-            </Link>
-          </div>
+ <Link
+   href="/privacy-policy"
+   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
+ >
+ <span>
+ <ShieldAlert size={14} className="mr-1" /> Privacy Policy
+ </span>
+ </Link>
+ </div>
           <p className="text-xs sm:text-sm text-muted-foreground">
             &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
           </p>
@@ -122,5 +126,3 @@ export default function Footer() {
     </footer>
   );
 }
-    
-    

@@ -19,7 +19,7 @@ export default function AboutPage() {
         <div className="space-y-4">
           <SectionTitle title="How It All Started" />
           <div className="text-base sm:text-lg text-muted-foreground space-y-3 md:space-y-4">
-            <p className="font-semibold text-foreground mb-2">The vision for EDM was laid on the heart of our founder, Edwin Kargbo. He shares:</p>
+            <p className="font-semibold text-foreground mb-2">The vision for EDM was laid on the heart of the founder, Edwin Kargbo. He shares:</p>
             <blockquote className="border-l-4 border-primary pl-3 md:pl-4 italic text-sm sm:text-base space-y-3">
               <p>
                 "Years ago God put a burden on my heart for issues I noticed in the church.
@@ -45,10 +45,9 @@ export default function AboutPage() {
           <Image
             src="https://code-alpha-image-gallary.vercel.app/edwin-kargbo.png"
             alt="Edwin Kargbo, Founder of EDM"
-            layout="fill"
-            objectFit="cover"
+            fill
             data-ai-hint="Edwin Kargbo founder"
-            className="object-top"
+            className="object-cover object-top"
           />
         </div>
       </section>
@@ -103,11 +102,11 @@ export default function AboutPage() {
         </Card>
       </section>
       <section className="text-center">
-       <Link href="/about/what-we-believe" legacyBehavior>
-         <Button variant="default" size="lg">
-           What We Believe
-         </Button>
-       </Link>
+        <Link href="/about/what-we-believe" legacyBehavior>
+          <Button variant="default" size="lg">
+            What We Believe
+          </Button>
+        </Link>
      </section>
     </div>
   );
