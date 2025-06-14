@@ -13,7 +13,7 @@ const involvementOpportunities = [
     icon: Users,
     description: 'Offer your talents to support EDM\'s work in Sierra Leone or assist our Oregon-based partners with administrative, technical, or outreach tasks.',
     link: '/get-involved/volunteer',
-    imageUrl: 'https://source.unsplash.com/random/500x300/?volunteers,group,diverse,hands',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1681195079271-cbfd9ba1cbc7?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTE3fHx2b2x1bnRlZXJ8ZW58MHx8MHx8fDA%3D',
     dataAiHint: "volunteers group diverse hands",
   },
   {
@@ -21,7 +21,7 @@ const involvementOpportunities = [
     icon: HeartHandshake,
     description: 'Commit to praying regularly for our missionaries, projects, the communities we serve in Sierra Leone, and our partnerships in Oregon.',
     link: '/get-involved/prayer',
-    imageUrl: 'https://source.unsplash.com/random/500x300/?people,praying,together,circle',
+    imageUrl: 'https://plus.unsplash.com/premium_photo-1725408009157-3e89fa57f253?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NDN8fGJsYWNrJTIwcGVvcGxlJTIwcHJheWluZ3xlbnwwfHwwfHx8MA%3D%3D',
     dataAiHint: "people praying together circle",
   },
   {
@@ -36,8 +36,8 @@ const involvementOpportunities = [
     title: 'Host a Movie Screening or Event',
     icon: Film,
     description: 'Organize a showing of the "Jesus" film or an EDM awareness event in your community to share our mission and gather support.',
-    link: '/contact', 
-    imageUrl: 'https://source.unsplash.com/random/500x300/?movie,screening,community,event',
+    link: '/get-involved/movie-screening',
+    imageUrl: 'https://images.unsplash.com/photo-1703764884882-2edc8c4961bc?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fGplc3VzJTIwbW92aWUlMjBzaG93JTIwaW4lMjBhZnJpY2F8ZW58MHx8MHx8fDA%3D',
     dataAiHint: "movie screening community event",
   },
 ];
@@ -62,12 +62,10 @@ export default function GetInvolvedPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-64 sm:h-80">
           <Image
-            src="https://source.unsplash.com/random/600x400/?teamwork,collaboration,mission,africa"
+            src="https://code-alpha-image-gallary.vercel.app/rosetta4.jpeg"
             alt="Diverse group of people working together on a mission project"
-            width={600}
-            height={400}
-            className="object-cover w-full h-full"
-            data-ai-hint="teamwork collaboration mission"
+ width={600}
+ height={400}
           />
         </div>
       </section>
