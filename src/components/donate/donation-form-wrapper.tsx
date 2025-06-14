@@ -1,3 +1,4 @@
+
 // src/components/donate/donation-form-wrapper.tsx
 'use client';
 
@@ -11,6 +12,9 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { TriangleAlert } from 'lucide-react';
+import { ComponentInstanceIcon } from '@radix-ui/react-icons';
 
 // Ensure your Stripe publishable key is set in .env as NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 const stripePromise = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
@@ -42,7 +46,7 @@ export default function DonationFormWrapper() {
     }
     setIsLoadingClientSecret(true);
     try {
-      const { clientSecret: newClientSecret, error } = await createPaymentIntent({ amount });
+      const { clientSecret: newClientSecret, error } = await createPaymentIntent({ amount, currency: 'usd' });
       if (error) {
         toast({ title: 'Error', description: error, variant: 'destructive' });
         setClientSecret(null);
@@ -90,50 +94,53 @@ export default function DonationFormWrapper() {
   const handleSuccessfulPayment = () => {
     setPaymentSuccessful(true);
     setClientSecret(null); // Invalidate client secret after successful payment
-    // Optionally reset currentAmount or customAmount here
-    // setCurrentAmount(5000); // Reset to default for a new donation
-    // setCustomAmount('');
   };
   
   const handlePaymentError = (errorMessage: string) => {
-    // If payment fails, we might want to fetch a new client secret
-    // if the existing one is no longer usable.
-    // For now, just log error. User might need to re-enter amount or refresh.
     console.error("Payment error reported:", errorMessage);
-    // Potentially fetch a new client secret if the error indicates it's necessary
-    // fetchClientSecret(currentAmount);
   };
 
   if (!stripePromise) {
-    return <p className="text-destructive text-center p-4">Stripe is not configured. Please set NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY.</p>;
-  }
+    return (
+      <Alert variant="destructive">
+        <ComponentInstanceIcon className="h-4 w-4 mr-2" />
+        <AlertTitle>Stripe Configuration Error</AlertTitle>
+        <AlertDescription>Stripe is not configured. Please set the <code>NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY</code> environment variable to enable donations.</AlertDescription>
+      </Alert>
+    );  }
 
   if (paymentSuccessful) {
     return (
-      <div className="text-center p-8 bg-green-50 border border-green-200 rounded-lg shadow-md">
-        <h3 className="text-2xl font-semibold text-green-700 mb-3">Thank You for Your Donation!</h3>
-        <p className="text-green-600 mb-6">Your generosity is greatly appreciated and will make a significant impact.</p>
-        <Button onClick={() => {
+      <div className="text-center p-6 sm:p-8 bg-green-50 border border-green-200 rounded-lg shadow-md">
+        <h3 className="text-xl sm:text-2xl font-semibold text-green-700 mb-2 sm:mb-3">Thank You for Your Donation!</h3>
+        <p className="text-green-600 mb-4 sm:mb-6 text-sm sm:text-base">Your generosity is greatly appreciated and will make a significant impact.</p>
+        <Button 
+          onClick={() => {
             setPaymentSuccessful(false);
             setCurrentAmount(5000); // Reset to a default amount
             setCustomAmount('');
-            // fetchClientSecret(5000); // Fetch new client secret for default amount
-        }}>Make Another Donation</Button>
+          }}
+          size="sm"
+          className="text-xs sm:text-sm"
+        >
+          Make Another Donation
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       <div>
-        <Label className="text-lg font-semibold text-foreground mb-3 block">Choose Donation Amount</Label>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+        <Label className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3 block">Choose Donation Amount</Label>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4">
           {predefinedAmounts.map((amount) => (
             <Button
               key={amount}
               variant={currentAmount === amount && !customAmount ? 'default' : 'outline'}
               onClick={() => handleAmountButtonClick(amount)}
-              className="py-3 text-base"
+              className="py-2.5 sm:py-3 text-sm sm:text-base"
+              size="sm"
             >
               ${(amount / 100).toFixed(2)}
             </Button>
@@ -141,7 +148,7 @@ export default function DonationFormWrapper() {
         </div>
         <div className="relative">
           <Label htmlFor="custom-amount" className="sr-only">Custom Amount</Label>
-           <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">$</span>
+           <span className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm sm:text-base">$</span>
           <Input
             id="custom-amount"
             type="number"
@@ -151,14 +158,14 @@ export default function DonationFormWrapper() {
             onChange={handleCustomAmountChange}
             onBlur={handleCustomAmountBlur}
             placeholder="Or enter custom amount"
-            className="pl-7 py-3 text-base w-full"
+            className="pl-6 sm:pl-7 py-2.5 sm:py-3 text-sm sm:text-base w-full"
           />
         </div>
       </div>
 
       {isLoadingClientSecret && (
-        <div className="flex items-center justify-center p-6 text-muted-foreground">
-          <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+        <div className="flex items-center justify-center p-4 sm:p-6 text-muted-foreground text-sm sm:text-base">
+          <Loader2 className="mr-2 h-4 w-4 sm:h-5 sm:w-5 animate-spin" />
           <span>Initializing secure payment...</span>
         </div>
       )}
@@ -174,10 +181,11 @@ export default function DonationFormWrapper() {
         </Elements>
       )}
        {!isLoadingClientSecret && (!clientSecret || currentAmount < 100) && currentAmount > 0 && (
-         <p className="text-destructive text-center p-4">
+         <p className="text-destructive text-center p-4 text-sm sm:text-base">
             {currentAmount < 100 ? "Minimum donation is $1.00. Please select or enter a valid amount." : "Could not initialize payment. Please try again or select an amount."}
         </p>
        )}
     </div>
   );
 }
+

@@ -1,12 +1,12 @@
+'use client';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { usePathname } from 'next/navigation';
 import './globals.css';
-import Navbar from '@/components/layout/navbar';
-import Footer from '@/components/layout/footer';
-import { Toaster } from "@/components/ui/toaster";
 import { AppProviders } from '@/components/layout/app-providers';
-
-
+import NavRenderer from '@/components/layout/nav-renderer'; // Import the new NavRenderer component
+import FooterVisibility from '@/components/layout/FooterVisibility'; // Import the new FooterVisibility component
+import { ClientSessionProvider } from '@/components/providers/client-session-provider'; // Import the ClientSessionProvider
 const geistSans = Geist({
   variable: '--font-geist-sans',
   subsets: ['latin'],
@@ -17,29 +17,22 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'EDM',
-  description: 'Evangelism Discipleship Missions - Transforming lives in Sierra Leone, Ohio, and beyond.',
-};
-
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}>
-        <AppProviders>
-          <Navbar />
-          <main className="flex-grow container mx-auto px-4 py-8">
-            {children}
-          </main>
-          <Footer />
-          <Toaster />
-        </AppProviders>
+ return (
+    <html lang='en'>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}>
+ <ClientSessionProvider>
+          <AppProviders>
+            <NavRenderer /> {/* Use the NavRenderer component here */}
+            <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>{
+ <FooterVisibility />}
+          </AppProviders>
+ </ClientSessionProvider>
       </body>
     </html>
-  );
+  )
 }
-
