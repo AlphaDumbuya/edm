@@ -62,11 +62,17 @@ export async function getBlogPostById(id: string) {
 export async function getBlogPostBySlug(slug: string) {
   try {
     const blogPost = await prisma.blogPost.findUnique({
-      where: { slug: slug },
-      select: { imageUrl: true, id: true, title: true, slug: true, content: true, authorId: true, createdAt: true, updatedAt: true, published: true, author: { select: { name: true } } }
+      where: { slug },
+      select: { id: true, title: true, slug: true, content: true, authorId: true, createdAt: true, updatedAt: true, published: true, author: { select: { name: true } } }
     });
     return blogPost;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        console.error(`Blog post with slug "${slug}" not found.`);
+        return null; // Return null if the blog post is not found
+      }
+    }
     console.error(`Error fetching blog post with slug ${slug}:`, error);
     throw new Error(`Failed to fetch blog post with slug ${slug}.`);
   }
@@ -83,7 +89,8 @@ export async function createBlogPost(data: {
   try {
     const newBlogPost = await prisma.blogPost.create({
       data: {
- author: { connect: { id: data.authorId } },
+        ...restOfData, // Include the rest of the data
+        author: { connect: { id: authorId } }, // Use the destructured authorId
       },
     });
     return newBlogPost;
