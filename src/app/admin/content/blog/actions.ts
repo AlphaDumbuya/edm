@@ -36,7 +36,7 @@ export async function createBlogPostAction(formData: FormData) {
     if (newBlogPost) { // Create audit log entry for creation
       await createAuditLogEntry({
         userId: authorId, // Use the received authorId
-        action: 'Created Blog Post', // Ensure action is specific to blog posts// Use the received authorId
+        action: 'Created Blog Post',
         entityType: 'BlogPost',
         entityId: newBlogPost.id,
         details: { title: newBlogPost.title },
@@ -63,42 +63,51 @@ export async function deleteBlogPostAction(blogPostId: string, userId: string) {
     const deletedPost = await deleteBlogPost(blogPostId);
 
     if (deletedPost) { // Create audit log entry for deletion
- await createAuditLogEntry({
- userId: userId, // Use the received user ID
+      await createAuditLogEntry({
+        userId: userId, // Use the received user ID
         action: 'Deleted Blog Post',
- entityType: 'BlogPost',
- entityId: deletedPost.id,
- });
- revalidatePath('/admin/content/blog');
- } else {
+        entityType: 'BlogPost',
+        entityId: deletedPost.id,
+      });
+      revalidatePath('/admin/content/blog');
+    } else {
       console.error(`Failed to delete blog post with ID: ${blogPostId}`);
- }
+    }
   } catch (error: any) {
     console.error("Error deleting blog post:", error);
     // Handle error
   }
 }
 
-export async function updateBlogPostAction(blogPostId: string, formData: FormData, userId: string) {
+export async function updateBlogPostAction(formData: FormData) {
   try {
+    // Extract blogPostId and userId from formData
+    const blogPostId = formData.get('blogPostId') as string | null;
+    const userId = formData.get('userId') as string | null;
+
+    if (!blogPostId) {
+      console.error("Blog Post ID is missing from form data.");
+      throw new Error("Blog Post ID is required to update.");
+    }
+
     if (!userId) {
       throw new Error("User not authenticated"); // Or handle appropriately
     }
 
-    const title = formData.get('title') as string | undefined; // Define variables and extract from formData
-    const slug = formData.get('slug') as string | undefined;
-    const content = formData.get('content') as string | undefined;
+    const title = formData.get('title') as string; // Define variables and extract from formData
+    const slug = formData.get('slug') as string;
+    const content = formData.get('content') as string;
     const published = formData.get('published') === 'on'; // Checkbox value
- const updatedPost = await updateBlogPost(blogPostId, { title, slug, content, published }); // Now shorthand works
+    const updatedPost = await updateBlogPost(blogPostId, { title, slug, content, published }); // Now shorthand works
 
     if (updatedPost) {
       // Create audit log entry for update
       await createAuditLogEntry({
         userId: userId,
- action: 'Updated Blog Post', // Use the received user ID
+        action: 'Updated Blog Post', // Use the received user ID
         entityType: 'BlogPost',
- entityId: updatedPost.id,
-        details: { title: updatedPost.title, published: updatedPost.published }, // Example details
+        entityId: updatedPost.id,
+        details: { title: updatedPost.title, published: updatedPost.published } // Removed the trailing comma here
       });
       revalidatePath('/admin/content/blog'); // Revalidate the blog list page
       redirect('/admin/content/blog'); // Redirect to the blog list page
