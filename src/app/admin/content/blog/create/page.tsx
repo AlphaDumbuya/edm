@@ -6,13 +6,16 @@ import { redirect } from 'next/navigation';
 
 import { useAuth } from '@/contexts/auth-context'; // Import the useAuth hook
 import { useToast } from '@/hooks/use-toast'; // Import the useToast hook
+import { UploadButton } from '@/components/shared/UploadButton'; // Import the UploadButton component
+import TipTapEditor from '@/components/TipTapEditor'; // Import the TipTapEditor
 
 export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
   const [content, setContent] = useState(''); // Add state for content
-
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // State for image URL
+  
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
 
@@ -32,6 +35,7 @@ export default function CreateBlogPostPage() {
     const formData = new FormData(event.currentTarget); // Create FormData from the form
     formData.append('content', content); // Append content
     formData.append('published', published.toString()); // Append published status
+    if (imageUrl) formData.append('imageUrl', imageUrl); // Append image URL if available
     await createBlogPostAction(formData);
     redirect('/admin/content/blog');
   };
@@ -72,14 +76,18 @@ export default function CreateBlogPostPage() {
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">
             Content
           </label>
-          <textarea
-            id="content"
-            name="content" // Added name attribute for FormData
+          <TipTapEditor
             value={content}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2"
-            rows={10} // Adjust rows as needed
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
+            onContentChange={setContent}
+          />
+        </div>
+        <div className="mb-4">
+          <label htmlFor="image" className="block text-sm font-medium text-gray-700">
+            Cover Image
+          </label>
+          <UploadButton
+            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
+          />
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input

@@ -1,51 +1,62 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation'; // Import useRouter
-import { getBlogPostById, updateBlogPost } from '@/lib/db/blog'; // Assuming updateBlogPost exists
+import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useSession } from 'next-auth/react';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input'; // Keep Input
+import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { updateBlogPostAction } from '@/app/admin/content/blog/actions'; // Import the server action
+import { updateBlogPostAction } from '@/app/admin/content/blog/actions';
+import { fetchBlogPostForEdit } from './actions';
+import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
 
+// Type for the blog post
 interface BlogPostData {
   id: string;
   title: string;
   slug: string;
   content: string;
   published: boolean;
+  imageUrl?: string | null;
 }
 
 export default function EditBlogPostPage() {
+  const { data: session } = useSession();
+  const router = useRouter();
   const params = useParams();
   const blogPostId = params.id as string;
-  const router = useRouter();
+  const currentUserId = session?.user?.id;
   const { toast } = useToast();
-  const { data: session } = useSession();
 
   const [blogPost, setBlogPost] = useState<BlogPostData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
   const [formData, setFormData] = useState({
     title: '',
-    slug: '', // Keep slug here
-    content: '',
+    slug: '',
+    content: '', // HTML string for TipTap
     published: false,
   });
 
   useEffect(() => {
+    // Mark as mounted for client-only components
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
     async function fetchBlogPost() {
       try {
-        const post = await getBlogPostById(blogPostId);
+        const post = await fetchBlogPostForEdit(blogPostId);
         if (post) {
           setBlogPost(post);
           setFormData({
             title: post.title,
             slug: post.slug,
-            content: post.content, // Initialize content with fetched data
+            content: post.content || '',
             published: post.published,
           });
         } else {
@@ -63,49 +74,47 @@ export default function EditBlogPostPage() {
         setLoading(false);
       }
     }
+
     if (blogPostId) {
       fetchBlogPost();
     }
   }, [blogPostId, toast]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => { // Only for Input fields
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
     }));
   };
 
-  const handleContentChange = (value: string) => { // For ReactQuill
-    setFormData((prevData) => ({
- ...prevData, // Spread the previous state
- content: value, // Update the content property
-    }));
-  }; // Error in original code: should be ...prevData, content: value
+  const handleContentChange = (htmlContent: string) => {
+    setFormData((prev) => ({ ...prev, content: htmlContent }));
+  };
 
   const handleCheckboxChange = (checked: boolean) => {
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData((prev) => ({
+      ...prev,
       published: checked,
     }));
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div className="text-red-500">{error}</div>;
-  }
-
-  if (!blogPost) {
-    return <div>Blog post not found.</div>;
-  }
+  if (loading) return <p className="text-gray-500">Loading...</p>;
+  if (error) return <p className="text-red-500">{error}</p>;
+  if (!blogPost) return <p>No blog post found.</p>;
 
   return (
     <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">Edit Blog Post: {blogPostId}</h1>
-      <form action={updateBlogPostAction.bind(null, blogPost.id)} className="space-y-4">
+      <h1 className="text-2xl font-bold mb-6">
+        Edit Blog Post: {blogPost.title}
+      </h1>
+
+      <form action={updateBlogPostAction} className="space-y-4">
+        {currentUserId && (
+          <input type="hidden" name="userId" value={currentUserId} />
+        )}
+        <input type="hidden" name="blogPostId" value={blogPost.id} />
+
         <div>
           <Label htmlFor="title">Title</Label>
           <Input
@@ -116,6 +125,7 @@ export default function EditBlogPostPage() {
             required
           />
         </div>
+
         <div>
           <Label htmlFor="slug">Slug</Label>
           <Input
@@ -126,25 +136,32 @@ export default function EditBlogPostPage() {
             required
           />
         </div>
+
         <div>
-          <Label htmlFor="content">Content</Label> {/* Keep Label */}
-          <ReactQuill // Replace Textarea with ReactQuill
-            value={formData.content}
-            onChange={handleContentChange} // Use handleContentChange for ReactQuill
-            theme="snow" // You can choose a different theme
-            className="h-64" // Adjust height as needed
-          />
+          <Label htmlFor="content">Content</Label>
+          <div className="border rounded-md p-2">
+            {isMounted && (
+              <TipTapEditor
+                value={formData.content}
+                onContentChange={handleContentChange}
+              />
+            )}
+          </div>
         </div>
+
         <div className="flex items-center space-x-2">
           <Checkbox
             id="published"
             name="published"
             checked={formData.published}
-            disabled={session?.user?.role === 'EDITOR'} // Disable for EDITOR role
+            disabled={session?.user?.role === 'EDITOR'}
             onCheckedChange={handleCheckboxChange}
           />
           <Label htmlFor="published">Published</Label>
         </div>
+
+        <input type="hidden" name="content" value={formData.content} />
+
         <Button type="submit">Update Blog Post</Button>
       </form>
     </div>
