@@ -68,23 +68,21 @@ export default function Footer() {
               </div>
               <div className="flex items-center">
                 <Mail size={14} className="mr-2 text-primary shrink-0" />
-                <a href="mailto:contact@edm.org" className="hover:text-primary">contact@edm.org</a>
+                <a href="mailto:contact@edmmission.org" className="hover:text-primary">contact@edmmission.org</a>
               </div>
-               <div className="flex items-center">
-                <Mail size={14} className="mr-2 text-primary shrink-0" />
-                <a href="mailto:edwinjkargbo@yahoo.com" className="hover:text-primary">edwinjkargbo@yahoo.com</a>
-              </div>
-                 <div className="flex items-center">
-                <Mail size={14} className="mr-2 text-primary shrink-0" />
-                <a href="mailto:edmsierraleone@gmail.com" className="hover:text-primary">edmsierraleone@gmail.com (For Zelle)</a>
+            
+                 
+              <div className="flex items-center">
+                <Phone size={14} className="mr-2 text-primary shrink-0" />
+                <span>+23276781153 (SL) - Dominic Dumbuya</span>
               </div>
               <div className="flex items-center">
                 <Phone size={14} className="mr-2 text-primary shrink-0" />
-                <span>(+232) XX-XXX-XXX (SL)</span>
+                <span>+23276293906 (SL) - Samuel Tarawally</span>
               </div>
               <div className="flex items-center">
                 <Phone size={14} className="mr-2 text-primary shrink-0" />
-                <span>503-505-8884 (USA - Edwin Kargbo)</span>
+                <span>+ 1 503-505-8884 (USA - Edwin Kargbo)</span>
               </div>
             </address>
             <div className="flex space-x-2 sm:space-x-3 mt-3 md:mt-4">

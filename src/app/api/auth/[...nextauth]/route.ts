@@ -28,27 +28,36 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials provided
+        console.log('Authorize function called');
         if (!credentials?.email || !credentials?.password) {
+            console.log('Credentials missing: email or password');
             return null; // Return null if credentials are missing
         }
 
+        console.log('Received email:', credentials.email);
         // Explicitly type the user from the database with the DatabaseUser type
         const user: DatabaseUser | null = await findUserByEmail(credentials.email);
 
+        console.log('User found:', !!user);
         if (user && user.hashedPassword) {
+            console.log('User found and has hashedPassword');
             const isMatch = await verifyPassword(credentials.password, user.hashedPassword);
+            console.log('Password verification result:', isMatch);
+
             if (isMatch) {
+                console.log('Password matched. Returning user object.');
                 // Create a new object with properties expected by the NextAuth User type
                 // Return a user object that NextAuth.js can use
                 // Exclude sensitive data like hashedPassword
                 return { id: user.id, name: user.name, email: user.email, role: user.role } as User; // Include role if you have it
             } else {
               console.error("createBlogPostAction: Password verification failed."); // Add error log for incorrect password
-
+              console.log('Password did not match. Returning null.');
               // Return null for incorrect password
               return null;
             }
         } else {
+          console.log('User not found or missing hashedPassword. Returning null.');
           // Return null if user is not found
           return null;
         }
