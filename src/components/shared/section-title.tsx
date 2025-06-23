@@ -1,6 +1,7 @@
 interface SectionTitleProps {
   title: string;
   subtitle?: string;
+  level?: string;
   className?: string;
 }
 
