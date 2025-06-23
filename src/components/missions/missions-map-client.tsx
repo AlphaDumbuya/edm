@@ -1,7 +1,11 @@
 import React, { useMemo } from 'react';
 import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
 
-const MissionsMapClient = () => {
+export interface MissionsMapClientProps {
+  mapId: string;
+}
+
+const MissionsMapClient = ({ mapId }: MissionsMapClientProps) => {
   const libraries = useMemo(() => ['places'], []);
   const mapContainerStyle = useMemo(() => ({
     width: '100%',
