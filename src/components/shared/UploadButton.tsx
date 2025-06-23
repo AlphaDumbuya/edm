@@ -11,6 +11,7 @@ interface UploadButtonProps {
 export function UploadButton({ onClientUploadComplete }: UploadButtonProps) {
   const [uploading, setUploading] = useState(false);
 
+  console.log("UploadButton component rendering");
   return (
     <div>
       <UploadDropzone<OurFileRouter, "imageUploader">
@@ -18,10 +19,12 @@ export function UploadButton({ onClientUploadComplete }: UploadButtonProps) {
         onUploadProgress={() => setUploading(true)}
         onClientUploadComplete={(res) => {
           setUploading(false);
+          console.log("Upload complete:", res);
           onClientUploadComplete(res);
         }}
         onUploadError={(error: Error) => {
           setUploading(false);
+          console.error("Upload error:", error);
           // Do something with the error.
           alert(`ERROR! ${error.message}`);
         }}
