@@ -10,6 +10,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
 import { updateBlogPostAction } from '@/app/admin/content/blog/actions';
 import { fetchBlogPostForEdit } from './actions';
+import { UploadButton } from '@/components/shared/UploadButton'; // Import the UploadButton component
+import Image from 'next/image';
 import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
 
 // Type for the blog post
@@ -40,6 +42,7 @@ export default function EditBlogPostPage() {
     slug: '',
     content: '', // HTML string for TipTap
     published: false,
+    imageUrl: null as string | null, // Add imageUrl to formData
   });
 
   useEffect(() => {
@@ -58,6 +61,7 @@ export default function EditBlogPostPage() {
             slug: post.slug,
             content: post.content || '',
             published: post.published,
+            imageUrl: post.imageUrl || null, // Initialize imageUrl from fetched data
           });
         } else {
           setError('Blog post not found.');
@@ -85,6 +89,13 @@ export default function EditBlogPostPage() {
     setFormData((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleImageUrlChange = (url: string | null) => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrl: url,
     }));
   };
 
@@ -149,6 +160,28 @@ export default function EditBlogPostPage() {
           </div>
         </div>
 
+        <div>
+          <Label htmlFor="imageUrl">Cover Image</Label>
+          {formData.imageUrl ? (
+            <div className="mt-2">
+              <Image
+                src={formData.imageUrl}
+                alt="Cover Image"
+                width={200}
+                height={200}
+                className="object-cover rounded-md"
+              />
+              <Button variant="outline" className="mt-2" onClick={() => handleImageUrlChange(null)}>
+                Remove Image
+              </Button>
+            </div>
+          ) : (
+            <UploadButton
+              onClientUploadComplete={(files) => handleImageUrlChange(files?.[0]?.url || null)}
+            />
+          )}
+        </div>
+
         <div className="flex items-center space-x-2">
           <Checkbox
             id="published"
@@ -161,6 +194,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <input type="hidden" name="content" value={formData.content} />
+        <input type="hidden" name="imageUrl" value={formData.imageUrl || ''} />
 
         <Button type="submit">Update Blog Post</Button>
       </form>
