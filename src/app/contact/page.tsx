@@ -15,8 +15,8 @@ import * as z from 'zod';
 import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-
-const MissionsMapClient = dynamic(() => import('@/components/missions/missions-map-client'), {
+import { MissionsMapClientProps } from '@/components/missions/missions-map-client';
+const MissionsMapClient = dynamic<MissionsMapClientProps>(() => import('@/components/missions/missions-map-client'), {
   ssr: false,
   loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
 });
@@ -103,8 +103,9 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
               <p className="flex items-start"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> +232 76 781153</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.sl@edmmission.org" className="hover:underline">contact.sl@edmmission.org</a></p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> +23276781153</p>
+ <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> +23276293906</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:edmsierraleone@gmail.com" className="hover:underline">edmsierraleone@gmail.com</a></p>
             </CardContent>
           </Card>
           <Card className="shadow-md">
@@ -113,8 +114,8 @@ export default function ContactPage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6 space-y-1.5 sm:space-y-2 text-sm text-muted-foreground">
               <p className="flex items-start"><MapPin className="mr-2 h-4 w-4 text-primary shrink-0" /> 12301 South East Stephens Street, Portland, Oregon 97233, USA</p>
-              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" /> 503-505-8884</p>
-              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:contact.us@edmmission.org" className="hover:underline">contact.us@edmmission.org</a></p>
+              <p className="flex items-center"><Phone className="mr-2 h-4 w-4 text-primary shrink-0" />+ 1 503-505-8884</p>
+              <p className="flex items-center"><Mail className="mr-2 h-4 w-4 text-primary shrink-0" /> <a href="mailto:edwinjkargbo@yahoo.com" className="hover:underline">edwinjkargbo@yahoo.com</a></p>
             </CardContent>
           </Card>
         </div>
