@@ -14,6 +14,8 @@ export async function getAllBlogPosts(): Promise<AppBlogPost[]> {
         id: true,
         title: true,
         slug: true,
+        content: true, // Include content
+        imageUrl: true, // Include imageUrl
         createdAt: true,
         updatedAt: true,
         published: true,
@@ -74,12 +76,18 @@ interface CreateBlogPostData {
   content: string;
   authorId: string; // Assuming authorId is required on creation
   published?: boolean;
+  imageUrl?: string; // Add imageUrl for cover image support
 }
 
 export async function createBlogPost(data: CreateBlogPostData): Promise<BlogPost | null> {
   try {
+    const { authorId, imageUrl, ...rest } = data;
     const blogPost = await prisma.blogPost.create({
-      data,
+      data: {
+        ...rest,
+        imageUrl: imageUrl || null,
+        author: { connect: { id: authorId } },
+      },
     });
     return blogPost;
   } catch (error) {

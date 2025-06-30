@@ -2,8 +2,8 @@ import { getBlogPostBySlug } from '@/lib/db/blogPosts'; // Assuming this functio
 import PageHeader from '@/components/shared/page-header';
 import { format } from 'date-fns';
 import { BookOpenText } from 'lucide-react'; // Assuming this icon is used
-import Markdown from 'react-markdown';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 interface BlogPost {
   id: string;
@@ -15,10 +15,31 @@ interface BlogPost {
   updatedAt: Date;
   published: boolean;
   author: { name: string | null; };
-  imageUrl: string | null;
+  imageUrl?: string | null;
 }
 interface BlogPostPageProps { params: { slug: string; }; }
 
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const blogPost = await getBlogPostBySlug(params.slug);
+  if (!blogPost) {
+    return {
+      title: 'Blog Post Not Found | EDM Blog',
+      description: 'The requested blog post could not be found.',
+    };
+  }
+  const plainText = blogPost.content.replace(/<[^>]+>/g, '').slice(0, 160);
+  return {
+    title: `${blogPost.title} | EDM Blog`,
+    description: plainText,
+    openGraph: {
+      title: blogPost.title,
+      description: plainText,
+      type: 'article',
+      url: `https://yourdomain.com/blog/${blogPost.slug}`,
+      images: blogPost.imageUrl ? [blogPost.imageUrl] : [],
+    },
+  };
+}
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const blogPost = await getBlogPostBySlug(params.slug);
@@ -38,7 +59,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     <div className="space-y-8">
       <PageHeader
         title={blogPost.title}
-        subtitle={`By ${blogPost.authorId?.name || 'Unknown Author'} on ${format(new Date(blogPost.createdAt), 'PPP')}`}
+        subtitle={`By ${blogPost.author?.name || 'Unknown Author'} on ${format(new Date(blogPost.createdAt), 'PPP')}`}
         icon={BookOpenText}
       />
       {blogPost.imageUrl && (
@@ -46,9 +67,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           <Image src={blogPost.imageUrl} alt={blogPost.title} fill className="object-cover" />
         </div>
       )}
-      <article className="prose prose-lg dark:prose-invert mx-auto">
-        <Markdown>{blogPost.content}</Markdown>
-      </article>
+      <article className="prose prose-lg dark:prose-invert mx-auto" dangerouslySetInnerHTML={{ __html: blogPost.content }} />
     </div>
   );
 }

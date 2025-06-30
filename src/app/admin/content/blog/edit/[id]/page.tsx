@@ -7,10 +7,9 @@ import { useSession } from 'next-auth/react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
-import { updateBlogPostAction } from '@/app/admin/content/blog/actions';
-import { fetchBlogPostForEdit } from './actions';
+import { useToast } from '@/hooks/use-toast'
 import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
+import { UploadButton } from '@/components/shared/UploadButton';
 
 // Type for the blog post
 interface BlogPostData {
@@ -42,6 +41,8 @@ export default function EditBlogPostPage() {
     published: false,
   });
 
+  const [imageUrl, setImageUrl] = useState<string | null>(blogPost?.imageUrl || null);
+
   useEffect(() => {
     // Mark as mounted for client-only components
     setIsMounted(true);
@@ -50,7 +51,9 @@ export default function EditBlogPostPage() {
   useEffect(() => {
     async function fetchBlogPost() {
       try {
-        const post = await fetchBlogPostForEdit(blogPostId);
+        const res = await fetch(`/api/admin/blog/${blogPostId}`);
+        if (!res.ok) throw new Error('Failed to fetch blog post');
+        const post = await res.json();
         if (post) {
           setBlogPost(post);
           setFormData({
@@ -59,6 +62,7 @@ export default function EditBlogPostPage() {
             content: post.content || '',
             published: post.published,
           });
+          setImageUrl(post.imageUrl || null);
         } else {
           setError('Blog post not found.');
         }
@@ -99,6 +103,54 @@ export default function EditBlogPostPage() {
     }));
   };
 
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!currentUserId) {
+      toast({
+        title: 'Authentication Error',
+        description: 'You must be logged in to update a blog post.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    const payload = {
+      title: formData.title,
+      slug: formData.slug,
+      content: formData.content,
+      published: formData.published,
+      imageUrl,
+      userId: currentUserId,
+    };
+    try {
+      const res = await fetch(`/api/admin/blog/${blogPostId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        toast({
+          title: 'Error',
+          description: error.error || 'Failed to update blog post.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      toast({
+        title: 'Success',
+        description: 'Blog post updated successfully.',
+        variant: 'success',
+      });
+      router.push('/admin/content/blog');
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
+    }
+  };
+
   if (loading) return <p className="text-gray-500">Loading...</p>;
   if (error) return <p className="text-red-500">{error}</p>;
   if (!blogPost) return <p>No blog post found.</p>;
@@ -109,7 +161,7 @@ export default function EditBlogPostPage() {
         Edit Blog Post: {blogPost.title}
       </h1>
 
-      <form action={updateBlogPostAction} className="space-y-4">
+      <form onSubmit={handleUpdate} className="space-y-4">
         {currentUserId && (
           <input type="hidden" name="userId" value={currentUserId} />
         )}
@@ -160,9 +212,39 @@ export default function EditBlogPostPage() {
           <Label htmlFor="published">Published</Label>
         </div>
 
+        <div>
+          <Label htmlFor="image">Cover Image</Label>
+          <UploadButton
+            imageUrl={imageUrl}
+            setImageUrl={(url) => {
+              setImageUrl(url);
+              if (url) {
+                toast({
+                  title: 'Upload Successful',
+                  description: 'Cover image uploaded successfully.',
+                  variant: 'success',
+                });
+              } else {
+                toast({
+                  title: 'Upload Failed',
+                  description: 'No file was uploaded. Please try again.',
+                  variant: 'destructive',
+                });
+              }
+            }}
+          />
+          {imageUrl && (
+            <div className="mt-2">
+              <img src={imageUrl} alt="Cover Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Cover image preview</p>
+            </div>
+          )}
+          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
+        </div>
+
         <input type="hidden" name="content" value={formData.content} />
 
-        <Button type="submit">Update Blog Post</Button>
+        <Button type="submit" onClick={() => toast({ title: 'Updating...', description: 'Updating blog post...', variant: 'default' })}>Update Blog Post</Button>
       </form>
     </div>
   );

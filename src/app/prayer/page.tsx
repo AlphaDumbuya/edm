@@ -1,27 +1,13 @@
-'use server';
+import React from 'react';
+import { submitPublicPrayerRequestAction } from './actions';
 
-import { createPrayerRequest } from '@/lib/db/prayerRequests'; // Assuming createPrayerRequest exists
-import { PrayerRequestData } from '@/types/prayerRequest'; // Assuming you have a type for PrayerRequestData
-
-export async function submitPublicPrayerRequestAction(request: PrayerRequestData) {
-  try {
-    // Call the database function to create the prayer request
-    const newPrayerRequest = await createPrayerRequest({
-      name: request.name,
-      email: request.email,
-      request: request.request,
-      isPublic: true, // Mark as public
-      status: 'Pending', // Set initial status
-    });
-
-    console.log('Public prayer request submitted:', newPrayerRequest);
-
-    // Optionally, you could return the newly created prayer request or a success status
-    // return newPrayerRequest;
-
-  } catch (error) {
-    console.error('Error submitting public prayer request:', error);
-    // You might want to throw an error or return an error status
-    throw new Error('Failed to submit prayer request.');
-  }
+export default function PrayerPage() {
+  // This is a placeholder UI. You can enhance it as needed.
+  return (
+    <div className="container mx-auto px-4 py-6">
+      <h1 className="text-2xl font-bold mb-6">Submit a Prayer Request</h1>
+      {/* You can add a form here that calls submitPublicPrayerRequestAction */}
+      <p>This page is under construction. Please check back soon.</p>
+    </div>
+  );
 }

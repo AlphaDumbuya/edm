@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { getAllBlogPosts, getBlogPostCount } from '@/lib/db/blogPosts';
 
 interface OverviewData {
   totalDonations: string;
@@ -34,6 +35,10 @@ export default async function AdminDashboardPage() {
     { id: 3, name: 'Manage Content', href: '/admin/content' },
   ];
 
+  // Fetch blog post count and latest posts
+  const totalBlogPosts = await getBlogPostCount();
+  const latestBlogPosts = (await getAllBlogPosts({ limit: 3 })).blogPosts;
+
   return (
     <div className="mx-auto mt-0"> {/* Added mt-0 to remove top margin */}
       {/* Responsive Grid Layout for Dashboard Sections */}
@@ -54,6 +59,22 @@ export default async function AdminDashboardPage() {
             <div className="bg-gray-100 p-4 rounded-md">
               <h3 className="text-lg font-medium">Recent Prayer Requests</h3>
               <p className="text-2xl font-bold text-purple-600">{overviewData.recentPrayerRequests}</p>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-md">
+              <h3 className="text-lg font-medium">Total Blog Posts</h3>
+              <p className="text-2xl font-bold text-indigo-600">{totalBlogPosts}</p>
+              <div className="mt-2 space-y-2">
+                {latestBlogPosts.length === 0 ? (
+                  <p className="text-xs text-muted-foreground">No blog posts yet.</p>
+                ) : (
+                  latestBlogPosts.map(post => (
+                    <div key={post.id} className="flex items-center gap-2">
+                      <span className="font-semibold text-sm">{post.title}</span>
+                      <Link href={`/blog/${post.slug}`} className="text-xs text-blue-600 hover:underline">View</Link>
+                    </div>
+                  ))
+                )}
+              </div>
             </div>
           </div>
         </div>
