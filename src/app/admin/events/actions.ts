@@ -2,18 +2,15 @@
 
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 import { getAllEvents, createEvent, deleteEvent, updateEvent } from '@/lib/db/events';
-import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 // Create Event Action
 export async function createEventAction(formData: FormData) {
-  const session = await getServerSession();
-  console.log('Session:', session);
-  console.log('Session User:', session?.user);
-  if (!session || !session.user) {
+  // Get userId from formData (must be passed from client)
+  const userId = formData.get('userId') as string;
+  if (!userId) {
     throw new Error('User not authenticated.');
   }
-  const userId = session.user.id as string;
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const dateString = formData.get('date') as string;
@@ -21,7 +18,7 @@ export async function createEventAction(formData: FormData) {
   const location = formData.get('location') as string;
 
   if (!title || !description || !dateString || !time || !location) {
-    console.error("Missing required fields");
+    console.error('Missing required fields');
     return;
   }
 
@@ -37,13 +34,12 @@ export async function createEventAction(formData: FormData) {
     });
 
     await createAuditLogEntry({
- userId: userId,
+      userId: userId,
       action: 'Created Event',
       entityType: 'Event',
     });
 
     redirect('/admin/events');
-
   } catch (error) {
     console.error('Error creating event:', error);
     throw new Error('Failed to create event.');
@@ -51,19 +47,18 @@ export async function createEventAction(formData: FormData) {
 }
 
 // Delete Event Action
-export async function deleteEventAction(id: string) {
-  // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
-  const someUserIdVariable = 'placeholder_user_id'; 
+export async function deleteEventAction(id: string, userId: string) {
+  // userId must be provided by the caller (from session, context, or props)
+  if (!userId) {
+    throw new Error('User not authenticated.');
+  }
   try {
     await deleteEvent(id);
-
     await createAuditLogEntry({
-      // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
-      userId: someUserIdVariable,
+      userId,
       action: 'Deleted Event',
       entityType: 'Event',
     });
-
   } catch (error) {
     console.error(`Error deleting event with ID ${id}:`, error);
     throw new Error(`Failed to delete event with ID ${id}.`);
@@ -71,9 +66,11 @@ export async function deleteEventAction(id: string) {
 }
 
 // Update Event Action
-export async function updateEventAction(id: string, formData: FormData) {
-  // Replace 'someUserIdVariable' with the actual user ID obtained from your authentication system
-  const someUserIdVariable = 'placeholder_user_id'; 
+export async function updateEventAction(id: string, formData: FormData, userId: string) {
+  // userId must be provided by the caller (from session, context, or props)
+  if (!userId) {
+    throw new Error('User not authenticated.');
+  }
   const title = formData.get('title') as string;
   const description = formData.get('description') as string;
   const dateString = formData.get('date') as string;
@@ -96,15 +93,12 @@ export async function updateEventAction(id: string, formData: FormData) {
 
   try {
     await updateEvent(id, updateData);
-
     await createAuditLogEntry({
-      userId: someUserIdVariable,
+      userId,
       action: 'Updated Event',
       entityType: 'Event',
     });
-
     redirect('/admin/events');
-
   } catch (error) {
     console.error(`Error updating event with ID ${id}:`, error);
     throw new Error(`Failed to update event with ID ${id}.`);

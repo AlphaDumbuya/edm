@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createBlogPostAction } from './actions';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useAuth } from '@/contexts/auth-context'; // Import the useAuth hook
 import { useToast } from '@/hooks/use-toast'; // Import the useToast hook
@@ -15,7 +14,8 @@ export default function CreateBlogPostPage() {
   const [published, setPublished] = useState(false);
   const [content, setContent] = useState(''); // Add state for content
   const [imageUrl, setImageUrl] = useState<string | null>(null); // State for image URL
-  
+  const router = useRouter();
+
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
 
@@ -32,12 +32,43 @@ export default function CreateBlogPostPage() {
       });
       return; // Stop the function execution
     }
-    const formData = new FormData(event.currentTarget); // Create FormData from the form
-    formData.append('content', content); // Append content
-    formData.append('published', published.toString()); // Append published status
-    if (imageUrl) formData.append('imageUrl', imageUrl); // Append image URL if available
-    await createBlogPostAction(formData);
-    redirect('/admin/content/blog');
+    // Build payload for API
+    const payload = {
+      title,
+      slug,
+      content,
+      published,
+      imageUrl,
+      authorId: user.id,
+    };
+    try {
+      const res = await fetch('/api/admin/blog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        toast({
+          title: 'Error',
+          description: error.error || 'Failed to create blog post.',
+          variant: 'destructive',
+        });
+        return;
+      }
+      toast({
+        title: 'Success',
+        description: 'Blog post created successfully.',
+        variant: 'success',
+      });
+      router.push('/admin/content/blog');
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'An unexpected error occurred.',
+        variant: 'destructive',
+      });
+    }
   };
   return (
     <div className="container mx-auto px-4 py-6 sm:py-8">
@@ -85,9 +116,32 @@ export default function CreateBlogPostPage() {
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Cover Image
           </label>
+          <div>imageURL {imageUrl}</div>
           <UploadButton
-            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
+            imageUrl={imageUrl}
+            setImageUrl={(url) => {
+              setImageUrl(url);
+              if (url) {
+                toast({
+                  title: 'Upload Successful',
+                  description: 'Cover image uploaded successfully.',
+                  variant: 'success',
+                });
+              } else {
+                toast({
+                  title: 'Upload Failed',
+                  description: 'No file was uploaded. Please try again.',
+                  variant: 'destructive',
+                });
+              }
+            }}
           />
+          {imageUrl && (
+            <div className="mt-2">
+              <img src={imageUrl} alt="Cover Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Cover image preview</p>
+            </div>
+          )}
         </div>
         <div className="mb-4 flex items-center"> {/* Increased bottom margin */}
           <input
@@ -101,10 +155,12 @@ export default function CreateBlogPostPage() {
             Published
           </label>
         </div>
+        <input type="hidden" name="imageUrl" value={imageUrl ?? ""} />
         <div>
           <button
             type="submit"
             className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            disabled={!imageUrl} // Disable button until imageUrl is set
           > {/* Keeping original button styles */}
             Create Blog Post
           </button>
