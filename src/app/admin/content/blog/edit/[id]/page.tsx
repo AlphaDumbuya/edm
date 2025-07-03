@@ -7,9 +7,10 @@ import { useSession } from 'next-auth/react';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast'
-import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
+import { useToast } from '@/hooks/use-toast';
 import { UploadButton } from '@/components/shared/UploadButton';
+import Image from 'next/image';
+import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
 
 // Type for the blog post
 interface BlogPostData {
@@ -39,6 +40,7 @@ export default function EditBlogPostPage() {
     slug: '',
     content: '', // HTML string for TipTap
     published: false,
+    imageUrl: null as string | null, // Add imageUrl to formData
   });
 
   const [imageUrl, setImageUrl] = useState<string | null>(blogPost?.imageUrl || null);
@@ -61,6 +63,7 @@ export default function EditBlogPostPage() {
             slug: post.slug,
             content: post.content || '',
             published: post.published,
+            imageUrl: post.imageUrl || null, // Initialize imageUrl from fetched data
           });
           setImageUrl(post.imageUrl || null);
         } else {
@@ -86,9 +89,20 @@ export default function EditBlogPostPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    setFormData((prev) => {
+      if (name === 'slug') {
+        // Normalize slug: trim, lowercase, replace spaces with hyphens
+        const normalized = value.trim().toLowerCase().replace(/\s+/g, '-');
+        return { ...prev, [name]: normalized };
+      }
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleImageUrlChange = (url: string | null) => {
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      imageUrl: url,
     }));
   };
 
@@ -113,9 +127,11 @@ export default function EditBlogPostPage() {
       });
       return;
     }
+    // Ensure slug is normalized before saving
+    const normalizedSlug = formData.slug.trim().toLowerCase().replace(/\s+/g, '-');
     const payload = {
       title: formData.title,
-      slug: formData.slug,
+      slug: normalizedSlug,
       content: formData.content,
       published: formData.published,
       imageUrl,
@@ -201,6 +217,27 @@ export default function EditBlogPostPage() {
           </div>
         </div>
 
+        <div>
+          <Label htmlFor="imageUrl">Cover Image</Label>
+          {formData.imageUrl ? (
+            <div className="mt-2">
+              <Image
+                src={formData.imageUrl}
+                alt="Cover Image"
+                width={200}
+                height={200}
+                className="object-cover rounded-md"
+              />
+              <Button variant="outline" className="mt-2" onClick={() => handleImageUrlChange(null)}>
+                Remove Image
+              </Button>
+            </div>
+          ) : (
+            <UploadButton
+                setImageUrl={handleImageUrlChange} imageUrl={null}            />
+          )}
+        </div>
+
         <div className="flex items-center space-x-2">
           <Checkbox
             id="published"
@@ -243,6 +280,7 @@ export default function EditBlogPostPage() {
         </div>
 
         <input type="hidden" name="content" value={formData.content} />
+        <input type="hidden" name="imageUrl" value={formData.imageUrl || ''} />
 
         <Button type="submit" onClick={() => toast({ title: 'Updating...', description: 'Updating blog post...', variant: 'default' })}>Update Blog Post</Button>
       </form>

@@ -1,62 +1,110 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import LeaderProfile from '@/components/about/leader-profile';
-import { Users, Globe } from 'lucide-react';
+import { Globe } from 'lucide-react';
 
-const boardMembers = [
+const founderAndCEO = {
+  name: 'Edwin Kargbo',
+  role: 'Founder & CEO, EDM',
+  bio: 'Driven by a divine burden for the church in Sierra Leone, this leader established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. The vision is to see Sierra Leone transformed by the Gospel.',
+  imageUrl: 'https://code-alpha-image-gallary.vercel.app/edwin-kargbo.png',
+  dataAiHint: 'Edwin Kargbo founder EDM',
+  contact: 'edwinjkargbo@yahoo.com',
+  location: 'Sierra Leone',
+};
+
+const countryDirector = {
+  name: 'Pastor Dominic Dumbuya',
+  role: 'Country Director, Sierra Leone',
+  bio: 'Serves as the Country Director for EDM in Sierra Leone, providing leadership and oversight for all operations within the country.',
+  imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/pst-deee.png', // Placeholder
+  dataAiHint: 'Pastor Dominic Dumbuya Country Director Sierra Leone',
+  contact: 'pastordominicdumbuya@gmail.com',
+  location: 'Sierra Leone',
+};
+
+const bibleSchoolDirector = {
+  name: 'Samuel Tarawally',
+  role: 'Board Member',
+  bio: 'Focused on the operational efficiency and logistical support for EDM\'s initiatives in Sierra Leone, ensuring effective execution of programs.',
+  imageUrl: 'https://code-alpha-image-gallary.vercel.app/tarawalley.png', // Placeholder
+  dataAiHint: 'Samuel Tarawalley Bible School Director Sierra Leone',
+  contact: 'Starawally@yahoo.uk',
+  location: 'Sierra Leone',
+};
+
+const boardMembersSierraLeone = [
   {
-    name: 'Edwin Kargbo',
-    role: 'Founder & Director, EDM Sierra Leone',
-    bio: 'Driven by a divine burden for the church in Sierra Leone, this leader established EDM to prioritize evangelism, create robust discipleship structures, and engage in impactful missions. The vision is to see Sierra Leone transformed by the Gospel.',
-    imageUrl: 'https://code-alpha-image-gallary.vercel.app/edwin-kargbo.png',
-    dataAiHint: 'Edwin Kargbo founder EDM',
-    contact: 'edwin.kargbo@edm.org',
+    name: 'Rev. Samuel Samurah Kargbo',
+    role: 'Board Member',
+    bio: 'Representing the clergy on the EDM board, providing spiritual guidance and contributing to the alignment of ministry activities with theological principles.',
+    imageUrl: '', // Placeholder
+    dataAiHint: 'Rev Samuel Samurah Kargbo Board Member Sierra Leone',
+    contact: '',
+    location: 'Sierra Leone',
+  },
+  {
+    name: 'Pastor Paul Ken Bockarie',
+    role: 'Board Member',
+    bio: 'Bringing valuable experience and dedication to the EDM board, contributing to strategic decisions and the ministry\'s impact in Sierra Leone.',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/paul.jpg', // Placeholder
+    dataAiHint: 'Paul Ken Bockarie Board Member Sierra Leone',
+    contact: 'kennbock@gmail.com',
+    location: 'Sierra Leone',
+  },
+  {
+    ...bibleSchoolDirector,
+  },
+];
+
+const executiveMembers = [
+  {
+    ...countryDirector,
+  },
+  {
+    name: 'Samuel Tarawally',
+    role: 'Administrator',
+    bio: 'Oversees administrative operations with a focus on organizational efficiency, ensuring smooth communication and logistical support across ministry teams.',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/tarawalley.png',
+    dataAiHint: 'Samuel Tarawally EDM Administrator',
+    contact: 'Starawally@yahoo.uk',
     location: 'Sierra Leone',
   },
   {
     name: 'Michael Kargo',
-    role: 'Financial Secretary - Freetown',
-    bio: "Serving EDM as the Financial Secretary based in Freetown, ensuring diligent stewardship of resources to support the ministry's operations and outreach in Sierra Leone.",
+    role: 'Financial Secretary - Sierra Leone',
+    bio: 'Serving EDM as the Financial Secretary based in Freetown, ensuring diligent stewardship of resources to support the ministrys operations and outreach in Sierra Leone.',
     imageUrl: 'https://code-alpha-image-gallary.vercel.app/michael.png',
-    dataAiHint: 'Michael Kargo Financial Secretary',
-    contact: 'michael.kargo@edm.org',
-    location: 'Freetown, Sierra Leone',
+    dataAiHint: 'Michael Kargo Financial Secretary - Sierra Leone',
+    contact: 'kargbomichael67@gmail.com',
+    location: 'Sierra Leone',
   },
   {
-    name: 'Daniel Musa Sewa',
-    role: 'Deputy Regional Coordinator for the North', // Corrected role capitalization
-    bio: 'Supporting regional coordination efforts in the Northern Region of Sierra Leone, with responsibility for overseeing ministry activities and advancing local initiatives.',
-    imageUrl: 'https://code-alpha-image-gallary.vercel.app/daniel.png',
-    dataAiHint: 'Daniel Musa Sewa Deputy Regional Coordinator', // Corrected dataAiHint
-    contact: 'daniel.sewa@edm.org',
-    location: 'Freetown, Sierra Leone',
+    name: 'Samuel Kargbo',
+    role: 'Western Area Coordinator',
+    bio: 'Coordinating all activities across western area Sierra Leone.',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/pst-samuel.png', // Placeholder
+    dataAiHint: 'Samuel Kargbo Western Area Coordinator',
+    contact: 'samuelkargbo349@gmail.com',
+    location: 'Sierra Leone',
   },
   {
     name: 'Andrew Challey',
-    role: 'Secretary to the Executive', // Corrected role capitalization
+    role: 'Secretary to the Executive',
     bio: 'Provides essential administrative support and serves as the central point of communication for the Executive leadership of EDM.',
     imageUrl: 'https://code-alpha-image-gallary.vercel.app/andrew.png',
     dataAiHint: 'finance expert professional',
     contact: 'andrew.challey@edm.org',
     location: 'Sierra Leone',
   },
-  {
-    name: 'Samuel Tarawally',
-    role: 'Administrator', // Corrected role capitalization
-    bio: 'Oversees administrative operations with a focus on organizational efficiency, ensuring smooth communication and logistical support across ministry teams.',
-    imageUrl: 'https://code-alpha-image-gallary.vercel.app/tarawalley.png', // Corrected image URL
-    dataAiHint: 'Samuel Tarawally Administrator',
-    contact: 'Starawally@yahoo.uk',
-    location: 'Sierra Leone',
-  },
 
   {
-    name: 'Daniel Fornah', // Corrected name capitalization
-    role: 'EDM Northern Coordinator', // Corrected role capitalization
-    bio: 'Leads regional ministry initiatives in the North, coordinating local leaders and fostering partnerships to expand the Gospel’s impact across the region.', // Corrected bio capitalization and punctuation
-    imageUrl: 'https://code-alpha-image-gallary.vercel.app/daniel-fornah.png', // Corrected image URL
+    name: 'Daniel Fornah',
+    role: 'EDM Northern Coordinator',
+    bio: 'Leads regional ministry initiatives in the North, coordinating local leaders and fostering partnerships to expand the Gospel’s impact across the region.',
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/daniel-fornah.png',
     dataAiHint: 'Daniel Fornah EDM Northern Coordinator',
-    contact: 'daniel.fornah@edm.org',
+    contact: 'daniepedia@gmail.com',
     location: 'Northern Region, Sierra Leone',
   },
 ];
@@ -76,25 +124,32 @@ export default function InternationalBoardPage() {
           subtitle="Committed leaders serving EDM's mission with faith, integrity, and international perspective."
         />
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
-          {boardMembers.map((leader) => (
-            <LeaderProfile
-              key={leader.name}
-              name={leader.name}
-              role={leader.role}
-              bio={leader.bio}
-              imageUrl={leader.imageUrl}
-              dataAiHint={leader.dataAiHint}
-              contact={leader.contact}
-            />
+          <LeaderProfile {...founderAndCEO} />
+        </div>
+      </section>
+
+      <section>
+        <SectionTitle
+          title="EDM Board Members Sierra Leone"
+          subtitle="Dedicated leaders overseeing the ministry's operations and growth within Sierra Leone."
+        />
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+          {boardMembersSierraLeone.map((member) => (
+            <LeaderProfile key={member.name} {...member} />
           ))}
         </div>
       </section>
 
-      <section className="bg-card p-6 md:p-8 rounded-lg shadow-md">
-        <SectionTitle title="Our Commitment to Governance" />
-        <p className="text-muted-foreground">
-          The EDM International Board is responsible for ensuring the ministry adheres to its mission, maintains financial integrity, and operates with ethical accountability in both Sierra Leone and its international partnerships, including those in Oregon. Board members are selected for their spiritual maturity, professional expertise, and commitment to the Great Commission.
-        </p>
+      <section>
+        <SectionTitle
+          title="Executive Leadership"
+          subtitle="Operational leaders steering the daily functions and strategy of EDM."
+        />
+        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+          {executiveMembers.map((member) => (
+            <LeaderProfile key={member.name} {...member} />
+          ))}
+        </div>
       </section>
     </div>
   );

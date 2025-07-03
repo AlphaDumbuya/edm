@@ -94,9 +94,7 @@ export function NewsList() {
                   {news[0].content.length > 150 ? "..." : ""}
                 </p>
                 <Button asChild variant="secondary" className="w-fit">
-                  <Link href={`/news/${news[0].id}`} legacyBehavior>
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
+                  <Link href={`/news/${news[0].slug}`}>Read More</Link>
                 </Button>
               </div>
             </div>
@@ -134,9 +132,7 @@ export function NewsList() {
                 {item.content.length > 100 ? "..." : ""}
               </p>
               <Button asChild variant="outline" size="sm" className="w-fit">
-                <Link href={`/news/${item.id}`} legacyBehavior>
-                  Read More <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
+                <Link href={`/news/${item.slug}`}>Read More</Link>
               </Button>
             </CardContent>
           </Card>

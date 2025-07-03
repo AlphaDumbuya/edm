@@ -9,6 +9,9 @@ import { ArrowRight, BookOpenText, HeartHandshake, HelpingHand, Milestone, Schoo
 import BlogPostCard from '@/components/blog/blog-post-card';
 import { cn } from '@/lib/utils';
 import { getAllNewsArticles } from '@/lib/db/news';
+import { getAllBlogPosts } from '@/lib/db/blogPosts';
+
+export const dynamic = "force-dynamic";
 
 const pillars: Pillar[] = [
 	{
@@ -38,16 +41,27 @@ interface Pillar {
 	href: string;
 }
 
+// Define a type for blog posts
+interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  authorId: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  published: boolean;
+  imageUrl?: string | null;
+  author?: { name: string | null } | null;
+}
+
 export default async function Home() {
 	const recentNews = (await getAllNewsArticles()).slice(0, 4);
-	// Fetch blog posts before the return statement
-	let blogPosts = [];
+	// Fetch blog posts directly from the server function
+	let blogPosts: BlogPost[] = [];
 	try {
-		const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || ''}/api/admin/blog?limit=3&offset=0`, { cache: 'no-store' });
-		if (res.ok) {
-			const result = await res.json();
-			blogPosts = result.blogPosts || [];
-		}
+		const { blogPosts: posts } = await getAllBlogPosts({ publishedOnly: true, limit: 3, orderBy: { createdAt: 'desc' } });
+		blogPosts = posts || [];
 	} catch (e) {
 		blogPosts = [];
 	}
@@ -264,20 +278,17 @@ export default async function Home() {
 					subtitle="Insights and stories from the EDM community"
 				/>
 				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-					{/* Access blogPosts array from the returned object and add type annotation */}
-					{/* TODO: Define a proper type for the blog post object */}
 					{blogPosts.length === 0 ? (
 						<p className="text-muted-foreground">No blog posts available yet.</p>
 					) : (
-						blogPosts.map((post: any) => (
-							console.log('Blog post slug:', post.slug),
+						blogPosts.map((post) => (
 							<BlogPostCard
 								key={post.id}
-								itemType="blog" // Specify item type as 'blog' (or omit as it's the default)
+								itemType="blog"
 								post={{
 									slug: post.slug,
 									title: post.title,
-									date: post.createdAt.toLocaleDateString(),
+									date: new Date(post.createdAt).toLocaleDateString(),
 									author: {
 										name: post.author?.name || 'Unknown Author',
 									},
@@ -285,7 +296,7 @@ export default async function Home() {
 									imageUrl: post.imageUrl || '',
 								}}
 							/>
-						)) // Closing parenthesis for map function
+						))
 					)}
 				</div>
 			</section>

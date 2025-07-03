@@ -56,6 +56,18 @@ const nextConfig = {
         port: '',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'v3u8qjb7ov.ufs.sh',
+        port: '',
+        pathname: '/**',
+      },
     ],
   },
   experimental: {

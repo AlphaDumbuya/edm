@@ -1,6 +1,5 @@
-
 // src/app/donate/page.tsx
-import PageHeader from '@/components/shared/page-header';
+import Script from 'next/script';
 import SectionTitle from '@/components/shared/section-title';
 import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
@@ -8,15 +7,22 @@ import { HelpingHand, Mail, Users, ArrowRight, Package, School, DollarSign, Hear
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import PageHeader from '@/components/shared/page-header';
 
 export default function DonatePage() {
+  const payPalHostedButtonId = "QQJUCWAXAX3JE";
+  const payPalClientId = "BAAtVyCFo0kWxiZ_FS5BS3QSNnnJ4VCn7sxndZ-UkJ6SiN2zhUFrTlswPBEppkaoUOpqaMKHGfBkw1tHWA";
+  const payPalScriptUrl = `https://www.paypal.com/sdk/js?client-id=${payPalClientId}&components=hosted-buttons&enable-funding=venmo&currency=USD`;
+
   return (
     <div className="space-y-12 md:space-y-16">
+
       <PageHeader
         title="Support EDM's Mission"
         subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Oregon partnerships."
         icon={HelpingHand}
       />
+
       <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
         <div className="space-y-3 md:space-y-4">
           <SectionTitle title="Why Your Gift Matters" subtitle="Every contribution makes a difference" />
@@ -38,10 +44,10 @@ export default function DonatePage() {
             alt="Children in Sierra Leone benefiting from EDM's work"
             layout="fill"
             objectFit="cover"
-            data-ai-hint="sierra leone children community"
           />
         </div>
       </section>
+
       <section>
         <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects" />
         <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
@@ -54,14 +60,12 @@ export default function DonatePage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-sm sm:text-base text-muted-foreground text-center mb-3">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
-               <Link
-                 href="/ministries/education/marifa-school"
-                 className="block text-center"
-                 legacyBehavior>
+              <Link href="/ministries/education/marifa-school" className="block text-center" legacyBehavior>
                 <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn More & Support School</Button>
               </Link>
             </CardContent>
           </Card>
+
           <Card className="shadow-md hover:shadow-lg">
             <CardHeader className="p-4 sm:p-6">
               <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
@@ -75,83 +79,82 @@ export default function DonatePage() {
           </Card>
         </div>
       </section>
+
       <section className="max-w-2xl mx-auto">
         <SectionTitle title="Make a Secure Online Donation" subtitle="Empower our work in Sierra Leone and Oregon today" className="text-center" />
         <p className="text-center text-muted-foreground mb-6 text-sm sm:text-base">
           Your donation, whether one-time, monthly, or quarterly, directly supports EDM's evangelism, discipleship, missions activities, the operational EDM Marifa School, and our collaborative efforts with Oregon partners.
         </p>
         <DonationFormWrapper />
-         <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
+        <p className="text-xs text-muted-foreground mt-4 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
       </section>
+
       <section id="more-support-options" className="bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
- <SectionTitle title="More Ways to Support EDM" subtitle="Beyond credit card donations" />
- <div className="space-y-4 sm:space-y-6">
- <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center"><CreditCard className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Donate with PayPal</h3>
- <p className="text-sm sm:text-base text-muted-foreground">
- You can also support EDM's mission by donating via PayPal.
- </p>
- <div className="bg-muted p-3 sm:p-4 rounded-md shadow-sm">
- <p className="text-foreground font-medium text-sm sm:text-base">PayPal Email: <a href="mailto:your-paypal-email@edm.org" className="text-primary hover:underline">your-paypal-email@edm.org</a></p>
- <p className="text-xs text-muted-foreground mt-1">(Or provide a direct PayPal.Me link if you have one)</p>
- <Button variant="link" asChild className="mt-1 sm:mt-2 px-0 text-xs sm:text-sm">
- <a href="#" target="_blank" rel="noopener noreferrer" className="text-primary">
-                        Go to PayPal Donation Page <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4"/>
- </a>
- </Button>
- </div>
- </div>
-        <div className="grid md:grid-cols-2 gap-x-8 md:gap-x-12 gap-y-8 items-start">
-          
-          <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center"><Mailbox className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Donate by Mail (Check)</h3>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              If you prefer to donate by check, please make it payable to "Evangelism, Discipleship, Missions" and mail to our US address:
-            </p>
-            <address className="space-y-1 text-sm sm:text-base text-foreground font-medium bg-muted p-3 sm:p-4 rounded-md not-italic shadow-sm">
+        <SectionTitle title="More Ways to Support EDM" subtitle="Beyond credit card donations" />
+
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center">
+              <CreditCard className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Donate with PayPal
+            </h3>
+            <p className="text-sm sm:text-base text-muted-foreground">You can also support EDM's mission by donating via PayPal.</p>
+            <div className="bg-muted p-4 rounded-md shadow-sm max-w-sm mx-auto">
+              <div id={`paypal-container-${payPalHostedButtonId}`}></div>
+              <Script id="paypal-hosted-button-render" strategy="afterInteractive">
+                {`
+                  paypal.HostedButtons({ hostedButtonId: "${payPalHostedButtonId}" }).render("#paypal-container-${payPalHostedButtonId}");
+                `}
+              </Script>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-4">
+              <Mailbox className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Donate by Mail (Check)
+            </h3>
+            <p className="text-sm sm:text-base text-muted-foreground">If you prefer to donate by check, please make it payable to "Evangelism, Discipleship, Missions" and mail to our US address:</p>
+            <address className="space-y-1 text-sm sm:text-base text-foreground font-medium bg-muted p-4 rounded-md not-italic shadow-sm">
               <p>Evangelism, Discipleship, Missions</p>
               <p>12301 SE Stephens St.</p>
               <p>Portland, OR 97233</p>
               <p>USA</p>
             </address>
-             <p className="text-sm sm:text-base text-muted-foreground">
-                For donations to our Sierra Leone headquarters or other financial inquiries (stocks, planned giving), please contact us.
-             </p>
-              <Link href="/contact" legacyBehavior>
-                <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4"/></Button>
-              </Link>
+            <p className="text-sm sm:text-base text-muted-foreground">For donations to our Sierra Leone headquarters or other financial inquiries (stocks, planned giving), please contact us.</p>
+            <Link href="/contact" legacyBehavior>
+              <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Button>
+            </Link>
           </div>
 
- <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-2 sm:pt-4"><Heart className="mr-2 sm:mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary"/> Other Ways to Get Involved</h3>
-            <p className="text-sm sm:text-base text-muted-foreground">
-              Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.
-            </p>
-            <div className="space-y-2 sm:space-y-3">
-                <Link href="/get-involved/volunteer" legacyBehavior>
-                    <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4"/>Volunteer Opportunities</Button>
-                </Link>
-                <Link href="/get-involved/prayer" legacyBehavior>
-                    <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><HelpingHand className="mr-2 h-4 w-4"/>Join Our Prayer Wall</Button>
-                </Link>
-                <Link href="/get-involved/partner" legacyBehavior>
-                    <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4"/>Explore Partnerships</Button>
-                </Link>
+          <div>
+            <h3 className="text-lg sm:text-xl font-semibold text-foreground border-b pb-2 flex items-center pt-4">
+              <Heart className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Other Ways to Get Involved
+            </h3>
+            <p className="text-sm sm:text-base text-muted-foreground">Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.</p>
+            <div className="space-y-3">
+              <Link href="/get-involved/volunteer" legacyBehavior>
+                <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4" />Volunteer Opportunities</Button>
+              </Link>
+              <Link href="/get-involved/prayer" legacyBehavior>
+                <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><HelpingHand className="mr-2 h-4 w-4" />Join Our Prayer Wall</Button>
+              </Link>
+              <Link href="/get-involved/partner" legacyBehavior>
+                <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4" />Explore Partnerships</Button>
+              </Link>
             </div>
           </div>
         </div>
       </section>
+
       <section className="text-center py-6 md:py-8">
         <div className="flex items-center justify-center text-muted-foreground mb-3 sm:mb-4 text-xs sm:text-sm">
-            <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-primary"/>
-            <p>EDM is a registered 501(c)(3) non-profit organization. We are committed to stewarding all resources with integrity for the advancement of the Gospel.</p>
+          <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-primary" />
+          <p>EDM is a registered 501(c)(3) non-profit organization. We are committed to stewarding all resources with integrity for the advancement of the Gospel.</p>
         </div>
         <Link href="/financial-transparency" legacyBehavior>
-          <Button variant="link" className="text-primary text-xs sm:text-sm">
-            View Our Financial Transparency Policy
-          </Button>
+          <Button variant="link" className="text-primary text-xs sm:text-sm">View Our Financial Transparency Policy</Button>
         </Link>
       </section>
+
     </div>
   );
 }
-
