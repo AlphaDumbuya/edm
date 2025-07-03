@@ -90,7 +90,7 @@ export default function DonationFormWrapper() {
     }
   };
 
-  const handleSuccessfulPayment = async () => {
+  const handleSuccessfulPayment = async (donorName?: string, donorEmail?: string) => {
     setPaymentSuccessful(true);
     setClientSecret(null); // Invalidate client secret after successful payment
     // Save donation record to backend
@@ -100,8 +100,8 @@ export default function DonationFormWrapper() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           amount: (currentAmount / 100).toFixed(2),
-          donorName: name || undefined,
-          donorEmail: email || undefined,
+          donorName: donorName || undefined,
+          donorEmail: donorEmail || undefined,
           paymentMethod: 'stripe',
         }),
       });
@@ -145,7 +145,7 @@ export default function DonationFormWrapper() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6 max-h-[80vh] overflow-y-auto">
       <div>
         <Label className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3 block">Choose Donation Amount</Label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4">
