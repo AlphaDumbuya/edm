@@ -130,11 +130,10 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
         </div>
       )}
       {/* Article content */}
-      <div className="prose prose-lg max-w-none mb-12">
-        {news.content.split("\n").map((paragraph, index) => (
-          <p key={index}>{paragraph}</p>
-        ))}
-      </div>
+      <div
+        className="prose prose-lg max-w-none mb-12"
+        dangerouslySetInnerHTML={{ __html: news.content }}
+      />
       {/* Related Articles */}
       {relatedNews.length > 0 && (
         <div className="mt-12">
@@ -160,10 +159,10 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
                   <h3 className="text-lg font-bold mb-2 line-clamp-2">
                     {item.title}
                   </h3>
-                  <p className="text-muted-foreground mb-4 text-sm line-clamp-2">
-                    {item.content.substring(0, 100)}
-                    {item.content.length > 100 ? "..." : ""}
-                  </p>
+                  <div
+                    className="text-muted-foreground mb-4 text-sm line-clamp-2 prose prose-sm max-w-none"
+                    dangerouslySetInnerHTML={{ __html: item.content }}
+                  />
                   <Button asChild variant="outline" size="sm">
                     <Link href={`/news/${item.id}`}>Read More</Link>
                   </Button>

@@ -17,6 +17,7 @@ export default function CreateBlogPostPage() {
   
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
+  const router = useRouter(); // Get the router instance
 
   const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,7 +35,7 @@ export default function CreateBlogPostPage() {
     formData.append('published', published.toString()); // Append published status
     if (imageUrl) formData.append('imageUrl', imageUrl); // Append image URL if available
     await createBlogPostAction(formData);
-    redirect('/admin/content/blog');
+    router.push('/admin/content/blog'); // Use router.push for navigation
   };
 
   return (
@@ -81,10 +82,7 @@ export default function CreateBlogPostPage() {
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Cover Image
           </label>
-          <div>imageURL {imageUrl}</div>
-          <UploadButton
-            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
-          />
+          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
         </div>
 
         <div className="mb-4 flex items-center">
