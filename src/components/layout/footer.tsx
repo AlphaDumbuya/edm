@@ -1,15 +1,15 @@
-
 'use client';
 
 import Link from 'next/link';
 import Image from 'next/image';
 import { Facebook, Twitter, Instagram, Youtube, FileText, ShieldAlert, MapPin, Mail, Phone } from 'lucide-react';
+import React from 'react';
 
-export default function Footer() {
+export default function Footer({ className = "" }: { className?: string }) {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-card text-card-foreground border-t">
+    <footer className={`bg-card text-card-foreground border-t ${className}`}>
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="space-y-2">
