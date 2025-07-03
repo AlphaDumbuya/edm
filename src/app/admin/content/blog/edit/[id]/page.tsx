@@ -219,23 +219,14 @@ export default function EditBlogPostPage() {
 
         <div>
           <Label htmlFor="imageUrl">Cover Image</Label>
-          {formData.imageUrl ? (
+          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          {imageUrl && (
             <div className="mt-2">
-              <Image
-                src={formData.imageUrl}
-                alt="Cover Image"
-                width={200}
-                height={200}
-                className="object-cover rounded-md"
-              />
-              <Button variant="outline" className="mt-2" onClick={() => handleImageUrlChange(null)}>
-                Remove Image
-              </Button>
+              <img src={imageUrl} alt="Cover Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Cover image preview</p>
             </div>
-          ) : (
-            <UploadButton
-                setImageUrl={handleImageUrlChange} imageUrl={null}            />
           )}
+          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
         </div>
 
         <div className="flex items-center space-x-2">
@@ -247,36 +238,6 @@ export default function EditBlogPostPage() {
             onCheckedChange={handleCheckboxChange}
           />
           <Label htmlFor="published">Published</Label>
-        </div>
-
-        <div>
-          <Label htmlFor="image">Cover Image</Label>
-          <UploadButton
-            imageUrl={imageUrl}
-            setImageUrl={(url) => {
-              setImageUrl(url);
-              if (url) {
-                toast({
-                  title: 'Upload Successful',
-                  description: 'Cover image uploaded successfully.',
-                  variant: 'success',
-                });
-              } else {
-                toast({
-                  title: 'Upload Failed',
-                  description: 'No file was uploaded. Please try again.',
-                  variant: 'destructive',
-                });
-              }
-            }}
-          />
-          {imageUrl && (
-            <div className="mt-2">
-              <img src={imageUrl} alt="Cover Preview" className="w-full max-w-xs rounded shadow" />
-              <p className="text-xs text-gray-500 mt-1">Cover image preview</p>
-            </div>
-          )}
-          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
         </div>
 
         <input type="hidden" name="content" value={formData.content} />

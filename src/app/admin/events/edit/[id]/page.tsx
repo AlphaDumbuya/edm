@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { UploadButton } from "@/components/shared/UploadButton";
 
 // Define a type for the PageProps to match Next.js expected type
 interface PageProps {
@@ -20,6 +21,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
   const [event, setEvent] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [description, setDescription] = useState('');
+  const [imageUrl, setImageUrl] = useState<string | null>(event?.imageUrl || null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,6 +31,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
         if (fetchedEvent) {
           setEvent(fetchedEvent);
           setDescription(fetchedEvent.description);
+          setImageUrl(fetchedEvent.imageUrl || null);
         } else {
           setError("Event not found");
         }
@@ -46,6 +49,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     formData.set('description', description); // Use content from ReactQuill state
+    formData.set('imageUrl', imageUrl || '');
     try {
       await updateEventAction(eventId, formData);
       router.push('/admin/events');
@@ -118,10 +122,21 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
           />
         </div>
- <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Update Event</button>
- <Link href="/admin/events">
+        <div>
+          <label htmlFor="image" className="block text-sm font-medium text-gray-700">Event Image (optional)</label>
+          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          {imageUrl && (
+            <div className="mt-2">
+              <img src={imageUrl} alt="Event Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Event image preview</p>
+            </div>
+          )}
+          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
+        </div>
+        <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Update Event</button>
+        <Link href="/admin/events">
           Back to Events
- </Link>
+        </Link>
       </form>
     </div>
   );

@@ -7,6 +7,7 @@ import { EditorState, convertToRaw } from 'draft-js';
 import dynamic from 'next/dynamic';
 import draftToHtml from 'draftjs-to-html';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { UploadButton } from "@/components/shared/UploadButton";
 const Editor: any = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false });
 
 export default function CreateEventPage() {
@@ -25,6 +26,7 @@ export default function CreateEventPage() {
   });
   const [userId, setUserId] = useState('');
   const [editorState, setEditorState] = useState<any>(EditorState.createEmpty());
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const router = useRouter();
   useEffect(() => {
     // Retrieve userId from localStorage on mount
@@ -63,6 +65,7 @@ export default function CreateEventPage() {
       const rawContentState = convertToRaw(editorState.getCurrentContent());
       // Convert editor state to HTML and append to FormData
       data.append('description', draftToHtml(rawContentState));
+      data.append('imageUrl', imageUrl || '');
       await createEventAction(data);
       router.push('/admin/events');
     } catch (error) {
@@ -107,14 +110,14 @@ export default function CreateEventPage() {
           <label htmlFor="image" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Event Image (optional)
           </label>
-          <input
-            type="file"
-            id="image"
-            name="image"
-            accept="image/*"
-            className="block w-full text-xs sm:text-sm text-gray-700 border border-gray-300 rounded-md p-2 bg-white focus:ring-blue-500 focus:border-blue-500"
-            style={{ display: 'block' }}
-          />
+          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          {imageUrl && (
+            <div className="mt-2">
+              <img src={imageUrl} alt="Event Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Event image preview</p>
+            </div>
+          )}
+          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
         </div>
 
         {/* Retained basic input fields for simplicity with FormData */}
