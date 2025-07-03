@@ -1,4 +1,3 @@
-
 // src/components/donate/donation-form-wrapper.tsx
 'use client';
 
@@ -91,9 +90,25 @@ export default function DonationFormWrapper() {
     }
   };
 
-  const handleSuccessfulPayment = () => {
+  const handleSuccessfulPayment = async () => {
     setPaymentSuccessful(true);
     setClientSecret(null); // Invalidate client secret after successful payment
+    // Save donation record to backend
+    try {
+      await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: (currentAmount / 100).toFixed(2),
+          donorName: name || undefined,
+          donorEmail: email || undefined,
+          paymentMethod: 'stripe',
+        }),
+      });
+    } catch (err) {
+      // Optionally show a toast or log error
+      console.error('Failed to save donation record:', err);
+    }
   };
   
   const handlePaymentError = (errorMessage: string) => {
