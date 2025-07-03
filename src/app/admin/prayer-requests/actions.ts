@@ -1,6 +1,9 @@
 'use server';
 import { createPrayerRequest, deletePrayerRequest, updatePrayerRequest, getAllPrayerRequests, getPrayerRequestById as getPrayerRequestByIdFromDb } from "@/lib/db/prayerRequests";
-import { createAuditLogEntry } from '@/lib/db/auditLogs'; export async function createPrayerRequestAction(formData: FormData) {
+import { createAuditLogEntry } from '@/lib/db/auditLogs';
+import { getCurrentUserId } from '@/lib/auth/session';
+
+export async function createPrayerRequestAction(formData: FormData) {
   try {
     const title = formData.get('title') as string;
     const body = formData.get('body') as string;
@@ -57,9 +60,10 @@ export async function updatePrayerRequestAction(id: string, formData: FormData) 
       status,
     });
 
-    // Create audit log entry (replace 'YOUR_USER_ID' with actual logic)
+    // Create audit log entry with real user ID
+    const userId = await getCurrentUserId();
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: userId || 'SYSTEM',
       action: 'Updated Prayer Request',
       entityType: 'PrayerRequest',
       entityId: id,

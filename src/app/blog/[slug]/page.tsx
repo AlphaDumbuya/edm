@@ -95,7 +95,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         title={blogPost.title}
         subtitle={`By ${blogPost.author?.name || 'Unknown Author'} on ${format(new Date(blogPost.createdAt), 'PPP')}`}
         icon={BookOpenText}
-        className={blogPost.imageUrl ? 'sr-only' : ''}
       />
       <article className="prose prose-lg dark:prose-invert mx-auto bg-white/90 dark:bg-black/30 p-6 rounded-lg shadow">
         <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />

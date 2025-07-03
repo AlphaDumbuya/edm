@@ -2,8 +2,18 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { getDonationById } from "@/lib/db/donations";
-import { Donation } from '@prisma/client';
+
+interface Donation {
+  id: string;
+  donorName?: string | null;
+  donorEmail?: string | null;
+  amount: number;
+  date?: string;
+  paymentMethod: string;
+  campaign?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
 
 export default function DonationDetailsPage() {
   const params = useParams();
@@ -21,12 +31,15 @@ export default function DonationDetailsPage() {
         return;
       }
       try {
-        const fetchedDonation = await getDonationById(donationId);
-        if (fetchedDonation) {
-          setDonation(fetchedDonation);
-        } else {
-          setError("Donation not found.");
+        const response = await fetch(`/api/admin/donations/${donationId}`);
+        if (!response.ok) {
+          const data = await response.json();
+          setError(data.error || 'Failed to fetch donation.');
+          setLoading(false);
+          return;
         }
+        const data = await response.json();
+        setDonation(data.donation);
       } catch (err) {
         console.error("Error fetching donation:", err);
         setError("Failed to fetch donation.");
@@ -51,8 +64,7 @@ export default function DonationDetailsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-semibold mb-4">Donation Details: {donation.id}</h1>git
-
+      <h1 className="text-2xl font-semibold mb-4">Donation Details: {donation.id}</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
           <p className="font-semibold">Donor Name:</p>
@@ -64,11 +76,11 @@ export default function DonationDetailsPage() {
         </div>
         <div>
           <p className="font-semibold">Amount:</p>
-          <p>${donation.amount.toFixed(2)}</p>
+          <p>${Number(donation.amount).toFixed(2)}</p>
         </div>
         <div>
           <p className="font-semibold">Date:</p>
-          <p>{donation.date.toDateString()}</p>
+          <p>{donation.date ? new Date(donation.date).toLocaleDateString() : 'N/A'}</p>
         </div>
         <div>
           <p className="font-semibold">Payment Method:</p>
@@ -80,11 +92,11 @@ export default function DonationDetailsPage() {
         </div>
         <div>
           <p className="font-semibold">Created At:</p>
-          <p>{donation.createdAt.toLocaleString()}</p>
+          <p>{donation.createdAt ? new Date(donation.createdAt).toLocaleString() : 'N/A'}</p>
         </div>
         <div>
           <p className="font-semibold">Updated At:</p>
-          <p>{donation.updatedAt.toLocaleString()}</p>
+          <p>{donation.updatedAt ? new Date(donation.updatedAt).toLocaleString() : 'N/A'}</p>
         </div>
       </div>
     </div>
