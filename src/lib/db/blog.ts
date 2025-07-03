@@ -7,9 +7,10 @@ export type AppBlogPost = Omit<BlogPost, 'authorId'> & {
   authorName?: string | null;
 };
 
-export async function getAllBlogPosts(): Promise<AppBlogPost[]> {
+export async function getAllBlogPosts(publishedOnly?: boolean): Promise<AppBlogPost[]> {
   try {
     const blogPosts = await prisma.blogPost.findMany({
+      where: publishedOnly ? { published: true } : undefined,
       select: {
         id: true,
         title: true,
@@ -19,6 +20,7 @@ export async function getAllBlogPosts(): Promise<AppBlogPost[]> {
         createdAt: true,
         updatedAt: true,
         published: true,
+        tags: true,
         author: {
           select: {
             name: true,

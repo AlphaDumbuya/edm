@@ -20,13 +20,9 @@ export function UploadButton({ imageUrl, setImageUrl }: UploadButtonProps) {
     setError(null);
   };
 
+  console.log("UploadButton component rendering");
   return (
     <div className="space-y-2">
-      {/* File upload functionality removed. Add new upload logic here as needed. */}
-      <p className="text-gray-500">
-        Image upload functionality is temporarily disabled. Please re-enable or
-        add new upload logic.
-      </p>
       {imageUrl && (
         <div className="flex flex-col items-start space-y-2">
           <img

@@ -15,7 +15,7 @@ export default async function BlogPage({ searchParams }: { searchParams?: { page
   let totalCount = 0;
   let error = null;
   try {
-    const result = await getAllBlogPosts({ offset: (page - 1) * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE });
+    const result = await getAllBlogPosts({ offset: (page - 1) * ITEMS_PER_PAGE, limit: ITEMS_PER_PAGE, publishedOnly: true });
     blogPosts = result.blogPosts;
     totalCount = result.totalCount;
   } catch (e: any) {

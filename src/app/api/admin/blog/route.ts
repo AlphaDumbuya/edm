@@ -1,12 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createBlogPost, getAllBlogPosts } from '@/lib/db/blog';
+import { createBlogPost, getAllBlogPosts } from '@/lib/db/blogPosts';
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 
 export async function GET(req: NextRequest) {
-  // List all blog posts
+  // List all published blog posts for public API, with pagination
   try {
-    const posts = await getAllBlogPosts();
-    return NextResponse.json({ blogPosts: posts, totalCount: posts.length });
+    const { searchParams } = new URL(req.url);
+    const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
+    const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
+    const { blogPosts, totalCount } = await getAllBlogPosts({ publishedOnly: true, limit, offset, orderBy: { createdAt: 'desc' } });
+    return NextResponse.json({ blogPosts, totalCount });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch blog posts' }, { status: 500 });
   }

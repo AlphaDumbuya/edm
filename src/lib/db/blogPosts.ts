@@ -6,27 +6,20 @@ export async function getAllBlogPosts(options?: {
   offset?: number;
   limit?: number;
   orderBy?: { [key: string]: 'asc' | 'desc' };
+  publishedOnly?: boolean;
 }) {
-  const { search, offset, limit, orderBy } = options || {};
+  const { search, offset, limit, orderBy, publishedOnly } = options || {};
 
-  const where: Prisma.BlogPostWhereInput | undefined = search
-    ? {
-        OR: [
-          {
-            title: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-          {
-            content: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-        ],
-      }
-    : undefined;
+  let where: any = {};
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: 'insensitive' } },
+      { content: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+  if (publishedOnly) {
+    where.published = true;
+  }
 
   try {
     const blogPosts = await prisma.blogPost.findMany({
@@ -44,12 +37,11 @@ export async function getAllBlogPosts(options?: {
         updatedAt: true,
         published: true,
         imageUrl: true,
+        author: { select: { name: true } },
       },
     });
 
-    const totalCount = await prisma.blogPost.count({
-      where,
-    });
+    const totalCount = await prisma.blogPost.count({ where });
 
     return { blogPosts, totalCount };
   } catch (error) {
