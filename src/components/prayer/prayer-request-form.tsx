@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -10,7 +9,8 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, User, ShieldQuestion } from 'lucide-react';
-import type { PrayerRequest } from '@/app/get-involved/prayer/page'; // Adjusted path
+// import PrayerRequest type or interface instead of the component
+import type { PrayerRequestData } from '@/types/prayerRequest';
 import { useToast } from "@/hooks/use-toast";
 import {
   Select,
@@ -21,13 +21,14 @@ import {
 } from "@/components/ui/select"
 
 interface PrayerRequestFormProps {
-  onSubmit: (request: Omit<PrayerRequest, 'id' | 'timestamp'>) => void;
+  onSubmit: (request: Omit<PrayerRequestData, 'id' | 'createdAt' | 'updatedAt' | 'formattedFullDate' | 'status'>) => void;
 }
 
 const prayerCategories = ["Healing", "Guidance", "Family", "Finances", "Protection", "Salvation", "Thanksgiving", "Missions", "EDM Projects", "Other"];
 
 
 export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) {
+  const [email, setEmail] = useState(''); // Add state for email
   const [name, setName] = useState('');
   const [requestText, setRequestText] = useState('');
   const [isPublic, setIsPublic] = useState(true);
@@ -47,15 +48,17 @@ export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) 
     }
     onSubmit({
       name: isAnonymous || !name.trim() ? 'Anonymous' : name,
-      requestText,
+      request: requestText,
       isPublic,
       category: category || undefined,
+      email,
     });
     setName('');
     setRequestText('');
     setIsPublic(true);
     setIsAnonymous(false);
     setCategory('');
+    setEmail('');
     toast({
       title: "Prayer Request Submitted",
       description: "Your prayer request has been received. We are praying for you!",

@@ -27,6 +27,10 @@ model User {
   blogPosts      BlogPost[]
   newsArticles   NewsArticle[]
   auditLogs      AuditLog[]
+
+  // New fields for email verification
+  emailVerified        Boolean   @default(false)
+  emailVerificationToken String?
 }
 
 model Session {
@@ -59,7 +63,8 @@ model BlogPost {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   published Boolean   @default(false)
-  imageUrl String?
+  imageUrl  String?
+  tags      String[]  // New: tags for filtering and search
 }
 
 model Event {

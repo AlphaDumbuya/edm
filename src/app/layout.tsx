@@ -1,19 +1,15 @@
 'use client';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import './globals.css';
 import { AppProviders } from '@/components/layout/app-providers';
-import NavRenderer from '@/components/layout/nav-renderer'; // Import the new NavRenderer component
-import FooterVisibility from '@/components/layout/FooterVisibility'; // Import the new FooterVisibility component
-import { ClientSessionProvider } from '@/components/providers/client-session-provider'; // Import the ClientSessionProvider
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
-});
+import NavRenderer from '@/components/layout/nav-renderer';
+import FooterVisibility from '@/components/layout/FooterVisibility';
+import { ClientSessionProvider } from '@/components/providers/client-session-provider';
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 });
 
@@ -22,16 +18,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
- return (
+  const pathname = usePathname();
+  const isDashboard = pathname?.startsWith('/dashboard');
+  return (
     <html lang='en'>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col h-full`}>
- <ClientSessionProvider>
+      <body className={`${inter.variable} antialiased flex flex-col h-full`}>
+        <ClientSessionProvider>
           <AppProviders>
-            <NavRenderer /> {/* Use the NavRenderer component here */}
+            <NavRenderer />
             <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>{
- <FooterVisibility />}
+              <FooterVisibility />}
           </AppProviders>
- </ClientSessionProvider>
+        </ClientSessionProvider>
       </body>
     </html>
   )
