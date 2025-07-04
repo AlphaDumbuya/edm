@@ -13,7 +13,7 @@ interface DashboardHeaderProps {
 
 export default function DashboardHeader({ isOpen, setIsOpen }: DashboardHeaderProps) {
   return (
-    <header className="lg:hidden flex items-center justify-between p-4 bg-card border-b border-border">
+    <header className="lg:hidden flex items-center justify-between p-4 bg-card border-b border-border shadow-md">
       <Button
         variant="outline"
         size="icon"

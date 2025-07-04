@@ -3,6 +3,7 @@
 import prisma from './prisma';
 import bcrypt from 'bcryptjs';
 import { Prisma } from '@prisma/client';
+import { randomBytes } from 'crypto';
 // @ts-ignore
 type PrismaUser = Prisma.User; // Import User type from Prisma namespace
 
@@ -90,11 +91,14 @@ export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{ u
 export async function createUser(email: string, plainPassword_1: string, name?: string): Promise<PrismaUser | null> {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
+    const emailVerificationToken = randomBytes(32).toString('hex');
     const user = await prisma.user.create({
       data: {
         email,
         hashedPassword,
         name: name || null,
+        emailVerified: false,
+        emailVerificationToken,
       },
     });
     return user;
