@@ -3,11 +3,11 @@
 import ResendVerificationForm from '@/components/auth/resend-verification-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function VerifyPage() {
+function VerifyPageContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const router = useRouter();
@@ -60,48 +60,31 @@ export default function VerifyPage() {
             <div className="text-center">Verifying your email...</div>
           )}
           {status === 'success' && (
-            <div className="text-center text-green-600 font-semibold">
+            <div className="text-center text-green-600 flex flex-col items-center">
+              <CheckCircle className="h-8 w-8 mb-2" />
               {message}
-              <div className="mt-4 text-sm text-gray-500">
-                Redirecting to login in {redirectCountdown} second{redirectCountdown !== 1 ? 's' : ''}...<br />
-                <button
-                  className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-                  onClick={() => router.push('/login')}
-                >
-                  Go to Login
-                </button>
-              </div>
+              <div className="text-xs text-gray-500 mt-2">Redirecting to login in {redirectCountdown}...</div>
             </div>
           )}
-          {status === 'error' && message.includes('already verified') && (
-            <div className="text-center text-green-600 font-semibold">
+          {status === 'error' && (
+            <div className="text-center text-red-600">
               {message}
-              <div className="mt-4 text-sm text-gray-500">
-                Redirecting to login in {redirectCountdown} second{redirectCountdown !== 1 ? 's' : ''}...<br />
-                <button
-                  className="mt-2 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
-                  onClick={() => router.push('/login')}
-                >
-                  Go to Login
-                </button>
-              </div>
+              {message.includes('already verified') && (
+                <div className="text-xs text-gray-500 mt-2">Redirecting to login in {redirectCountdown}...</div>
+              )}
             </div>
           )}
-          {status === 'none' && (
-            <div className="text-center">
-              <CheckCircle className="mx-auto h-12 w-12 text-green-500 mb-2" />
-              <h2 className="text-lg font-semibold mb-2">Check your inbox</h2>
-              <p className="text-muted-foreground mb-4">
-                We have sent a verification link to your email. Please check your inbox and follow the instructions to verify your account.
-              </p>
-              <p className="text-muted-foreground mb-4">
-                Didn&apos;t receive the email? Enter your email below to resend the verification link.
-              </p>
-            </div>
-          )}
-          {(status === 'none' || status === 'error') && <ResendVerificationForm />}
+          {status === 'none' && <ResendVerificationForm />}
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <VerifyPageContent />
+    </Suspense>
   );
 }

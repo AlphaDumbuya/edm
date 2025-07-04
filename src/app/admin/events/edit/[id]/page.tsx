@@ -7,7 +7,7 @@ import { updateEventAction } from "@/app/admin/events/actions";
 import { useRouter } from 'next/navigation';
 
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import '/public/quill.snow.css';
 import { UploadButton } from "@/components/shared/UploadButton";
 
 // Define a type for the PageProps to match Next.js expected type

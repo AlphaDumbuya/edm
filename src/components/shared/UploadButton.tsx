@@ -75,7 +75,6 @@ export function UploadButton({ imageUrl, setImageUrl }: UploadButtonProps) {
 
   console.log("UploadButton component rendering");
   return (
-<<<<<<< HEAD
     <div className="space-y-2">
       {imageUrl && (
         <div className="flex flex-col items-start space-y-2">
@@ -239,25 +238,6 @@ export function UploadButton({ imageUrl, setImageUrl }: UploadButtonProps) {
           </div>
         </div>
       )}
-=======
-    <div>
-      <UploadDropzone<OurFileRouter, "imageUploader">
-        endpoint="imageUploader" // Replace with your specific endpoint if different
-        onUploadProgress={() => setUploading(true)}
-        onClientUploadComplete={(res) => {
-          setUploading(false);
-          console.log("Upload complete:", res);
-          onClientUploadComplete(res);
-        }}
-        onUploadError={(error: Error) => {
-          setUploading(false);
-          console.error("Upload error:", error);
-          // Do something with the error.
-          alert(`ERROR! ${error.message}`);
-        }}
-      />
-      {uploading && <p>Uploading...</p>} {/* Basic indicator */}
->>>>>>> main
     </div>
   );
 }

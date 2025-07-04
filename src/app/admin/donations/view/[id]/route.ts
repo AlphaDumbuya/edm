@@ -12,3 +12,5 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ error: 'Failed to fetch donation.' }, { status: 500 });
   }
 }
+
+// Removed to resolve duplicate route conflict. Only one file should define the /admin/donations/view/[id] route.
