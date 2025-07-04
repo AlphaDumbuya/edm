@@ -59,10 +59,10 @@ export default function SignupForm() {
     } else {
       toast({
         title: 'Signup Successful',
- description: 'Signup successful. Please log in with your new account.',
+        description: 'Signup successful! Please check your email and verify your account before logging in.',
       });
-      // Redirect to signin page
-      router.push('/login');
+      // Redirect to verification info page
+      router.push('/auth/verify');
     }
  };
 

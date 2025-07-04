@@ -29,6 +29,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid credentials. Password incorrect.' }, { status: 401 });
     }
 
+    if (!user.emailVerified) {
+      return NextResponse.json({ error: 'Please verify your email before logging in.' }, { status: 403 });
+    }
+
     // Password is valid, create session
     const sessionPayload = {
       userId: user.id,

@@ -18,7 +18,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
- return (
+  const pathname = usePathname();
+  const isDashboard = pathname?.startsWith('/dashboard');
+  return (
     <html lang='en'>
       <body className={`${inter.variable} antialiased flex flex-col h-full`}>
         <ClientSessionProvider>
