@@ -8,8 +8,6 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { UploadButton } from '@/components/shared/UploadButton';
-import Image from 'next/image';
 import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
 
 // Type for the blog post
@@ -98,6 +96,7 @@ export default function EditBlogPostPage() {
       return { ...prev, [name]: value };
     });
   };
+
 
   const handleImageUrlChange = (url: string | null) => {
     setFormData((prev) => ({
@@ -215,18 +214,6 @@ export default function EditBlogPostPage() {
               />
             )}
           </div>
-        </div>
-
-        <div>
-          <Label htmlFor="imageUrl">Cover Image</Label>
-          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          {imageUrl && (
-            <div className="mt-2">
-              <img src={imageUrl} alt="Cover Preview" className="w-full max-w-xs rounded shadow" />
-              <p className="text-xs text-gray-500 mt-1">Cover image preview</p>
-            </div>
-          )}
-          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
         </div>
 
         <div className="flex items-center space-x-2">

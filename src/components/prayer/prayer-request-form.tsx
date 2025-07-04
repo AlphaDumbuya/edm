@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+const [email, setEmail] = useState(''); // Add state for email
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';

@@ -17,7 +17,6 @@ export default function CreateBlogPostPage() {
   
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
-  const router = useRouter(); // Get the router instance
 
   const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,10 +29,14 @@ export default function CreateBlogPostPage() {
       });
       return;
     }
-    const formData = new FormData(event.currentTarget); // Create FormData from the form
-    formData.append('content', content); // Append content
-    formData.append('published', published.toString()); // Append published status
-    if (imageUrl) formData.append('imageUrl', imageUrl); // Append image URL if available
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('slug', slug || title.toLowerCase().replace(/\s+/g, '-'));
+    formData.append('content', content);
+    formData.append('published', published.toString());
+    if (imageUrl) formData.append('imageUrl', imageUrl);
+
     await createBlogPostAction(formData);
     router.push('/admin/content/blog'); // Use router.push for navigation
   };
@@ -82,7 +85,9 @@ export default function CreateBlogPostPage() {
           <label htmlFor="image" className="block text-sm font-medium text-gray-700">
             Cover Image
           </label>
-          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          <UploadButton
+            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
+          />
         </div>
 
         <div className="mb-4 flex items-center">
@@ -97,11 +102,12 @@ export default function CreateBlogPostPage() {
             Published
           </label>
         </div>
+
         <div>
           <button
             type="submit"
             className="inline-flex justify-center rounded-md border border-transparent bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          > {/* Keeping original button styles */}
+          >
             Create Blog Post
           </button>
         </div>
