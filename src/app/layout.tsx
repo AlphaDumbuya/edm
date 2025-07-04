@@ -1,18 +1,24 @@
 'use client';
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, GeistSans, GeistMono } from 'next/font/google';
 import { usePathname } from 'next/navigation';
 import './globals.css';
 import { AppProviders } from '@/components/layout/app-providers';
 import NavRenderer from '@/components/layout/nav-renderer'; // Import the new NavRenderer component
 import FooterVisibility from '@/components/layout/FooterVisibility'; // Import the new FooterVisibility component
 import { ClientSessionProvider } from '@/components/providers/client-session-provider'; // Import the ClientSessionProvider
-const geistSans = Geist({
+
+const inter = Inter({
+  variable: '--font-inter',
+  subsets: ['latin'],
+});
+
+const geistSans = GeistSans({
   variable: '--font-geist-sans',
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
+const geistMono = GeistMono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
 });
@@ -28,10 +34,9 @@ export default function RootLayout({
  <ClientSessionProvider>
           <AppProviders>
             <NavRenderer /> {/* Use the NavRenderer component here */}
-            <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>{
- <FooterVisibility />}
+            <main className='flex-grow container mx-auto px-4 py-6 sm:py-8'>{children}</main>
           </AppProviders>
- </ClientSessionProvider>
+        </ClientSessionProvider>
       </body>
     </html>
   )
