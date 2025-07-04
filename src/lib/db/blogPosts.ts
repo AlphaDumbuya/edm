@@ -6,27 +6,20 @@ export async function getAllBlogPosts(options?: {
   offset?: number;
   limit?: number;
   orderBy?: { [key: string]: 'asc' | 'desc' };
+  publishedOnly?: boolean;
 }) {
-  const { search, offset, limit, orderBy } = options || {};
+  const { search, offset, limit, orderBy, publishedOnly } = options || {};
 
-  const where: Prisma.BlogPostWhereInput | undefined = search
-    ? {
-        OR: [
-          {
-            title: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-          {
-            content: {
-              contains: search,
-              mode: 'insensitive',
-            },
-          },
-        ],
-      }
-    : undefined;
+  let where: any = {};
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: 'insensitive' } },
+      { content: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+  if (publishedOnly) {
+    where.published = true;
+  }
 
   try {
     const blogPosts = await prisma.blogPost.findMany({
@@ -34,11 +27,21 @@ export async function getAllBlogPosts(options?: {
       skip: offset,
       take: limit,
       orderBy: orderBy || { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        authorId: true,
+        createdAt: true,
+        updatedAt: true,
+        published: true,
+        imageUrl: true,
+        author: { select: { name: true } },
+      },
     });
 
-    const totalCount = await prisma.blogPost.count({
-      where,
-    });
+    const totalCount = await prisma.blogPost.count({ where });
 
     return { blogPosts, totalCount };
   } catch (error) {
@@ -63,7 +66,18 @@ export async function getBlogPostBySlug(slug: string) {
   try {
     const blogPost = await prisma.blogPost.findUnique({
       where: { slug },
-      select: { id: true, title: true, slug: true, content: true, authorId: true, createdAt: true, updatedAt: true, published: true, author: { select: { name: true } } }
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        content: true,
+        authorId: true,
+        createdAt: true,
+        updatedAt: true,
+        published: true,
+        imageUrl: true, // <-- Add imageUrl to the select
+        author: { select: { name: true } },
+      },
     });
     return blogPost;
   } catch (error) {
@@ -81,16 +95,18 @@ export async function getBlogPostBySlug(slug: string) {
 export async function createBlogPost(data: {
   title: string;
   slug: string;
-  content: string; // Add authorId here
+  content: string;
   published: boolean;
   authorId: string;
+  imageUrl?: string;
 }) {
-  const { authorId, ...restOfData } = data;
+  const { authorId, imageUrl, ...restOfData } = data;
   try {
     const newBlogPost = await prisma.blogPost.create({
       data: {
-        ...restOfData, // Include the rest of the data
-        author: { connect: { id: authorId } }, // Use the destructured authorId
+        ...restOfData,
+        imageUrl: imageUrl || null,
+        author: { connect: { id: authorId } },
       },
     });
     return newBlogPost;

@@ -1,4 +1,3 @@
-
 // src/components/donate/donation-form.tsx
 'use client';
 
@@ -10,11 +9,12 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Lock, CreditCard } from 'lucide-react';
 import type Stripe from 'stripe';
+import type { StripeCardElement, StripeElements, StripeCardElementChangeEvent } from '@stripe/stripe-js';
 
 interface DonationFormProps {
   clientSecret: string;
   donationAmount: number; // in cents
-  onSuccessfulPayment: () => void;
+  onSuccessfulPayment: (name: string, email: string) => void;
   onPaymentError: (errorMessage: string) => void;
 }
 
@@ -68,7 +68,7 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
       return;
     }
 
-    const paymentMethodOptions: Stripe.ConfirmCardPaymentData['payment_method'] = {
+    const paymentMethodOptions: any = {
       card: cardElement,
       billing_details: {},
     };
@@ -101,7 +101,7 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
         title: 'Payment Successful!',
         description: `Thank you for your generous donation of $${(donationAmount / 100).toFixed(2)}.`,
       });
-      onSuccessfulPayment();
+      onSuccessfulPayment(name, email);
       setName('');
       setEmail('');
       cardElement.clear();

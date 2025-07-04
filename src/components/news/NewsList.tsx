@@ -89,14 +89,12 @@ export function NewsList() {
                 <h3 className="text-2xl font-bold text-white mb-2">
                   {news[0].title}
                 </h3>
-                <p className="text-white/90 mb-4 line-clamp-2">
-                  {news[0].content.substring(0, 150)}
-                  {news[0].content.length > 150 ? "..." : ""}
-                </p>
+                <div
+                  className="text-white/90 mb-4 line-clamp-2 prose prose-invert prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: news[0].content }}
+                />
                 <Button asChild variant="secondary" className="w-fit">
-                  <Link href={`/news/${news[0].id}`} legacyBehavior>
-                    Read More <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
+                  <Link href={`/news/${news[0].slug}`}>Read More</Link>
                 </Button>
               </div>
             </div>
@@ -129,14 +127,12 @@ export function NewsList() {
                 </span>
               </div>
               <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-              <p className="text-muted-foreground mb-4 line-clamp-2">
-                {item.content.substring(0, 100)}
-                {item.content.length > 100 ? "..." : ""}
-              </p>
+              <div
+                className="text-muted-foreground mb-4 line-clamp-2 prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: item.content }}
+              />
               <Button asChild variant="outline" size="sm" className="w-fit">
-                <Link href={`/news/${item.id}`} legacyBehavior>
-                  Read More <ArrowRight className="ml-1 h-3 w-3" />
-                </Link>
+                <Link href={`/news/${item.slug}`}>Read More</Link>
               </Button>
             </CardContent>
           </Card>

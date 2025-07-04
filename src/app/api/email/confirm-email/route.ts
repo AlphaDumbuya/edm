@@ -1,18 +1,33 @@
+// @ts-ignore
+import nodemailer from 'nodemailer';
 import { NextResponse } from 'next/server';
+import { getVerificationEmailHtml } from '@/emails/verification-template';
 
 export async function POST(request: Request) {
   try {
     const { user, url, token } = await request.json();
 
-    // TODO: Implement your email sending logic here using Brevo or your preferred service.
-    // Use the provided user, url (for verification link), and token if needed.
-    console.log('Sending email verification email...');
-    console.log('User:', user);
-    console.log('Verification URL:', url);
-    console.log('Token:', token);
+    // Setup SMTP transporter using Brevo/Sendinblue credentials from env
+    const transporter = nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: process.env.SMTP_SECURE === 'true',
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
 
-    // Example of a successful response
-    return NextResponse.json({ message: 'Email verification email sent (placeholder)' }, { status: 200 });
+    const html = getVerificationEmailHtml({ name: user.name || user.email, verificationUrl: url });
+
+    await transporter.sendMail({
+      from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.SMTP_USER}>`,
+      to: user.email,
+      subject: 'Verify your EDM account',
+      html,
+    });
+
+    return NextResponse.json({ message: 'Email verification email sent' }, { status: 200 });
   } catch (error) {
     console.error('Error in email verification API route:', error);
     return NextResponse.json({ error: 'Failed to send email verification email' }, { status: 500 });

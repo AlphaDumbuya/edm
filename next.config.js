@@ -1,8 +1,5 @@
-
-import type {NextConfig} from 'next';
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
@@ -65,6 +62,15 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/**',
       },
+<<<<<<< HEAD:next.config.js
+      {
+        protocol: 'https',
+        hostname: 'v3u8qjb7ov.ufs.sh',
+        port: '',
+        pathname: '/**',
+      },
+=======
+>>>>>>> main:next.config.ts
     ],
   },
   experimental: {
@@ -74,4 +80,4 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+module.exports = nextConfig;

@@ -1,17 +1,9 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { updateNewsArticleAction } from '../../actions';
-import { useEffect, useState, useRef } from 'react';
-import { getNewsArticleById } from '@/lib/db/news'; // Assuming this function exists
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-
-// TipTap styles (optional, you can add your own)
-import '@tiptap/core'; // Minimal core styles if needed
-// import '@tiptap/starter-kit'; // Starter kit styles
-
-import { fetchNewsArticleAction } from '../../actions'; // Import the server action
+import { useEffect, useState } from 'react';
+import TipTapEditor from '@/components/TipTapEditor';
+import { UploadButton } from '@/components/shared/UploadButton';
 
 export interface NewsArticle {
   id: string;
@@ -19,12 +11,13 @@ export interface NewsArticle {
   slug: string;
   content: string;
   published: boolean;
+  imageUrl?: string | null;
 }
+
 export default function EditNewsArticlePage() {
   const router = useRouter();
   const params = useParams();
   const newsArticleId = params.id as string;
-  const [newsArticle, setNewsArticle] = useState<NewsArticle | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
@@ -32,47 +25,32 @@ export default function EditNewsArticlePage() {
     slug: '',
     content: '',
     published: false,
+    imageUrl: null as string | null,
   });
-
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      // Add other TipTap extensions you need here (e.g., Heading, Bold, Italic, Link)
-    ],
-    content: formData.content, // Use formData.content for initial content
-    onUpdate: ({ editor }) => {
-      // Update form data with the latest HTML content from the editor
-      setFormData((prevData) => ({ ...prevData, content: editor.getHTML() }));
-    },
-    editorProps: { attributes: { class: 'prose max-w-none border p-4 rounded-md' } }, // Basic styling
-  });
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
 
   useEffect(() => {
-    const fetchNewsArticle = async () => {
+    async function fetchNewsArticle() {
       try {
-        const article = await fetchNewsArticleAction(newsArticleId); // Call the server action
-        if (!article) {
-          setError('News article not found.');
-          return; // Exit the function if article is null
-        }
-        // Initialize form data with fetched content
+        const res = await fetch(`/api/news?id=${newsArticleId}`);
+        if (!res.ok) throw new Error('Failed to fetch news article');
+        const article = await res.json();
         setFormData({
-            title: article.title,
-            slug: article.slug,
-            published: article.published,
-            content: article.content,
-          });
+          title: article.title,
+          slug: article.slug,
+          published: article.published,
+          content: article.content,
+          imageUrl: article.imageUrl || null,
+        });
+        setImageUrl(article.imageUrl || null);
       } catch (err) {
         setError('Failed to fetch news article.');
         console.error(err);
       } finally {
         setLoading(false);
       }
-    };
-
-    if (newsArticleId) {
-      fetchNewsArticle();
     }
+    if (newsArticleId) fetchNewsArticle();
   }, [newsArticleId]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -83,26 +61,46 @@ export default function EditNewsArticlePage() {
     });
   };
 
-  useEffect(() => {
-    if (editor && formData.content !== editor.getHTML()) editor.commands.setContent(formData.content || '');
-  }, [editor, formData.content]); // Sync formData.content with editor content
+  const handleContentChange = (htmlContent: string) => {
+    setFormData((prev) => ({ ...prev, content: htmlContent }));
+  };
+
+  const handleImageUrlChange = (url: string | null) => {
+    setImageUrl(url);
+    setFormData((prev) => ({ ...prev, imageUrl: url }));
+  };
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+    const data = { ...formData, imageUrl };
+    try {
+      const res = await fetch(`/api/news?id=${newsArticleId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Failed to update news article');
+      router.push('/admin/content/news');
+    } catch (err: any) {
+      setError(err.message || 'An error occurred');
+    } finally {
+      setLoading(false);
+    }
+  }
 
   if (loading) {
     return <div>Loading...</div>;
   }
-
   if (error) {
     return <div className="text-red-500">{error}</div>;
-  }
-
-  if (!newsArticle) {
-    return <div>News Article not found.</div>;
   }
 
   return (
     <div className="container mx-auto px-4 py-6">
       <h2 className="text-2xl font-bold mb-6">Edit News Article: {newsArticleId}</h2>
-      <form action={updateNewsArticleAction.bind(null, newsArticleId)} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
           <input
@@ -129,12 +127,7 @@ export default function EditNewsArticlePage() {
         </div>
         <div>
           <label htmlFor="content" className="block text-sm font-medium text-gray-700">Content</label>
-          {/* Use TipTap EditorContent component */}
-          {editor ? (
-            <EditorContent editor={editor} />
-          ) : (
-            (<div>Loading editor...</div>) // Optional loading state for the editor
-          )}
+          <TipTapEditor value={formData.content} onContentChange={handleContentChange} />
         </div>
         <div className="flex items-center">
           <input
@@ -147,12 +140,18 @@ export default function EditNewsArticlePage() {
           />
           <label htmlFor="published" className="ml-2 block text-sm font-medium text-gray-700">Published</label>
         </div>
+        <div>
+          <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700">Cover Image</label>
+          <UploadButton imageUrl={imageUrl} setImageUrl={handleImageUrlChange} />
+        </div>
         <button
           type="submit"
           className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+          disabled={loading}
         >
-          Save Changes
+          {loading ? 'Saving...' : 'Save Changes'}
         </button>
+        {error && <p className="text-xs text-red-500">{error}</p>}
       </form>
     </div>
   );
