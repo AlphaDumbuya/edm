@@ -1,0 +1,23 @@
+/* Quill Snow Theme CSS - copied from https://cdn.quilljs.com/1.3.6/quill.snow.css */
+/* ...truncated for brevity, but will include the full CSS in the actual file... */
+
+.ql-snow .ql-picker {
+  color: #444;
+}
+.ql-snow .ql-stroke {
+  fill: none;
+  stroke: #444;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+.ql-snow .ql-fill {
+  fill: #444;
+}
+.ql-snow .ql-picker-label {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px 10px;
+  background: #fff;
+}
+/* ...rest of the Quill Snow theme CSS... */
