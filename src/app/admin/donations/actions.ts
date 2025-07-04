@@ -2,6 +2,7 @@
 
 import { createDonation, deleteDonation } from "@/lib/db/donations";
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
+import { getCurrentUserId } from '@/lib/auth/session';
 
 export async function createDonationAction(formData: FormData) {
   const donorName = formData.get('donorName') as string | null;
@@ -14,33 +15,30 @@ export async function createDonationAction(formData: FormData) {
 
   if (isNaN(amount)) {
     console.error('Invalid amount provided');
-    // You might want to return an error or throw an exception here
     return { error: 'Invalid amount provided' };
   }
 
   try {
+    const userId = await getCurrentUserId();
     const newDonation = await createDonation({
-      donorName,
-      donorEmail,
+      donorName: donorName || undefined,
+      donorEmail: donorEmail || undefined,
       amount,
       paymentMethod,
-      campaign,
+      campaign: campaign || undefined,
     });
     console.log('Donation created:', newDonation);
 
-    // TODO: Replace 'YOUR_USER_ID' with actual logic to get the current user's ID
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: userId || 'SYSTEM',
       action: 'Created Donation',
       entityType: 'Donation',
       entityId: newDonation.id,
       details: { amount: newDonation.amount, paymentMethod: newDonation.paymentMethod },
     });
-    // You might want to return a success indicator or the created object
     return { success: true, donation: newDonation };
   } catch (error) {
     console.error('Error creating donation:', error);
-    // You might want to return an error or throw an exception here
     return { error: 'Failed to create donation' };
   }
 }
@@ -49,9 +47,10 @@ export async function deleteDonationAction(id: string) {
   try {
     await deleteDonation(id);
 
-    // TODO: Replace 'YOUR_USER_ID' with actual logic to get the current user's ID
+    const userId = await getCurrentUserId();
+    // TODO: Handle case where userId is null or undefined
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: userId || 'SYSTEM',
       action: 'Deleted Donation',
       entityType: 'Donation',
     });

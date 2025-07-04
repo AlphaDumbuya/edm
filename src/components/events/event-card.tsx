@@ -1,4 +1,3 @@
-
 'use client';
 
 import Image from 'next/image';
@@ -18,7 +17,15 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-import { Event } from '@prisma/client';
+// Define the Event type locally to match your event object structure
+interface Event {
+  id: string;
+  title: string;
+  description?: string;
+  date: string;
+  location: string;
+  imageUrl?: string;
+}
 
 interface EventCardProps {
   event: Event;
@@ -43,15 +50,20 @@ export default function EventCard({ event }: EventCardProps) {
     setEmail('');
   };
 
+  if (!event) return null;
+
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
-      <div className="relative w-full h-48 sm:h-56">
-        {event.imageUrl && (
+      <div className="relative w-full h-48 sm:h-56 bg-gray-100">
+        {event.imageUrl ? (
           <Image
             src={event.imageUrl}
             alt={event.title}
             layout="fill"
+            objectFit="cover"
           />
+        ) : (
+          <div className="flex items-center justify-center w-full h-full text-gray-400">No Image</div>
         )}
       </div>
 
@@ -65,12 +77,12 @@ export default function EventCard({ event }: EventCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="p-3 sm:p-4 flex-grow">
-        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{event.description}</p>
- </CardContent>
+        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{event.description || 'No description provided.'}</p>
+      </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="default" className="w-full text-xs sm:text-sm">
+            <Button className="w-full text-xs sm:text-sm">
               <UserPlus className="mr-2 h-4 w-4" /> Sign Up / Details
             </Button>
           </DialogTrigger>
@@ -102,8 +114,8 @@ export default function EventCard({ event }: EventCardProps) {
                 </div>
               </div>
               <DialogFooter>
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)} size="sm">Cancel</Button>
-                <Button type="submit" size="sm">Sign Up</Button>
+                <Button type="button" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
+                <Button type="submit">Sign Up</Button>
               </DialogFooter>
             </form>
           </DialogContent>

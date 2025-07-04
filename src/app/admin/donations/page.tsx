@@ -57,39 +57,36 @@ function DonationsContent() {
   const { data: session } = useSession();
   const userRole = session?.user?.role;
 
+  // Set initial values from URL only on mount
   useEffect(() => {
     if (typeof window === 'undefined') {
-      // Only run this effect on the client side
       return;
     }
     setSearchQuery(searchParamsHook.get('search') || '');
     setStatusFilter(searchParamsHook.get('status') || '');
     setCurrentPage(parseInt(searchParamsHook.get('page') || '1'));
+  }, []);
 
+  useEffect(() => {
     const fetchDonations = async () => {
       setLoading(true);
       setError(null);
       try {
         const offset = (currentPage - 1) * itemsPerPage;
         const params = new URLSearchParams({
- search: searchQuery,
- status: statusFilter,
- offset: offset.toString(),
- limit: itemsPerPage.toString(),
- orderBy: 'createdAt:desc', // Assuming your API route can parse this
+          search: searchQuery,
+          status: statusFilter,
+          offset: offset.toString(),
+          limit: itemsPerPage.toString(),
+          orderBy: 'createdAt:desc',
         });
-
-        const response = await fetch(`/admin/donations/api?${params.toString()}`);
-
+        const response = await fetch(`/api/admin/donations?${params.toString()}`);
         if (!response.ok) {
- throw new Error(`HTTP error! status: ${response.status}`);
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-
         const data: DonationsApiResponse = await response.json();
         setDonations(data.donations);
-        const { donations: fetchedDonations, totalCount } = data;
-
-        setTotalDonations(totalCount);
+        setTotalDonations(data.totalCount);
       } catch (e) {
         console.error("Failed to fetch donations:", e);
         setError("Failed to fetch donations.");
@@ -145,7 +142,7 @@ function DonationsContent() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="hidden md:table-cell">ID</TableHead>
+              <TableHead className="hidden md:table-cell">Donor Name</TableHead>
               <TableHead>Amount</TableHead>
               <TableHead className="hidden md:table-cell">Currency</TableHead>
               <TableHead>Donor Email</TableHead>
@@ -156,15 +153,22 @@ function DonationsContent() {
           <TableBody>
             {donations.map((donation) => (
               <TableRow key={donation.id}>
-                <TableCell>{donation.id}</TableCell>
+                <TableCell>{donation.donorName || 'N/A'}</TableCell>
                 <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell> {/* Amount is always visible */}
-                <TableCell>{donation.currency.toUpperCase()}</TableCell>
+                <TableCell>{donation.currency ? donation.currency.toUpperCase() : 'N/A'}</TableCell>
                 <TableCell>{donation.donorEmail || 'N/A'}</TableCell> {/* Donor Email is always visible */}
                 <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
                 <TableCell>
                     <div className="flex space-x-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/admin/donations/view/${donation.id}`}>View</Link>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => {
+                          setIsDeleteDialogOpen(true);
+                          setPrayerRequestToDelete(donation.id);
+                        }}
+                      >
+                        Delete
                       </Button>
                     </div>
                   </TableCell>
@@ -188,10 +192,27 @@ function DonationsContent() {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               onClick={async () => {
-                // Implement delete functionality here when ready
-                // if (prayerRequestToDelete) {
-                //   await deleteDonationAction(prayerRequestToDelete);
-                // }
+                if (prayerRequestToDelete) {
+                  setLoading(true);
+                  setError(null);
+                  try {
+                    const response = await fetch(`/api/admin/donations/${prayerRequestToDelete}`, {
+                      method: 'DELETE',
+                    });
+                    if (!response.ok) {
+                      const data = await response.json();
+                      setError(data.error || 'Failed to delete donation.');
+                    } else {
+                      setDonations((prev) => prev.filter((d) => d.id !== prayerRequestToDelete));
+                      setIsDeleteDialogOpen(false);
+                      setPrayerRequestToDelete(null);
+                    }
+                  } catch (err) {
+                    setError('Failed to delete donation.');
+                  } finally {
+                    setLoading(false);
+                  }
+                }
               }}
             >
               Delete

@@ -6,22 +6,56 @@ import { useRouter } from "next/navigation";
 import { EditorState, convertToRaw } from 'draft-js';
 import dynamic from 'next/dynamic';
 import draftToHtml from 'draftjs-to-html';
-const Editor = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false });
-// Removed unused formData state and handleChange function as we will use FormData directly with server actions
-export default function CreateEventPage() {const [formData, setFormData] = useState({    title: '',    description: '',    date: '',
- time: '',
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { UploadButton } from "@/components/shared/UploadButton";
+const Editor: any = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false });
+
+export default function CreateEventPage() {
+  const [formData, setFormData] = useState<{
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+  }>({
+    title: '',
+    description: '',
+    date: '',
+    time: '',
     location: '',
   });
+  const [userId, setUserId] = useState('');
+  const [editorState, setEditorState] = useState<any>(EditorState.createEmpty());
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const router = useRouter();
+  useEffect(() => {
+    // Retrieve userId from localStorage on mount
+    if (typeof window !== 'undefined') {
+      const storedUserId = localStorage.getItem('userId');
+      if (storedUserId) setUserId(storedUserId);
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prevState => ({
+    setFormData((prevState) => ({
       ...prevState,
       [name]: value,
     }));
-  };const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  };
+
+  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault(); // Prevent default form submission
 
+    if (!userId || userId === 'mockUserId') {
+      alert('User not authenticated. Please log in with a real account and reload the page.');
+      return;
+    }
+
+    console.log('Submitting event with userId:', userId); // Debug log
+
     const data = new FormData();
+    data.append('userId', userId);
     data.append('title', formData.title);
     data.append('date', formData.date);
     data.append('time', formData.time);
@@ -31,26 +65,18 @@ export default function CreateEventPage() {const [formData, setFormData] = useSt
       const rawContentState = convertToRaw(editorState.getCurrentContent());
       // Convert editor state to HTML and append to FormData
       data.append('description', draftToHtml(rawContentState));
-      await createEventAction(data);router.push('/admin/events');
+      data.append('imageUrl', imageUrl || '');
+      await createEventAction(data);
+      router.push('/admin/events');
     } catch (error) {
       console.error('Error creating event:', error);
       // Optionally, display an error message to the user
     }
   };
 
-
-  const [editorState, setEditorState] = useState(EditorState.createEmpty());
-  const router = useRouter();
-
-  useEffect(() => {
-    // Import CSS on the client side
-    import('react-draft-wysiwyg/dist/react-draft-wysiwyg.css' as any);
-  }, []);
-
-  const handleEditorStateChange = (newEditorState: EditorState) => {
+  const handleEditorStateChange = (newEditorState: any) => {
     setEditorState(newEditorState);
   };
-
 
   // Define modules for the rich text editor
   const modules = {
@@ -66,86 +92,112 @@ export default function CreateEventPage() {const [formData, setFormData] = useSt
   };
 
   return (
-    <div className="container mx-auto py-10">
-      <h1 className="text-2xl font-semibold mb-6">Create New Event</h1>
+    <div className="container mx-auto py-6 px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 max-w-2xl">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 sm:mb-6 text-center">Create New Event</h1>
 
-      <form onSubmit={handleFormSubmit} className="space-y-4">
+      { (!userId || userId === 'mockUserId') && (
+        <div className="mb-4 p-3 sm:p-4 bg-yellow-100 text-yellow-800 rounded text-center text-sm sm:text-base">
+          User not authenticated. Please log in with a real account and reload the page.<br />
+          <span className="text-xs">Current userId: {userId || 'none'}</span>
+        </div>
+      )}
+
+      <form onSubmit={handleFormSubmit} className="space-y-4 bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8" encType="multipart/form-data">
+        {/* Add hidden userId input for server action authentication */}
+        <input type="hidden" name="userId" value={userId} />
+        {/* File input for event image */}
         <div>
-          {/* Retained basic input fields for simplicity with FormData */}
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="image" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            Event Image (optional)
+          </label>
+          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          {imageUrl && (
+            <div className="mt-2">
+              <img src={imageUrl} alt="Event Preview" className="w-full max-w-xs rounded shadow" />
+              <p className="text-xs text-gray-500 mt-1">Event image preview</p>
+            </div>
+          )}
+          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
+        </div>
+
+        {/* Retained basic input fields for simplicity with FormData */}
+        <div>
+          <label htmlFor="title" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Title
           </label>
           <input
             type="text"
-            id="title" // Ensure ID matches htmlFor
+            id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
             required
           />
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Description
           </label>
+          {/* @ts-ignore */}
           <Editor
-            editorState={editorState}            
+            editorState={editorState}
             onEditorStateChange={handleEditorStateChange}
-            editorClassName="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            editorClassName="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 min-h-[120px] sm:min-h-[160px]"
           />
         </div>
 
-        <div>
-          <label htmlFor="date" className="block text-sm font-medium text-gray-700">
-            Date
-          </label>
-          <input
-            type="date"
-            id="date" // Ensure ID matches htmlFor
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
+        <div className="flex flex-col sm:flex-row gap-4">
+          <div className="flex-1">
+            <label htmlFor="date" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+              Date
+            </label>
+            <input
+              type="date"
+              id="date"
+              name="date"
+              value={formData.date}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
+              required
+            />
+          </div>
+          <div className="flex-1">
+            <label htmlFor="time" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+              Time
+            </label>
+            <input
+              type="time"
+              id="time"
+              name="time"
+              value={formData.time}
+              onChange={handleChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
+              required
+            />
+          </div>
         </div>
 
         <div>
-          <label htmlFor="time" className="block text-sm font-medium text-gray-700">
-            Time
-          </label>
-          <input
-            type="time"
-            id="time" // Ensure ID matches htmlFor
-            name="time"
-            value={formData.time}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
-            required
-          />
-        </div>
-
-        <div>
-          <label htmlFor="location" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="location" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
             Location
           </label>
           <input
             type="text"
-            id="location" // Ensure ID matches htmlFor
+            id="location"
             name="location"
             value={formData.location}
             onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
             required
           />
         </div>
 
-        <div>
+        <div className="flex justify-center">
           <button
             type="submit"
-            className="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full sm:w-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs sm:text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
           >
             Create Event
           </button>

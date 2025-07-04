@@ -1,4 +1,3 @@
-
 // src/components/donate/donation-form-wrapper.tsx
 'use client';
 
@@ -91,9 +90,25 @@ export default function DonationFormWrapper() {
     }
   };
 
-  const handleSuccessfulPayment = () => {
+  const handleSuccessfulPayment = async (donorName?: string, donorEmail?: string) => {
     setPaymentSuccessful(true);
     setClientSecret(null); // Invalidate client secret after successful payment
+    // Save donation record to backend
+    try {
+      await fetch('/api/donations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          amount: (currentAmount / 100).toFixed(2),
+          donorName: donorName || undefined,
+          donorEmail: donorEmail || undefined,
+          paymentMethod: 'stripe',
+        }),
+      });
+    } catch (err) {
+      // Optionally show a toast or log error
+      console.error('Failed to save donation record:', err);
+    }
   };
   
   const handlePaymentError = (errorMessage: string) => {
@@ -130,7 +145,7 @@ export default function DonationFormWrapper() {
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-4 sm:space-y-6 max-h-[80vh] overflow-y-auto">
       <div>
         <Label className="text-base sm:text-lg font-semibold text-foreground mb-2 sm:mb-3 block">Choose Donation Amount</Label>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mb-3 sm:mb-4">

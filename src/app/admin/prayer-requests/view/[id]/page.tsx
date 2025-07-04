@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-// Remove the direct import of getPrayerRequestById from '@/lib/db/prayerRequests'
-import { updatePrayerRequestAction } from '@/app/admin/prayer-requests/actions';
+import { updatePrayerRequestAction, getPrayerRequestByIdAction } from '@/app/admin/prayer-requests/actions';
 import dynamic from 'next/dynamic';
 interface PrayerRequest {
   id: string;
@@ -29,10 +28,12 @@ export default function ViewPrayerRequestPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentStatus, setCurrentStatus] = useState<string>('');
+  const [success, setSuccess] = useState<string | null>(null);
 
   
   useEffect(() => {
     async function fetchPrayerRequest() {
+      console.log('Request ID:', requestId); // Debug: log the requestId
       if (typeof requestId !== 'string') {
         setLoading(false); // Handle case where requestId is not a string
         return; // Exit if requestId is not a string
@@ -42,6 +43,7 @@ export default function ViewPrayerRequestPage() {
       try {
         // Call the server action instead of the database function directly
         const result = await getPrayerRequestByIdAction(requestId);
+        console.log('Fetch result:', result); // Debug: log the fetch result
 
         if (result.success && result.data) {
           setPrayerRequest(result.data);
@@ -65,18 +67,37 @@ export default function ViewPrayerRequestPage() {
     const formData = new FormData(event.currentTarget);
     if (typeof requestId !== 'string') {
       console.error("Request ID is missing or invalid.");
-      // Optionally set an error state or show a message to the user
       return;
     }
 
     try {
       const result = await updatePrayerRequestAction(requestId, formData);
-      console.log('Update result:', result); // Handle the result as needed (e.g., show success/error)
+      console.log('Update result:', result);
+      if (result.success) {
+        setSuccess('Prayer request updated successfully.');
+        // Refresh the prayer request data
+        const refreshed = await getPrayerRequestByIdAction(requestId);
+        if (refreshed.success && refreshed.data) {
+          setPrayerRequest(refreshed.data);
+          setCurrentStatus(refreshed.data.status);
+        }
+      } else {
+        setError(result.error || 'Failed to update prayer request.');
+      }
     } catch (error) {
       console.error('Error updating prayer request:', error);
-      // Handle error, e.g., show an error message to the user
+      setError('Failed to update prayer request.');
     }
   };
+
+  useEffect(() => {
+    if (success) {
+      // Show the success message but keep the form and details visible
+      // Optionally, auto-hide the message after a few seconds
+      const timer = setTimeout(() => setSuccess(null), 3000);
+      return () => clearTimeout(timer); // Cleanup the timer on unmount
+    }
+  }, [success]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -92,15 +113,14 @@ export default function ViewPrayerRequestPage() {
 
   return (
     <div>
+      {success && <div className="text-green-600 mb-4">{success}</div>}
       <h1 className="text-2xl font-semibold mb-4">Prayer Request Details: {prayerRequest.id}</h1>
- 
       <div className="mb-4">
         <h2 className="text-xl font-medium">{prayerRequest.title}</h2>
-        {/* Replace p with ReactQuill */}
         <ReactQuill
           value={prayerRequest.body}
-          readOnly={true} // Set read-only mode
-          theme="snow" // Use the 'snow' theme or 'bubble'
+          readOnly={true}
+          theme="snow"
           className="text-gray-700"
         />
         {prayerRequest.authorName && <p><strong>By:</strong> {prayerRequest.authorName}</p>}
