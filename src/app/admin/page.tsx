@@ -1,11 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
-
-interface OverviewData {
-  totalDonations: string;
-  totalUsers: string;
-  recentPrayerRequests: string;
-}
+import { getAllBlogPosts, getBlogPostCount } from '@/lib/db/blogPosts';
+import { getDonationCount, getAllDonations } from '@/lib/db/donations';
+import { getUserCount, getAllUsers } from '@/lib/db/users';
+import { getPrayerRequestCount, getAllPrayerRequests } from '@/lib/db/prayerRequests';
 
 interface Activity {
   id: number;
@@ -19,14 +17,23 @@ interface QuickLink {
 }
 
 export default async function AdminDashboardPage() {
-  // Placeholder data - replace with actual data fetching in a real application
-  const overviewData: OverviewData = { totalDonations: '$10,500', totalUsers: '150', recentPrayerRequests: '25' };
+  // Fetch real counts
+  const [totalDonations, totalUsers, recentPrayerRequests] = await Promise.all([
+    getDonationCount(),
+    getUserCount(),
+    getPrayerRequestCount(),
+  ]);
+  const totalBlogPosts = await getBlogPostCount();
 
-  const recentActivity: Activity[] = [
-    { id: 1, description: 'New donation received from John Doe' },
-    { id: 2, description: 'User Jane Smith registered' },
-    { id: 3, description: 'Prayer request added by a user' },
-  ];
+  // Fetch recent activity
+  const [donationsRes, usersRes, prayerRes] = await Promise.all([
+    getAllDonations({ limit: 1, orderBy: { createdAt: 'desc' } }),
+    getAllUsers({ limit: 1, orderBy: { createdAt: 'desc' } }),
+    getAllPrayerRequests({ limit: 1, orderBy: { createdAt: 'desc' } }),
+  ]);
+  const latestDonation = donationsRes.donations[0];
+  const latestUser = usersRes.users[0];
+  const latestPrayer = prayerRes.prayerRequests[0];
 
   const quickLinks: QuickLink[] = [
     { id: 1, name: 'Manage Donations', href: '/admin/donations' },
@@ -45,15 +52,19 @@ export default async function AdminDashboardPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="bg-gray-100 p-4 rounded-md">
               <h3 className="text-lg font-medium">Total Donations</h3>
-              <p className="text-2xl font-bold text-blue-600">{overviewData.totalDonations}</p>
+              <p className="text-2xl font-bold text-blue-600">{totalDonations}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-md">
               <h3 className="text-lg font-medium">Total Users</h3>
-              <p className="text-2xl font-bold text-green-600">{overviewData.totalUsers}</p>
+              <p className="text-2xl font-bold text-green-600">{totalUsers}</p>
             </div>
             <div className="bg-gray-100 p-4 rounded-md">
               <h3 className="text-lg font-medium">Recent Prayer Requests</h3>
-              <p className="text-2xl font-bold text-purple-600">{overviewData.recentPrayerRequests}</p>
+              <p className="text-2xl font-bold text-purple-600">{recentPrayerRequests}</p>
+            </div>
+            <div className="bg-gray-100 p-4 rounded-md">
+              <h3 className="text-lg font-medium">Total Blog Posts</h3>
+              <p className="text-2xl font-bold text-indigo-600">{totalBlogPosts}</p>
             </div>
           </div>
         </div>
@@ -61,23 +72,21 @@ export default async function AdminDashboardPage() {
         {/* Recent Activity Section (Placeholder) */}
         <div className="bg-white p-6 rounded-lg shadow-md">
           <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
-          <ul className="space-y-3">
-            {recentActivity.map((activity) => (
-              <li key={activity.id} className="mb-2 last:mb-0">
-                <div className="text-sm text-gray-700">
-                  {activity.description}
-                </div>
-              </li>
-            ))}
+          <ul className="space-y-2 text-sm">
+            {latestDonation && (
+              <li>New donation received from {latestDonation.donorName || 'Anonymous'} (${latestDonation.amount})</li>
+            )}
+            {latestUser && (
+              <li>User {latestUser.name || latestUser.email} registered</li>
+            )}
+            {latestPrayer && (
+              <li>Prayer request added by {latestPrayer.authorName || 'a user'}</li>
+            )}
+            {!latestDonation && !latestUser && !latestPrayer && (
+              <li className="text-muted-foreground">No recent activity.</li>
+            )}
           </ul>
         </div>
-
-        {/* Another Placeholder Section (Optional) */}
-        {/* You can add more sections here as needed */}
-        {/* <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-xl font-semibold mb-4">Another Section</h2>
-          <p>Content for another section...</p>
-        </div> */}
 
         {/* Quick Links Section (Placeholder) */}
         <div className="lg:col-span-3 bg-white p-6 rounded-lg shadow-md">

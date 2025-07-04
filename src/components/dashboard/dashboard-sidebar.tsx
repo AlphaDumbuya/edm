@@ -65,59 +65,87 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
   );
   console.log('User object:', user);
   console.log('User role:', user?.role);
+  // Overlay for mobile
   return (
-    <aside
-      className={cn(
-        "fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-sidebar-border flex-col p-4 space-y-6 transform transition-transform duration-300 ease-in-out lg:static lg:translate-x-0 lg:flex", // Ensure lg:flex is always present
-        isOpen ? 'translate-x-0 flex' : '-translate-x-full hidden lg:flex'
+    <>
+      {/* Overlay for mobile */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm lg:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-label="Close sidebar overlay"
+        />
       )}
-      ref={sidebarRef}
-    >
-      <div className="text-center py-4">
-        <Avatar className="h-20 w-20 mx-auto mb-2 border-2 border-primary">
-          <AvatarImage src={user?.photoURL || undefined} alt={user?.name || user?.email || 'User'} data-ai-hint="user avatar placeholder" />
-          <AvatarFallback>{user ? getInitials(user.name, user.email) : 'U'}</AvatarFallback>
-        </Avatar>
-        <h2 className="text-lg font-semibold text-sidebar-foreground truncate">{user?.name || user?.email || 'User'}</h2>
-        <p className="text-xs text-muted-foreground">Member</p>
-      </div>
-      <nav>
-            <ul className="space-y-2">
-              {filteredNavItems.map(item => (
-                <li key={item.href}>
-                  <Link
-                    onClick={() => {
-                      if (window.innerWidth < 1024) { // Check for small screens
-                        setIsOpen(false);
-                      }
-                    }}
-                    href={item.href}
-                    className={cn(
-                      buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
-                      'w-full justify-start text-left', // Ensure text aligns left
-                      pathname === item.href
-                        ? 'bg-sidebar-primary text-sidebar-primary-foreground hover:bg-sidebar-primary/90'
-                        : 'hover:bg-sidebar-accent hover:text-sidebar-accent-foreground text-sidebar-foreground'
-                    )}
-                    legacyBehavior>
+      <aside
+        className={cn(
+          // On mobile: fixed, z-30, slide-in, top-[64px]; On desktop: sticky, static, z-auto
+          "left-0 w-64 bg-card border-r border-sidebar-border flex-col p-4 space-y-6 transition-transform duration-300 ease-in-out fixed top-[64px] z-30 lg:static lg:top-0 lg:z-auto lg:h-[calc(100vh-0px)] lg:flex",
+          isOpen ? 'translate-x-0 flex' : '-translate-x-full hidden lg:translate-x-0 lg:flex'
+        )}
+        ref={sidebarRef}
+        aria-label="Dashboard sidebar"
+        style={{ maxHeight: 'calc(100vh - 64px)', overflowY: 'auto' }}
+      >
+        {/* Close button for mobile */}
+        <div className="flex items-center justify-between lg:hidden mb-2">
+          <span className="font-bold text-lg text-primary">Menu</span>
+          <button
+            className="p-2 rounded hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary"
+            onClick={() => setIsOpen(false)}
+            aria-label="Close sidebar"
+          >
+            <XIcon className="h-6 w-6" />
+          </button>
+        </div>
+        <div className="text-center py-4">
+          <Avatar className="h-20 w-20 mx-auto mb-2 border-2 border-primary">
+            <AvatarImage src={user?.photoURL || undefined} alt={user?.name || user?.email || 'User'} />
+            <AvatarFallback>{user ? getInitials(user.name, user.email) : 'U'}</AvatarFallback>
+          </Avatar>
+          <h2 className="text-lg font-semibold text-sidebar-foreground truncate">{user?.name || user?.email || 'User'}</h2>
+          <p className="text-xs text-muted-foreground">Member</p>
+        </div>
+        <nav>
+          <ul className="space-y-2">
+            {filteredNavItems.map(item => (
+              <li key={item.href} className="cursor-pointer">
+                <Link
+                  onClick={() => {
+                    if (window.innerWidth < 1024) {
+                      setIsOpen(false);
+                    }
+                  }}
+                  href={item.href}
+                  className={cn(
+                    buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
+                    'w-full flex items-center gap-2 justify-start text-left px-4 py-2 rounded-lg transition-colors',
+                    pathname === item.href
+                      ? 'bg-primary text-white shadow-md'
+                      : 'hover:bg-muted hover:text-primary text-sidebar-foreground'
+                  )}
+                  legacyBehavior>
+                  <span className="flex items-center gap-2 cursor-pointer">
+                    {item.icon && <item.icon className="h-5 w-5" />}
                     {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-      <div>
-        <Button
-          variant="outline"
-          className="w-full justify-start hover:bg-destructive/10 hover:text-destructive border-sidebar-border text-sidebar-foreground"
-          onClick={signOutAuth}
-          disabled={authContextLoading}
-        >
-          <LogOut className="mr-2 h-5 w-5" />
-          Log Out
-        </Button>
-      </div>
-    </aside>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <div className="mt-auto pt-4">
+          <Button
+            variant="outline"
+            className="w-full justify-start hover:bg-destructive/10 hover:text-destructive border-sidebar-border text-sidebar-foreground"
+            onClick={signOutAuth}
+            disabled={authContextLoading}
+          >
+            <LogOut className="mr-2 h-5 w-5" />
+            Log Out
+          </Button>
+        </div>
+      </aside>
+    </>
   );
 }
 

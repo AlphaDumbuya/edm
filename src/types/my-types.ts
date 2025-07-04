@@ -9,6 +9,7 @@ export type FileUploadThing = {
 };
 
 export type NewsExt = {
+  slug: any;
   id: string;
   title: string;
   content: string;

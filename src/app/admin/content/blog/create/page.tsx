@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { createBlogPostAction } from './actions';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { useAuth } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
@@ -13,11 +12,11 @@ export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
   const [published, setPublished] = useState(false);
-  const [content, setContent] = useState('');
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const [content, setContent] = useState(''); // Add state for content
+  const [imageUrl, setImageUrl] = useState<string | null>(null); // State for image URL
+  
+  const { user } = useAuth(); // Get the user from the useAuth hook
+  const { toast } = useToast(); // Get the toast function
 
   const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,7 +38,7 @@ export default function CreateBlogPostPage() {
     if (imageUrl) formData.append('imageUrl', imageUrl);
 
     await createBlogPostAction(formData);
-    redirect('/admin/content/blog');
+    router.push('/admin/content/blog'); // Use router.push for navigation
   };
 
   return (
@@ -87,9 +86,7 @@ export default function CreateBlogPostPage() {
             Cover Image
           </label>
           <UploadButton
-            onClientUploadComplete={(files) =>
-              setImageUrl(files?.[0]?.url || null)
-            }
+            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
           />
         </div>
 
