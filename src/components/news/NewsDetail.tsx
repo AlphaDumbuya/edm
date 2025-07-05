@@ -82,9 +82,11 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
           The news article you're looking for could not be found.
         </p>
         <Button asChild>
-          <Link href="/news" legacyBehavior>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to News
+          <Link href="/news">
+            <span>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to News
+            </span>
           </Link>
         </Button>
       </div>
@@ -96,9 +98,11 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
       {/* Back button */}
       <div className="mb-6">
         <Button asChild variant="outline" size="sm">
-          <Link href="/news" legacyBehavior>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            Back to News
+          <Link href="/news">
+            <span>
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to News
+            </span>
           </Link>
         </Button>
       </div>

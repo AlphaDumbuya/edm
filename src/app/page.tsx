@@ -67,9 +67,9 @@ export default async function Home() {
 	}
 
 	return (
-		<div className="space-y-12 md:space-y-16">
-			{/* Hero Section */}
-			<section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-12 md:py-20 lg:py-28 rounded-lg shadow-lg overflow-hidden">
+        <div className="space-y-12 md:space-y-16">
+            {/* Hero Section */}
+            <section className="relative bg-gradient-to-r from-primary/10 via-background to-secondary/10 py-12 md:py-20 lg:py-28 rounded-lg shadow-lg overflow-hidden">
 				<div className="absolute inset-0">
 					<Image
 						src="https://images.unsplash.com/photo-1572061486195-d811e12d0a10?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NTB8fGNocmlzdGlhbml0eXxlbnwwfHwwfHw%3D"
@@ -92,8 +92,8 @@ export default async function Home() {
 					<div className="flex justify-center items-center space-x-3">
 						<Button asChild>
 							<Link
-								href="/about"
-								className={cn(
+                                href="/about"
+                                className={cn(
 									buttonVariants({ variant: 'default', size: 'sm' }),
 									'flex items-center gap-1 text-xs sm:text-sm md:text-base whitespace-nowrap'
 								)}
@@ -102,7 +102,7 @@ export default async function Home() {
 								<ArrowRight className="ml-1 h-4 w-4" />
 							</Link>
 						</Button>
-						<Link href="/donate" legacyBehavior>
+						<Link href="/donate">
 							<Button
 								size="sm"
 								className="bg-transparent border text-primary-foreground flex items-center gap-1 whitespace-nowrap"
@@ -114,8 +114,8 @@ export default async function Home() {
 					</div>
 				</div>
 			</section>
-			{/* Core Pillars */}
-			<section>
+            {/* Core Pillars */}
+            <section>
 				<SectionTitle
 					title="Our Three Pillars"
 					subtitle="The foundation of EDM's ministry in Sierra Leone"
@@ -143,16 +143,14 @@ export default async function Home() {
 								<Link
 									href={href}
 									className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
-									legacyBehavior
 								>
 									<span
 										className={cn(
 											buttonVariants({ variant: 'link' }),
-											'text-sm whitespace-nowrap'
+											'text-sm flex items-center gap-1'
 										)}
 									>
-										Learn More{' '}
-										<ArrowRight className="ml-1 h-3 w-3" />
+										Learn More <ArrowRight className="ml-2 h-4 w-4" />
 									</span>
 								</Link>
 							</CardFooter>
@@ -160,8 +158,8 @@ export default async function Home() {
 					))}
 				</div>
 			</section>
-			{/* Mission Statement & Motto */}
-			<section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
+            {/* Mission Statement & Motto */}
+            <section className="bg-primary/5 p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
 				<div className="text-center max-w-3xl mx-auto">
 					<SectionTitle title="Our Guiding Words" />
 					<div className="mb-6 md:mb-8">
@@ -182,8 +180,8 @@ export default async function Home() {
 					</div>
 				</div>
 			</section>
-			{/* Vision */}
-			<section>
+            {/* Vision */}
+            <section>
 				<SectionTitle
 					title="Our Vision for EDM"
 					subtitle="Building a legacy of faith and service"
@@ -240,8 +238,8 @@ export default async function Home() {
 					</Card>
 				</div>
 			</section>
-			{/* News Section */}
-			<section>
+            {/* News Section */}
+            <section>
 				<SectionTitle
 					title="News & Updates"
 					subtitle="Stay informed with the latest from EDM"
@@ -271,8 +269,8 @@ export default async function Home() {
 					)}
 				</div>
 			</section>
-			{/* Blog Section */}
-			<section>
+            {/* Blog Section */}
+            <section>
 				<SectionTitle
 					title="Latest Blog Posts"
 					subtitle="Insights and stories from the EDM community"
@@ -300,6 +298,6 @@ export default async function Home() {
 					)}
 				</div>
 			</section>
-		</div>
-	);
+        </div>
+    );
 }

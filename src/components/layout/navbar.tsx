@@ -47,28 +47,24 @@ interface ListItemProps {
   href: string;
 }
 
-const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
-  ({ className, title, children, href, ...props }, ref) => {
-    return (
-      <li>
-        <Link
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          href={href}
-          {...props}
-          legacyBehavior>
-          {/* Wrap children in a single span */}
-          <span>
- <div className="text-sm font-medium leading-none">{title}</div>
- <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
-          </span>
-        </Link>
-      </li>
-    );
-  }
+const ListItem = ({ className, title, children, href, ...props }: ListItemProps) => (
+  <li>
+    <Link
+      className={cn(
+        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+        className
+      )}
+      href={href}
+      {...props}
+    >
+      <span>
+        <div className="text-sm font-medium leading-none">{title}</div>
+        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+          {Array.isArray(children) ? <>{children}</> : children}
+        </p>
+      </span>
+    </Link>
+  </li>
 );
 ListItem.displayName = "ListItem";
 
@@ -179,17 +175,17 @@ export default function Navbar() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <>
- <div className="h-8 w-8 md:h-10 md:w-10 relative">
- <Image
- src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
- alt="EDM Logo"
- fill
- className="object-contain"
- />
- </div>
-          </>
-          <span className="text-xl font-bold">EDM</span>
+          <span className="flex items-center gap-2">
+            <div className="h-8 w-8 md:h-10 md:w-10 relative">
+              <Image
+                src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+                alt="EDM Logo"
+                fill
+                className="object-contain"
+              />
+            </div>
+            <span className="text-xl font-bold">EDM</span>
+          </span>
         </Link>
 
         <NavigationMenu className="hidden lg:flex">
@@ -217,9 +213,11 @@ export default function Navbar() {
                     <Link
                       href={item.href}
                       className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
->
-                      {isClient && item.icon && <item.icon size={18} />}{item.title}
-
+                    >
+                      <span className="flex items-center gap-1">
+                        {isClient && item.icon && <item.icon size={18} />}
+                        {item.title}
+                      </span>
                     </Link>
                   </NavigationMenuLink>
                 ) : null}
@@ -268,10 +266,10 @@ export default function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/login" legacyBehavior>
+              <Link href="/login">
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link href="/auth/signup" legacyBehavior>
+              <Link href="/auth/signup">
                 <Button variant="default">Sign Up</Button>
               </Link>
             </div>
@@ -297,10 +295,10 @@ export default function Navbar() {
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    <>
- <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
- <span className="text-lg font-bold">EDM</span>
-                    </>
+                    <span className="flex items-center gap-2">
+                      <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                      <span className="text-lg font-bold">EDM</span>
+                    </span>
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -312,10 +310,11 @@ export default function Navbar() {
                         href={item.href}
                         className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
                         onClick={() => setMobileMenuOpen(false)}
->
-                        <div className="flex items-center gap-2">
- {isClient && item.icon && <item.icon size={20} />}{item.title}
-                        </div>
+                      >
+                        <span className="flex items-center gap-2">
+                          {isClient && item.icon && <item.icon size={20} />}
+                          {item.title}
+                        </span>
                       </Link>
                     ) : (
                       <>
@@ -331,11 +330,11 @@ export default function Navbar() {
                                 className="text-base font-medium hover:text-primary transition-colors"
                                 onClick={() => setMobileMenuOpen(false)}
                               >
-                                {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
-                                {link.title}
+                                <span className="flex items-center">
+                                  {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
+                                  {link.title}
+                                </span>
                               </Link>
-
-                              {/* Check if link.links exist before rendering the nested ul */}
                               {link.links && (
                                 <ul className="ml-4 space-y-2 border-l pl-4 mt-2">
                                   {link.links.map((subLink, k) => (
@@ -362,16 +361,17 @@ export default function Navbar() {
               {/* Authentication Buttons for Mobile */}
               <div className="flex flex-col gap-4 mt-6">
                 {!loading && typedUser ? (
-                  // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
-                  <Link href="/dashboard" legacyBehavior>
+                  <Link href="/dashboard">
                     <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
                   </Link>
                 ) : (
                   <>
-                    <Link href="/login" legacyBehavior>
+                    <Link href="/login">
                       <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
                     </Link>
-                    <Link href="/auth/signup" legacyBehavior><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
+                    <Link href="/auth/signup">
+                      <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button>
+                    </Link>
                   </>
                 )}
               </div>
