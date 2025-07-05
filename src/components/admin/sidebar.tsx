@@ -51,14 +51,18 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
                   <ul className="ml-4 mt-1">
                     {item.nested.map((nestedItem) => (
                       <li key={nestedItem.name} className="mb-1">
-                        <Link
-                          href={nestedItem.href}
-                          className={`block py-1 px-3 text-sm rounded cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 whitespace-nowrap truncate
-                            ${pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
-                          onClick={onLinkClick}
-                        >
-                          {nestedItem.name}
-                        </Link>
+                        {typeof nestedItem.href === 'string' && nestedItem.href.trim() !== '' ? (
+                          <Link
+                            href={nestedItem.href}
+                            className={`block py-1 px-3 text-sm rounded cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 whitespace-nowrap truncate
+                              ${(pathname ?? '').startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
+                            onClick={onLinkClick}
+                          >
+                            {nestedItem.name}
+                          </Link>
+                        ) : (
+                          <span className="block py-1 px-3 text-sm text-gray-400 cursor-not-allowed">{nestedItem.name}</span>
+                        )}
                       </li>
                     ))}
                   </ul>

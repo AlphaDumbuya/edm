@@ -3,11 +3,11 @@
 import ResendVerificationForm from '@/components/auth/resend-verification-form';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, Mail } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import React from 'react';
 
-export default function VerifyPage() {
+function VerifyPageInner() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
   const router = useRouter();
@@ -103,5 +103,13 @@ export default function VerifyPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<div>Loading verification page...</div>}>
+      <VerifyPageInner />
+    </Suspense>
   );
 }
