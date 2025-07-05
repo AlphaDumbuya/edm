@@ -54,7 +54,7 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
                         <Link
                           href={nestedItem.href}
                           className={`block py-1 px-3 text-sm rounded cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 whitespace-nowrap truncate
-                            ${pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
+                            ${(pathname ?? '').startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
                           onClick={onLinkClick}
                           legacyBehavior>
                           {nestedItem.name}
