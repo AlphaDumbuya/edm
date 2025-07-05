@@ -1,4 +1,3 @@
-
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -50,7 +49,7 @@ export default function IndividualPartnershipPage() {
               Commit to praying for our missionaries in Sierra Leone, projects in both regions, and the unreached. Join our prayer network for specific updates.
             </p>
             <div className="text-center mt-3">
-                <Link href="/get-involved/prayer" legacyBehavior>
+                <Link href="/get-involved/prayer">
                     <Button variant="outline" size="sm" className="text-xs sm:text-sm">Join Prayer Wall</Button>
                 </Link>
             </div>
@@ -69,7 +68,7 @@ export default function IndividualPartnershipPage() {
               Offer time and talents for Sierra Leone projects (local/remote) or assist Oregon-based support efforts. Skills like admin, design, or IT are valuable.
             </p>
              <div className="text-center mt-3">
-                <Link href="/get-involved/volunteer" legacyBehavior>
+                <Link href="/get-involved/volunteer">
                     <Button variant="outline" size="sm" className="text-xs sm:text-sm">Volunteer Sign-up</Button>
                 </Link>
             </div>
@@ -90,7 +89,7 @@ export default function IndividualPartnershipPage() {
             <div className="text-center mt-3">
                 <Link
                   href="mailto:ambassador@edm.org?subject=Ambassador%20Inquiry"
-                  legacyBehavior>
+                >
                      <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
                 </Link>
             </div>
@@ -109,7 +108,7 @@ export default function IndividualPartnershipPage() {
               Your financial contributions directly support our evangelism, discipleship, and mission projects in Sierra Leone, and our collaborative work with Oregon partners.
             </p>
             <div className="text-center">
-              <Link href="/donate" legacyBehavior>
+              <Link href="/donate">
                 <Button size="lg" className="text-sm sm:text-base">Donate Now</Button>
               </Link>
             </div>
@@ -123,14 +122,14 @@ export default function IndividualPartnershipPage() {
         </p>
         <Link
           href="mailto:individuals@edm.org?subject=Individual%20Partnership%20Inquiry"
-          legacyBehavior>
+        >
           <Button size="lg" className="text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
           </Button>
         </Link>
       </section>
       <div className="text-center mt-8 md:mt-12">
-        <Link href="/get-involved/partner" legacyBehavior>
+        <Link href="/get-involved/partner">
           <Button variant="outline" size="sm" className="text-xs sm:text-sm"><ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview</Button>
         </Link>
       </div>

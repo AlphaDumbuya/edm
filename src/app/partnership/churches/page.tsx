@@ -1,4 +1,3 @@
-
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -113,14 +112,14 @@ export default function ChurchPartnershipPage() {
         </p>
         <Link
           href="mailto:churchpartnerships@edm.org?subject=Church%20Partnership%20Inquiry"
-          legacyBehavior>
+        >
           <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Discuss Church Partnership
           </Button>
         </Link>
       </section>
       <div className="text-center mt-8 md:mt-12">
-        <Link href="/get-involved/partner" legacyBehavior>
+        <Link href="/get-involved/partner">
           <Button variant="outline" size="sm" className="text-xs sm:text-sm"><ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview</Button>
         </Link>
       </div>
