@@ -10,6 +10,7 @@ import React from 'react';
 function VerifyPageContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const sent = searchParams.get('sent');
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'verifying' | 'success' | 'error' | 'none'>(token ? 'verifying' : 'none');
   const [message, setMessage] = useState('');
@@ -74,7 +75,16 @@ function VerifyPageContent() {
               )}
             </div>
           )}
-          {status === 'none' && <ResendVerificationForm />}
+          {status === 'none' && sent === '1' && (
+            <>
+              <div className="text-center text-green-600">
+                Verification email sent! Please check your inbox.<br />
+                Didn’t receive it? Resend Verification Email below.
+              </div>
+              <ResendVerificationForm />
+            </>
+          )}
+          {status === 'none' && sent !== '1' && <ResendVerificationForm />}
         </CardContent>
       </Card>
     </div>

@@ -31,6 +31,10 @@ model User {
   // New fields for email verification
   emailVerified        Boolean   @default(false)
   emailVerificationToken String?
+
+  // Password reset fields
+  passwordResetToken String?
+  passwordResetTokenExpiry DateTime?
 }
 
 model Session {
