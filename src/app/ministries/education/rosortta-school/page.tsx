@@ -17,7 +17,6 @@ export default function RosorttaSchoolPage() {
         subtitle="A new mission project under construction in Sanda Tenraren chiefdom, Karene District (North West Province), Sierra Leone."
         icon={Building}
       />
-
       <section>
         <Card className="shadow-xl overflow-hidden">
           <div className="grid md:grid-cols-3">
@@ -71,7 +70,10 @@ export default function RosorttaSchoolPage() {
               </CardContent>
 
               <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t">
-                <Link href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00" passHref>
+                <Link
+                  href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00"
+                  passHref
+                  legacyBehavior>
                   <Button>
                     <Building className="mr-2 h-5 w-5" />
                     Support School Construction Project
@@ -82,7 +84,6 @@ export default function RosorttaSchoolPage() {
           </div>
         </Card>
       </section>
-
       {/* Gallery Section */}
       <section>
         <SectionTitle title="Rosortta School Construction Gallery" subtitle="See the progress of the new school building." />
@@ -121,13 +122,15 @@ export default function RosorttaSchoolPage() {
           </div>
         </div>
       </section>
-
       {/* Optional: Add a donation button at the bottom */}
-       <section className="text-center py-8">
-        <Link href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00" passHref>
-          <Button size="lg">Support School Construction Project</Button>
-        </Link>
-      </section>
+      <section className="text-center py-8">
+       <Link
+         href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00"
+         passHref
+         legacyBehavior>
+         <Button size="lg">Support School Construction Project</Button>
+       </Link>
+     </section>
     </div>
   );
 }

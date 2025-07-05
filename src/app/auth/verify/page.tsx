@@ -9,8 +9,8 @@ import React from 'react';
 
 function VerifyPageContent() {
   const searchParams = useSearchParams();
-  const token = searchParams.get('token');
-  const sent = searchParams.get('sent');
+  const token = searchParams?.get('token');
+  const sent = searchParams?.get('sent');
   const router = useRouter();
   const [status, setStatus] = useState<'idle' | 'verifying' | 'success' | 'error' | 'none'>(token ? 'verifying' : 'none');
   const [message, setMessage] = useState('');

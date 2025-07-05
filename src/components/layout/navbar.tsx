@@ -179,31 +179,30 @@ export default function Navbar() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-          <>
- <div className="h-8 w-8 md:h-10 md:w-10 relative">
- <Image
- src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
- alt="EDM Logo"
- fill
- className="object-contain"
- />
- </div>
-          </>
-          <span className="text-xl font-bold">EDM</span>
+          <div className="h-8 w-8 md:h-10 md:w-10 relative">
+            <Image
+              src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+              alt="EDM Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
         </Link>
+        <span className="text-xl font-bold">EDM</span>
 
+        {/* Desktop Nav */}
         <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center">
+          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center gap-2">
             {mainNavItems.map((item: NavItem, i) => (
               <NavigationMenuItem key={i}>
                 {item.links ? (
                   <>
-                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap">
-                      {isClient && item.icon && <item.icon size={18} />}
-                      {item.title}
+                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0">
+                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
+                      <span className="inline-block">{item.title}</span>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 w-[500px] md:grid-cols-2">
+                      <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
                         {item.links.map((link) => (
                           <ListItem key={link.href} href={link.href} title={link.title}>
                             {link.description}
@@ -216,10 +215,13 @@ export default function Navbar() {
                   <NavigationMenuLink asChild>
                     <Link
                       href={item.href}
-                      className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
->
-                      {isClient && item.icon && <item.icon size={18} />}{item.title}
-
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0"
+                      )}
+                    >
+                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
+                      <span className="inline-block">{item.title}</span>
                     </Link>
                   </NavigationMenuLink>
                 ) : null}
@@ -228,6 +230,7 @@ export default function Navbar() {
           </NavigationMenuPrimitive.List>
         </NavigationMenu>
 
+        {/* Desktop Auth Buttons */}
         <div className="hidden lg:flex items-center gap-2">
           {!loading && typedUser ? (
             <DropdownMenu>
@@ -268,10 +271,10 @@ export default function Navbar() {
             </DropdownMenu>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/login" legacyBehavior>
+              <Link href="/login">
                 <Button variant="outline">Login</Button>
               </Link>
-              <Link href="/auth/signup" legacyBehavior>
+              <Link href="/auth/signup">
                 <Button variant="default">Sign Up</Button>
               </Link>
             </div>
@@ -296,7 +299,7 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                  >
+                    legacyBehavior>
                     <>
  <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
  <span className="text-lg font-bold">EDM</span>
@@ -312,10 +315,10 @@ export default function Navbar() {
                         href={item.href}
                         className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
                         onClick={() => setMobileMenuOpen(false)}
->
-                        <div className="flex items-center gap-2">
- {isClient && item.icon && <item.icon size={20} />}{item.title}
-                        </div>
+                      >
+                        <span className="flex items-center gap-2">
+                          {isClient && item.icon && <item.icon size={20} />}{item.title}
+                        </span>
                       </Link>
                     ) : (
                       <>
@@ -363,16 +366,16 @@ export default function Navbar() {
               <div className="flex flex-col gap-4 mt-6">
                 {!loading && typedUser ? (
                   // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
-                  <Link href="/dashboard" legacyBehavior>
+                  (<Link href="/dashboard">
                     <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
-                  </Link>
+                  </Link>)
                 ) : (
-                  <>
-                    <Link href="/login" legacyBehavior>
+                  <div>
+                    <Link href="/login">
                       <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
                     </Link>
-                    <Link href="/auth/signup" legacyBehavior><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
-                  </>
+                    <Link href="/auth/signup"><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
+                  </div>
                 )}
               </div>
             </SheetContent>

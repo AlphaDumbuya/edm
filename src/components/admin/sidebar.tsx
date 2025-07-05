@@ -56,7 +56,7 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
                           className={`block py-1 px-3 text-sm rounded cursor-pointer transition-colors duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70 whitespace-nowrap truncate
                             ${pathname.startsWith(nestedItem.href) ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
                           onClick={onLinkClick}
-                        >
+                          legacyBehavior>
                           {nestedItem.name}
                         </Link>
                       </li>
@@ -69,7 +69,7 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
                   className={`flex items-center py-2 px-4 rounded transition-colors duration-150 w-full cursor-pointer select-none whitespace-nowrap text-base focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/70
                     ${pathname === item.href ? 'bg-gray-700 text-white' : 'hover:bg-gray-700 hover:text-white'}`}
                   onClick={onLinkClick}
-                >
+                  legacyBehavior>
                   {item.icon && React.createElement(item.icon, { className: 'mr-2 w-5 h-5 flex-shrink-0' })}
                   <span className="truncate">{item.name}</span>
                 </Link>
