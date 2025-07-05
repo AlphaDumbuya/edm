@@ -1,3 +1,6 @@
+// Trigger redeploy: July 6, 2025
+// File is clean and conflict-free
+
 import React from 'react';
 import Link from 'next/link';
 import { getAllBlogPosts, getBlogPostCount } from '@/lib/db/blogPosts';
