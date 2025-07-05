@@ -57,15 +57,12 @@ function DonationsContent() {
   const { data: session } = useSession();
   const userRole = session?.user?.role;
 
-  // Set initial values from URL only on mount
+  // Sync state from URL params whenever they change
   useEffect(() => {
-    if (typeof window === 'undefined') {
-      return;
-    }
     setSearchQuery(searchParamsHook?.get('search') ?? '');
     setStatusFilter(searchParamsHook?.get('status') ?? '');
     setCurrentPage(parseInt(searchParamsHook?.get('page') ?? '1'));
-  }, []);
+  }, [searchParamsHook]);
 
   useEffect(() => {
     const fetchDonations = async () => {
@@ -97,21 +94,37 @@ function DonationsContent() {
     fetchDonations();
   }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
 
+  // Update URL params when state changes, but only if different
   useEffect(() => {
     const params = new URLSearchParams(searchParamsHook?.toString() ?? '');
+    let changed = false;
     if (searchQuery) {
-      params.set('search', searchQuery);
-    } else {
+      if (params.get('search') !== searchQuery) {
+        params.set('search', searchQuery);
+        changed = true;
+      }
+    } else if (params.has('search')) {
       params.delete('search');
+      changed = true;
     }
     if (statusFilter) {
-      params.set('status', statusFilter);
-    } else {
+      if (params.get('status') !== statusFilter) {
+        params.set('status', statusFilter);
+        changed = true;
+      }
+    } else if (params.has('status')) {
       params.delete('status');
+      changed = true;
     }
-    params.set('page', currentPage.toString());
-    router.push(`?${params.toString()}`);
-  }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
+    if (params.get('page') !== currentPage.toString()) {
+      params.set('page', currentPage.toString());
+      changed = true;
+    }
+    // Only push if params actually changed
+    if (changed) {
+      router.push(`?${params.toString()}`);
+    }
+  }, [searchQuery, statusFilter, currentPage, itemsPerPage, searchParamsHook, router]);
 
   const totalPages = Math.ceil(totalDonations / itemsPerPage);
 
