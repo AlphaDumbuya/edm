@@ -1,7 +1,5 @@
-'use client';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { usePathname } from 'next/navigation';
 import './globals.css';
 import { AppProviders } from '@/components/layout/app-providers';
 import NavRenderer from '@/components/layout/nav-renderer';
@@ -18,8 +16,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const pathname = usePathname();
-  const isDashboard = pathname?.startsWith('/dashboard');
   return (
     <html lang='en'>
       <body className={`${inter.variable} antialiased flex flex-col h-full`}>
