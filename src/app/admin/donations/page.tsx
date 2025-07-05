@@ -62,9 +62,9 @@ function DonationsContent() {
     if (typeof window === 'undefined') {
       return;
     }
-    setSearchQuery(searchParamsHook.get('search') || '');
-    setStatusFilter(searchParamsHook.get('status') || '');
-    setCurrentPage(parseInt(searchParamsHook.get('page') || '1'));
+    setSearchQuery(searchParamsHook?.get('search') ?? '');
+    setStatusFilter(searchParamsHook?.get('status') ?? '');
+    setCurrentPage(parseInt(searchParamsHook?.get('page') ?? '1'));
   }, []);
 
   useEffect(() => {
@@ -98,7 +98,7 @@ function DonationsContent() {
   }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
 
   useEffect(() => {
-    const params = new URLSearchParams(searchParamsHook.toString());
+    const params = new URLSearchParams(searchParamsHook?.toString() ?? '');
     if (searchQuery) {
       params.set('search', searchQuery);
     } else {
@@ -120,9 +120,7 @@ function DonationsContent() {
  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
  <h1 className="text-2xl font-semibold">Donation Management</h1>
  <Button asChild>
- <Link href="/admin/donations/create">
- Create New Donation
- </Link>
+  <Link href="/admin/donations/create">Create New Donation</Link>
  </Button>
  </div>
 

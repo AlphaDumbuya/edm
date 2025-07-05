@@ -94,8 +94,7 @@ export default async function AdminDashboardPage() {
           <ul>
             {quickLinks.map((link) => (
               <li key={link.id} className="mb-2 last:mb-0">
-                {/* Using Link component for Next.js navigation */}
-                <Link href={link.href} className="text-blue-600 hover:underline" legacyBehavior>
+                <Link href={link.href} className="text-blue-600 hover:underline">
                   {link.name}
                 </Link>
               </li>
