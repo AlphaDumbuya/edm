@@ -54,9 +54,9 @@ function PrayerRequestsContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const [searchQuery, setSearchQuery] = useState<string>(searchParams.get('search') || '');
-  const [statusFilter, setStatusFilter] = useState<string>(searchParams.get('status') || '');
-  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParams.get('page') || '1', 10));
+  const [searchQuery, setSearchQuery] = useState<string>(searchParams?.get('search') ?? '');
+  const [statusFilter, setStatusFilter] = useState<string>(searchParams?.get('status') ?? '');
+  const [currentPage, setCurrentPage] = useState<number>(parseInt(searchParams?.get('page') ?? '1', 10));
   const [itemsPerPage] = useState<number>(10);
 
   const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null);
