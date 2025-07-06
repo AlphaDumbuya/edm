@@ -22,8 +22,8 @@ import { Button } from "@/components/ui/button";
 import { Pencil, Trash2, Plus, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
 import { useToast } from "@/hooks/use-toast";
-import { NewsDialog } from "./NewsDialog";
-import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
+import { NewsDialog } from "@/components/news/NewsDialog";
+import { ConfirmDeleteDialog } from "@/components/news/ConfirmDeleteDialog";
 import { NewsExt } from "@/types/my-types";
 import Image from "next/image";
 
