@@ -42,7 +42,7 @@ export function ConfirmDeleteDialog({
       toast({
         title: "Success",
         description: "Article deleted successfully.",
-        variant: "success",
+        variant: "default",
       });
       onDeleted();
     } catch (error) {

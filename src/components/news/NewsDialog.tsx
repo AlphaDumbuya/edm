@@ -48,13 +48,7 @@ export function NewsDialog({
   isNew,
 }: NewsDialogProps) {
   const [formData, setFormData] = useState<NewsExt>(
-    news || {
-      title: "",
-      content: "",
-      author: "",
-      published: false,
-      coverImage: null,
-    }
+    news || { ...defaultNewsExt }
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSaving, setIsSaving] = useState(false);
@@ -283,9 +277,7 @@ export function NewsDialog({
                     </div>
                     <div className="flex justify-between items-center">
                       <p className="text-sm text-muted-foreground">
-                        {formData.coverImage?.name ||
-                          formData.coverImage?.url ||
-                          "No file name"}
+                        {formData.coverImage?.url || "No file name"}
                       </p>
                       <Button
                         type="button"
