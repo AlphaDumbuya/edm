@@ -16,16 +16,16 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+} from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { NewsDialog } from "./NewsDialog";
+import { ConfirmDeleteDialog } from "./ConfirmDeleteDialog";
+import { NewsExt } from "../../types/my-types";
+import { useToast } from "../../hooks/use-toast";
+import Image from "next/image";
 import { Pencil, Trash2, Plus, RefreshCw } from "lucide-react";
 import { format } from "date-fns";
-import { useToast } from "@/hooks/use-toast";
-import { NewsDialog } from "@/components/news/NewsDialog";
-import { ConfirmDeleteDialog } from "@/components/news/ConfirmDeleteDialog";
-import { NewsExt } from "@/types/my-types";
-import Image from "next/image";
 
 export function NewsTable() {
   const { toast } = useToast();
