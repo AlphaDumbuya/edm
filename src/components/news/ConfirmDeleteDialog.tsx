@@ -10,9 +10,9 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog";
-import { useToast } from "@/hooks/use-toast";
-import { NewsExt } from "@/types/my-types";
+} from "../ui/alert-dialog";
+import { useToast } from "../../hooks/use-toast";
+import { NewsExt } from "../../types/my-types";
 
 interface ConfirmDeleteDialogProps {
   news: NewsExt | null;

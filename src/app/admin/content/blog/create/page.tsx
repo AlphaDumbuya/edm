@@ -3,9 +3,22 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useAuth } from '@/contexts/auth-context';
-import { useToast } from '@/hooks/use-toast';
-import { UploadButton } from '@/components/shared/UploadButton';
+import { useAuth } from '../../../../../contexts/auth-context';
+import { useToast } from '../../../../../hooks/use-toast';
+// TODO: Fix the import path or create the UploadButton component if it does not exist.
+// import { UploadButton } from '../../../../components/shared/UploadButton';
+const UploadButton = ({ imageUrl, setImageUrl }: { imageUrl: string | null, setImageUrl: (url: string) => void }) => (
+  <input
+    type="text"
+    placeholder="Paste image URL here"
+    value={imageUrl ?? ''}
+    onChange={e => setImageUrl(e.target.value)}
+    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2"
+  />
+);
+// import TipTapEditor from '../../../../components/TipTapEditor';
+// TODO: Fix the import path or create the TipTapEditor component if it does not exist.
+import { createBlogPostAction } from '../actions';
 import TipTapEditor from '@/components/TipTapEditor';
 
 export default function CreateBlogPostPage() {
@@ -17,6 +30,7 @@ export default function CreateBlogPostPage() {
   
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
+  const router = useRouter(); // Initialize the router
 
   const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -86,7 +100,8 @@ export default function CreateBlogPostPage() {
             Cover Image
           </label>
           <UploadButton
-            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
           />
         </div>
 

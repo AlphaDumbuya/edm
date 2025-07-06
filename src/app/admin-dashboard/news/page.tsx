@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { isAdminServer } from "@/helpers/isAdminServer";
-import { NewsTable } from "@/components/news/NewsTable";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { isAdminServer } from "../../../helpers/isAdminServer";
+import { NewsTable } from "../../../components/news/NewsTable";
+import { Card, CardContent, CardHeader, CardTitle } from "../../../components/ui/card";
 
 const AdminNewsPage = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
