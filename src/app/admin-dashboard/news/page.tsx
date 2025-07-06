@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { isAdminServer } from "@/helpers/isAdminServer";
-import { NewsTable } from "@/app/(pages)/(admin)/admin-dashboard/news/_components/NewsTable";
+import { NewsTable } from "@/components/news/NewsTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const AdminNewsPage = () => {
