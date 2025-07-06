@@ -4,6 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import TipTapEditor from '../../../../../../components/TipTapEditor';
 import { UploadButton } from '../../../../../../components/shared/UploadButton';
+import { useSession } from 'next-auth/react';
 
 export interface NewsArticle {
   id: string;
@@ -15,6 +16,7 @@ export interface NewsArticle {
 }
 
 export default function EditNewsArticlePage() {
+  const { data: session } = useSession();
   const router = useRouter();
   const params = useParams();
   const newsArticleId = (params?.id ?? '') as string;
@@ -32,17 +34,17 @@ export default function EditNewsArticlePage() {
   useEffect(() => {
     async function fetchNewsArticle() {
       try {
-        const res = await fetch(`/api/news?id=${newsArticleId}`);
+        const res = await fetch(`/api/admin/news/${newsArticleId}`);
         if (!res.ok) throw new Error('Failed to fetch news article');
         const article = await res.json();
         setFormData({
-          title: article.title,
-          slug: article.slug,
-          published: article.published,
-          content: article.content,
-          imageUrl: article.imageUrl || null,
+          title: article.title || '',
+          slug: article.slug || '',
+          published: article.published ?? false,
+          content: article.content || '',
+          imageUrl: article.imageUrl || article.coverImage || null,
         });
-        setImageUrl(article.imageUrl || null);
+        setImageUrl(article.imageUrl || article.coverImage || null);
       } catch (err) {
         setError('Failed to fetch news article.');
         console.error(err);
@@ -53,12 +55,19 @@ export default function EditNewsArticlePage() {
     if (newsArticleId) fetchNewsArticle();
   }, [newsArticleId]);
 
+  // Normalize slug on change, match blog edit logic
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? (e.target as HTMLInputElement).checked : value,
-    });
+    if (name === 'slug') {
+      const normalized = value.trim().toLowerCase().replace(/\s+/g, '-');
+      setFormData((prev) => ({ ...prev, slug: normalized }));
+      return;
+    }
+    if (type === 'checkbox') {
+      setFormData((prev) => ({ ...prev, [name]: (e.target as HTMLInputElement).checked }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleContentChange = (htmlContent: string) => {
@@ -74,14 +83,25 @@ export default function EditNewsArticlePage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const data = { ...formData, imageUrl };
+    const currentUserId = session?.user?.id;
+    if (!currentUserId) {
+      setError('You must be logged in as an admin to update news.');
+      setLoading(false);
+      return;
+    }
+    const data = { ...formData, imageUrl, authorId: currentUserId };
     try {
-      const res = await fetch(`/api/news?id=${newsArticleId}`, {
-        method: 'PUT',
+      const res = await fetch(`/api/admin/news/${newsArticleId}`, {
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!res.ok) throw new Error('Failed to update news article');
+      if (!res.ok) {
+        const error = await res.json();
+        setError(error.error || 'Failed to update news article');
+        setLoading(false);
+        return;
+      }
       router.push('/admin/content/news');
     } catch (err: any) {
       setError(err.message || 'An error occurred');
@@ -91,15 +111,15 @@ export default function EditNewsArticlePage() {
   }
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <p className="text-gray-500">Loading...</p>;
   }
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <p className="text-red-500">{error}</p>;
   }
 
   return (
     <div className="container mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold mb-6">Edit News Article: {newsArticleId}</h2>
+      <h2 className="text-2xl font-bold mb-6">Edit News Article: {formData.title || newsArticleId}</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>

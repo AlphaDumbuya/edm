@@ -26,10 +26,11 @@ export type NewsArticleWithAuthor = Omit<PrismaNewsArticle, 'authorId'> & {
   imageUrl?: string | null; // Added imageUrl property
 };
 
-export async function getAllNewsArticles(): Promise<NewsArticleWithAuthor[]> {
+export async function getAllNewsArticles(publishedOnly: boolean = true): Promise<NewsArticleWithAuthor[]> {
   const { default: prisma } = await import('./prisma');
   try {
     const articles = await prisma.newsArticle.findMany({
+      where: publishedOnly ? { published: true } : {},
       orderBy: { createdAt: 'desc' },
     });
 

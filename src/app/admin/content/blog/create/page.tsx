@@ -5,17 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { useAuth } from '../../../../../contexts/auth-context';
 import { useToast } from '../../../../../hooks/use-toast';
-// TODO: Fix the import path or create the UploadButton component if it does not exist.
-// import { UploadButton } from '../../../../components/shared/UploadButton';
-const UploadButton = ({ imageUrl, setImageUrl }: { imageUrl: string | null, setImageUrl: (url: string) => void }) => (
-  <input
-    type="text"
-    placeholder="Paste image URL here"
-    value={imageUrl ?? ''}
-    onChange={e => setImageUrl(e.target.value)}
-    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary sm:text-sm py-2"
-  />
-);
+import { UploadButton } from '../../../../../components/shared/UploadButton';
 // import TipTapEditor from '../../../../components/TipTapEditor';
 import TipTapEditor from '../../../../../components/TipTapEditor';
 import { createBlogPostAction } from '../actions';
@@ -49,6 +39,8 @@ export default function CreateBlogPostPage() {
     formData.append('content', content);
     formData.append('published', published.toString());
     if (imageUrl) formData.append('imageUrl', imageUrl);
+    // Add authorId to formData
+    formData.append('authorId', user.id);
 
     await createBlogPostAction(formData);
     router.push('/admin/content/blog'); // Use router.push for navigation

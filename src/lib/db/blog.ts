@@ -103,14 +103,18 @@ interface UpdateBlogPostData {
   slug?: string;
   content?: string;
   published?: boolean;
-  authorId?: string; // Allow changing author?
+  authorId?: string;
+  imageUrl?: string | null; // Add imageUrl for update
 }
 
 export async function updateBlogPost(id: string, data: UpdateBlogPostData): Promise<BlogPost | null> {
   try {
     const blogPost = await prisma.blogPost.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        imageUrl: data.imageUrl !== undefined ? data.imageUrl : undefined,
+      },
     });
     return blogPost;
   } catch (error) {

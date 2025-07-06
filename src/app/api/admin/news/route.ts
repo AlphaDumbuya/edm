@@ -14,10 +14,20 @@ export async function GET() {
       );
     }
 
-    // Fetch all news
+    // Fetch all news with all fields needed for editing
     const newsList = await prisma.news.findMany({
       orderBy: {
         createdAt: "desc",
+      },
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        content: true,
+        author: true,
+        published: true,
+        createdAt: true,
+        coverImage: true,
       },
     });
 

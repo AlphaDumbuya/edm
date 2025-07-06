@@ -57,13 +57,14 @@ export function NewsDialog({
 
   useEffect(() => {
     if (isOpen && news) {
+      // Defensive: fill missing fields with defaults
       setFormData({
         id: news.id || "",
         slug: news.slug || "",
         title: news.title || "",
         content: news.content || "",
         author: news.author || "",
-        published: news.published || false,
+        published: typeof news.published === "boolean" ? news.published : false,
         coverImage: news.coverImage || null,
         createdAt: news.createdAt ? new Date(news.createdAt) : new Date(),
       });
@@ -333,27 +334,28 @@ export function NewsDialog({
                 onCheckedChange={handleSwitchChange}
               />
             </div>
-
-            <DialogFooter className="pt-4 flex flex-col sm:flex-row gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={onClose}
-                disabled={isSaving}
-                className="w-full sm:w-auto"
-              >
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isSaving}
-                className="w-full sm:w-auto"
-              >
-                {isSaving ? "Saving..." : isNew ? "Create" : "Save Changes"}
-              </Button>
-            </DialogFooter>
+            {/* End of form fields */}
           </form>
         </div>
+
+        <DialogFooter className="pt-4 flex flex-col sm:flex-row gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onClose}
+            disabled={isSaving}
+            className="w-full sm:w-auto"
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isSaving}
+            className="w-full sm:w-auto"
+          >
+            {isSaving ? "Saving..." : isNew ? "Create" : "Save Changes"}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
