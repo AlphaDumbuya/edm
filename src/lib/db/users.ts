@@ -130,16 +130,20 @@ export async function deleteUser(userId: string): Promise<PrismaUser | null> {
   }
 }
 
-export async function updateUser(userId: string, data: { name?: string | null; email?: string }): Promise<PrismaUser | null> {
+export async function updateUser(userId: string, data: { name?: string | null; email?: string; role?: string }): Promise<PrismaUser | null> {
   try {
+    const updateData: any = { ...data };
+    if (updateData.role && typeof updateData.role === 'string') {
+      // Ensure role is a valid enum value
+      updateData.role = updateData.role.toUpperCase();
+    }
     const updatedUser = await prisma.user.update({
       where: { id: userId },
-      data,
+      data: updateData,
     });
     return updatedUser;
   } catch (error) {
     console.error('Error updating user:', error);
-    // Consider more specific error handling, e.g., for unique constraint violation on email
     return null;
   }
 }

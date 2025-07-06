@@ -49,9 +49,9 @@ export async function PUT(request: Request, { params }: { params: { id: string }
 
   try {
     const body = await request.json();
-    const { name, email } = body;
+    const { name, email, role } = body;
 
-    const updatedUser = await dbUpdateUser(userId, { name, email });
+    const updatedUser = await dbUpdateUser(userId, { name, email, role });
 
     if (updatedUser) {
       return NextResponse.json(updatedUser);

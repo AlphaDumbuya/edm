@@ -59,11 +59,11 @@ const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
           )}
           href={href}
           {...props}
-          legacyBehavior>
+        >
           {/* Wrap children in a single span */}
           <span>
- <div className="text-sm font-medium leading-none">{title}</div>
- <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
           </span>
         </Link>
       </li>
@@ -299,11 +299,9 @@ export default function Navbar() {
                     href="/"
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
-                    legacyBehavior>
-                    <>
- <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
- <span className="text-lg font-bold">EDM</span>
-                    </>
+                  >
+                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                    <span className="text-lg font-bold">EDM</span>
                   </Link>
                 </SheetTitle>
               </SheetHeader>

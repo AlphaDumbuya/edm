@@ -25,6 +25,8 @@ interface Event {
   date: string;
   location: string;
   imageUrl?: string;
+  isVirtual?: boolean;
+  onlineLink?: string;
 }
 
 interface EventCardProps {
@@ -37,17 +39,29 @@ export default function EventCard({ event }: EventCardProps) {
   const [email, setEmail] = useState('');
   const { toast } = useToast();
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Placeholder for signup logic
-    console.log(`Signing up ${name} (${email}) for ${event.title}`);
-    toast({
-      title: "Signup Successful!",
-      description: `You've been registered for ${event.title}.`,
-    });
-    setIsDialogOpen(false);
-    setName('');
-    setEmail('');
+    try {
+      const res = await fetch('/api/events/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, event }),
+      });
+      if (!res.ok) throw new Error('Failed to send registration email');
+      toast({
+        title: "Signup Successful!",
+        description: `You've been registered for ${event.title}.`,
+      });
+      setIsDialogOpen(false);
+      setName('');
+      setEmail('');
+    } catch (err) {
+      toast({
+        title: "Signup Failed",
+        description: "There was a problem sending your registration email.",
+        variant: "destructive",
+      });
+    }
   };
 
   if (!event) return null;
@@ -70,14 +84,20 @@ export default function EventCard({ event }: EventCardProps) {
       <CardHeader className="p-3 sm:p-4">
         <CardTitle className="text-lg sm:text-xl line-clamp-2">{event.title}</CardTitle>
         <CardDescription className="text-xs sm:text-sm text-muted-foreground flex items-center mt-1">
-          <CalendarDays className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {new Date(event.date).toLocaleDateString()}
+          <CalendarDays className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {new Date(event.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
         </CardDescription>
-        <CardDescription className="text-xs sm:text-sm text-muted-foreground flex items-center mt-1">
-          <MapPin className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {event.location}
-        </CardDescription>
+        {event.isVirtual ? (
+          <CardDescription className="text-xs sm:text-sm text-blue-700 flex items-center mt-1">
+            <span className="mr-2">Online</span>
+          </CardDescription>
+        ) : (
+          <CardDescription className="text-xs sm:text-sm text-muted-foreground flex items-center mt-1">
+            <MapPin className="mr-2 h-3 w-3 sm:h-4 sm:w-4 text-primary" /> {event.location}
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent className="p-3 sm:p-4 flex-grow">
-        <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3">{event.description || 'No description provided.'}</p>
+        <div className="text-xs sm:text-sm text-muted-foreground line-clamp-2 sm:line-clamp-3" dangerouslySetInnerHTML={{ __html: event.description || 'No description provided.' }} />
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -92,10 +112,17 @@ export default function EventCard({ event }: EventCardProps) {
                 <Info className="mr-2 h-5 w-5" /> {event.title}
               </DialogTitle>
               <DialogDescription className="text-xs sm:text-sm">
-                <div className="mt-2 text-muted-foreground"><CalendarDays className="inline mr-1 h-4 w-4" /> {new Date(event.date).toLocaleDateString()}</div>
-                <div className="text-muted-foreground"><MapPin className="inline mr-1 h-4 w-4" /> {event.location}</div>
-                <div className="mt-4">{event.description}</div>
+                {new Date(event.date).toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
+                {event.isVirtual ? (
+                  <>
+                    <br />
+                    <span className="text-blue-700 font-semibold">Online</span>
+                  </>
+                ) : (
+                  <> @ {event.location}</>
+                )}
               </DialogDescription>
+              <div className="mt-4 text-muted-foreground" dangerouslySetInnerHTML={{ __html: event.description || '' }} />
             </DialogHeader>
             <form onSubmit={handleSignup}>
               <div className="grid gap-3 py-3 sm:gap-4 sm:py-4">

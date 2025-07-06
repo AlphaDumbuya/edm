@@ -165,24 +165,24 @@ function DonationsContent() {
             {donations.map((donation) => (
               <TableRow key={donation.id}>
                 <TableCell>{donation.donorName || 'N/A'}</TableCell>
-                <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell> {/* Amount is always visible */}
+                <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell>
                 <TableCell>{donation.currency ? donation.currency.toUpperCase() : 'N/A'}</TableCell>
-                <TableCell>{donation.donorEmail || 'N/A'}</TableCell> {/* Donor Email is always visible */}
+                <TableCell>{donation.donorEmail || 'N/A'}</TableCell>
                 <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
                 <TableCell>
-                    <div className="flex space-x-2">
-                      <Button
-                        variant="destructive"
-                        size="sm"
-                        onClick={() => {
-                          setIsDeleteDialogOpen(true);
-                          setPrayerRequestToDelete(donation.id);
-                        }}
-                      >
-                        Delete
-                      </Button>
-                    </div>
-                  </TableCell>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => {
+                        setIsDeleteDialogOpen(true);
+                        setPrayerRequestToDelete(donation.id);
+                      }}
+                    >
+                      Delete
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
