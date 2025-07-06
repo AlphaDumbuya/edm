@@ -17,9 +17,8 @@ const UploadButton = ({ imageUrl, setImageUrl }: { imageUrl: string | null, setI
   />
 );
 // import TipTapEditor from '../../../../components/TipTapEditor';
-// TODO: Fix the import path or create the TipTapEditor component if it does not exist.
+import TipTapEditor from '../../../../../components/TipTapEditor';
 import { createBlogPostAction } from '../actions';
-import TipTapEditor from '@/components/TipTapEditor';
 
 export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
