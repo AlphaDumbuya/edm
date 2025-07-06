@@ -7,7 +7,7 @@ import { useSession } from 'next-auth/react';
 import { Label } from '../../../../../../components/ui/label';
 import { Input } from '../../../../../../components/ui/input';
 import { Checkbox } from '../../../../../../components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '../../../../../../hooks/use-toast';
 import TipTapEditor from '../../../../../../components/TipTapEditor'; // Rich Text Editor
 
 // Type for the blog post

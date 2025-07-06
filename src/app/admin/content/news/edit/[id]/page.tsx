@@ -2,8 +2,8 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import TipTapEditor from '@/components/TipTapEditor';
-import { UploadButton } from '@/components/shared/UploadButton';
+import TipTapEditor from '../../../../../../components/TipTapEditor';
+import { UploadButton } from '../../../../../../components/shared/UploadButton';
 
 export interface NewsArticle {
   id: string;
@@ -17,7 +17,7 @@ export interface NewsArticle {
 export default function EditNewsArticlePage() {
   const router = useRouter();
   const params = useParams();
-  const newsArticleId = params.id as string;
+  const newsArticleId = (params?.id ?? '') as string;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [formData, setFormData] = useState({
