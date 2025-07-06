@@ -9,6 +9,7 @@ import { Input } from '../../../../../../components/ui/input';
 import { Checkbox } from '../../../../../../components/ui/checkbox';
 import { useToast } from '../../../../../../hooks/use-toast';
 import TipTapEditor from '../../../../../../components/TipTapEditor'; // Rich Text Editor
+import { UploadButton } from '../../../../../../components/shared/UploadButton'; // File upload component
 
 // Type for the blog post
 interface BlogPostData {
@@ -133,7 +134,7 @@ export default function EditBlogPostPage() {
       slug: normalizedSlug,
       content: formData.content,
       published: formData.published,
-      imageUrl,
+      imageUrl: formData.imageUrl, // <-- use formData.imageUrl instead of imageUrl
       userId: currentUserId,
     };
     try {
@@ -202,6 +203,11 @@ export default function EditBlogPostPage() {
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div>
+          <Label htmlFor="coverImage">Cover Image</Label>
+          <UploadButton imageUrl={formData.imageUrl} setImageUrl={handleImageUrlChange} />
         </div>
 
         <div>

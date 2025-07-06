@@ -9,6 +9,11 @@ import { Suspense } from 'react';
 
 const ITEMS_PER_PAGE = 9;
 
+function stripHtml(html: string) {
+  if (!html) return '';
+  return html.replace(/<[^>]+>/g, '');
+}
+
 export default async function BlogPage({ searchParams }: { searchParams?: { page?: string } }) {
   const page = Number(searchParams?.page) || 1;
   let blogPosts: any[] = [];
@@ -60,7 +65,7 @@ export default async function BlogPage({ searchParams }: { searchParams?: { page
               title: post.title,
               author: { name: post.authorName },
               date: post.createdAt.toLocaleDateString(),
-              excerpt: post.content.substring(0, 150) + '...',
+              excerpt: stripHtml(post.content).substring(0, 150) + '...',
               imageUrl: post.imageUrl || '',
               dataAiHint: '',
               tags: [],

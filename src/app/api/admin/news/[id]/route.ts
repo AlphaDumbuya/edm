@@ -3,25 +3,25 @@ import { isAdminServer } from "@/helpers/isAdminServer";
 import prisma from "src/lib/db/prisma";
 // import { utapi } from "@/utils/utapi"; // Commented out as per previous instruction
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+// Fix dynamic API route signature for Next.js app directory
+export async function GET(request: NextRequest, context: { params: { id: string } }) {
   try {
     const isAdmin = await isAdminServer();
     if (!isAdmin) {
       return NextResponse.json({ error: "Unauthorized access" }, { status: 403 });
     }
-
-    const newsItem = await prisma.news.findUnique({ where: { id: params.id } });
+    const id = context.params.id;
+    console.log('Fetching news article with id:', id);
+    const newsItem = await prisma.newsArticle.findUnique({ where: { id } });
     if (!newsItem) {
-      return NextResponse.json({ error: "News item not found" }, { status: 404 });
+      console.error('News article not found for id:', id);
+      return NextResponse.json({ error: "News article not found", id }, { status: 404 });
     }
-
-    return NextResponse.json(newsItem);
+    // Always return imageUrl for frontend compatibility
+    return NextResponse.json({ ...newsItem, imageUrl: newsItem.imageUrl || null });
   } catch (error) {
-    console.error("Failed to fetch news item:", error);
-    return NextResponse.json({ error: "Failed to fetch news item" }, { status: 500 });
+    console.error("Failed to fetch news item:", error, context?.params?.id);
+    return NextResponse.json({ error: "Failed to fetch news item", details: String(error), id: context?.params?.id }, { status: 500 });
   }
 }
 
@@ -37,29 +37,22 @@ export async function PATCH(
 
     const body = await request.json();
 
-    const existingNews = await prisma.news.findUnique({ where: { id: params.id } });
+    const existingNews = await prisma.newsArticle.findUnique({ where: { id: params.id } });
     if (!existingNews) {
-      return NextResponse.json({ error: "News item not found" }, { status: 404 });
+      return NextResponse.json({ error: "News article not found" }, { status: 404 });
     }
-    const existingImage = existingNews.coverImage;
-    const newImage = body.coverImage;
-
-    if (existingImage && !newImage && typeof existingImage === "object") {
-      // Image removal logic handled externally
-    }
-
-    const updatedNews = await prisma.news.update({
+    const updatedNews = await prisma.newsArticle.update({
       where: { id: params.id },
       data: {
         title: body.title ?? existingNews.title,
         content: body.content ?? existingNews.content,
-        author: body.author ?? existingNews.author,
+        slug: body.slug ?? existingNews.slug,
         published: body.published ?? existingNews.published,
-        coverImage: body.coverImage ?? existingNews.coverImage,
+        imageUrl: body.imageUrl ?? existingNews.imageUrl,
+        authorId: body.authorId ?? existingNews.authorId,
       },
     });
-
-    return NextResponse.json(updatedNews);
+    return NextResponse.json({ ...updatedNews, imageUrl: updatedNews.imageUrl || null });
   } catch (error) {
     console.error("Failed to update news item:", error);
     return NextResponse.json({ error: "Failed to update news item" }, { status: 500 });
@@ -76,12 +69,12 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized access" }, { status: 403 });
     }
 
-    const existingNews = await prisma.news.findUnique({ where: { id: params.id } });
+    const existingNews = await prisma.newsArticle.findUnique({ where: { id: params.id } });
     if (!existingNews) {
       return NextResponse.json({ error: "News item not found" }, { status: 404 });
     }
 
-    await prisma.news.delete({ where: { id: params.id } });
+    await prisma.newsArticle.delete({ where: { id: params.id } });
 
     return NextResponse.json({ message: "News item deleted successfully" });
   } catch (error) {

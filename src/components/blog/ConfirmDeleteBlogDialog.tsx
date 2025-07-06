@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import {
   AlertDialog,
@@ -12,43 +10,53 @@ import {
   AlertDialogTitle,
 } from "../ui/alert-dialog";
 import { useToast } from "../../hooks/use-toast";
-import { NewsExt } from "../../types/my-types";
 
-interface ConfirmDeleteDialogProps {
-  news: NewsExt | null;
+interface ConfirmDeleteBlogDialogProps {
+  blogId: string | null;
   isOpen: boolean;
   onClose: () => void;
   onDeleted: () => void;
+  userId: string | null;
 }
 
-export function ConfirmDeleteDialog({
-  news,
+export function ConfirmDeleteBlogDialog({
+  blogId,
   isOpen,
   onClose,
   onDeleted,
-}: ConfirmDeleteDialogProps) {
+  userId,
+}: ConfirmDeleteBlogDialogProps) {
   const [isDeleting, setIsDeleting] = useState(false);
   const { toast } = useToast();
 
   const handleDelete = async () => {
-    if (!news?.id) return;
-
+    if (!blogId || !userId) return;
     setIsDeleting(true);
-
     try {
-      // Replace with your delete logic
-      // await deleteNews(news.id);
-
+      const res = await fetch(`/api/admin/blog/${blogId}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        toast({
+          title: "Error",
+          description: error.error || "Failed to delete blog post.",
+          variant: "destructive",
+        });
+        return;
+      }
       toast({
         title: "Success",
-        description: "Article deleted successfully.",
+        description: "Blog post deleted successfully.",
         variant: "default",
       });
       onDeleted();
     } catch (error) {
       toast({
         title: "Error",
-        description: "Failed to delete the article. Please try again.",
+        description: "Failed to delete the blog post. Please try again.",
         variant: "destructive",
       });
     } finally {
@@ -63,8 +71,7 @@ export function ConfirmDeleteDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Confirm Delete</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to delete this article? This action cannot be
-            undone.
+            Are you sure you want to delete this blog post? This action cannot be undone.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
@@ -77,7 +84,7 @@ export function ConfirmDeleteDialog({
             }}
             disabled={isDeleting}
           >
-            {isDeleting ? "Deleting..." : "Delete News"}
+            {isDeleting ? "Deleting..." : "Delete Blog"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

@@ -21,8 +21,8 @@ interface NewsArticlePageProps {
   };
 }
 
-const PublicNewsArticlePage = async ({ params }: NewsArticlePageProps) => {
-  const { slug } = params;
+const PublicNewsArticlePage = async (context: NewsArticlePageProps) => {
+  const slug = context.params.slug.trim().toLowerCase().replace(/\s+/g, '-');
   const newsArticle = await getNewsArticleBySlug(slug);
 
   if (!newsArticle) {

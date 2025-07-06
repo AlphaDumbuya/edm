@@ -3,12 +3,13 @@ import { createBlogPost, getAllBlogPosts } from '@/lib/db/blogPosts';
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 
 export async function GET(req: NextRequest) {
-  // List all published blog posts for public API, with pagination
+  // List all blog posts for admin if ?admin=1, otherwise only published
   try {
     const { searchParams } = new URL(req.url);
     const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : undefined;
     const offset = searchParams.get('offset') ? parseInt(searchParams.get('offset')!) : undefined;
-    const { blogPosts, totalCount } = await getAllBlogPosts({ publishedOnly: true, limit, offset, orderBy: { createdAt: 'desc' } });
+    const isAdmin = searchParams.get('admin') === '1';
+    const { blogPosts, totalCount } = await getAllBlogPosts({ publishedOnly: !isAdmin, limit, offset, orderBy: { createdAt: 'desc' } });
     return NextResponse.json({ blogPosts, totalCount });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to fetch blog posts' }, { status: 500 });
