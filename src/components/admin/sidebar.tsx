@@ -14,24 +14,29 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
     {
       name: 'Users',
       href: '/admin/users',
- icon: GoPerson,
+      icon: GoPerson,
     },
     {
       name: 'Content',
       href: '/admin/content',
- icon: GoBook,
+      icon: GoBook,
       nested: [
- { name: 'Blog', href: '/admin/content/blog' },
- { name: 'News', href: '/admin/content/news' },
+        { name: 'Blog', href: '/admin/content/blog' },
+        { name: 'News', href: '/admin/content/news' },
       ],
     },
- { name: 'Events', href: '/admin/events', icon: GoCalendar },
- { name: 'Prayer Requests', href: '/admin/prayer-requests', icon: GoHeart },
- { name: 'Donations', href: '/admin/donations', icon: GoCreditCard },
+    { name: 'Events', href: '/admin/events', icon: GoCalendar },
+    { name: 'Prayer Requests', href: '/admin/prayer-requests', icon: GoHeart },
+    { name: 'Donations', href: '/admin/donations', icon: GoCreditCard },
+    {
+      name: 'Gallery',
+      href: '/admin/gallery',
+      icon: GoBook, // You can replace with a more relevant icon
+    },
     {
       name: 'Audit Log',
       href: '/admin/audit-logs',
- icon: GoBook, // Using GoBook as a placeholder, consider a more relevant icon if available
+      icon: GoBook, // Using GoBook as a placeholder
     },
   ];
 

@@ -160,3 +160,15 @@ model News {
 
   @@map("news")
 }
+
+model Media {
+  id        String   @id @default(uuid()) @db.Uuid
+  type      String   // 'photo' or 'video'
+  title     String
+  date      DateTime
+  imageUrl  String?  // For photos and video thumbnails
+  videoUrl  String?  // For videos
+  published Boolean  @default(true) // Only show in gallery if true
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
