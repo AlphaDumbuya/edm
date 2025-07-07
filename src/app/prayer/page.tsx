@@ -1,13 +1,71 @@
-import React from 'react';
-import { submitPublicPrayerRequestAction } from './actions';
+"use client";
+
+import React, { useEffect, useState } from 'react';
+import { getAllPrayerRequests } from '@/lib/db/prayerRequests';
+
+function hasPrayedFor(prayerId: string): boolean {
+  if (typeof window === 'undefined') return false;
+  const prayed = localStorage.getItem('prayedRequests') || '[]';
+  return JSON.parse(prayed).includes(prayerId);
+}
+
+function markPrayedFor(prayerId: string) {
+  if (typeof window === 'undefined') return;
+  const prayed = localStorage.getItem('prayedRequests') || '[]';
+  const arr = JSON.parse(prayed);
+  if (!arr.includes(prayerId)) {
+    arr.push(prayerId);
+    localStorage.setItem('prayedRequests', JSON.stringify(arr));
+  }
+}
 
 export default function PrayerPage() {
-  // This is a placeholder UI. You can enhance it as needed.
+  const [prayerRequests, setPrayerRequests] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [_, forceUpdate] = useState(0); // for re-render
+
+  useEffect(() => {
+    (async () => {
+      const { prayerRequests } = await getAllPrayerRequests({});
+      setPrayerRequests(prayerRequests);
+      setLoading(false);
+    })();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
   return (
     <div className="container mx-auto px-4 py-6">
-      <h1 className="text-2xl font-bold mb-6">Submit a Prayer Request</h1>
-      {/* You can add a form here that calls submitPublicPrayerRequestAction */}
-      <p>This page is under construction. Please check back soon.</p>
+      <h1 className="text-2xl font-bold mb-6">Prayer Requests</h1>
+      {prayerRequests.length === 0 ? (
+        <p className="text-gray-500">No public prayer requests found yet.</p>
+      ) : (
+        <div className="space-y-6">
+          {prayerRequests.map((req) => {
+            const prayed = hasPrayedFor(req.id);
+            return (
+              <div key={req.id} className="bg-white rounded shadow p-4 border border-gray-100">
+                <h2 className="text-lg font-semibold mb-2">{req.title}</h2>
+                <p className="mb-2 text-gray-700">{req.body}</p>
+                <div className="text-xs text-gray-500 mb-2">
+                  {req.authorName && <span>By: {req.authorName} &middot; </span>}
+                  {new Date(req.createdAt).toLocaleDateString()}
+                </div>
+                {!prayed ? (
+                  <button
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition"
+                    onClick={() => { markPrayedFor(req.id); forceUpdate((n) => n + 1); }}
+                  >
+                    Pray for this
+                  </button>
+                ) : (
+                  <span className="text-green-600 font-semibold">You have prayed for this</span>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

@@ -12,10 +12,8 @@ import { PrayerRequestData } from '@/types/prayerRequest'; // Assuming PrayerReq
 export default async function PrayerPage() {
   noStore(); // Opt out of caching for this data fetch
   const { prayerRequests } = await getAllPrayerRequests();
-  const initialPublicPrayerRequests = prayerRequests.filter(request => request.status === 'Public');
-
-  // Map the fetched data to the PrayerRequestData type expected by PrayerClient
-  const formattedPublicPrayerRequests: PrayerRequestData[] = initialPublicPrayerRequests.map((request) => {
+  // Show all requests, not just those with status === 'Public'
+  const formattedPublicPrayerRequests: PrayerRequestData[] = prayerRequests.map((request) => {
     const createdAtDate = request.createdAt ? new Date(request.createdAt) : new Date();
     const updatedAtDate = request.updatedAt ? new Date(request.updatedAt) : new Date();
     return {
@@ -23,8 +21,8 @@ export default async function PrayerPage() {
       request: request.body, // Map 'body' to 'request'
       name: request.authorName || '', // Map 'authorName' to 'name', provide default empty string
       email: request.authorEmail || '', // Map 'authorEmail' to 'email', provide default empty string
-      status: request.status,
-      isPublic: request.status === 'Public', // Derive 'isPublic' from 'status'
+      status: request.published ? 'Public' : 'Private', // Use published for status
+      isPublic: request.published ?? true, // Use published if available
       createdAt: createdAtDate,
       updatedAt: updatedAtDate,
       formattedFullDate: format(createdAtDate, 'MMMM d, yyyy \'at\' h:mm a'), // Format the date here

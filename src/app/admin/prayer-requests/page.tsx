@@ -35,7 +35,7 @@ interface PrayerRequest {
   title: string;
   authorName: string | null;
   body: string;
-  status: string;
+  published: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -127,7 +127,7 @@ function PrayerRequestsContent() {
             <TableRow>
               <TableHead>Title</TableHead>
               <TableHead>Author Name</TableHead>
-              <TableHead>Status</TableHead>
+              <TableHead>Published</TableHead>
               <TableHead>Created At</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
@@ -137,13 +137,13 @@ function PrayerRequestsContent() {
               <TableRow key={request.id}>
                 <TableCell>{request.title}</TableCell>
                 <TableCell>{request.authorName}</TableCell>
-                <TableCell>{request.status}</TableCell>
+                <TableCell>{request.published ? 'Published' : 'Unpublished'}</TableCell>
                 <TableCell>{new Date(request.createdAt).toLocaleDateString()}</TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
-                    <Button variant="outline" size="sm" asChild>
+                    {/* <Button variant="outline" size="sm" asChild>
                       <Link href={`/admin/prayer-requests/view/${request.id}`}>View</Link>
-                    </Button>
+                    </Button> */}
                     {canManagePrayerRequests && (
                       <Button
                         variant="destructive"
