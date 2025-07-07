@@ -142,9 +142,11 @@ model PrayerRequest {
   body        String
   authorName  String?
   authorEmail String?
-  status      String    @default("pending") // e.g., "pending", "completed"
+  published   Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  category    String?   // Added for prayer request filtering
+  prayerLogs  PrayerLog[] // Add this line for relation
 }
 
 model News {
@@ -171,4 +173,22 @@ model Media {
   published Boolean  @default(true) // Only show in gallery if true
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model PrayerLog {
+  id               String   @id @default(uuid())
+  prayerRequestId  String   @db.Uuid
+  prayedByUserId   String?  // nullable for anonymous
+  prayedByIp       String?
+  prayerText       String?
+  createdAt        DateTime @default(now())
+  prayerRequest    PrayerRequest @relation(fields: [prayerRequestId], references: [id], onDelete: Cascade)
+}
+
+model Testimonial {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  message   String
+  createdAt DateTime @default(now())
+  approved  Boolean  @default(false)
 }

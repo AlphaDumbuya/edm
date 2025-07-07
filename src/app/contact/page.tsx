@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
 import { MissionsMapClientProps } from '@/components/missions/missions-map-client';
+import PrayerMapEmbed from '@/components/prayer/PrayerMapEmbed';
+
 const MissionsMapClient = dynamic<MissionsMapClientProps>(() => import('@/components/missions/missions-map-client'), {
   ssr: false,
   loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
@@ -130,6 +132,14 @@ export default function ContactPage() {
             </div>
           </CardContent>
         </Card>
+      </section>
+
+      <section>
+        <SectionTitle title="Find Us on the Map (Simple)" />
+        <div className="grid md:grid-cols-2 gap-6">
+          <PrayerMapEmbed location="66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone" label="Sierra Leone HQ" />
+          <PrayerMapEmbed location="12301 South East Stephens Street, Portland, Oregon 97233, USA" label="Oregon, USA Office" />
+        </div>
       </section>
     </div>
   );

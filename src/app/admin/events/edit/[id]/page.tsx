@@ -6,7 +6,9 @@ import { getEventById } from "@/lib/db/events";
 import { updateEventAction } from "@/app/admin/events/actions";
 import { useRouter } from 'next/navigation';
 
-import ReactQuill from 'react-quill';
+import dynamic from 'next/dynamic';
+// Dynamically import ReactQuill with ssr: false
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 import '/public/quill.snow.css';
 import { UploadButton } from "@/components/shared/UploadButton";
 
@@ -70,7 +72,6 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
   if (!event) {
     return <div>Event not found.</div>;
   }
-
 
   return (
     <div className="w-full max-w-2xl mx-auto py-4 px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 flex flex-col min-h-0 bg-background h-full">
