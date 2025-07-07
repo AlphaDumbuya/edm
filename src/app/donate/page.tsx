@@ -1,5 +1,4 @@
 // src/app/donate/page.tsx
-import Script from 'next/script';
 import SectionTitle from '@/components/shared/section-title';
 import DonationFormWrapper from '@/components/donate/donation-form-wrapper';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,8 @@ import PageHeader from '@/components/shared/page-header';
 export default function DonatePage() {
   const payPalHostedButtonId = "QQJUCWAXAX3JE";
   const payPalClientId = "BAAtVyCFo0kWxiZ_FS5BS3QSNnnJ4VCn7sxndZ-UkJ6SiN2zhUFrTlswPBEppkaoUOpqaMKHGfBkw1tHWA";
-  const payPalScriptUrl = `https://www.paypal.com/sdk/js?client-id=${payPalClientId}&components=hosted-buttons&enable-funding=venmo&currency=USD`;
+  // Removed enable-funding=venmo from the PayPal script URL to prevent errors
+  const payPalScriptUrl = `https://www.paypal.com/sdk/js?client-id=${payPalClientId}&components=hosted-buttons&currency=USD`;
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -60,7 +60,7 @@ export default function DonatePage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-sm sm:text-base text-muted-foreground text-center mb-3">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
-              <Link href="/ministries/education/marifa-school" className="block text-center" legacyBehavior>
+              <Link href="/ministries/education/marifa-school">
                 <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn More & Support School</Button>
               </Link>
             </CardContent>
@@ -98,14 +98,6 @@ export default function DonatePage() {
               <CreditCard className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Donate with PayPal
             </h3>
             <p className="text-sm sm:text-base text-muted-foreground">You can also support EDM's mission by donating via PayPal.</p>
-            <div className="bg-muted p-4 rounded-md shadow-sm max-w-sm mx-auto">
-              <div id={`paypal-container-${payPalHostedButtonId}`}></div>
-              <Script id="paypal-hosted-button-render" strategy="afterInteractive">
-                {`
-                  paypal.HostedButtons({ hostedButtonId: "${payPalHostedButtonId}" }).render("#paypal-container-${payPalHostedButtonId}");
-                `}
-              </Script>
-            </div>
           </div>
 
           <div>
@@ -120,7 +112,7 @@ export default function DonatePage() {
               <p>USA</p>
             </address>
             <p className="text-sm sm:text-base text-muted-foreground">For donations to our Sierra Leone headquarters or other financial inquiries (stocks, planned giving), please contact us.</p>
-            <Link href="/contact" legacyBehavior>
+            <Link href="/contact">
               <Button variant="outline" className="w-full sm:w-auto text-xs sm:text-sm">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Button>
             </Link>
           </div>
@@ -131,13 +123,13 @@ export default function DonatePage() {
             </h3>
             <p className="text-sm sm:text-base text-muted-foreground">Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.</p>
             <div className="space-y-3">
-              <Link href="/get-involved/volunteer" legacyBehavior>
+              <Link href="/get-involved/volunteer">
                 <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4" />Volunteer Opportunities</Button>
               </Link>
-              <Link href="/get-involved/prayer" legacyBehavior>
+              <Link href="/get-involved/prayer">
                 <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><HelpingHand className="mr-2 h-4 w-4" />Join Our Prayer Wall</Button>
               </Link>
-              <Link href="/get-involved/partner" legacyBehavior>
+              <Link href="/get-involved/partner">
                 <Button variant="outline" className="w-full justify-start text-xs sm:text-sm"><Users className="mr-2 h-4 w-4" />Explore Partnerships</Button>
               </Link>
             </div>
@@ -150,7 +142,7 @@ export default function DonatePage() {
           <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5 mr-1.5 sm:mr-2 text-primary" />
           <p>EDM is a registered 501(c)(3) non-profit organization. We are committed to stewarding all resources with integrity for the advancement of the Gospel.</p>
         </div>
-        <Link href="/financial-transparency" legacyBehavior>
+        <Link href="/financial-transparency">
           <Button variant="link" className="text-primary text-xs sm:text-sm">View Our Financial Transparency Policy</Button>
         </Link>
       </section>

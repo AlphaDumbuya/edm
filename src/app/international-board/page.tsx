@@ -81,10 +81,10 @@ const executiveMembers = [
   },
   {
     name: 'Samuel Kargbo',
-    role: 'Western Area Coordinator',
+    role: 'Mission Coordinator',
     bio: 'Coordinating all activities across western area Sierra Leone.',
     imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/pst-samuel.png', // Placeholder
-    dataAiHint: 'Samuel Kargbo Western Area Coordinator',
+    dataAiHint: 'Samuel Kargbo Mission Coordinator',
     contact: 'samuelkargbo349@gmail.com',
     location: 'Sierra Leone',
   },
