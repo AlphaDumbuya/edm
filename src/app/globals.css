@@ -54,46 +54,46 @@
   }
 
   .dark {
-    /* Define dark theme if needed, for now, copying existing dark theme and adjusting primary/accent */
-    --background: 20 14.3% 4.1%;
-    --foreground: 0 0% 98%;
+    /* Dark theme: deep blue background, lighter text, blue accents */
+    --background: 220 60% 10%; /* Deep dark blue */
+    --foreground: 220 20% 96%; /* Very light blue-gray for text */
 
-    --card: 20 14.3% 4.1%;
-    --card-foreground: 0 0% 98%;
+    --card: 220 50% 13%; /* Slightly lighter blue for cards */
+    --card-foreground: 220 20% 96%;
 
-    --popover: 20 14.3% 4.1%;
-    --popover-foreground: 0 0% 98%;
+    --popover: 220 50% 13%;
+    --popover-foreground: 220 20% 96%;
 
-    --primary-color: 0 0% 100%; /* White - Style Guide Primary */
-    --primary: 193 100% 52.9%; /* Brighter Teal for dark mode - Keep original primary value */
+    --primary-color: 220 100% 60%; /* Blue accent */
+    --primary: 220 100% 60%; /* Blue accent */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 14.9%;
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 220 40% 18%;
+    --secondary-foreground: 220 20% 96%;
 
-    --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
+    --muted: 220 30% 16%;
+    --muted-foreground: 220 10% 60%;
 
-    --secondary-color: 0 0% 14.9%; /* Darker Gray for dark mode secondary */
-    --accent-color: 193 100% 52.9%; /* Brighter Teal for dark mode - Style Guide Accent */
+    --secondary-color: 220 40% 18%;
+    --accent-color: 220 100% 60%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 193 100% 52.9%; /* Brighter Teal for dark mode */
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 220 100% 60%;
 
     /* Sidebar specific theme variables for dark mode */
-    --sidebar-background: 0 0% 10%; 
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 193 100% 52.9%; 
+    --sidebar-background: 220 60% 10%;
+    --sidebar-foreground: 220 20% 96%;
+    --sidebar-primary: 220 100% 60%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 193 100% 57.9%;
+    --sidebar-accent: 220 100% 65%;
     --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 14.9%;
-    --sidebar-ring: 193 100% 52.9%;
+    --sidebar-border: 220 30% 18%;
+    --sidebar-ring: 220 100% 60%;
 
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
