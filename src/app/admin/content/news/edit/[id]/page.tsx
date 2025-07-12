@@ -118,36 +118,38 @@ export default function EditNewsArticlePage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-6">
-      <h2 className="text-2xl font-bold mb-6">Edit News Article: {formData.title || newsArticleId}</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="container mx-auto px-2 py-4 sm:py-12 bg-gray-900 text-gray-100 rounded-lg shadow-lg max-w-2xl w-full">
+      <h2 className="text-2xl font-bold mb-8 tracking-tight">Edit News Article: {formData.title || newsArticleId}</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700">Title</label>
+          <label htmlFor="title" className="block text-sm font-medium text-gray-200">Title</label>
           <input
             type="text"
             id="title"
             name="title"
             value={formData.title}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            className="input-white-icons mt-1 block w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-md shadow-sm p-2 placeholder-gray-400"
             required
           />
         </div>
         <div>
-          <label htmlFor="slug" className="block text-sm font-medium text-gray-700">Slug</label>
+          <label htmlFor="slug" className="block text-sm font-medium text-gray-200">Slug</label>
           <input
             type="text"
             id="slug"
             name="slug"
             value={formData.slug}
             onChange={handleInputChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+            className="input-white-icons mt-1 block w-full border border-gray-700 bg-gray-800 text-gray-100 rounded-md shadow-sm p-2 placeholder-gray-400"
             required
           />
         </div>
         <div>
-          <label htmlFor="content" className="block text-sm font-medium text-gray-700">Content</label>
-          <TipTapEditor value={formData.content} onContentChange={handleContentChange} />
+          <label htmlFor="content" className="block text-sm font-medium text-gray-200">Content</label>
+          <div className="mt-1 border border-gray-700 rounded-md shadow-sm bg-gray-800">
+            <TipTapEditor value={formData.content} onContentChange={handleContentChange} />
+          </div>
         </div>
         <div className="flex items-center">
           <input
@@ -156,17 +158,17 @@ export default function EditNewsArticlePage() {
             name="published"
             checked={formData.published}
             onChange={handleInputChange}
-            className="h-4 w-4 text-primary border-gray-300 rounded"
+            className="h-4 w-4 text-primary border-gray-700 bg-gray-800 rounded"
           />
-          <label htmlFor="published" className="ml-2 block text-sm font-medium text-gray-700">Published</label>
+          <label htmlFor="published" className="ml-2 block text-sm font-medium text-gray-200">Published</label>
         </div>
         <div>
-          <label htmlFor="coverImage" className="block text-sm font-medium text-gray-700">Cover Image</label>
+          <label htmlFor="coverImage" className="block text-sm font-medium text-gray-200">Cover Image</label>
           <UploadButton imageUrl={imageUrl} setImageUrl={handleImageUrlChange} />
         </div>
         <button
           type="submit"
-          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90"
+          className="px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 border border-primary focus:outline-none focus:ring-2 focus:ring-primary"
           disabled={loading}
         >
           {loading ? 'Saving...' : 'Save Changes'}

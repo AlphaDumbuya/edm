@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { UploadButton } from '@/components/shared/UploadButton';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const CATEGORY_OPTIONS = [
   'School Project',
@@ -14,11 +15,17 @@ const CATEGORY_OPTIONS = [
 const EVENT_OPTIONS = [
   'Rosortta School Project',
   'Youth Evangelism Camp 2024',
+  'Community Outreach 2024',
+  'Marifa School Project',
+
+ 
   // Add more as needed
 ];
 
 export default function GalleryAdminForm() {
   const router = useRouter();
+  const { data: session } = useSession();
+  const role = session?.user?.role || "VIEWER";
   const [type, setType] = useState<'photo' | 'video'>('photo');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
@@ -65,6 +72,7 @@ export default function GalleryAdminForm() {
       });
       if (!res.ok) throw new Error('Failed to upload media');
       setSuccess('Media uploaded!');
+      // Only reset state and close form after successful upload
       setTitle('');
       setDescription('');
       setCategory('');
@@ -76,10 +84,11 @@ export default function GalleryAdminForm() {
       setCustomEventName('');
       setVideoUrl('');
       setPublished(true);
-      setShowPhotoForm(false);
-      setShowVideoForm(false);
-      // Optionally, trigger a refresh (if using SWR or router.refresh)
-      if (typeof window !== 'undefined') window.location.reload();
+      setTimeout(() => {
+        setShowPhotoForm(false);
+        setShowVideoForm(false);
+        if (typeof window !== 'undefined') window.location.reload();
+      }, 1000);
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -92,14 +101,18 @@ export default function GalleryAdminForm() {
       <button
         type="button"
         className="mb-4 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-medium mr-2"
-        onClick={() => { setType('photo'); setShowPhotoForm(true); setShowVideoForm(false); }}
+        onClick={() => { if (role !== 'VIEWER') { setType('photo'); setShowPhotoForm(true); setShowVideoForm(false); } }}
+        disabled={role === 'VIEWER'}
+        title={role === 'VIEWER' ? 'Viewers cannot create photos.' : undefined}
       >
         + Create Photo
       </button>
       <button
         type="button"
         className="mb-4 px-4 py-2 rounded bg-purple-600 hover:bg-purple-700 text-white font-medium"
-        onClick={() => { setType('video'); setShowVideoForm(true); setShowPhotoForm(false); }}
+        onClick={() => { if (role !== 'VIEWER') { setType('video'); setShowVideoForm(true); setShowPhotoForm(false); } }}
+        disabled={role === 'VIEWER'}
+        title={role === 'VIEWER' ? 'Viewers cannot create videos.' : undefined}
       >
         + Create Video
       </button>
@@ -109,15 +122,29 @@ export default function GalleryAdminForm() {
             <>
               <div>
                 <label className="block text-sm font-semibold mb-1">Title</label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={title} onChange={e => setTitle(e.target.value)} required />
+                <input
+                  type="text"
+                  className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                  required
+                  placeholder="Enter photo title"
+                />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Description</label>
-                <textarea className="input w-full border rounded px-3 py-2" value={description} onChange={e => setDescription(e.target.value)} rows={2} required />
+                <textarea
+                  className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  rows={2}
+                  required
+                  placeholder="Describe the photo or its context"
+                />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Category</label>
-                <select className="input w-full border rounded px-3 py-2" value={category} onChange={e => setCategory(e.target.value)} required>
+                <select className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2" value={category} onChange={e => setCategory(e.target.value)} required>
                   <option value="">Select category</option>
                   {CATEGORY_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
                 </select>
@@ -128,26 +155,15 @@ export default function GalleryAdminForm() {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Alt Text</label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={altText} onChange={e => setAltText(e.target.value)} required placeholder="e.g., EDM volunteers laying bricks" />
+                <input type="text" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={altText} onChange={e => setAltText(e.target.value)} required placeholder="e.g., EDM volunteers laying bricks" />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Taken At (Location)</label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={location} onChange={e => setLocation(e.target.value)} required placeholder="e.g., Mariffa Village" />
+                <input type="text" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={location} onChange={e => setLocation(e.target.value)} required placeholder="e.g., Mariffa Village" />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Photographer / Source <span className="text-xs text-gray-400">(optional)</span></label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={photographer} onChange={e => setPhotographer(e.target.value)} placeholder="e.g., Pastor John" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Event / Project Name</label>
-                <select className="input w-full border rounded px-3 py-2" value={eventName} onChange={e => setEventName(e.target.value)} required>
-                  <option value="">Select event/project</option>
-                  {EVENT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                  <option value="other">Other</option>
-                </select>
-                {eventName === 'other' && (
-                  <input type="text" className="input w-full border rounded px-3 py-2 mt-2" value={customEventName} onChange={e => setCustomEventName(e.target.value)} placeholder="Enter the name of the event here......" required />
-                )}
+                <input type="text" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={photographer} onChange={e => setPhotographer(e.target.value)} placeholder="e.g., Pastor John" />
               </div>
               <div>
                 <span className="block text-sm font-semibold mb-1">Visibility</span>
@@ -191,11 +207,11 @@ export default function GalleryAdminForm() {
             <>
               <div>
                 <label className="block text-sm font-semibold mb-1">Title</label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={title} onChange={e => setTitle(e.target.value)} required />
+                <input type="text" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={title} onChange={e => setTitle(e.target.value)} required placeholder="Enter video title" />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Video Source</label>
-                <select className="input w-full border rounded px-3 py-2" value={videoSource} onChange={e => setVideoSource(e.target.value)} required>
+                <select className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2" value={videoSource} onChange={e => setVideoSource(e.target.value)} required>
                   <option value="youtube">YouTube</option>
                   <option value="tiktok">TikTok</option>
                   <option value="vimeo">Vimeo</option>
@@ -206,22 +222,11 @@ export default function GalleryAdminForm() {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Video URL</label>
-                <input type="url" className="input w-full border rounded px-3 py-2" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" />
+                <input type="url" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" />
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Filmed At (Location)</label>
-                <input type="text" className="input w-full border rounded px-3 py-2" value={videoLocation} onChange={e => setVideoLocation(e.target.value)} required placeholder="e.g., Rosortta Village" />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold mb-1">Event / Project Name</label>
-                <select className="input w-full border rounded px-3 py-2" value={eventName} onChange={e => setEventName(e.target.value)} required>
-                  <option value="">Select event/project</option>
-                  {EVENT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
-                  <option value="other">Other</option>
-                </select>
-                {eventName === 'other' && (
-                  <input type="text" className="input w-full border rounded px-3 py-2 mt-2" value={customEventName} onChange={e => setCustomEventName(e.target.value)} placeholder="Enter the name of the event here......" required />
-                )}
+                <input type="text" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={videoLocation} onChange={e => setVideoLocation(e.target.value)} required placeholder="e.g., Rosortta Village" />
               </div>
               <div>
                 <span className="block text-sm font-semibold mb-1">Visibility</span>

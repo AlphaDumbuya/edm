@@ -81,20 +81,19 @@ export default function EditUserPage() {
 
 
   if (loading) {
-    return <div>Loading user data...</div>;
+    return <div className="text-gray-400 text-sm">Loading user data...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="text-red-500 text-sm">{error}</div>;
   }
 
-
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Edit User: {userId}</h1>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+    <div className="w-full max-w-2xl mx-auto py-4 sm:py-10 px-2 sm:px-6 md:px-8 bg-gray-900 text-gray-100 rounded-lg shadow-lg border border-gray-800 flex flex-col gap-4">
+      <h1 className="text-2xl font-bold mb-4 text-center md:text-left tracking-tight">Edit User: {userId}</h1>
+      <form onSubmit={handleSubmit} className="space-y-4 w-full">
+        <div className="w-full">
+          <label htmlFor="name" className="block text-sm font-medium text-gray-200 mb-1">
             Name
           </label>
           <input
@@ -102,11 +101,11 @@ export default function EditUserPage() {
             id="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
+            className="block w-full rounded-md border border-gray-700 bg-gray-800 text-gray-100 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10 placeholder-gray-400"
           />
         </div>
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        <div className="w-full">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-200 mb-1">
             Email
           </label>
           <input
@@ -114,16 +113,16 @@ export default function EditUserPage() {
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
+            className="block w-full rounded-md border border-gray-700 bg-gray-800 text-gray-100 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10 placeholder-gray-400"
           />
         </div>
-        <div>
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700">Role</label>
+        <div className="w-full">
+          <label htmlFor="role" className="block text-sm font-medium text-gray-200 mb-1">Role</label>
           <select
             id="role"
             value={role}
             onChange={e => setRole(e.target.value as UserRole)}
-            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
+            className="block w-full rounded-md border border-gray-700 bg-gray-800 text-gray-100 shadow-sm focus:border-primary focus:ring-primary text-base py-2 px-3 h-10"
           >
             <option value="SUPER_ADMIN">Super Admin</option>
             <option value="ADMIN">Admin</option>
@@ -134,7 +133,7 @@ export default function EditUserPage() {
         </div>
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          className="w-full inline-flex justify-center rounded-md border border-transparent bg-primary py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
         >
           Save Changes
         </button>

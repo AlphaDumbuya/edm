@@ -97,6 +97,24 @@ export async function POST(request: Request) {
         slug: slug || null,
       },
     });
+
+    // After creating news article, add notification
+    // Fetch all admin and super admin users
+    const admins = await prisma.user.findMany({
+      where: {
+        role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+      }
+    });
+    // Create notification for each admin
+    await Promise.all(admins.map(admin =>
+      prisma.notification.create({
+        data: {
+          userId: admin.id,
+          message: `New news article published`,
+        },
+      })
+    ));
+
     return NextResponse.json(created, { status: 201 });
   } catch (error) {
     console.error("Failed to create news article:", error);

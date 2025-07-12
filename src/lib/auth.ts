@@ -119,4 +119,36 @@ export const auth = betterAuth({
     expiresIn: 3600, // 1 hour
   },
 });
-export const authOptions: NextAuthOptions = { providers: [] };
+export const authOptions: NextAuthOptions = {
+  providers: [],
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = user.role;
+        token.name = user.name;
+        token.email = user.email;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token && session.user) {
+        session.user.role = token.role;
+        session.user.name = token.name;
+        session.user.email = token.email;
+      }
+      return session;
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: "none",
+        path: "/",
+        domain: "localhost", // Ensures cookie is sent for localhost in dev
+        secure: false, // Set to true in production with HTTPS
+      },
+    },
+  },
+};

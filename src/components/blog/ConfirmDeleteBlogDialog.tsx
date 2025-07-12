@@ -75,17 +75,19 @@ export function ConfirmDeleteBlogDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel onClick={onClose}>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-red-600 hover:bg-red-700 text-white"
-            onClick={(e) => {
-              e.preventDefault();
-              handleDelete();
-            }}
-            disabled={isDeleting}
-          >
-            {isDeleting ? "Deleting..." : "Delete Blog"}
-          </AlertDialogAction>
+          <div className="flex flex-row gap-2 justify-end flex-wrap sm:flex-nowrap">
+            <AlertDialogCancel onClick={onClose} className="min-w-max">Cancel</AlertDialogCancel>
+            <AlertDialogAction
+              className="bg-red-600 hover:bg-red-700 text-white min-w-max"
+              onClick={(e) => {
+                e.preventDefault();
+                handleDelete();
+              }}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Blog"}
+            </AlertDialogAction>
+          </div>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

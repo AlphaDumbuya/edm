@@ -9,15 +9,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { useAuth, type User } from '@/contexts/auth-context'; // Import User type
+import { useAuth, type User } from '@/contexts/auth-context';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, UserCircle as UserProfileIcon } from 'lucide-react'; // Renamed to avoid conflict
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Loader2, Save, UserCircle as UserProfileIcon } from 'lucide-react';
 
 const profileSchema = z.object({
   name: z.string().min(1, { message: 'Display name cannot be empty' }).max(50, { message: 'Display name too long'}),
-  email: z.string().email().optional(), // Email is not editable here but shown
-  // photoURL: z.string().url({ message: "Invalid URL for photo" }).optional().or(z.literal('')), // PhotoURL update deferred
+  email: z.string().email().optional(),
 });
 
 type ProfileFormValues = z.infer<typeof profileSchema>;
@@ -27,14 +25,13 @@ export default function UserProfileForm() {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const typedUser = user as User | null; // Cast for type safety
+  const typedUser = user as User | null;
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       name: '',
       email: '',
-      // photoURL: '',
     },
   });
 
@@ -43,17 +40,14 @@ export default function UserProfileForm() {
       form.reset({
         name: typedUser.name || '',
         email: typedUser.email || '',
-        // photoURL: typedUser.photoURL || '',
       });
     }
   }, [typedUser, form]);
 
   const onSubmit = async (data: ProfileFormValues) => {
     setIsLoading(true);
-    // For now, we are only updating the name. PhotoURL update can be added later.
     const result = await updateUserProfile({ name: data.name });
     setIsLoading(false);
-
     if (result.error) {
       toast({
         title: 'Profile Update Failed',
@@ -65,24 +59,8 @@ export default function UserProfileForm() {
         title: 'Profile Updated',
         description: 'Your profile information has been saved.',
       });
-      await refreshUser(); // Refresh user data in context
+      await refreshUser();
     }
-  };
-
-  const getInitials = (name?: string | null, email?: string | null) => {
-    if (name) {
-      const names = name.split(' ');
-      if (names.length > 1 && names[0] && names[names.length - 1]) {
-        return (names[0][0] + names[names.length - 1][0]).toUpperCase();
-      }
-      if (names[0]) {
-        return names[0].substring(0, 2).toUpperCase();
-      }
-    }
-    if (email) {
-      return email[0].toUpperCase();
-    }
-    return 'U';
   };
 
   if (authLoading) {
@@ -98,7 +76,6 @@ export default function UserProfileForm() {
     )
   }
 
-  // Handle the case where user is null after loading
   if (!typedUser) {
     return (
       <Card className="shadow-xl">
@@ -120,23 +97,13 @@ export default function UserProfileForm() {
       </CardHeader>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <CardContent className="space-y-6 p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Avatar className="h-24 w-24 border-2 border-primary">
-              <AvatarImage src={typedUser?.photoURL || undefined} alt={typedUser?.name || typedUser?.email || 'User'} data-ai-hint="user avatar placeholder" />
-              <AvatarFallback>{getInitials(typedUser?.name, typedUser?.email)}</AvatarFallback>
-            </Avatar>
-            <div className="text-center sm:text-left">
-                <p className="text-sm text-muted-foreground">Profile Picture</p>
-                <Button type="button" variant="outline" size="sm" className="mt-1" disabled>Change (Uploadthing coming soon)</Button>
-            </div>
-          </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
               type="email"
               {...form.register('email')}
-              disabled // Email is usually not changed directly by user here
+              disabled
               className="bg-muted/50"
             />
             <p className="text-xs text-muted-foreground">Email cannot be changed here. Contact support if needed.</p>
@@ -156,7 +123,14 @@ export default function UserProfileForm() {
           </div>
         </CardContent>
         <CardFooter className="p-4 sm:p-6 flex justify-end">
-          <Button type="submit" className="w-full md:w-auto" disabled={isLoading || authLoading}>
+          <Button
+            type="submit"
+            className="w-full md:w-auto"
+            disabled={
+              !!isLoading ||
+              !!authLoading
+            }
+          >
             {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Save className="mr-2 h-4 w-4" />}
             {isLoading ? 'Saving...' : 'Save Changes'}
           </Button>

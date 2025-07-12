@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '@/lib/db/prisma';
 
 // GET: Fetch all approved testimonials
 export async function GET() {
@@ -22,6 +20,21 @@ export async function POST(req: NextRequest) {
     const testimonial = await prisma.testimonial.create({
       data: { name, message, approved: true }, // auto-approve for now
     });
+    // Fetch all admin and super admin users
+    const admins = await prisma.user.findMany({
+      where: {
+        role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+      }
+    });
+    // Create notification for each admin
+    await Promise.all(admins.map(admin =>
+      prisma.notification.create({
+        data: {
+          userId: admin.id,
+          message: `New testimonial submitted by ${name}`,
+        },
+      })
+    ));
     return NextResponse.json({ success: true, testimonial });
   } catch (error: any) {
     return NextResponse.json({ error: error?.message || String(error) }, { status: 500 });

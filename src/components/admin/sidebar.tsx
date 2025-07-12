@@ -3,7 +3,7 @@
 import Link, { LinkProps } from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
-import { GoHome, GoPerson, GoBook, GoCalendar, GoHeart, GoCreditCard } from 'react-icons/go';
+import { GoHome, GoPerson, GoBook, GoCalendar, GoHeart, GoCreditCard, GoPeople } from 'react-icons/go';
 
 const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) => {
   const pathname = usePathname();
@@ -33,6 +33,7 @@ const AdminSidebar: React.FC<{ onLinkClick?: () => void }> = ({ onLinkClick }) =
       href: '/admin/gallery',
       icon: GoBook, // You can replace with a more relevant icon
     },
+    { name: 'Volunteers', href: '/admin/volunteers', icon: GoPeople },
     {
       name: 'Audit Log',
       href: '/admin/audit-logs',

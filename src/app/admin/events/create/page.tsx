@@ -1,206 +1,132 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { createEventAction } from "../actions"; // Adjust path as needed
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { EditorState, convertToRaw } from 'draft-js';
-import dynamic from 'next/dynamic';
-import draftToHtml from 'draftjs-to-html';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import TipTapEditor from "@/components/TipTapEditor";
 import { UploadButton } from "@/components/shared/UploadButton";
-const Editor: any = dynamic(() => import('react-draft-wysiwyg').then(mod => mod.Editor), { ssr: false });
+import { createEventAction } from "../actions";
 
 export default function CreateEventPage() {
-  const [formData, setFormData] = useState<{
-    title: string;
-    description: string;
-    date: string;
-    time: string;
-    location: string;
-  }>({
-    title: '',
-    description: '',
-    date: '',
-    time: '',
-    location: '',
-  });
-  const [userId, setUserId] = useState('');
-  const [editorState, setEditorState] = useState<any>(EditorState.createEmpty());
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const { data: session } = useSession();
   const router = useRouter();
-  useEffect(() => {
-    // Retrieve userId from localStorage on mount
-    if (typeof window !== 'undefined') {
-      const storedUserId = localStorage.getItem('userId');
-      if (storedUserId) setUserId(storedUserId);
-    }
-  }, []);
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    date: "",
+    time: "",
+    location: "",
+    isVirtual: false,
+    onlineLink: "",
+  });
+  const [imageUrl, setImageUrl] = useState<string | null>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent default form submission
-
-    if (!userId || userId === 'mockUserId') {
-      alert('User not authenticated. Please log in with a real account and reload the page.');
-      return;
-    }
-
-    console.log('Submitting event with userId:', userId); // Debug log
-
-    const data = new FormData();
-    data.append('userId', userId);
-    data.append('title', formData.title);
-    data.append('date', formData.date);
-    data.append('time', formData.time);
-    data.append('location', formData.location);
-
+  const handleCreate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
     try {
-      const rawContentState = convertToRaw(editorState.getCurrentContent());
-      // Convert editor state to HTML and append to FormData
-      data.append('description', draftToHtml(rawContentState));
-      data.append('imageUrl', imageUrl || '');
-      await createEventAction(data);
-      router.push('/admin/events');
-    } catch (error) {
-      console.error('Error creating event:', error);
-      // Optionally, display an error message to the user
+      const fd = new FormData();
+      Object.entries(form).forEach(([k, v]) => {
+        if (typeof v === "boolean") {
+          fd.append(k, v ? "true" : "false");
+        } else {
+          fd.append(k, v);
+        }
+      });
+      if (imageUrl) fd.append("imageUrl", imageUrl);
+      if (session?.user?.id) {
+        fd.append("userId", session.user.id);
+      }
+      await createEventAction(fd);
+      router.push("/admin/events");
+    } catch (err) {
+      setError("Failed to create event.");
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const handleEditorStateChange = (newEditorState: any) => {
-    setEditorState(newEditorState);
-  };
-
-  // Define modules for the rich text editor
-  const modules = {
-    toolbar: [
-      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'align': [] }],
-      ['link', 'image'],
-      ['clean']
-    ],
   };
 
   return (
-    <div className="container mx-auto py-6 px-2 sm:px-4 md:px-8 lg:px-16 xl:px-32 max-w-2xl">
-      <h1 className="text-xl sm:text-2xl md:text-3xl font-semibold mb-4 sm:mb-6 text-center">Create New Event</h1>
-
-      { (!userId || userId === 'mockUserId') && (
-        <div className="mb-4 p-3 sm:p-4 bg-yellow-100 text-yellow-800 rounded text-center text-sm sm:text-base">
-          User not authenticated. Please log in with a real account and reload the page.<br />
-          <span className="text-xs">Current userId: {userId || 'none'}</span>
-        </div>
-      )}
-
-      <form onSubmit={handleFormSubmit} className="space-y-4 bg-white rounded-lg shadow-md p-4 sm:p-6 md:p-8" encType="multipart/form-data">
-        {/* Add hidden userId input for server action authentication */}
-        <input type="hidden" name="userId" value={userId} />
-        {/* File input for event image */}
-        <div>
-          <label htmlFor="image" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Event Image (optional)
+    <div className="max-w-2xl mx-auto py-8 px-4 bg-gray-900 text-gray-100 rounded-2xl shadow-2xl border border-gray-700 mt-8">
+      <button
+        type="button"
+        onClick={() => router.back()}
+        className="flex items-center gap-2 text-blue-400 hover:text-blue-600 font-semibold mb-6 transition-colors"
+        aria-label="Back to Events"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" className="w-5 h-5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+        </svg>
+        <span className="text-base">Back</span>
+      </button>
+      <h1 className="text-3xl font-extrabold mb-6 text-center">Create Event</h1>
+      <form onSubmit={handleCreate} className="space-y-6">
+        {session?.user?.id && <input type="hidden" name="userId" value={session.user.id} />}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="title" className="text-base font-semibold text-gray-300">
+            Event Title <span className="text-red-500">*</span>
           </label>
-          <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
-          {imageUrl && (
-            <div className="mt-2">
-              <img src={imageUrl} alt="Event Preview" className="w-full max-w-xs rounded shadow" />
-              <p className="text-xs text-gray-500 mt-1">Event image preview</p>
-            </div>
-          )}
-          <input type="hidden" name="imageUrl" value={imageUrl || ''} />
+          <Input id="title" name="title" placeholder="Enter event title" value={form.title} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 placeholder-gray-400 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600" />
         </div>
-
-        {/* Retained basic input fields for simplicity with FormData */}
-        <div>
-          <label htmlFor="title" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
-            required
-          />
+        <div className="flex flex-col gap-2">
+          <label htmlFor="description" className="text-base font-semibold text-gray-300">Description</label>
+          <div className="max-h-[30vh] overflow-y-auto rounded-lg border border-gray-700 bg-gray-800">
+            <TipTapEditor value={form.description} onContentChange={desc => setForm(f => ({ ...f, description: desc }))} />
+          </div>
         </div>
-
-        <div>
-          <label htmlFor="description" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Description
-          </label>
-          {/* @ts-ignore */}
-          <Editor
-            editorState={editorState}
-            onEditorStateChange={handleEditorStateChange}
-            editorClassName="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 min-h-[120px] sm:min-h-[160px]"
-          />
-        </div>
-
         <div className="flex flex-col sm:flex-row gap-4">
-          <div className="flex-1">
-            <label htmlFor="date" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-              Date
-            </label>
-            <input
-              type="date"
-              id="date"
-              name="date"
-              value={formData.date}
-              onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
-              required
-            />
+          <div className="flex flex-col gap-2 w-full">
+            <label htmlFor="date" className="text-base font-semibold text-gray-300">Date</label>
+            <Input id="date" name="date" type="date" value={form.date} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600 input-white-icons" />
           </div>
-          <div className="flex-1">
-            <label htmlFor="time" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-              Time
-            </label>
-            <input
-              type="time"
-              id="time"
-              name="time"
-              value={formData.time}
-              onChange={handleChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
-              required
-            />
+          <div className="flex flex-col gap-2 w-full">
+            <label htmlFor="time" className="text-base font-semibold text-gray-300">Time</label>
+            <Input id="time" name="time" type="time" value={form.time} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600 input-white-icons" />
           </div>
         </div>
-
-        <div>
-          <label htmlFor="location" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
-            Location
-          </label>
+        {!form.isVirtual && (
+          <div className="flex flex-col gap-2">
+            <label htmlFor="location" className="text-base font-semibold text-gray-300">Location</label>
+            <Input id="location" name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 placeholder-gray-400 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600" />
+          </div>
+        )}
+        <div className="flex items-center gap-2 mt-2">
           <input
-            type="text"
-            id="location"
-            name="location"
-            value={formData.location}
-            onChange={handleChange}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-blue-500 focus:border-blue-500 text-xs sm:text-sm"
-            required
+            type="checkbox"
+            id="isVirtual"
+            name="isVirtual"
+            checked={form.isVirtual}
+            onChange={e => setForm(f => ({ ...f, isVirtual: e.target.checked, onlineLink: e.target.checked ? f.onlineLink : "" }))}
+            className="h-4 w-4 border-gray-700 bg-gray-800 rounded"
           />
+          <label htmlFor="isVirtual" className="text-base font-semibold text-gray-100">Virtual Event (Online)</label>
         </div>
-
-        <div className="flex justify-center">
-          <button
-            type="submit"
-            className="w-full sm:w-auto inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-xs sm:text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
-          >
-            Create Event
-          </button>
+        {form.isVirtual && (
+          <div className="flex flex-col gap-2">
+            <label htmlFor="onlineLink" className="text-base font-semibold text-gray-300">Online Meeting/Join Link</label>
+            <Input id="onlineLink" name="onlineLink" placeholder="e.g. Zoom, Google Meet" value={form.onlineLink} onChange={handleFormChange} required={form.isVirtual} className="bg-gray-800 text-gray-100 border-gray-700 placeholder-gray-400 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600" />
+          </div>
+        )}
+        <div className="flex flex-col gap-2">
+          <label className="text-base font-semibold text-gray-300">Event Image</label>
+          <div className="bg-gray-800 border border-gray-700 rounded-lg p-2 flex flex-col items-center">
+            <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
+          </div>
+        </div>
+        {error && <div className="text-red-400 text-sm">{error}</div>}
+        <div className="flex flex-row gap-4 justify-end mt-6">
+          <Button type="submit" className="px-6 py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 text-base font-semibold" disabled={loading}>
+            {loading ? "Creating..." : "Create"}
+          </Button>
         </div>
       </form>
     </div>

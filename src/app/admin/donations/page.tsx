@@ -1,5 +1,6 @@
 'use client';
 
+import React from "react";
 import {
   TableHead,
   TableHeader,
@@ -24,6 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { TableBody, TableCell } from "@/components/ui/table";
 import { Table } from "@/components/ui/table";
+import RestrictedButton from '@/components/admin/RestrictedButton';
 
 interface Donation {
  id: string;
@@ -55,7 +57,41 @@ function DonationsContent() {
   const [error, setError] = useState<string | null>(null);
 
   const { data: session } = useSession();
-  const userRole = session?.user?.role;
+  const role = session?.user?.role || "VIEWER";
+
+
+  // Refetch donations list
+  const fetchDonations = React.useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const offset = (currentPage - 1) * itemsPerPage;
+      const params = new URLSearchParams({
+        search: searchQuery,
+        status: statusFilter,
+        offset: offset.toString(),
+        limit: itemsPerPage.toString(),
+        orderBy: 'createdAt:desc',
+      });
+      const response = await fetch(`/api/admin/donations?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: DonationsApiResponse = await response.json();
+      setDonations(data.donations);
+      setTotalDonations(data.totalCount);
+    } catch (e) {
+      console.error("Failed to fetch donations:", e);
+      setError("Failed to fetch donations.");
+    } finally {
+      setLoading(false);
+    }
+  }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
+
+  // Manual refresh handler
+  const handleRefresh = () => {
+    fetchDonations();
+  };
 
   // Sync state from URL params whenever they change
   useEffect(() => {
@@ -65,34 +101,8 @@ function DonationsContent() {
   }, [searchParamsHook]);
 
   useEffect(() => {
-    const fetchDonations = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const offset = (currentPage - 1) * itemsPerPage;
-        const params = new URLSearchParams({
-          search: searchQuery,
-          status: statusFilter,
-          offset: offset.toString(),
-          limit: itemsPerPage.toString(),
-          orderBy: 'createdAt:desc',
-        });
-        const response = await fetch(`/api/admin/donations?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: DonationsApiResponse = await response.json();
-        setDonations(data.donations);
-        setTotalDonations(data.totalCount);
-      } catch (e) {
-        console.error("Failed to fetch donations:", e);
-        setError("Failed to fetch donations.");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchDonations();
-  }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
+  }, [fetchDonations]);
 
   // Update URL params when state changes, but only if different
   useEffect(() => {
@@ -126,67 +136,109 @@ function DonationsContent() {
     }
   }, [searchQuery, statusFilter, currentPage, itemsPerPage, searchParamsHook, router]);
 
+  const handleDelete = (id: string) => {
+    if (role === 'VIEWER') return;
+    setPrayerRequestToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
   const totalPages = Math.ceil(totalDonations / itemsPerPage);
 
   return (
-    <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8">
- <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
- <h1 className="text-2xl font-semibold">Donation Management</h1>
- <Button asChild>
-  <Link href="/admin/donations/create">Create New Donation</Link>
- </Button>
- </div>
+    <div className="flex flex-col gap-4 p-2 sm:p-6 lg:p-8 w-full overflow-x-hidden">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0 w-full">
+        <h1 className="text-2xl font-semibold mt-4 mb-6 sm:mt-6 sm:mb-8">Donation Management</h1>
+        <div className="flex flex-row justify-between gap-2 w-full sm:w-auto sm:justify-end">
+          <RestrictedButton
+            allowedRoles={['ADMIN', 'SUPER_ADMIN', 'EDITOR']}
+            userRole={role}
+            onClick={() => {
+              if (role === 'VIEWER') return;
+              router.push('/admin/donations/create');
+            }}
+            title={role === 'VIEWER' ? 'Viewers cannot create donations.' : undefined}
+            className="w-auto order-1 sm:order-none"
+          >
+            <span className="block sm:hidden">New Donation</span>
+            <span className="hidden sm:inline">Create New Donation</span>
+          </RestrictedButton>
+          <button
+            className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-gray-100 rounded hover:bg-gray-700 border border-gray-700 transition font-medium shadow w-auto justify-center order-2 sm:order-none"
+            onClick={handleRefresh}
+            title="Refresh donations list"
+            disabled={loading}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M20 20v-5h-.581m-2.638 2.638A7.974 7.974 0 0112 20c-4.418 0-8-3.582-8-8 0-1.657-.507-3.197-1.382-4.462m2.638-2.638A7.974 7.974 0 0112 4c4.418 0 8 3.582 8 8 0 1.657-.507-3.197-1.382 4.462" />
+            </svg>
+            Refresh
+          </button>
+        </div>
+      </div>
 
-
-      <Input
-        placeholder="Search donations..."
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        className="mb-4"
-      />
-
-      {error ? (
-        <p className="text-red-500">{error}</p>
-      ) : donations.length === 0 ? (
-        <p>No donations found.</p>
-      ) : (
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="hidden md:table-cell">Donor Name</TableHead>
-              <TableHead>Amount</TableHead>
-              <TableHead className="hidden md:table-cell">Currency</TableHead>
-              <TableHead>Donor Email</TableHead>
-              <TableHead>Date</TableHead>
-              <TableHead>Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
+      {/* Donations Table */}
+      {donations.length > 0 && (
+        <div className="w-full">
+          {/* Mobile: Card layout */}
+          <div className="flex flex-col gap-3 sm:hidden max-w-full w-full mx-auto">
             {donations.map((donation) => (
-              <TableRow key={donation.id}>
-                <TableCell>{donation.donorName || 'N/A'}</TableCell>
-                <TableCell>{(donation.amount / 100).toFixed(2)}</TableCell>
-                <TableCell>{donation.currency ? donation.currency.toUpperCase() : 'N/A'}</TableCell>
-                <TableCell>{donation.donorEmail || 'N/A'}</TableCell>
-                <TableCell>{format(new Date(donation.createdAt), 'PPP')}</TableCell>
-                <TableCell>
-                  <div className="flex space-x-2">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => {
-                        setIsDeleteDialogOpen(true);
-                        setPrayerRequestToDelete(donation.id);
-                      }}
+              <div key={donation.id} className="bg-dark rounded-lg shadow border border-border p-3 flex flex-col text-xs max-w-[340px] w-full break-words overflow-hidden mx-auto text-white">
+                <div className="font-semibold text-white mb-1">Donation</div>
+                <div className="break-words"><span className="font-medium text-white">ID:</span> <span className="break-all text-white/80">{donation.id}</span></div>
+                <div><span className="font-medium text-white">Amount:</span> <span className="text-white/80">{donation.amount}</span></div>
+                <div><span className="font-medium text-white">Currency:</span> <span className="text-white/80">{donation.currency}</span></div>
+                <div className="break-words"><span className="font-medium text-white">Donor Email:</span> <span className="break-all text-white/80">{donation.donorEmail}</span></div>
+                <div><span className="font-medium text-white">Created At:</span> <span className="text-white/80">{format(new Date(donation.createdAt), 'yyyy-MM-dd HH:mm')}</span></div>
+                <div className="mt-2 flex gap-2">
+                  <RestrictedButton
+                    allowedRoles={['ADMIN', 'SUPER_ADMIN', 'EDITOR']}
+                    userRole={role}
+                    onClick={() => handleDelete(donation.id)}
+                    className="px-2 py-1 text-[10px] whitespace-nowrap"
+                    title={role === "VIEWER" ? "Viewers cannot delete donations." : undefined}
+                  >
+                    Delete
+                  </RestrictedButton>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop: Table layout */}
+          <Table className="w-full overflow-x-auto hidden sm:table bg-dark text-white">
+            <TableHeader>
+              <TableRow className="text-xs sm:text-sm">
+                <TableHead>ID</TableHead>
+                <TableHead>Amount</TableHead>
+                <TableHead>Currency</TableHead>
+                <TableHead>Donor Email</TableHead>
+                <TableHead>Created At</TableHead>
+                <TableHead>Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {donations.map((donation) => (
+                <TableRow key={donation.id} className="text-xs sm:text-sm">
+                  <TableCell>{donation.id}</TableCell>
+                  <TableCell>{donation.amount}</TableCell>
+                  <TableCell>{donation.currency}</TableCell>
+                  <TableCell>{donation.donorEmail}</TableCell>
+                  <TableCell>{format(new Date(donation.createdAt), 'yyyy-MM-dd HH:mm')}</TableCell>
+                  <TableCell>
+                    <RestrictedButton
+                      allowedRoles={['ADMIN', 'SUPER_ADMIN', 'EDITOR']}
+                      userRole={role}
+                      onClick={() => handleDelete(donation.id)}
+                      className="ml-2"
+                      title={role === "VIEWER" ? "Viewers cannot delete donations." : undefined}
                     >
                       Delete
-                    </Button>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    </RestrictedButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       )}
 
       {/* Pagination can go here */}

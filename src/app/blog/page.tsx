@@ -1,3 +1,4 @@
+"use client";
 import PageHeader from '@/components/shared/page-header';
 import BlogPostCard from '@/components/blog/blog-post-card';
 import { BookOpen } from 'lucide-react';
@@ -56,21 +57,22 @@ export default async function BlogPage({ searchParams }: { searchParams?: { page
         subtitle="Insights, updates, and stories from our Evangelism, Discipleship, and Missions work in Sierra Leone."
         icon={BookOpen}
       />
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {postsWithAuthors.map(post => (
-          <BlogPostCard
-            key={post.slug}
-            post={{
-              slug: post.slug,
-              title: post.title,
-              author: { name: post.authorName },
-              date: post.createdAt.toLocaleDateString(),
-              excerpt: stripHtml(post.content).substring(0, 150) + '...',
-              imageUrl: post.imageUrl || '',
-              dataAiHint: '',
-              tags: [],
-            }}
-          />
+          <div key={post.slug} className="w-full flex">
+            <BlogPostCard
+              post={{
+                slug: post.slug,
+                title: post.title,
+                author: { name: post.authorName },
+                date: post.createdAt.toLocaleDateString(),
+                excerpt: stripHtml(post.content).substring(0, 150) + '...',
+                imageUrl: post.imageUrl || '',
+                dataAiHint: '',
+                tags: [],
+              }}
+            />
+          </div>
         ))}
       </div>
       {totalPages > 1 && (

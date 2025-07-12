@@ -35,6 +35,7 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 export default function ContactPage() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showConfirmation, setShowConfirmation] = useState(false);
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
     defaultValues: { name: '', email: '', subject: '', message: '' },
@@ -42,16 +43,33 @@ export default function ContactPage() {
 
   const onSubmit = async (data: ContactFormValues) => {
     setIsSubmitting(true);
-    // Simulate form submission
-    console.log('Contact form data:', data);
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    toast({
-      title: 'Message Sent!',
-      description: 'Thank you for contacting EDM. We will get back to you soon.',
-    });
-    form.reset();
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Failed to send');
+      toast({
+        title: 'Message Sent!',
+        description: 'Thank you for contacting EDM. We will get back to you soon.',
+      });
+      setShowConfirmation(true);
+      form.reset();
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to send message. Please try again later.',
+        variant: 'destructive',
+      });
+    }
     setIsSubmitting(false);
   };
+
+  // Hide confirmation after 5 seconds
+  if (showConfirmation) {
+    setTimeout(() => setShowConfirmation(false), 5000);
+  }
 
   return (
     <div className="space-y-12 md:space-y-16">
@@ -95,6 +113,11 @@ export default function ContactPage() {
               </CardContent>
             </Card>
           </form>
+          {showConfirmation && (
+            <div className="my-4 p-4 rounded bg-green-100 text-green-800 border border-green-300">
+              Thank you for contacting EDM. We have received your message and will get back to you soon.
+            </div>
+          )}
         </div>
 
         <div className="space-y-6 md:space-y-8">
@@ -127,19 +150,11 @@ export default function ContactPage() {
         <SectionTitle title="Find Us on the Map" />
          <Card className="shadow-xl">
           <CardContent className="p-0">
-            <div className="aspect-[16/9] md:aspect-[2/1] bg-muted rounded-lg overflow-hidden">
+            <div className="h-72 md:h-96 w-full bg-muted rounded-lg overflow-hidden">
               <MissionsMapClient mapId="edm_contact_map" />
             </div>
           </CardContent>
         </Card>
-      </section>
-
-      <section>
-        <SectionTitle title="Find Us on the Map (Simple)" />
-        <div className="grid md:grid-cols-2 gap-6">
-          <PrayerMapEmbed location="66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone" label="Sierra Leone HQ" />
-          <PrayerMapEmbed location="12301 South East Stephens Street, Portland, Oregon 97233, USA" label="Oregon, USA Office" />
-        </div>
       </section>
     </div>
   );

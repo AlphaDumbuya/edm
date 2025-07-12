@@ -16,8 +16,20 @@ export async function createBlogPostAction(formData: FormData) {
     throw new Error("Missing required fields");
   }
 
-  // Use absolute URL for server-side fetch
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+  // Try to use the current server's origin for fetch
+  let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  if (!baseUrl) {
+    if (typeof window === 'undefined') {
+      // On the server, try to infer from headers (Node.js only)
+      const { headers } = require('next/headers');
+      const host = headers().get('host');
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      baseUrl = `${protocol}://${host}`;
+    } else {
+      baseUrl = window.location.origin;
+    }
+  }
+
   const res = await fetch(`${baseUrl}/api/admin/blog`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
