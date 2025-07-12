@@ -28,7 +28,7 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
     console.log('Generating news link with slug:', post.slug);
   }
   return (
-    <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
+    <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full w-full mb-4 p-0 sm:p-0 rounded-lg border border-gray-700 bg-gray-900">
       <CardHeader className="p-3 sm:p-4 flex flex-col">
         <Link href={`/news/${post.slug}`}>
           <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>

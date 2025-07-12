@@ -1,4 +1,3 @@
-
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -112,7 +111,7 @@ export default function ChurchPartnershipPage() {
           We believe in the power of the local church. Let's explore how your congregation can join hands with EDM to make a lasting impact in Sierra Leone and Oregon.
         </p>
         <Link
-          href="mailto:churchpartnerships@edm.org?subject=Church%20Partnership%20Inquiry"
+          href="/contact"
           legacyBehavior>
           <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Discuss Church Partnership

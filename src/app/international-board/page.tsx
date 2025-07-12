@@ -40,7 +40,7 @@ const boardMembersSierraLeone = [
     bio: 'Representing the clergy on the EDM board, providing spiritual guidance and contributing to the alignment of ministry activities with theological principles.',
     imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/rev-samuel.png', // Added image
     dataAiHint: 'Rev Samuel Samurah Kargbo Board Member Sierra Leone',
-    contact: '',
+    contact: 'samuelsamurahkargbo@yahoo.com',
     location: 'Sierra Leone',
   },
   {

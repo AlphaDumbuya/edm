@@ -118,7 +118,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
               id="date"
               name="date"
               defaultValue={event.date ? new Date(event.date).toISOString().split('T')[0] : ''}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500 input-white-icons"
               required
             />
           </div>
@@ -129,7 +129,7 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
               id="time"
               name="time"
               defaultValue={event.time}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500"
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 text-sm focus:ring-blue-500 focus:border-blue-500 input-white-icons"
               required
             />
           </div>

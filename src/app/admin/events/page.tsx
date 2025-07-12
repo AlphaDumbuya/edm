@@ -15,6 +15,8 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
+import RestrictedButton from '@/components/admin/RestrictedButton';
+
 import { Button } from "@/components/ui/button";
 import {
   Table,

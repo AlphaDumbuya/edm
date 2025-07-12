@@ -1,4 +1,3 @@
-
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -88,10 +87,8 @@ export default function IndividualPartnershipPage() {
               Be a voice for EDM's work in Sierra Leone and our Oregon connections within your community. Share stories and opportunities for involvement.
             </p>
             <div className="text-center mt-3">
-                <Link
-                  href="mailto:ambassador@edm.org?subject=Ambassador%20Inquiry"
-                  legacyBehavior>
-                     <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
+                <Link href="/get-involved/ambassador" legacyBehavior>
+                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
                 </Link>
             </div>
           </CardContent>
@@ -122,7 +119,7 @@ export default function IndividualPartnershipPage() {
           We're excited to explore how your passion and skills can align with EDM's mission in Sierra Leone or Oregon. If you have questions or want to discuss involvement, please reach out.
         </p>
         <Link
-          href="mailto:individuals@edm.org?subject=Individual%20Partnership%20Inquiry"
+          href="/contact"
           legacyBehavior>
           <Button size="lg" className="text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us

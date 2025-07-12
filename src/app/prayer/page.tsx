@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { getAllPrayerRequests } from '@/lib/db/prayerRequests';
+import PrayerMapClient from '@/components/prayer/PrayerMapClient';
 
 function hasPrayedFor(prayerId: string): boolean {
   if (typeof window === 'undefined') return false;
@@ -36,6 +37,15 @@ export default function PrayerPage() {
 
   return (
     <div className="container mx-auto px-4 py-6">
+      <div className="mb-8" style={{ height: '350px' }}>
+        <PrayerMapClient
+          locations={[
+            { lat: 8.387584, lng: -13.1517581, label: '66 Main Grafton Rd, Kossoh Town, Freetown, Sierra Leone' },
+            { lat: 45.5092501, lng: -122.5366013, label: '12301 SE Stephens St, Portland, OR 97233, USA' },
+          ]}
+          zoom={16}
+        />
+      </div>
       <h1 className="text-2xl font-bold mb-6">Prayer Requests</h1>
       {prayerRequests.length === 0 ? (
         <p className="text-gray-500">No public prayer requests found yet.</p>

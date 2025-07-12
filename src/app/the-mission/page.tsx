@@ -48,8 +48,9 @@ export default function TheMissionPage() {
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-3 sm:mb-4">
                 Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school). This future Bible school is being established in partnership with Reformed Gospel Mission (ReGom) as the REGOM/EDM Bible Institute. <Link href="/ministries" className="text-primary hover:underline">Learn more about our ministries.</Link> lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
-              <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden">
-                <Image src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community" alt="Artist rendering of EDM Campus" layout="fill" objectFit="cover" data-ai-hint="campus building africa rendering" />
+              <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden flex flex-col items-center justify-center bg-muted">
+                <Building className="w-16 h-16 text-primary mb-2" />
+                <span className="text-xs sm:text-sm text-muted-foreground text-center px-2">Future campus rendering or illustration coming soon</span>
               </div>
             </CardContent>
           </Card>
@@ -138,13 +139,6 @@ export default function TheMissionPage() {
               Support Our Mission
             </Link>
           </div>
-        </div>
-      </section>
-      <section>
-        <SectionTitle title="Key Locations (Map)" />
-        <div className="grid md:grid-cols-2 gap-6">
-          <PrayerMapEmbed location="Freetown, Sierra Leone" label="EDM HQ: Freetown" />
-          <PrayerMapEmbed location="Marifa, Sierra Leone" label="EDM Marifa School" />
         </div>
       </section>
     </div>

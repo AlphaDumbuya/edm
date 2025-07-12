@@ -1,10 +1,11 @@
 // src/app/dashboard/layout.tsx
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/auth-context';
 import DashboardSidebar from '@/components/dashboard/dashboard-sidebar';
 import { Loader2, LayoutDashboard } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
 import { buttonVariants } from '@/components/ui/button'; // Assumes this is a function
@@ -16,6 +17,13 @@ export default function DashboardLayout({
 }) {
   const [isOpen, setIsOpen] = useState(false); // Sidebar state
   const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/');
+    }
+  }, [loading, user, router]);
 
   if (loading) {
     return (
@@ -27,18 +35,7 @@ export default function DashboardLayout({
   }
 
   if (!user) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-background">
-        <LayoutDashboard className="h-16 w-16 text-destructive mb-4" />
-        <p className="text-xl font-semibold text-foreground mb-2">Access Denied</p>
-        <p className="text-muted-foreground mb-6 text-center">
-          You must be logged in to view the dashboard.
-        </p>
-        <Link href="/auth/login" className={buttonVariants({ variant: 'default' })}>
-          Go to Login
-        </Link>
-      </div>
-    );
+    return null; // Prevent rendering anything while redirecting
   }
 
   // If loading is false and user exists, render the dashboard

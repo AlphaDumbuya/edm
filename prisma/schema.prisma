@@ -1,88 +1,72 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("DATABASE_URL") // This will be your Neon DB connection string
-  directUrl = env("DIRECT_DATABASE_URL") // For migrations, often same as DATABASE_URL for Neon
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
 }
 
 model User {
-  id             String    @id @default(uuid()) @db.Uuid
-  email          String    @unique
-  name           String?
-  hashedPassword String
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  sessions       Session[]
-
-  // Optional fields for future enhancements
-  // emailVerified  DateTime?
-  image          String?   // For profile picture URL (e.g., from Uploadthing)
-  role           UserRole  @default(USER)
-  blogPosts      BlogPost[]
-  newsArticles   NewsArticle[]
-  auditLogs      AuditLog[]
-
-  // New fields for email verification
-  emailVerified        Boolean   @default(false)
-  emailVerificationToken String?
-
-  // Password reset fields
-  passwordResetToken String?
+  email                    String         @unique
+  name                     String?
+  hashedPassword           String
+  createdAt                DateTime       @default(now())
+  updatedAt                DateTime       @updatedAt
+  role                     UserRole       @default(USER)
+  id                       String         @id @default(uuid()) @db.Uuid
+  image                    String?
+  emailVerificationToken   String?
+  emailVerified            Boolean        @default(false)
+  passwordResetToken       String?
   passwordResetTokenExpiry DateTime?
+  emailNotifications       Boolean        @default(true)
+  pushNotifications        Boolean        @default(false)
+  auditLogs                AuditLog[]
+  blogPosts                BlogPost[]
+  newsArticles             NewsArticle[]
+  notifications            Notification[]
+  sessions                 Session[]
 }
 
 model Session {
   id        String   @id @default(cuid())
-  userId    String @db.Uuid // Add @db.Uuid to match User id type
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
   expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
 
-// User Roles for access control
-enum UserRole {
-  SUPER_ADMIN
-  ADMIN
-  EDITOR
-  VIEWER
-  USER
-}
-
 model BlogPost {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   title     String
-  slug      String    @unique
+  slug      String   @unique
   content   String
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String    @db.Uuid
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  published Boolean   @default(false)
+  authorId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
   imageUrl  String?
-  tags      String[]  // New: tags for filtering and search
+  tags      String[]
+  author    User     @relation(fields: [authorId], references: [id])
 }
 
 model Event {
-  id          String    @id @default(uuid()) @db.Uuid
-  title       String
-  description String
-  date        DateTime
-  time        String
-  location    String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  imageUrl    String? // Optional URL for event image
-  isVirtual   Boolean  @default(false)
-  onlineLink  String?
+  id                 String              @id @default(uuid()) @db.Uuid
+  title              String
+  description        String
+  date               DateTime
+  time               String
+  location           String
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  imageUrl           String?
+  isVirtual          Boolean             @default(false)
+  onlineLink         String?
   eventRegistrations EventRegistration[]
 }
 
@@ -91,98 +75,99 @@ model EventRegistration {
   name      String
   email     String
   eventId   String   @db.Uuid
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
 }
 
 model AuditLog {
-  id          String    @id @default(uuid()) @db.Uuid
-  userId      String    @db.Uuid
-  user        User      @relation(fields: [userId], references: [id])
-  action      String    // e.g., "Created Blog Post", "Deleted User"
-  entityType  String    // e.g., "BlogPost", "User"
-  entityId    String?   @db.Uuid // ID of the affected entity
-  timestamp   DateTime  @default(now())
-  details     Json?     // Store additional details (e.g., old and new values for updates)
+  id         String   @id @default(uuid()) @db.Uuid
+  userId     String?  @db.Uuid
+  action     String
+  entityType String
+  entityId   String?  @db.Uuid
+  timestamp  DateTime @default(now())
+  details    Json?
+  user       User?    @relation(fields: [userId], references: [id])
 
   @@index([userId, timestamp])
 }
 
 model Donation {
-  id            String    @id @default(uuid()) @db.Uuid
+  id            String   @id @default(uuid()) @db.Uuid
   donorName     String?
   donorEmail    String?
   amount        Float
-  date          DateTime  @default(now())
+  date          DateTime @default(now())
   paymentMethod String
   campaign      String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
 
 model NewsArticle {
-  id        String    @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   title     String
-  slug      String    @unique
+  slug      String   @unique
   content   String
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String    @db.Uuid
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  published Boolean   @default(false)
+  authorId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  published Boolean  @default(false)
   imageUrl  String?
+  author    User     @relation(fields: [authorId], references: [id])
 }
 
 model PrayerRequest {
-  id          String    @id @default(uuid()) @db.Uuid
+  id          String      @id @default(uuid()) @db.Uuid
   title       String
   body        String
   authorName  String?
   authorEmail String?
-  published   Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  category    String?   // Added for prayer request filtering
-  prayerLogs  PrayerLog[] // Add this line for relation
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  published   Boolean     @default(true)
+  category    String?
+  prayerLogs  PrayerLog[]
 }
 
 model News {
-  id          String    @id @default(uuid()) @db.Uuid
-  title       String
-  slug        String    @unique
-  content     String
-  author      String // Assuming author is a string for flexibility, adjust if linking to User model
-  published   Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  coverImage  Json?
+  id         String   @id @default(uuid()) @db.Uuid
+  title      String
+  slug       String   @unique
+  content    String
+  author     String
+  published  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  coverImage Json?
 
   @@map("news")
 }
 
 model Media {
   id        String   @id @default(uuid()) @db.Uuid
-  type      String   // 'photo' or 'video'
+  type      String
   title     String
   date      DateTime
-  imageUrl  String?  // For photos and video thumbnails
-  videoUrl  String?  // For videos
-  published Boolean  @default(true) // Only show in gallery if true
+  imageUrl  String?
+  videoUrl  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  published Boolean  @default(true)
+  meta      Json?
 }
 
 model PrayerLog {
-  id               String   @id @default(uuid())
-  prayerRequestId  String   @db.Uuid
-  prayedByUserId   String?  // nullable for anonymous
-  prayedByIp       String?
-  prayerText       String?
-  createdAt        DateTime @default(now())
-  prayerRequest    PrayerRequest @relation(fields: [prayerRequestId], references: [id], onDelete: Cascade)
+  id              String        @id @default(uuid())
+  prayerRequestId String        @db.Uuid
+  prayedByUserId  String?
+  prayedByIp      String?
+  prayerText      String?
+  createdAt       DateTime      @default(now())
+  prayerRequest   PrayerRequest @relation(fields: [prayerRequestId], references: [id], onDelete: Cascade)
 }
 
 model Testimonial {
@@ -191,4 +176,32 @@ model Testimonial {
   message   String
   createdAt DateTime @default(now())
   approved  Boolean  @default(false)
+}
+
+model Volunteer {
+  id              String   @id @default(uuid()) @db.Uuid
+  name            String
+  email           String
+  phone           String?
+  areasOfInterest String[]
+  availability    String
+  message         String?
+  createdAt       DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  message   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  VIEWER
+  USER
 }
