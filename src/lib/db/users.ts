@@ -53,7 +53,11 @@ export async function findUserById(id: string): Promise<AppUser | null> {
   }
 }
 
-export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{ users: AppUser[], totalCount: number }> {
+export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
+  data: any;
+  data: any;
+  success: any; users: AppUser[], totalCount: number 
+}> {
   const { search, role, offset, limit, orderBy } = options;
 
   const where: any = {};

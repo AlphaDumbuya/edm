@@ -10,7 +10,8 @@ interface PrayerRequest {
   body: string;
   authorName?: string | null;
   authorEmail?: string | null;
-  status: string;
+  published: boolean;
+  category?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -22,15 +23,13 @@ const ReactQuill = dynamic(() => import('react-quill'), {
 
 export default function ViewPrayerRequestPage() {
   const params = useParams();
-  const requestId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const requestId = params && params.id ? (Array.isArray(params.id) ? params.id[0] : params.id) : undefined;
 
   const [prayerRequest, setPrayerRequest] = useState<PrayerRequest | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentStatus, setCurrentStatus] = useState<string>('');
   const [success, setSuccess] = useState<string | null>(null);
 
-  
   useEffect(() => {
     async function fetchPrayerRequest() {
       console.log('Request ID:', requestId); // Debug: log the requestId
@@ -47,7 +46,6 @@ export default function ViewPrayerRequestPage() {
 
         if (result.success && result.data) {
           setPrayerRequest(result.data);
-          setCurrentStatus(result.data.status);
         } else { // Handle the case where data is null/undefined for a string ID
           setError('Prayer request not found.');
         }
@@ -79,7 +77,6 @@ export default function ViewPrayerRequestPage() {
         const refreshed = await getPrayerRequestByIdAction(requestId);
         if (refreshed.success && refreshed.data) {
           setPrayerRequest(refreshed.data);
-          setCurrentStatus(refreshed.data.status);
         }
       } else {
         setError(result.error || 'Failed to update prayer request.');
@@ -130,18 +127,28 @@ export default function ViewPrayerRequestPage() {
 
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
-          <label htmlFor="status" className="block text-sm font-medium text-gray-700">Status:</label>
-          <select
-            id="status"
-            name="status"
-            value={currentStatus}
-            onChange={(e) => setCurrentStatus(e.target.value)}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-          >
-            <option value="pending">Pending</option>
-            <option value="completed">Completed</option>
-            {/* Add other status options if needed */}
-          </select>
+          <div className="mb-4">
+            <label htmlFor="published" className="block text-sm font-medium text-gray-700">Published:</label>
+            <input
+              type="checkbox"
+              id="published"
+              name="published"
+              checked={prayerRequest.published}
+              onChange={(e) => setPrayerRequest({...prayerRequest, published: e.target.checked})}
+              className="mt-1 h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="category" className="block text-sm font-medium text-gray-700">Category:</label>
+            <input
+              type="text"
+              id="category"
+              name="category"
+              value={prayerRequest.category || ''}
+              onChange={(e) => setPrayerRequest({...prayerRequest, category: e.target.value})}
+              className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            />
+          </div>
         </div>
 
         <button

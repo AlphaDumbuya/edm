@@ -29,6 +29,7 @@ import UploadThingImage from "@/components/events/UploadThingImage";
 import { UploadButton } from "@/components/shared/UploadButton";
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { RefreshCw } from "lucide-react";
 
 const itemsPerPage = 10; // Define how many items per page
 const initialEvents: Event[] = []; // Temporary placeholder for demo
@@ -40,6 +41,7 @@ export default function EventsClientPage() {
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [totalEvents, setTotalEvents] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,6 +93,12 @@ export default function EventsClientPage() {
       console.error('Error fetching events:', error);
     }
     setLoading(false);
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchEvents(currentPage, searchQuery);
+    setIsRefreshing(false);
   };
 
   useEffect(() => {
@@ -205,12 +213,22 @@ export default function EventsClientPage() {
           onChange={handleSearchChange}
           className="px-4 py-2 border rounded-md w-full max-w-xs"
         />
-        <button
-          onClick={openCreate}
-          className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          + Create Event
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50 flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
+          <button
+            onClick={openCreate}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            + Create Event
+          </button>
+        </div>
       </div>
       {/* Create Event Dialog */}
       <Dialog open={showCreate} onOpenChange={setShowCreate}>

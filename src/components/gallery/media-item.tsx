@@ -41,8 +41,16 @@ export default function MediaItem({ item }: MediaItemProps) {
 
   // Extract YouTube video ID if present
   let youtubeId = '';
-  if (item.type === 'video' && item.videoUrl && item.videoUrl.includes('youtube')) {
-    const match = item.videoUrl.match(/(?:youtube\.com\/.*[?&]v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
+  if (item.type === 'video' && item.videoUrl) {
+    // Handle various YouTube URL formats
+    let match;
+    if (item.videoUrl.includes('youtube.com/embed/')) {
+      match = item.videoUrl.match(/youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/);
+    } else if (item.videoUrl.includes('youtu.be/')) {
+      match = item.videoUrl.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+    } else {
+      match = item.videoUrl.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    }
     youtubeId = match ? match[1] : '';
   }
 
@@ -92,13 +100,12 @@ export default function MediaItem({ item }: MediaItemProps) {
             (<div className="relative w-full aspect-video">
               <Image src={item.imageUrl} alt={item.title} layout="fill" objectFit="contain" data-ai-hint={item.dataAiHint}/>
             </div>)
-          )}
-          {item.type === 'video' && item.videoUrl && (
+          )}            {item.type === 'video' && youtubeId && (
             <div className="aspect-video">
               <iframe
                 width="100%"
                 height="100%"
-                src={item.videoUrl.includes("youtube.com/embed") ? item.videoUrl : `https://www.youtube.com/embed/${item.videoUrl.split('v=')[1]}`}
+                src={`https://www.youtube.com/embed/${youtubeId}`}
                 title={item.title}
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

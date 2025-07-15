@@ -10,14 +10,13 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-// Import the server action
 import Link from "next/link";
-import { useState, useEffect, use, Suspense } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { hasRole } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
-import React from "react";
+import { RefreshCw } from 'lucide-react';
 import { ConfirmDeleteBlogDialog } from '@/components/blog/ConfirmDeleteBlogDialog';
 
 interface BlogPost {
@@ -36,25 +35,38 @@ function BlogContent() {
   const [search, setSearch] = useState("");
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [selectedBlogId, setSelectedBlogId] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const { data: session } = useSession();
   const { toast } = useToast();
 
-  useEffect(() => {
-    async function fetchBlogPosts() {
-      setLoading(true);
-      try {
-        const res = await fetch("/api/admin/blog?admin=1");
-        if (!res.ok) throw new Error("Failed to fetch blog posts");
-        const data = await res.json();
-        setBlogPosts(data.blogPosts || []);
-      } catch (err: any) {
-        setError(err.message || "Failed to load blog posts.");
-      } finally {
-        setLoading(false);
-      }
+  const fetchBlogPosts = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/blog?admin=1");
+      if (!res.ok) throw new Error("Failed to fetch blog posts");
+      const data = await res.json();
+      setBlogPosts(data.blogPosts || []);
+      return true;
+    } catch (err: any) {
+      setError(err.message || "Failed to load blog posts.");
+      return false;
     }
-    fetchBlogPosts();
   }, []);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await fetchBlogPosts();
+      toast({ title: 'Success', description: 'Blog posts refreshed successfully', variant: 'default' });
+    } catch (error) {
+      toast({ title: 'Error', description: 'Failed to refresh blog posts', variant: 'destructive' });
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBlogPosts().finally(() => setLoading(false));
+  }, [fetchBlogPosts]);
 
   const filteredPosts = blogPosts.filter(post =>
     post.title.toLowerCase().includes(search.toLowerCase())
@@ -100,9 +112,21 @@ function BlogContent() {
     <div className="container mx-auto py-8">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold">Blog Management</h1>
-        <Button asChild>
-          <Link href="/admin/content/blog/create">Create Blog</Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+          </Button>
+          <Button asChild>
+            <Link href="/admin/content/blog/create">Create Blog</Link>
+          </Button>
+        </div>
       </div>
       <div className="mb-4 max-w-sm">
         <Input
