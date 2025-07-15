@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-const [email, setEmail] = useState(''); // Add state for email
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -21,7 +20,7 @@ import {
 } from "@/components/ui/select"
 
 interface PrayerRequestFormProps {
-  onSubmit: (request: Omit<PrayerRequestData, 'id' | 'createdAt' | 'updatedAt' | 'formattedFullDate' | 'status'>) => void;
+  onSubmit: (request: Omit<PrayerRequestData, 'id' | 'createdAt' | 'updatedAt' | 'formattedFullDate'>) => void;
 }
 
 const prayerCategories = ["Healing", "Guidance", "Family", "Finances", "Protection", "Salvation", "Thanksgiving", "Missions", "EDM Projects", "Other"];
@@ -47,11 +46,12 @@ export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) 
       return;
     }
     onSubmit({
-      name: isAnonymous || !name.trim() ? 'Anonymous' : name,
-      request: requestText,
-      isPublic,
+      title: name,
+      body: requestText,
+      authorName: isAnonymous ? undefined : name.trim() || undefined,
+      authorEmail: email.trim() || undefined,
+      published: isPublic,
       category: category || undefined,
-      email,
     });
     setName('');
     setRequestText('');

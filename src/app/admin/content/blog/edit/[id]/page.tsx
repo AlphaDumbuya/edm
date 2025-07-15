@@ -2,13 +2,14 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import { Button } from '../../../../../../components/ui/button';
 import { useSession } from 'next-auth/react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
-import TipTapEditor from '@/components/TipTapEditor'; // Rich Text Editor
+import { Label } from '../../../../../../components/ui/label';
+import { Input } from '../../../../../../components/ui/input';
+import { Checkbox } from '../../../../../../components/ui/checkbox';
+import { useToast } from '../../../../../../hooks/use-toast';
+import TipTapEditor from '../../../../../../components/TipTapEditor'; // Rich Text Editor
+import { UploadButton } from '../../../../../../components/shared/UploadButton'; // File upload component
 
 // Type for the blog post
 interface BlogPostData {
@@ -24,7 +25,7 @@ export default function EditBlogPostPage() {
   const { data: session } = useSession();
   const router = useRouter();
   const params = useParams();
-  const blogPostId = params.id as string;
+  const blogPostId = params?.id as string;
   const currentUserId = session?.user?.id;
   const { toast } = useToast();
 
@@ -133,7 +134,7 @@ export default function EditBlogPostPage() {
       slug: normalizedSlug,
       content: formData.content,
       published: formData.published,
-      imageUrl,
+      imageUrl: formData.imageUrl, // <-- use formData.imageUrl instead of imageUrl
       userId: currentUserId,
     };
     try {
@@ -154,7 +155,7 @@ export default function EditBlogPostPage() {
       toast({
         title: 'Success',
         description: 'Blog post updated successfully.',
-        variant: 'success',
+        variant: 'default', // changed from 'success' to 'default' to match allowed types
       });
       router.push('/admin/content/blog');
     } catch (err) {
@@ -202,6 +203,11 @@ export default function EditBlogPostPage() {
             onChange={handleChange}
             required
           />
+        </div>
+
+        <div>
+          <Label htmlFor="coverImage">Cover Image</Label>
+          <UploadButton imageUrl={formData.imageUrl} setImageUrl={handleImageUrlChange} />
         </div>
 
         <div>

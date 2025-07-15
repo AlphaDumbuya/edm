@@ -11,8 +11,9 @@ import {
 
 import { getNewsArticlesAction, deleteNewsArticleAction } from "./actions";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { RefreshCw } from 'lucide-react';
 
 import {
   AlertDialogContent,
@@ -49,6 +50,7 @@ const NewsManagementPage = () => {
   const [error, setError] = useState<string | null>(null);
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [newsArticleToDeleteId, setNewsArticleToDeleteId] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const itemsPerPage = 10;
 
@@ -69,35 +71,43 @@ const NewsManagementPage = () => {
     }
   }, [searchQuery, currentPage, router, pathname]);
 
+  const fetchNewsArticles = useCallback(async () => {
+    setError(null);
+    try {
+      const offset = (currentPage - 1) * itemsPerPage;
+      const { newsArticles: fetchedArticles, totalCount } = await getNewsArticlesAction({
+        search: searchQuery,
+        limit: itemsPerPage,
+        offset,
+        orderBy: { createdAt: 'desc' },
+      });
+      setNewsArticles(fetchedArticles);
+      setTotalNewsArticles(totalCount);
+      return true;
+    } catch (e: any) {
+      setError(e.message || "Error fetching news articles.");
+      console.error("Error fetching news articles:", e);
+      return false;
+    }
+  }, [currentPage, searchQuery, itemsPerPage]);
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    try {
+      await fetchNewsArticles();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
+
   useEffect(() => {
     // Only fetch data if searchQuery and currentPage have been initialized
     if (searchQuery === null || currentPage === null) {
- return;
+      return;
     }
-
-    const fetchNewsArticles = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const offset = (currentPage - 1) * itemsPerPage;
-        const { newsArticles: fetchedArticles, totalCount } = await getNewsArticlesAction({
-          search: searchQuery,
-          limit: itemsPerPage,
-          offset,
-          orderBy: { createdAt: 'desc' },
-        });
-        setNewsArticles(fetchedArticles);
-        setTotalNewsArticles(totalCount);
-      } catch (e: any) {
-        setError(e.message || "Error fetching news articles.");
-        console.error("Error fetching news articles:", e);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchNewsArticles();
-  }, [currentPage, searchQuery]);
+    setLoading(true);
+    fetchNewsArticles().finally(() => setLoading(false));
+  }, [currentPage, searchQuery, fetchNewsArticles]);
 
   const handleDeleteClick = (articleId: string) => {
     setNewsArticleToDeleteId(articleId);
@@ -125,12 +135,24 @@ const NewsManagementPage = () => {
 
         {error && <p className="text-red-500">Error: {error}</p>}
 
-        <div className="mb-4 flex space-x-4">
-          {session?.user?.role && hasRole(session.user.role, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
-            <Link href="/admin/content/news/create" legacyBehavior>
-              <Button>Create New News Article</Button>
-            </Link>
-          )}
+        <div className="mb-4 flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+            >
+              <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+            </Button>
+            {session?.user?.role && hasRole(session.user.role, ['SUPER_ADMIN', 'ADMIN', 'EDITOR']) && (
+              <Button asChild>
+                <Link href="/admin/content/news/create">Create New News Article</Link>
+              </Button>
+            )}
+          </div>
         </div>
 
  {isSearchParamsReady && (

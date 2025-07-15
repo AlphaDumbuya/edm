@@ -16,21 +16,26 @@ export async function createEventAction(formData: FormData) {
   const dateString = formData.get('date') as string;
   const time = formData.get('time') as string;
   const location = formData.get('location') as string;
+  const imageUrl = formData.get('imageUrl') as string | null;
+  const isVirtualRaw = formData.get('isVirtual');
+  const isVirtual = isVirtualRaw === 'true';
+  const onlineLink = formData.get('onlineLink') as string | undefined;
 
-  if (!title || !description || !dateString || !time || !location) {
-    console.error('Missing required fields');
-    return;
+  if (!title || !description || !dateString || !time || (!isVirtual && !location)) {
+    throw new Error('Missing required fields: title, description, date, time, or location (if not virtual).');
   }
 
   try {
     const date = new Date(dateString);
-
     await createEvent({
       title,
       description,
       date,
       time,
       location,
+      ...(imageUrl ? { imageUrl } : {}),
+      isVirtual,
+      ...(isVirtual && onlineLink ? { onlineLink } : {}),
     });
 
     await createAuditLogEntry({
@@ -38,8 +43,7 @@ export async function createEventAction(formData: FormData) {
       action: 'Created Event',
       entityType: 'Event',
     });
-
-    redirect('/admin/events');
+    // Removed redirect('/admin/events') to avoid NEXT_REDIRECT error
   } catch (error) {
     console.error('Error creating event:', error);
     throw new Error('Failed to create event.');
@@ -76,6 +80,10 @@ export async function updateEventAction(id: string, formData: FormData, userId: 
   const dateString = formData.get('date') as string;
   const time = formData.get('time') as string;
   const location = formData.get('location') as string;
+  const imageUrl = formData.get('imageUrl') as string | null;
+  const isVirtualRaw = formData.get('isVirtual');
+  const isVirtual = isVirtualRaw === 'true';
+  const onlineLink = formData.get('onlineLink') as string | undefined;
 
   const updateData: {
     title?: string;
@@ -83,6 +91,9 @@ export async function updateEventAction(id: string, formData: FormData, userId: 
     date?: Date;
     time?: string;
     location?: string;
+    imageUrl?: string;
+    isVirtual?: boolean;
+    onlineLink?: string;
   } = {};
 
   if (title) updateData.title = title;
@@ -90,6 +101,13 @@ export async function updateEventAction(id: string, formData: FormData, userId: 
   if (dateString) updateData.date = new Date(dateString);
   if (time) updateData.time = time;
   if (location) updateData.location = location;
+  if (imageUrl !== undefined && imageUrl !== null) updateData.imageUrl = imageUrl;
+  updateData.isVirtual = isVirtual;
+  if (isVirtual && onlineLink) {
+    updateData.onlineLink = onlineLink;
+  } else {
+    updateData.onlineLink = undefined;
+  }
 
   try {
     await updateEvent(id, updateData);
@@ -98,7 +116,7 @@ export async function updateEventAction(id: string, formData: FormData, userId: 
       action: 'Updated Event',
       entityType: 'Event',
     });
-    redirect('/admin/events');
+    // Removed redirect('/admin/events') to avoid NEXT_REDIRECT error
   } catch (error) {
     console.error(`Error updating event with ID ${id}:`, error);
     throw new Error(`Failed to update event with ID ${id}.`);

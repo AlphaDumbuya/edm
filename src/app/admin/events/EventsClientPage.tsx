@@ -12,17 +12,24 @@ type Event = {
   time: string;
   location: string;
   imageUrl?: string;
+  isVirtual?: boolean;
+  onlineLink?: string;
 };
 import { deleteEventAction, getPaginatedEventsAction, createEventAction, updateEventAction } from "./actions";
 import { hasRole } from "@/lib/utils";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import TipTapEditor from "@/components/TipTapEditor";
 import ImagePreview from "@/components/events/ImagePreview";
 import UploadThingImage from "@/components/events/UploadThingImage";
+import { UploadButton } from "@/components/shared/UploadButton";
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "@/components/ui/dropdown-menu";
+import Link from "next/link";
+import { RefreshCw } from "lucide-react";
 
 const itemsPerPage = 10; // Define how many items per page
 const initialEvents: Event[] = []; // Temporary placeholder for demo
@@ -34,6 +41,7 @@ export default function EventsClientPage() {
   const { toast } = useToast();
 
   const [loading, setLoading] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [events, setEvents] = useState<Event[]>([]);
   const [totalEvents, setTotalEvents] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,20 +50,31 @@ export default function EventsClientPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editEvent, setEditEvent] = useState<Event | null>(null);
-  const [form, setForm] = useState({ title: '', description: '', date: '', time: '', location: '' });
-  const [imageUrl, setImageUrl] = useState<string>("");
+  const [form, setForm] = useState({ title: '', description: '', date: '', time: '', location: '', isVirtual: false, onlineLink: '' });
+  const [imageUrl, setImageUrl] = useState<string | null>("");
   const [error, setError] = useState<string | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [eventToDelete, setEventToDelete] = useState<Event | null>(null);
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Are you sure you want to delete this event?")) {
-      try {
-        await deleteEventAction(id);
-        setEvents(events.filter(event => event.id !== id));
-        toast({ title: "Event deleted", description: "The event was successfully deleted." });
-      } catch (error) {
-        setError("Error deleting event.");
-        toast({ title: "Delete failed", description: "Could not delete event.", variant: "destructive" });
-      }
+  const handleDelete = (event: Event) => {
+    setEventToDelete(event);
+    setDeleteDialogOpen(true);
+  };
+  const confirmDelete = async () => {
+    if (!eventToDelete) return;
+    setLoading(true);
+    setError(null);
+    try {
+      await deleteEventAction(eventToDelete.id, session?.user?.id || "");
+      setEvents(events.filter(e => e.id !== eventToDelete.id));
+      toast({ title: "Event deleted", description: "The event was successfully deleted." });
+      setDeleteDialogOpen(false);
+      setEventToDelete(null);
+    } catch (error) {
+      setError("Error deleting event.");
+      toast({ title: "Delete failed", description: "Could not delete event.", variant: "destructive" });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -63,7 +82,6 @@ export default function EventsClientPage() {
     setLoading(true);
     try {
       const result = await getPaginatedEventsAction(page, query);
-      // Convert date and imageUrl to string for frontend Event type
       const events = result.events.map((event: any) => ({
         ...event,
         date: typeof event.date === "string" ? event.date : new Date(event.date).toISOString(),
@@ -77,16 +95,22 @@ export default function EventsClientPage() {
     setLoading(false);
   };
 
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchEvents(currentPage, searchQuery);
+    setIsRefreshing(false);
+  };
+
   useEffect(() => {
-    const page = parseInt(searchParams.get("page") || "1", 10);
-    const query = searchParams.get("search") || "";
+    const page = parseInt(searchParams?.get("page") || "1", 10);
+    const query = searchParams?.get("search") || "";
     setCurrentPage(page);
     setSearchQuery(query);
     fetchEvents(page, query);
   }, [searchParams]);
 
   const handlePageChange = (page: number) => {
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || "");
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);
   };
@@ -94,14 +118,14 @@ export default function EventsClientPage() {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const query = e.target.value;
     setSearchQuery(query);
-    const params = new URLSearchParams(searchParams.toString());
+    const params = new URLSearchParams(searchParams?.toString() || "");
     params.set("search", query);
     params.set("page", "1");
     router.push(`?${params.toString()}`);
   };
 
   const openCreate = () => {
-    setForm({ title: '', description: '', date: '', time: '', location: '' });
+    setForm({ title: '', description: '', date: '', time: '', location: '', isVirtual: false, onlineLink: '' });
     setImageUrl("");
     setShowCreate(true);
   };
@@ -113,6 +137,8 @@ export default function EventsClientPage() {
       date: event.date ? new Date(event.date).toISOString().slice(0, 10) : '',
       time: event.time || '',
       location: event.location || '',
+      isVirtual: event.isVirtual || false,
+      onlineLink: event.onlineLink || '',
     });
     setImageUrl(event.imageUrl || "");
     setShowEdit(true);
@@ -130,8 +156,15 @@ export default function EventsClientPage() {
     setError(null);
     try {
       const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+      Object.entries(form).forEach(([k, v]) => {
+        if (typeof v === 'boolean') {
+          fd.append(k, v ? 'true' : 'false');
+        } else {
+          fd.append(k, v);
+        }
+      });
       if (imageUrl) fd.append('imageUrl', imageUrl);
+      if (session?.user?.id) fd.append('userId', session.user.id);
       await createEventAction(fd);
       closeModals();
       setImageUrl("");
@@ -148,9 +181,15 @@ export default function EventsClientPage() {
     setError(null);
     try {
       const fd = new FormData();
-      Object.entries(form).forEach(([k, v]) => fd.append(k, v));
+      Object.entries(form).forEach(([k, v]) => {
+        if (typeof v === 'boolean') {
+          fd.append(k, v ? 'true' : 'false');
+        } else {
+          fd.append(k, v);
+        }
+      });
       if (imageUrl) fd.append('imageUrl', imageUrl);
-      await updateEventAction(editEvent.id, fd);
+      await updateEventAction(editEvent.id, fd, session?.user?.id || "");
       closeModals();
       setImageUrl("");
       toast({ title: "Event updated", description: "The event was successfully updated." });
@@ -174,28 +213,66 @@ export default function EventsClientPage() {
           onChange={handleSearchChange}
           className="px-4 py-2 border rounded-md w-full max-w-xs"
         />
-        <button
-          onClick={openCreate}
-          className="ml-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          + Create Event
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            className="px-4 py-2 border rounded hover:bg-gray-50 disabled:opacity-50 flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+          </button>
+          <button
+            onClick={openCreate}
+            className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            + Create Event
+          </button>
+        </div>
       </div>
       {/* Create Event Dialog */}
       <Dialog open={showCreate} onOpenChange={setShowCreate}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Create Event</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleCreate} className="space-y-4">
+            {session?.user?.id && (
+              <input type="hidden" name="userId" value={session.user.id} />
+            )}
             <Input name="title" placeholder="Title" value={form.title} onChange={handleFormChange} required />
-            <TipTapEditor value={form.description} onContentChange={desc => setForm(f => ({ ...f, description: desc }))} />
+            <div className="max-h-[40vh] overflow-y-auto">
+              <TipTapEditor value={form.description} onContentChange={desc => setForm(f => ({ ...f, description: desc }))} />
+            </div>
             <Input name="date" type="date" value={form.date} onChange={handleFormChange} required />
             <Input name="time" type="time" value={form.time} onChange={handleFormChange} required />
-            <Input name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required />
+            {!form.isVirtual && (
+              <Input name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required />
+            )}
+            <div className="flex items-center gap-2 mt-2">
+              <input
+                type="checkbox"
+                id="isVirtual"
+                name="isVirtual"
+                checked={form.isVirtual}
+                onChange={e => setForm(f => ({ ...f, isVirtual: e.target.checked, onlineLink: e.target.checked ? f.onlineLink : '' }))}
+                className="h-4 w-4 border-gray-300 rounded"
+              />
+              <label htmlFor="isVirtual" className="text-sm font-medium">Virtual Event (Online)</label>
+            </div>
+            {form.isVirtual && (
+              <Input
+                name="onlineLink"
+                placeholder="Online Meeting/Join Link (e.g. Zoom, Google Meet)"
+                value={form.onlineLink}
+                onChange={handleFormChange}
+                required={form.isVirtual}
+                className="mt-2"
+              />
+            )}
             <div>
               <label className="block mb-1 font-medium">Event Image</label>
-              <UploadThingImage onUpload={setImageUrl} />
+              <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </div>
             <DialogFooter>
               <button type="button" onClick={closeModals} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
@@ -206,19 +283,47 @@ export default function EventsClientPage() {
       </Dialog>
       {/* Edit Event Dialog */}
       <Dialog open={showEdit} onOpenChange={setShowEdit}>
-        <DialogContent>
+        <DialogContent className="max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Edit Event</DialogTitle>
           </DialogHeader>
           <form onSubmit={handleEdit} className="space-y-4">
+            {session?.user?.id && (
+              <input type="hidden" name="userId" value={session.user.id} />
+            )}
             <Input name="title" placeholder="Title" value={form.title} onChange={handleFormChange} required />
-            <TipTapEditor value={form.description} onContentChange={desc => setForm(f => ({ ...f, description: desc }))} />
+            <div className="max-h-[40vh] overflow-y-auto">
+              <TipTapEditor value={form.description} onContentChange={desc => setForm(f => ({ ...f, description: desc }))} />
+            </div>
             <Input name="date" type="date" value={form.date} onChange={handleFormChange} required />
             <Input name="time" type="time" value={form.time} onChange={handleFormChange} required />
-            <Input name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required />
+            {!form.isVirtual && (
+              <Input name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required />
+            )}
+            <div className="flex items-center gap-2 mt-2">
+              <input
+                type="checkbox"
+                id="isVirtual-edit"
+                name="isVirtual"
+                checked={form.isVirtual}
+                onChange={e => setForm(f => ({ ...f, isVirtual: e.target.checked, onlineLink: e.target.checked ? f.onlineLink : '' }))}
+                className="h-4 w-4 border-gray-300 rounded"
+              />
+              <label htmlFor="isVirtual-edit" className="text-sm font-medium">Virtual Event (Online)</label>
+            </div>
+            {form.isVirtual && (
+              <Input
+                name="onlineLink"
+                placeholder="Online Meeting/Join Link (e.g. Zoom, Google Meet)"
+                value={form.onlineLink}
+                onChange={handleFormChange}
+                required={form.isVirtual}
+                className="mt-2"
+              />
+            )}
             <div>
               <label className="block mb-1 font-medium">Event Image</label>
-              <UploadThingImage onUpload={setImageUrl} initialUrl={imageUrl} />
+              <UploadButton imageUrl={imageUrl} setImageUrl={setImageUrl} />
             </div>
             <DialogFooter>
               <button type="button" onClick={closeModals} className="px-4 py-2 bg-gray-200 rounded">Cancel</button>
@@ -231,30 +336,59 @@ export default function EventsClientPage() {
       {loading && <p>Loading events...</p>}
       {!loading && events.length === 0 && <p>No events found.</p>}
 
-      <div className="space-y-4">
-        {events.map((event) => (
-          <div key={event.id} className="border p-4 rounded-md">
-            <h2 className="text-xl font-semibold">{event.title}</h2>
-            <p>{new Date(event.date).toDateString()} at {event.time}</p>
-            <p>{event.location}</p>
-            <div dangerouslySetInnerHTML={{ __html: event.description }} />
-            <div className="flex gap-2 mt-2">
-              <button
-                onClick={() => openEdit(event)}
-                className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-              >
-                Edit
-              </button>
-              <button
-                onClick={() => handleDelete(event.id)}
-                className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
+      {/* Event List Table */}
+      <div className="overflow-x-auto mt-6">
+        <table className="min-w-full bg-white border border-gray-200 rounded-md">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="px-4 py-2 text-left">Title</th>
+              <th className="px-4 py-2 text-left">Date</th>
+              <th className="px-4 py-2 text-left">Location</th>
+              <th className="px-4 py-2 text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {events.map((event) => (
+              <tr key={event.id} className="border-t">
+                <td className="px-4 py-2 font-medium">{event.title}</td>
+                <td className="px-4 py-2">{new Date(event.date).toLocaleDateString()} {event.time}</td>
+                <td className="px-4 py-2">{event.location}</td>
+                <td className="px-4 py-2">
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => openEdit(event)}
+                      className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(event)}
+                      className="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
+
+      <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you sure you want to delete this event?</AlertDialogTitle>
+          </AlertDialogHeader>
+          <div className="mb-4">This action cannot be undone.</div>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setDeleteDialogOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} disabled={loading} className="bg-red-600 text-white hover:bg-red-700">
+              {loading ? "Deleting..." : "Delete"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
       <div className="flex justify-between items-center mt-6">
         <button

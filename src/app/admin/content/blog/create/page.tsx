@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { useAuth } from '@/contexts/auth-context';
-import { useToast } from '@/hooks/use-toast';
-import { UploadButton } from '@/components/shared/UploadButton';
-import TipTapEditor from '@/components/TipTapEditor';
+import { useAuth } from '../../../../../contexts/auth-context';
+import { useToast } from '../../../../../hooks/use-toast';
+import { UploadButton } from '../../../../../components/shared/UploadButton';
+// import TipTapEditor from '../../../../components/TipTapEditor';
+import TipTapEditor from '../../../../../components/TipTapEditor';
+import { createBlogPostAction } from '../actions';
 
 export default function CreateBlogPostPage() {
   const [title, setTitle] = useState('');
@@ -17,6 +19,7 @@ export default function CreateBlogPostPage() {
   
   const { user } = useAuth(); // Get the user from the useAuth hook
   const { toast } = useToast(); // Get the toast function
+  const router = useRouter(); // Initialize the router
 
   const handleCreate = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -36,6 +39,8 @@ export default function CreateBlogPostPage() {
     formData.append('content', content);
     formData.append('published', published.toString());
     if (imageUrl) formData.append('imageUrl', imageUrl);
+    // Add authorId to formData
+    formData.append('authorId', user.id);
 
     await createBlogPostAction(formData);
     router.push('/admin/content/blog'); // Use router.push for navigation
@@ -86,7 +91,8 @@ export default function CreateBlogPostPage() {
             Cover Image
           </label>
           <UploadButton
-            onClientUploadComplete={(files) => setImageUrl(files?.[0]?.url || null)}
+            imageUrl={imageUrl}
+            setImageUrl={setImageUrl}
           />
         </div>
 

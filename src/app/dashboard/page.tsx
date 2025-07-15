@@ -27,7 +27,7 @@ export default function DashboardPage({ setSidebarOpen, sidebarOpen }: { setSide
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" /></svg>
           </Button>
         )}
-        <Link href="/" passHref legacyBehavior>
+        <Link href="/">
           <Button variant="outline">Home</Button>
         </Link>
       </div>
@@ -141,7 +141,7 @@ export default function DashboardPage({ setSidebarOpen, sidebarOpen }: { setSide
          </Card>
       </section>
       <section className="text-center">
-        <Link href="/" legacyBehavior>
+        <Link href="/">
             <Button variant="outline">Back to Homepage</Button>
         </Link>
       </section>

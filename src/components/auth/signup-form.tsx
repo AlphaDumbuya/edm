@@ -15,10 +15,16 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link'; // Keep this import
 import { Loader2, UserPlus } from 'lucide-react';
 
+// Update the schema to enforce all password requirements
 const signupSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters.' }).max(50, { message: 'Name too long.'}),
   email: z.string().email({ message: 'Invalid email address' }),
-  password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
+  password: z.string()
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .regex(/[A-Z]/, { message: 'Password must contain at least one uppercase letter' })
+    .regex(/[a-z]/, { message: 'Password must contain at least one lowercase letter' })
+    .regex(/[0-9]/, { message: 'Password must contain at least one number' })
+    .regex(/[^A-Za-z0-9]/, { message: 'Password must contain at least one special character' }),
   confirmPassword: z.string(),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -26,6 +32,23 @@ const signupSchema = z.object({
 });
 
 type SignupFormValues = z.infer<typeof signupSchema>;
+
+const passwordRequirements = [
+  { label: "At least 8 characters", test: (pw: string) => pw.length >= 8 },
+  { label: "One uppercase letter", test: (pw: string) => /[A-Z]/.test(pw) },
+  { label: "One lowercase letter", test: (pw: string) => /[a-z]/.test(pw) },
+  { label: "One number", test: (pw: string) => /[0-9]/.test(pw) },
+  { label: "One special character", test: (pw: string) => /[^A-Za-z0-9]/.test(pw) },
+];
+function getPasswordStrength(password: string) {
+  let score = 0;
+  if (password.length >= 8) score++;
+  if (/[A-Z]/.test(password)) score++;
+  if (/[a-z]/.test(password)) score++;
+  if (/[0-9]/.test(password)) score++;
+  if (/[^A-Za-z0-9]/.test(password)) score++;
+  return score;
+}
 
 export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false);
@@ -56,15 +79,14 @@ export default function SignupForm() {
         description: error,
         variant: 'destructive',
       });
-    } else {
-      toast({
-        title: 'Signup Successful',
-        description: 'Signup successful! Please check your email and verify your account before logging in.',
-      });
-      // Redirect to verification info page
-      router.push('/auth/verify');
-    }
+    } 
+    // No redirect here; context handles it
  };
+
+  const password = form.watch('password');
+  const confirmPassword = form.watch('confirmPassword');
+  const strength = getPasswordStrength(password);
+  const passwordsMatch = password && confirmPassword && password === confirmPassword;
 
   return (
     <Card className="w-full max-w-md shadow-xl">
@@ -124,7 +146,28 @@ export default function SignupForm() {
               placeholder="••••••••"
               {...form.register('password')}
               disabled={isLoading}
+              autoComplete="new-password"
             />
+            {/* Password strength meter: only show when password is not empty */}
+            {password && (
+              <div className="w-full h-2 bg-gray-200 rounded">
+                <div
+                  className={`h-2 rounded transition-all duration-300 ${
+                    strength <= 2 ? "bg-red-500 w-1/4" : strength === 3 ? "bg-yellow-500 w-2/4" : strength === 4 ? "bg-blue-500 w-3/4" : "bg-green-500 w-full"
+                  }`}
+                />
+              </div>
+            )}
+            {/* Password requirements list: only show when password is not empty */}
+            {password && (
+              <ul className="text-xs text-gray-600 space-y-1">
+                {passwordRequirements.map(req => (
+                  <li key={req.label} className={req.test(password) ? "text-green-600" : "text-gray-600"}>
+                    {req.test(password) ? "✓" : "✗"} {req.label}
+                  </li>
+                ))}
+              </ul>
+            )}
             {form.formState.errors.password && (
               <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>
             )}
@@ -152,7 +195,12 @@ export default function SignupForm() {
               placeholder="••••••••"
               {...form.register('confirmPassword')}
               disabled={isLoading}
+              autoComplete="new-password"
             />
+            {/* Real-time match feedback */}
+            {confirmPassword && (
+              <p className={`text-xs ${passwordsMatch ? 'text-green-600' : 'text-destructive'}`}>{passwordsMatch ? '✓ Passwords match' : '✗ Passwords do not match'}</p>
+            )}
             {form.formState.errors.confirmPassword && (
               <p className="text-sm text-destructive">{form.formState.errors.confirmPassword.message}</p>
             )}

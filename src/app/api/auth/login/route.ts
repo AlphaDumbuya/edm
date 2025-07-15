@@ -16,17 +16,17 @@ export async function POST(req: NextRequest) {
 
     const user = await findUserByEmail(email);
     if (!user) {
-      return NextResponse.json({ error: 'Invalid credentials. User not found.' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid email.' }, { status: 401 });
     }
 
     if (!user.hashedPassword) {
         console.error(`User ${email} found but has no hashedPassword set. Cannot perform password authentication.`);
-        return NextResponse.json({ error: 'Authentication method not supported or account misconfigured.' }, { status: 401 });
+        return NextResponse.json({ error: 'Invalid email.' }, { status: 401 });
     }
 
     const isValidPassword = await verifyPassword(password, user.hashedPassword);
     if (!isValidPassword) {
-      return NextResponse.json({ error: 'Invalid credentials. Password incorrect.' }, { status: 401 });
+      return NextResponse.json({ error: 'Invalid password.' }, { status: 401 });
     }
 
     if (!user.emailVerified) {
