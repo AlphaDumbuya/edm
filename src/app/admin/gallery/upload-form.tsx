@@ -206,7 +206,29 @@ export default function GalleryAdminForm() {
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Video URL</label>
-                <input type="url" className="input w-full border rounded px-3 py-2" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" />
+                <input 
+                  type="url" 
+                  className="input w-full border rounded px-3 py-2" 
+                  value={videoUrl} 
+                  onChange={e => {
+                    const url = e.target.value;
+                    // Convert YouTube URL to embed format
+                    if (url.includes('youtube.com/watch?v=')) {
+                      const videoId = url.split('v=')[1].split('&')[0];
+                      setVideoUrl(`https://www.youtube.com/embed/${videoId}`);
+                    } else if (url.includes('youtu.be/')) {
+                      const videoId = url.split('youtu.be/')[1].split('?')[0];
+                      setVideoUrl(`https://www.youtube.com/embed/${videoId}`);
+                    } else {
+                      setVideoUrl(url);
+                    }
+                  }} 
+                  required 
+                  placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" 
+                />
+                <p className="text-sm text-muted-foreground mt-1">
+                  For YouTube videos, you can paste any YouTube URL format (standard watch URL, youtu.be, or embed URL)
+                </p>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Filmed At (Location)</label>

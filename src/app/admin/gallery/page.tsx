@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import GalleryAdminForm from './upload-form';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { RefreshCw } from 'lucide-react';
 
 // Define the MediaItem type
 interface MediaItem {
@@ -24,6 +25,7 @@ interface MediaItem {
 export default function AdminGalleryPage() {
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
@@ -33,21 +35,28 @@ export default function AdminGalleryPage() {
   const [eventFilter, setEventFilter] = useState('all');
   const [visibilityFilter, setVisibilityFilter] = useState('all');
 
-  useEffect(() => {
-    async function fetchMedia() {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch('/api/admin/gallery');
-        if (!res.ok) throw new Error('Failed to fetch gallery media');
-        const data = await res.json();
-        setMedia(data as MediaItem[]);
-      } catch (err: any) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
+  const fetchMedia = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/gallery');
+      if (!res.ok) throw new Error('Failed to fetch gallery media');
+      const data = await res.json();
+      setMedia(data as MediaItem[]);
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchMedia();
+    setIsRefreshing(false);
+  };
+
+  useEffect(() => {
     fetchMedia();
   }, []);
 
@@ -71,7 +80,19 @@ export default function AdminGalleryPage() {
         <GalleryAdminForm />
       </div>
       <div>
-        <h2 className="text-2xl font-semibold mb-4">Current Gallery Media</h2>
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-2xl font-semibold">Current Gallery Media</h2>
+          <Button
+            onClick={handleRefresh}
+            disabled={isRefreshing}
+            variant="outline"
+            size="sm"
+            className="flex items-center gap-2"
+          >
+            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+            {isRefreshing ? 'Refreshing...' : 'Refresh'}
+          </Button>
+        </div>
         {/* Filter Controls */}
         <div className="flex flex-wrap gap-4 mb-6">
           <select className="border rounded px-3 py-2" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
@@ -106,17 +127,36 @@ export default function AdminGalleryPage() {
                   <img src={item.imageUrl} alt={item.title} className="w-full h-48 object-cover" />
                 )}
                 {item.type === 'video' && item.videoUrl && (
-                  <div className="w-full h-48 bg-black flex items-center justify-center">
+                  <div className="w-full h-48 bg-black flex items-center justify-center relative group">
                     {/* Show YouTube thumbnail if possible */}
-                    {item.videoUrl.includes('youtube') ? (
-                      <img
-                        src={`https://img.youtube.com/vi/${item.videoUrl.split('v=')[1]?.split('&')[0]}/hqdefault.jpg`}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <iframe src={item.videoUrl} title={item.title} className="w-full h-full" allowFullScreen />
-                    )}
+                    {(() => {
+                      let youtubeId = '';
+                      if (item.videoUrl.includes('youtube.com/embed/')) {
+                        youtubeId = item.videoUrl.split('embed/')[1]?.split('?')[0];
+                      } else if (item.videoUrl.includes('youtu.be/')) {
+                        youtubeId = item.videoUrl.split('youtu.be/')[1]?.split('?')[0];
+                      } else if (item.videoUrl.includes('youtube.com')) {
+                        youtubeId = item.videoUrl.split('v=')[1]?.split('&')[0];
+                      }
+
+                      return youtubeId ? (
+                        <>
+                          <img
+                            src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
+                            alt={item.title}
+                            className="w-full h-full object-cover transition-opacity duration-200"
+                          />
+                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 16 16">
+                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                              <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
+                            </svg>
+                          </div>
+                        </>
+                      ) : (
+                        <iframe src={item.videoUrl} title={item.title} className="w-full h-full" allowFullScreen />
+                      );
+                    })()}
                   </div>
                 )}
                 <div className="p-4 flex-1 flex flex-col justify-between">

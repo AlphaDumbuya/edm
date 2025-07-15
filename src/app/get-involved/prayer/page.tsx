@@ -12,7 +12,7 @@ import { PrayerRequestData } from '@/types/prayerRequest'; // Assuming PrayerReq
 export default async function PrayerPage() {
   noStore(); // Opt out of caching for this data fetch
   const { prayerRequests } = await getAllPrayerRequests();
-  const initialPublicPrayerRequests = prayerRequests.filter(request => request.status === 'Public');
+  const initialPublicPrayerRequests = prayerRequests.filter(request => request.published === true);
 
   // Map the fetched data to the PrayerRequestData type expected by PrayerClient
   const formattedPublicPrayerRequests: PrayerRequestData[] = initialPublicPrayerRequests.map((request) => {
@@ -20,14 +20,15 @@ export default async function PrayerPage() {
     const updatedAtDate = request.updatedAt ? new Date(request.updatedAt) : new Date();
     return {
       id: request.id,
-      request: request.body, // Map 'body' to 'request'
-      name: request.authorName || '', // Map 'authorName' to 'name', provide default empty string
-      email: request.authorEmail || '', // Map 'authorEmail' to 'email', provide default empty string
-      status: request.status,
-      isPublic: request.status === 'Public', // Derive 'isPublic' from 'status'
+      title: request.title,
+      body: request.body,
+      authorName: request.authorName || undefined,
+      authorEmail: request.authorEmail || undefined,
+      published: request.published,
+      category: request.category || undefined,
       createdAt: createdAtDate,
       updatedAt: updatedAtDate,
-      formattedFullDate: format(createdAtDate, 'MMMM d, yyyy \'at\' h:mm a'), // Format the date here
+      formattedFullDate: format(createdAtDate, 'MMMM d, yyyy \'at\' h:mm a')
     };
   });
 

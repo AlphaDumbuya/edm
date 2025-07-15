@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { format } from 'date-fns';
+import { RefreshCw } from 'lucide-react';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -53,6 +54,7 @@ function DonationsContent() {
   const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { data: session } = useSession();
   const userRole = session?.user?.role;
@@ -64,33 +66,40 @@ function DonationsContent() {
     setCurrentPage(parseInt(searchParamsHook?.get('page') ?? '1'));
   }, [searchParamsHook]);
 
-  useEffect(() => {
-    const fetchDonations = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const offset = (currentPage - 1) * itemsPerPage;
-        const params = new URLSearchParams({
-          search: searchQuery,
-          status: statusFilter,
-          offset: offset.toString(),
-          limit: itemsPerPage.toString(),
-          orderBy: 'createdAt:desc',
-        });
-        const response = await fetch(`/api/admin/donations?${params.toString()}`);
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: DonationsApiResponse = await response.json();
-        setDonations(data.donations);
-        setTotalDonations(data.totalCount);
-      } catch (e) {
-        console.error("Failed to fetch donations:", e);
-        setError("Failed to fetch donations.");
-      } finally {
-        setLoading(false);
+   const fetchDonations = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const offset = (currentPage - 1) * itemsPerPage;
+      const params = new URLSearchParams({
+        search: searchQuery,
+        status: statusFilter,
+        offset: offset.toString(),
+        limit: itemsPerPage.toString(),
+        orderBy: 'createdAt:desc',
+      });
+      const response = await fetch(`/api/admin/donations?${params.toString()}`);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
-    };
+      const data: DonationsApiResponse = await response.json();
+      setDonations(data.donations);
+      setTotalDonations(data.totalCount);
+    } catch (e) {
+      console.error("Failed to fetch donations:", e);
+      setError("Failed to fetch donations.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
+    setIsRefreshing(true);
+    await fetchDonations();
+    setIsRefreshing(false);
+  };
+
+  useEffect(() => {
     fetchDonations();
   }, [searchQuery, statusFilter, currentPage, itemsPerPage]);
 
@@ -131,11 +140,23 @@ function DonationsContent() {
   return (
     <div className="flex flex-col gap-4 p-4 sm:p-6 lg:p-8">
  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-4 sm:gap-0">
- <h1 className="text-2xl font-semibold">Donation Management</h1>
- <Button asChild>
-  <Link href="/admin/donations/create">Create New Donation</Link>
- </Button>
- </div>
+  <h1 className="text-2xl font-semibold">Donation Management</h1>
+  <div className="flex items-center gap-2">
+    <Button
+      onClick={handleRefresh}
+      disabled={isRefreshing}
+      variant="outline"
+      size="sm"
+      className="flex items-center gap-2"
+    >
+      <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
+      {isRefreshing ? 'Refreshing...' : 'Refresh'}
+    </Button>
+    <Button asChild>
+      <Link href="/admin/donations/create">Create New Donation</Link>
+    </Button>
+  </div>
+</div>
 
 
       <Input
@@ -234,7 +255,6 @@ function DonationsContent() {
     </div>
   );
 }
-
 import { Suspense } from 'react';
 
 export default function DonationsPage() {
@@ -244,3 +264,4 @@ export default function DonationsPage() {
     </Suspense>
   );
 }
+

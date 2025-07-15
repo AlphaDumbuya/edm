@@ -1,12 +1,12 @@
 export interface PrayerRequestData {
   id: string;
-  name: string;
-  email: string;
+  title: string;
+  body: string;
+  authorName?: string;
+  authorEmail?: string;
   createdAt: Date;
   updatedAt: Date;
-  request: string;
-  isPublic: boolean;
-  status: string;
+  published: boolean;
   category?: string;
-  formattedFullDate: string;
+  formattedFullDate?: string;
 }

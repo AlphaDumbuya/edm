@@ -100,18 +100,42 @@ export async function createBlogPost(data: {
   authorId: string;
   imageUrl?: string;
 }) {
-  const { authorId, imageUrl, ...restOfData } = data;
   try {
+    // First check if slug already exists
+    const existingPost = await prisma.blogPost.findUnique({
+      where: { slug: data.slug },
+    });
+
+    if (existingPost) {
+      throw new Error('A blog post with this slug already exists');
+    }
+
     const newBlogPost = await prisma.blogPost.create({
       data: {
-        ...restOfData,
-        imageUrl: imageUrl || null,
-        author: { connect: { id: authorId } },
+        title: data.title,
+        slug: data.slug,
+        content: data.content,
+        published: data.published,
+        imageUrl: data.imageUrl || null,
+        author: {
+          connect: { id: data.authorId }
+        }
       },
+      include: {
+        author: {
+          select: {
+            name: true
+          }
+        }
+      }
     });
+
     return newBlogPost;
   } catch (error) {
     console.error('Error creating blog post:', error);
+    if (error instanceof Error) {
+      throw error;
+    }
     throw new Error('Failed to create blog post.');
   }
 }
