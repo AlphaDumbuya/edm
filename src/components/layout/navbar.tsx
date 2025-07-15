@@ -47,6 +47,7 @@ interface ListItemProps {
   href: string;
 }
 
+<<<<<<< HEAD
 const ListItem = ({ className, title, children, href, ...props }: ListItemProps) => (
   <li>
     <Link
@@ -65,6 +66,30 @@ const ListItem = ({ className, title, children, href, ...props }: ListItemProps)
       </span>
     </Link>
   </li>
+=======
+const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+  ({ className, title, children, href, ...props }, ref) => {
+    return (
+      <li>
+        <Link
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          href={href}
+          {...props}
+        >
+          {/* Wrap children in a single span */}
+          <span>
+            <div className="text-sm font-medium leading-none">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
+          </span>
+        </Link>
+      </li>
+    );
+  }
+>>>>>>> gallery-mobile-fixes
 );
 ListItem.displayName = "ListItem";
 
@@ -175,6 +200,7 @@ export default function Navbar() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
+<<<<<<< HEAD
           <span className="flex items-center gap-2">
             <div className="h-8 w-8 md:h-10 md:w-10 relative">
               <Image
@@ -186,20 +212,32 @@ export default function Navbar() {
             </div>
             <span className="text-xl font-bold">EDM</span>
           </span>
+=======
+          <div className="h-8 w-8 md:h-10 md:w-10 relative">
+            <Image
+              src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+              alt="EDM Logo"
+              fill
+              className="object-contain"
+            />
+          </div>
+>>>>>>> gallery-mobile-fixes
         </Link>
+        <span className="text-xl font-bold">EDM</span>
 
+        {/* Desktop Nav */}
         <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center">
+          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center gap-2">
             {mainNavItems.map((item: NavItem, i) => (
               <NavigationMenuItem key={i}>
                 {item.links ? (
                   <>
-                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap">
-                      {isClient && item.icon && <item.icon size={18} />}
-                      {item.title}
+                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0">
+                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
+                      <span className="inline-block">{item.title}</span>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 w-[500px] md:grid-cols-2">
+                      <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
                         {item.links.map((link) => (
                           <ListItem key={link.href} href={link.href} title={link.title}>
                             {link.description}
@@ -212,12 +250,22 @@ export default function Navbar() {
                   <NavigationMenuLink asChild>
                     <Link
                       href={item.href}
+<<<<<<< HEAD
                       className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
                     >
                       <span className="flex items-center gap-1">
                         {isClient && item.icon && <item.icon size={18} />}
                         {item.title}
                       </span>
+=======
+                      className={cn(
+                        navigationMenuTriggerStyle(),
+                        "flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0"
+                      )}
+                    >
+                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
+                      <span className="inline-block">{item.title}</span>
+>>>>>>> gallery-mobile-fixes
                     </Link>
                   </NavigationMenuLink>
                 ) : null}
@@ -226,6 +274,7 @@ export default function Navbar() {
           </NavigationMenuPrimitive.List>
         </NavigationMenu>
 
+        {/* Desktop Auth Buttons */}
         <div className="hidden lg:flex items-center gap-2">
           {!loading && typedUser ? (
             <DropdownMenu>
@@ -295,10 +344,15 @@ export default function Navbar() {
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
+<<<<<<< HEAD
                     <span className="flex items-center gap-2">
                       <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                       <span className="text-lg font-bold">EDM</span>
                     </span>
+=======
+                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                    <span className="text-lg font-bold">EDM</span>
+>>>>>>> gallery-mobile-fixes
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -312,8 +366,12 @@ export default function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         <span className="flex items-center gap-2">
+<<<<<<< HEAD
                           {isClient && item.icon && <item.icon size={20} />}
                           {item.title}
+=======
+                          {isClient && item.icon && <item.icon size={20} />}{item.title}
+>>>>>>> gallery-mobile-fixes
                         </span>
                       </Link>
                     ) : (
@@ -361,10 +419,16 @@ export default function Navbar() {
               {/* Authentication Buttons for Mobile */}
               <div className="flex flex-col gap-4 mt-6">
                 {!loading && typedUser ? (
+<<<<<<< HEAD
                   <Link href="/dashboard">
+=======
+                  // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
+                  (<Link href="/dashboard">
+>>>>>>> gallery-mobile-fixes
                     <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
-                  </Link>
+                  </Link>)
                 ) : (
+<<<<<<< HEAD
                   <>
                     <Link href="/login">
                       <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
@@ -373,6 +437,14 @@ export default function Navbar() {
                       <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button>
                     </Link>
                   </>
+=======
+                  <div>
+                    <Link href="/login">
+                      <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
+                    </Link>
+                    <Link href="/auth/signup"><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
+                  </div>
+>>>>>>> gallery-mobile-fixes
                 )}
               </div>
             </SheetContent>

@@ -106,8 +106,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setLoading(false);
       if (result.error === null) {
         console.log('Signup successful, preparing redirect and toast'); // Add this line
-        toast({ title: 'Signup Successful', description: 'Please sign in with your new account.' });
-        router.push('/login');
+        toast({ title: 'Signup Successful', description: 'Please check your email and verify your account before logging in.' });
+        router.push('/auth/verify?sent=1');
       }
     }
     return result;
@@ -147,7 +147,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser(data.user);
       toast({ title: 'Login Successful', description: 'Welcome back!' });
 
-      const redirectUrl = searchParams?.get('redirect') || '/dashboard';
+      const redirectUrl = searchParams?.get('redirect') || '/';
       router.push(redirectUrl);
       await new Promise(resolve => setTimeout(resolve, 150));
       router.refresh();

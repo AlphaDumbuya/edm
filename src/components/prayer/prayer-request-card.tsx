@@ -25,7 +25,7 @@ export default function PrayerRequestCard({ request }: PrayerRequestCardProps) {
       <CardHeader className="pb-3">
         <div className="flex justify-between items-start">
           <CardTitle className="text-lg text-primary flex items-center">
-            <UserCircle className="mr-2 h-5 w-5" /> {request.name}
+            <UserCircle className="mr-2 h-5 w-5" /> {request.authorName || 'Anonymous'}
           </CardTitle>
           {request.category && <Badge variant="secondary">{request.category}</Badge>}
         </div>
@@ -34,7 +34,7 @@ export default function PrayerRequestCard({ request }: PrayerRequestCardProps) {
         </CardDescription>
       </CardHeader>
       <CardContent className="flex-grow pb-4">
-        <p className="text-sm text-foreground whitespace-pre-wrap">{request.request}</p>
+        <p className="text-sm text-foreground whitespace-pre-wrap">{request.body}</p>
       </CardContent>
       <CardFooter className="border-t pt-3 pb-3">
         <Button variant="ghost" size="sm" className="text-primary hover:bg-primary/10 w-full">

@@ -55,12 +55,17 @@ interface BlogPost {
   author?: { name: string | null } | null;
 }
 
+function stripHtml(html: string) {
+  if (!html) return '';
+  return html.replace(/<[^>]+>/g, '');
+}
+
 export default async function Home() {
-	const recentNews = (await getAllNewsArticles()).slice(0, 4);
+	const recentNews = (await getAllNewsArticles(true)).slice(0, 2);
 	// Fetch blog posts directly from the server function
 	let blogPosts: BlogPost[] = [];
 	try {
-		const { blogPosts: posts } = await getAllBlogPosts({ publishedOnly: true, limit: 3, orderBy: { createdAt: 'desc' } });
+		const { blogPosts: posts } = await getAllBlogPosts({ publishedOnly: true, limit: 2, orderBy: { createdAt: 'desc' } });
 		blogPosts = posts || [];
 	} catch (e) {
 		blogPosts = [];
@@ -97,9 +102,10 @@ export default async function Home() {
 									buttonVariants({ variant: 'default', size: 'sm' }),
 									'flex items-center gap-1 text-xs sm:text-sm md:text-base whitespace-nowrap'
 								)}
-							>
-								Our Story{' '}
-								<ArrowRight className="ml-1 h-4 w-4" />
+                                >
+								<span className="flex items-center gap-1">
+									Our Story <ArrowRight className="ml-1 h-4 w-4" />
+								</span>
 							</Link>
 						</Button>
 						<Link href="/donate">
@@ -107,8 +113,7 @@ export default async function Home() {
 								size="sm"
 								className="bg-transparent border text-primary-foreground flex items-center gap-1 whitespace-nowrap"
 							>
-								Support EDM{' '}
-								<HelpingHand className="ml-1 h-4 w-4" />
+								Support EDM <HelpingHand className="ml-1 h-4 w-4" />
 							</Button>
 						</Link>
 					</div>
@@ -261,7 +266,7 @@ export default async function Home() {
 									author: {
 										name: post.author?.name || 'Unknown Author',
 									},
-									excerpt: post.content.substring(0, 150) + '...',
+									excerpt: stripHtml(post.content).substring(0, 150) + '...',
 									imageUrl: post.imageUrl || '',
 								}}
 							/>
@@ -290,7 +295,7 @@ export default async function Home() {
 									author: {
 										name: post.author?.name || 'Unknown Author',
 									},
-									excerpt: post.content.substring(0, 150) + '...',
+									excerpt: stripHtml(post.content).substring(0, 150) + '...',
 									imageUrl: post.imageUrl || '',
 								}}
 							/>

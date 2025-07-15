@@ -2,9 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import TipTapEditor from '@/components/TipTapEditor';
-import { UploadButton } from '@/components/shared/UploadButton';
-import { useAuth } from '@/contexts/auth-context';
+import TipTapEditor from '../../../../../components/TipTapEditor';
+import { UploadButton } from '../../../../../components/shared/UploadButton';
+import { useAuth } from '../../../../../contexts/auth-context';
 
 export default function CreateNewsArticlePage() {
   const router = useRouter();

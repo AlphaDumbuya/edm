@@ -1,4 +1,3 @@
-
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -31,7 +30,7 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
   return (
     <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full">
       <CardHeader className="p-3 sm:p-4 flex flex-col">
-        <Link href={`/news/${post.slug}`} legacyBehavior>
+        <Link href={`/news/${post.slug}`}>
           <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
         </Link>
         <div className="text-xs text-muted-foreground mt-1 space-y-0.5 sm:space-y-1">
@@ -42,7 +41,11 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       <Link
         href={href}
         className="block relative w-full h-32 sm:h-40 group"
+<<<<<<< HEAD
         legacyBehavior>
+=======
+      >
+>>>>>>> gallery-mobile-fixes
         {post.imageUrl && (
           <Image
             src={post.imageUrl}
@@ -51,8 +54,8 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
             style={{ objectFit: 'contain' }}
             data-ai-hint={post.dataAiHint}
             className="transition-transform duration-300 group-hover:scale-105"
- />
- )}
+          />
+        )}
       </Link>
       <CardContent className="p-3 sm:p-4 flex-grow">
         <p className="text-xs sm:text-sm text-muted-foreground line-clamp-3">{post.excerpt}</p>
@@ -65,9 +68,11 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
         )}
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
-        <Link href={href} className="w-full" legacyBehavior>
-          <Button className="w-full text-sm">
-            Read More <ArrowRight className="ml-2 h-4 w-4" />
+        <Link href={href} className="w-full">
+          <Button className="w-full text-sm" asChild>
+            <span>
+              Read More <ArrowRight className="ml-2 h-4 w-4" />
+            </span>
           </Button>
         </Link>
       </CardFooter>

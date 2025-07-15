@@ -26,6 +26,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 export default function LoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false); // State for password visibility
+  const [loginError, setLoginError] = useState<{ email?: boolean; password?: boolean }>({});
+  const [loginErrorMsg, setLoginErrorMsg] = useState('');
   const { signIn } = useAuth();
   const { toast } = useToast();
   const router = useRouter();
@@ -41,14 +43,25 @@ export default function LoginForm() {
 
   const onSubmit = async (data: LoginFormValues) => {
     setIsLoading(true);
-    // Corrected line: Pass searchParams as the third argument
+    setLoginError({});
+    setLoginErrorMsg('');
     const { error } = await signIn(data.email, data.password, searchParams);
     setIsLoading(false);
 
     if (error) {
+      if (error.toLowerCase().includes('password')) {
+        setLoginError({ password: true });
+        setLoginErrorMsg('Invalid password.');
+      } else if (error.toLowerCase().includes('email')) {
+        setLoginError({ email: true });
+        setLoginErrorMsg('Invalid email address.');
+      } else {
+        setLoginError({ email: true, password: true });
+        setLoginErrorMsg('Invalid email or password.');
+      }
       toast({
         title: 'Login Failed',
-        description: error,
+        description: 'Invalid email or password.',
         variant: 'destructive',
       });
     } else {
@@ -58,7 +71,6 @@ export default function LoginForm() {
       });
       // The redirect is now handled within the signIn function in auth-context.tsx
       // based on the searchParams or defaults to /dashboard
-      // router.push('/dashboard'); // This line can be removed or kept depending on desired behavior after successful login
     }
   };
 
@@ -80,9 +92,13 @@ export default function LoginForm() {
               placeholder="you@example.com"
               {...form.register('email')}
               disabled={isLoading}
+              className={loginError.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
             />
             {form.formState.errors.email && (
               <p className="text-sm text-destructive">{form.formState.errors.email.message}</p>
+            )}
+            {loginError.email && (
+              <p className="text-sm text-destructive">{loginErrorMsg}</p>
             )}
           </div>
           <div className="space-y-2">
@@ -90,11 +106,11 @@ export default function LoginForm() {
             <div className="relative"> {/* Wrap input and button in a relative container */}
               <Input
                 id="password"
-                type={showPassword ? 'text' : 'password'} // Dynamically set input type
+                type={showPassword ? 'text' : 'password'}
                 placeholder="••••••••"
                 {...form.register('password')}
                 disabled={isLoading}
-                className="pr-10" // Add padding to make space for the button
+                className={`pr-10 ${loginError.password ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
               />
               <Button
                 type="button" // Important: Make it a button to prevent form submission
@@ -114,6 +130,14 @@ export default function LoginForm() {
             </div>
             {form.formState.errors.password && (
               <p className="text-sm text-destructive">{form.formState.errors.password.message}</p>
+            )}
+            {loginError.password && (
+              <>
+                <p className="text-sm text-destructive">{loginErrorMsg}</p>
+                <div className="flex justify-end mt-1">
+                  <a href="/auth/forgot-password" className="text-xs text-primary hover:underline">Forgot password? Reset password</a>
+                </div>
+              </>
             )}
              <div className="flex justify-end">
                 <Link href="/auth/forgot-password" // This page will be created later

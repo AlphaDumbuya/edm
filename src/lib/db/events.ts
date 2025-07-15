@@ -1,5 +1,5 @@
 import prisma from '../db/prisma'; // Assuming your prisma client is exported as default
-import { Event } from '@prisma/client';
+// import { Event } from '@prisma/client'; // Removed because 'Event' is not exported from '@prisma/client'
 
 export interface CreateEventInput {
   title: string;
@@ -7,6 +7,9 @@ export interface CreateEventInput {
   date: Date;
   time: string;
   location: string;
+  imageUrl?: string; // Add imageUrl as optional
+  isVirtual?: boolean; // Add isVirtual as optional
+  onlineLink?: string; // Add onlineLink as optional
 }
 
 export async function getAllEvents(options?: {
@@ -80,7 +83,7 @@ export async function createEvent(data: CreateEventInput) {
 
 export async function updateEvent(
   id: string,
-  data: Partial<Event>,
+  data: Partial<CreateEventInput>,
 ) {
   try {
     const updatedEvent = await prisma.event.update({

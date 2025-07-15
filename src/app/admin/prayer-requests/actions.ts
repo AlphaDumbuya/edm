@@ -1,5 +1,12 @@
 'use server';
-import { createPrayerRequest, deletePrayerRequest, updatePrayerRequest, getAllPrayerRequests, getPrayerRequestById as getPrayerRequestByIdFromDb } from "@/lib/db/prayerRequests";
+import { 
+  createPrayerRequest, 
+  deletePrayerRequest, 
+  updatePrayerRequest, 
+  getAllPrayerRequests, 
+  getPrayerRequestById as getPrayerRequestByIdFromDb,
+  type GetAllPrayerRequestsOptions 
+} from "@/lib/db/prayerRequests";
 import { createAuditLogEntry } from '@/lib/db/auditLogs';
 import { getCurrentUserId } from '@/lib/auth/session';
 
@@ -17,9 +24,10 @@ export async function createPrayerRequestAction(formData: FormData) {
       authorEmail: authorEmail || undefined, // Handle optional fields
     });
 
-    // Create audit log entry (replace 'YOUR_USER_ID' with actual logic)
+    // Create audit log entry with real user ID
+    const userId = await getCurrentUserId();
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: userId || 'SYSTEM',
       action: 'Created Prayer Request',
       entityType: 'PrayerRequest',
       details: { title, authorName },
@@ -38,9 +46,10 @@ export async function deletePrayerRequestAction(id: string) {
   try {
     await deletePrayerRequest(id);
 
-    // Create audit log entry (replace 'YOUR_USER_ID' with actual logic)
+    // Create audit log entry with real user ID
+    const userId = await getCurrentUserId();
     await createAuditLogEntry({
-      userId: 'YOUR_USER_ID',
+      userId: userId || 'SYSTEM',
       action: 'Deleted Prayer Request',
       entityType: 'PrayerRequest',
       entityId: id,
@@ -54,10 +63,12 @@ export async function deletePrayerRequestAction(id: string) {
 
 export async function updatePrayerRequestAction(id: string, formData: FormData) {
   try {
-    const status = formData.get('status') as string;
+    const published = formData.get('published') === 'true';
+    const category = formData.get('category') as string | null;
 
     await updatePrayerRequest(id, {
-      status,
+      published,
+      category: category || undefined,
     });
 
     // Create audit log entry with real user ID
@@ -67,21 +78,13 @@ export async function updatePrayerRequestAction(id: string, formData: FormData) 
       action: 'Updated Prayer Request',
       entityType: 'PrayerRequest',
       entityId: id,
-      details: { status },
+      details: { published, category },
     });
     return { success: true };
   } catch (error) {
     console.error(`Error updating prayer request with ID ${id}:`, error);
     return { error: `Failed to update prayer request with ID ${id}.` };
   }
-}
-
-interface GetAllPrayerRequestsOptions {
-  search?: string;
-  status?: string;
-  offset?: number;
-  limit?: number;
-  orderBy?: any; // You might want to define a more specific type for orderBy
 }
 
 export async function getAllPrayerRequestsAction(options: GetAllPrayerRequestsOptions = {}) {

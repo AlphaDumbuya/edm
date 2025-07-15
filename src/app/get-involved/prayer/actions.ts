@@ -15,7 +15,8 @@ export async function createPublicPrayerRequest(data: {
     const formattedPrayerRequestData = {
       title: `Prayer Request - ${data.request.substring(0, 20)}...`, // Generate a default title
       body: data.request, // Map request to body
-      status: data.isPublic ? 'Public' : 'Private', // Map isPublic to status
+      published: data.isPublic ?? false, // Map isPublic to published, default to false
+      category: 'General', // Set a default category
       ...(data.authorName !== null && data.authorName !== undefined && { authorName: data.authorName }),
       ...(data.authorEmail !== null && data.authorEmail !== undefined && { authorEmail: data.authorEmail }),
     };

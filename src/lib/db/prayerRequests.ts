@@ -1,8 +1,10 @@
-import prisma from '../db/prisma'; // Assuming your prisma client is exported from here
+import prisma from './prisma';
+import { Prisma } from '@prisma/client';
 
-interface GetAllPrayerRequestsOptions {
+export interface GetAllPrayerRequestsOptions {
   search?: string;
-  status?: string;
+  category?: string;
+  published?: boolean;
   offset?: number;
   limit?: number;
   orderBy?: {
@@ -12,17 +14,31 @@ interface GetAllPrayerRequestsOptions {
 
 export async function getAllPrayerRequests(options?: GetAllPrayerRequestsOptions) {
   try {
-    const where: any = {};
+    const where: Prisma.PrayerRequestWhereInput = {};
 
     if (options?.search) {
       where.OR = [
-        { title: { contains: options.search, mode: 'insensitive' } },
-        { body: { contains: options.search, mode: 'insensitive' } },
+        {
+          title: {
+            contains: options.search,
+            mode: 'insensitive'
+          }
+        },
+        {
+          body: {
+            contains: options.search,
+            mode: 'insensitive'
+          }
+        }
       ];
     }
 
-    if (options?.status) {
-      where.status = options.status;
+    if (options?.published !== undefined) {
+      where.published = options.published;
+    }
+
+    if (options?.category) {
+      where.category = options.category;
     }
 
     const [prayerRequests, totalCount] = await prisma.$transaction([
@@ -38,7 +54,7 @@ export async function getAllPrayerRequests(options?: GetAllPrayerRequestsOptions
     return { prayerRequests, totalCount };
   } catch (error) {
     console.error('Error fetching prayer requests:', error);
-    throw new Error('Failed to fetch prayer requests.');
+    throw new Error('Failed to fetch prayer requests: ' + (error instanceof Error ? error.message : String(error)));
   }
 }
 
@@ -59,7 +75,8 @@ export async function createPrayerRequest(data: {
   body: string;
   authorName?: string;
   authorEmail?: string;
-  status?: string;
+  published?: boolean;
+  category?: string;
 }) {
   try {
     const newPrayerRequest = await prisma.prayerRequest.create({
@@ -79,7 +96,8 @@ export async function updatePrayerRequest(
     body?: string;
     authorName?: string;
     authorEmail?: string;
-    status?: string;
+    published?: boolean;
+    category?: string;
   },
 ) {
   try {

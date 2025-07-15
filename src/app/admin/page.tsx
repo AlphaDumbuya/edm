@@ -1,3 +1,6 @@
+// Trigger redeploy: July 6, 2025
+// File is clean and conflict-free
+
 import React from 'react';
 import Link from 'next/link';
 import { getAllBlogPosts, getBlogPostCount } from '@/lib/db/blogPosts';
@@ -95,7 +98,7 @@ export default async function AdminDashboardPage() {
             {quickLinks.map((link) => (
               <li key={link.id} className="mb-2 last:mb-0">
                 {/* Using Link component for Next.js navigation */}
-                <Link href={link.href} className="text-blue-600 hover:underline">
+                <Link href={link.href} className="text-blue-600 hover:underline" legacyBehavior>
                   {link.name}
                 </Link>
               </li>
