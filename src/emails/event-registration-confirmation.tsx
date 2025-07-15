@@ -42,7 +42,7 @@ export function eventRegistrationConfirmationEmail({
         </div>
         <hr style="margin: 32px 0; border: none; border-top: 1px solid #e5e7eb;" />
         <div style="font-size: 13px; color: #666; text-align: center;">
-          EDM Events Team<br/>Empowering Dreams Ministries<br/>
+          EDM Events Team<br/>Evangelism Discipleship Mission<br/>
           <a href="https://edm-sl.org" style="color: #2563eb; text-decoration: none;">edm-sl.org</a>
         </div>
       </div>
@@ -60,7 +60,7 @@ ${event.description.replace(/<[^>]+>/g, '')}
 If you have any questions, reply to this email or contact our team at info@edm-sl.org.
 
 EDM Events Team
-Empowering Dreams Ministries
+Evangelism Discipleship Mission
 edm-sl.org`
   };
 }

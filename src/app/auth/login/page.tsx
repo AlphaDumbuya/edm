@@ -1,8 +1,10 @@
-// src/app/auth/login/page.tsx
+'use client';
+
 import LoginForm from '@/components/auth/login-form';
 import PageHeader from '@/components/shared/page-header';
 import { LogIn } from 'lucide-react';
 import { Suspense } from 'react';
+
 export default function LoginPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>

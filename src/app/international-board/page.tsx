@@ -25,7 +25,7 @@ const countryDirector = {
 
 const bibleSchoolDirector = {
   name: 'Samuel Tarawally',
-  role: 'Board Member',
+  role: 'Board Member/Administrator',
   bio: 'Focused on the operational efficiency and logistical support for EDM\'s initiatives in Sierra Leone, ensuring effective execution of programs.',
   imageUrl: 'https://code-alpha-image-gallary.vercel.app/tarawalley.png', // Placeholder
   dataAiHint: 'Samuel Tarawalley Bible School Director Sierra Leone',
@@ -38,9 +38,9 @@ const boardMembersSierraLeone = [
     name: 'Rev. Samuel Samurah Kargbo',
     role: 'Board Member',
     bio: 'Representing the clergy on the EDM board, providing spiritual guidance and contributing to the alignment of ministry activities with theological principles.',
-    imageUrl: '', // Placeholder
+    imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/rev-samuel.png', 
     dataAiHint: 'Rev Samuel Samurah Kargbo Board Member Sierra Leone',
-    contact: '',
+    contact: 'samuelsamurahkargbo@yahoo.com',
     location: 'Sierra Leone',
   },
   {
@@ -61,15 +61,7 @@ const executiveMembers = [
   {
     ...countryDirector,
   },
-  {
-    name: 'Samuel Tarawally',
-    role: 'Administrator',
-    bio: 'Oversees administrative operations with a focus on organizational efficiency, ensuring smooth communication and logistical support across ministry teams.',
-    imageUrl: 'https://code-alpha-image-gallary.vercel.app/tarawalley.png',
-    dataAiHint: 'Samuel Tarawally EDM Administrator',
-    contact: 'Starawally@yahoo.uk',
-    location: 'Sierra Leone',
-  },
+
   {
     name: 'Michael Kargo',
     role: 'Financial Secretary - Sierra Leone',

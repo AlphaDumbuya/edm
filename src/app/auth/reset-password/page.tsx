@@ -94,7 +94,7 @@ function ResetPasswordPageInner() {
           <input
             type={showPassword ? "text" : "password"}
             className="w-full border rounded px-3 py-2 pr-10"
-            placeholder="New password"
+            placeholder="Enter your new password"
             value={password}
             onChange={e => setPassword(e.target.value)}
             minLength={8}

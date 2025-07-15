@@ -91,8 +91,8 @@ export default function ForgotPasswordPage() {
                   {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <MailQuestion className="mr-2 h-4 w-4" />}
                   {isLoading ? 'Sending...' : 'Send Reset Link'}
                 </Button>
-                <Link href="/login" legacyBehavior>
-                  <Button variant="link" className="text-sm text-muted-foreground">
+                <Link href="/auth/login" className="w-full">
+                  <Button variant="link" className="w-full text-sm text-muted-foreground">
                     <ArrowLeft className="mr-1 h-4 w-4" /> Back to Login
                   </Button>
                 </Link>
@@ -112,7 +112,7 @@ export default function ForgotPasswordPage() {
               </p>
             </CardContent>
             <CardFooter>
-              <Link href="/login" className="w-full" legacyBehavior>
+              <Link href="/auth/login" className="w-full">
                 <Button variant="outline" className="w-full">
                   <ArrowLeft className="mr-2 h-4 w-4" /> Back to Login
                 </Button>

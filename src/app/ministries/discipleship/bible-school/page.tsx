@@ -155,8 +155,8 @@ export default function BibleSchoolPage() {
         <Card className="flex flex-col items-center text-center p-6 shadow-lg">
           <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4">
             <Image
-              src="https://via.placeholder.com/128"
-              alt="Melvin Tina"
+              src="https://code-alpha-image-gallary.vercel.app/images/melvin.png"
+              alt="Melvin Tina Kamara"
               layout="fill"
               objectFit="cover"
               data-ai-hint="pastor portrait"

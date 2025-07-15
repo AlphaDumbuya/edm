@@ -13,6 +13,7 @@ import {
   DollarSign,
   Newspaper,
   Phone,
+  User,
   LucideProps,
 } from "lucide-react";
 
@@ -21,8 +22,10 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import {
   NavigationMenu,
   NavigationMenuContent,
-  NavigationMenuLink,
+  NavigationMenuIndicator,
   NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
   NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
@@ -47,49 +50,29 @@ interface ListItemProps {
   href: string;
 }
 
-<<<<<<< HEAD
-const ListItem = ({ className, title, children, href, ...props }: ListItemProps) => (
-  <li>
-    <Link
-      className={cn(
-        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-        className
-      )}
-      href={href}
-      {...props}
-    >
-      <span>
-        <div className="text-sm font-medium leading-none">{title}</div>
-        <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-          {Array.isArray(children) ? <>{children}</> : children}
-        </p>
-      </span>
-    </Link>
-  </li>
-=======
-const ListItem = React.forwardRef<React.ElementRef<"a">, ListItemProps>(
+const ListItem = React.forwardRef<React.ElementRef<typeof Link>, ListItemProps>(
   ({ className, title, children, href, ...props }, ref) => {
     return (
       <li>
-        <Link
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          href={href}
-          {...props}
-        >
-          {/* Wrap children in a single span */}
-          <span>
+        <NavigationMenuLink asChild>
+          <Link
+            ref={ref}
+            href={href}
+            className={cn(
+              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary",
+              className
+            )}
+            {...props}
+          >
             <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">{children}</p>
-          </span>
-        </Link>
+            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+              {children}
+            </p>
+          </Link>
+        </NavigationMenuLink>
       </li>
     );
   }
->>>>>>> gallery-mobile-fixes
 );
 ListItem.displayName = "ListItem";
 
@@ -200,7 +183,6 @@ export default function Navbar() {
     <header className="bg-white shadow sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link href="/" className="flex items-center gap-2">
-<<<<<<< HEAD
           <span className="flex items-center gap-2">
             <div className="h-8 w-8 md:h-10 md:w-10 relative">
               <Image
@@ -212,97 +194,83 @@ export default function Navbar() {
             </div>
             <span className="text-xl font-bold">EDM</span>
           </span>
-=======
-          <div className="h-8 w-8 md:h-10 md:w-10 relative">
-            <Image
-              src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
-              alt="EDM Logo"
-              fill
-              className="object-contain"
-            />
-          </div>
->>>>>>> gallery-mobile-fixes
         </Link>
-        <span className="text-xl font-bold">EDM</span>
 
         {/* Desktop Nav */}
-        <NavigationMenu className="hidden lg:flex">
-          <NavigationMenuPrimitive.List className="group flex flex-1 list-none items-center justify-center gap-2">
-            {mainNavItems.map((item: NavItem, i) => (
-              <NavigationMenuItem key={i}>
-                {item.links ? (
-                  <>
-                    <NavigationMenuTrigger className="flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0">
-                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
-                      <span className="inline-block">{item.title}</span>
+        <div className="hidden lg:flex flex-1 justify-center">
+          <NavigationMenu>
+            <NavigationMenuList className="flex items-center gap-1">
+              {mainNavItems.map((item) =>
+                item.links ? (
+                  <NavigationMenuItem key={item.title}>
+                    <NavigationMenuTrigger className="h-10 px-4 hover:bg-primary/10 hover:text-primary data-[state=open]:bg-primary/10 data-[state=open]:text-primary">
+                      <div className="flex items-center gap-1">
+                        {isClient && item.icon && <item.icon size={16} />}
+                        {item.title}
+                      </div>
                     </NavigationMenuTrigger>
                     <NavigationMenuContent>
-                      <ul className="grid gap-3 p-4 w-[400px] md:grid-cols-2">
-                        {item.links.map((link) => (
-                          <ListItem key={link.href} href={link.href} title={link.title}>
-                            {link.description}
-                          </ListItem>
-                        ))}
-                      </ul>
+                      <div className="w-[400px] lg:w-[500px] bg-white p-4 rounded-md border shadow-lg">
+                        <ul className="grid gap-3 md:grid-cols-2">
+                          {item.links.map((link) => (
+                            <ListItem
+                              key={link.title}
+                              title={link.title}
+                              href={link.href}
+                            >
+                              {link.description}
+                            </ListItem>
+                          ))}
+                        </ul>
+                      </div>
                     </NavigationMenuContent>
-                  </>
-                ) : item.href ? (
-                  <NavigationMenuLink asChild>
-                    <Link
-                      href={item.href}
-<<<<<<< HEAD
-                      className={cn(navigationMenuTriggerStyle(), "flex items-center gap-1 whitespace-nowrap")}
-                    >
-                      <span className="flex items-center gap-1">
-                        {isClient && item.icon && <item.icon size={18} />}
-                        {item.title}
-                      </span>
-=======
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "flex items-center gap-1 whitespace-nowrap text-sm px-2 py-1 h-8 min-h-0"
-                      )}
-                    >
-                      {isClient && item.icon && <item.icon size={16} className="inline-block" />}
-                      <span className="inline-block">{item.title}</span>
->>>>>>> gallery-mobile-fixes
-                    </Link>
-                  </NavigationMenuLink>
-                ) : null}
-              </NavigationMenuItem>
-            ))}
-          </NavigationMenuPrimitive.List>
-        </NavigationMenu>
+                  </NavigationMenuItem>
+                ) : (
+                  <NavigationMenuItem key={item.title}>
+                    <NavigationMenuLink asChild>
+                      <Link href={item.href || "#"} className={cn(navigationMenuTriggerStyle(), "h-10 px-4 hover:bg-primary/10 hover:text-primary")}>
+                        <div className="flex items-center gap-1">
+                          {isClient && item.icon && <item.icon size={16} />}
+                          {item.title}
+                        </div>
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                )
+              )}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
 
         {/* Desktop Auth Buttons */}
         <div className="hidden lg:flex items-center gap-2">
           {!loading && typedUser ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="h-9 w-9 rounded-full">
+                <Button variant="ghost" className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary">
                   <Avatar>
                     <AvatarImage src={typedUser.photoURL || undefined} />
-                    <AvatarFallback>{getInitials(typedUser.name, typedUser.email)}</AvatarFallback>
+                    <AvatarFallback className="text-inherit">{getInitials(typedUser.name, typedUser.email)}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="end" className="bg-white">
                 <DropdownMenuLabel>{typedUser.name || "User"}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
                   <Link href="/dashboard">Dashboard</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
                   <Link href="/dashboard/profile">Profile</Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem asChild>
+                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
                   <Link href="/dashboard/settings">Settings</Link>
                 </DropdownMenuItem>
                 {(() => {
                   const allowedAdminRoles = ["SUPER_ADMIN", "ADMIN", "EDITOR", "VIEWER"];
                   if (typedUser?.role && allowedAdminRoles.includes(typedUser.role)) {
                     return (
-                      <DropdownMenuItem asChild>
+                      <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
                         <Link href="/admin">Admin Dashboard</Link>
                       </DropdownMenuItem>
                     );
@@ -310,18 +278,31 @@ export default function Navbar() {
                   return null;
                 })()}
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOutAuth}>Sign Out</DropdownMenuItem>
+                <DropdownMenuItem onClick={signOutAuth} className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">Sign Out</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link href="/login">
-                <Button variant="outline">Login</Button>
-              </Link>
-              <Link href="/auth/signup">
-                <Button variant="default">Sign Up</Button>
-              </Link>
-            </div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="h-9 w-9 rounded-full hover:bg-primary/10 hover:text-primary">
+                  <Avatar>
+                    <AvatarFallback className="text-inherit">
+                      <User size={18} />
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="bg-white">
+                <DropdownMenuLabel>Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
+                  <Link href="/auth/login">Sign In</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild className="hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary">
+                  <Link href="/auth/signup">Create Account</Link>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
           )}
         </div>
 
@@ -344,15 +325,10 @@ export default function Navbar() {
                     className="flex items-center gap-2"
                     onClick={() => setMobileMenuOpen(false)}
                   >
-<<<<<<< HEAD
                     <span className="flex items-center gap-2">
                       <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                       <span className="text-lg font-bold">EDM</span>
                     </span>
-=======
-                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
-                    <span className="text-lg font-bold">EDM</span>
->>>>>>> gallery-mobile-fixes
                   </Link>
                 </SheetTitle>
               </SheetHeader>
@@ -366,12 +342,8 @@ export default function Navbar() {
                         onClick={() => setMobileMenuOpen(false)}
                       >
                         <span className="flex items-center gap-2">
-<<<<<<< HEAD
                           {isClient && item.icon && <item.icon size={20} />}
                           {item.title}
-=======
-                          {isClient && item.icon && <item.icon size={20} />}{item.title}
->>>>>>> gallery-mobile-fixes
                         </span>
                       </Link>
                     ) : (
@@ -419,32 +391,22 @@ export default function Navbar() {
               {/* Authentication Buttons for Mobile */}
               <div className="flex flex-col gap-4 mt-6">
                 {!loading && typedUser ? (
-<<<<<<< HEAD
                   <Link href="/dashboard">
-=======
-                  // Render user dropdown or link to dashboard if logged in (optional for mobile sidebar, can just link to dashboard)
-                  (<Link href="/dashboard">
->>>>>>> gallery-mobile-fixes
                     <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
-                  </Link>)
+                  </Link>
                 ) : (
-<<<<<<< HEAD
-                  <>
-                    <Link href="/login">
-                      <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
+                  <div className="space-y-2">
+                    <Link href="/auth/login">
+                      <Button variant="outline" className="w-full hover:bg-primary/10 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
+                        Sign In
+                      </Button>
                     </Link>
                     <Link href="/auth/signup">
-                      <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button>
+                      <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>
+                        Create Account
+                      </Button>
                     </Link>
-                  </>
-=======
-                  <div>
-                    <Link href="/login">
-                      <Button variant="outline" className="w-full" onClick={() => setMobileMenuOpen(false)}>Login</Button>
-                    </Link>
-                    <Link href="/auth/signup"><Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Sign Up</Button></Link>
                   </div>
->>>>>>> gallery-mobile-fixes
                 )}
               </div>
             </SheetContent>
