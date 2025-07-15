@@ -14,11 +14,7 @@ export default function Footer({ className = "" }: { className?: string }) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="space-y-2">
             <Link href="/" className="flex items-center gap-2">
-<<<<<<< HEAD
               <span className="flex items-center gap-2">
-=======
-              <span>
->>>>>>> gallery-mobile-fixes
                 <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
                 <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
               </span>
@@ -103,40 +99,23 @@ export default function Footer({ className = "" }: { className?: string }) {
    href="/terms-and-conditions"
    className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
  >
-<<<<<<< HEAD
- <span>
- <FileText size={14} className="mr-1" /> Terms & Conditions
- </span>
-</Link>
-=======
    <span>
      <FileText size={14} className="mr-1" /> Terms & Conditions
    </span>
  </Link>
->>>>>>> gallery-mobile-fixes
             <span className="hidden sm:inline text-muted-foreground">|</span>
  <Link
    href="/privacy-policy"
    className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
  >
-<<<<<<< HEAD
- <span>
- <ShieldAlert size={14} className="mr-1" /> Privacy Policy
- </span>
-</Link>
-=======
    <span>
      <ShieldAlert size={14} className="mr-1" /> Privacy Policy
    </span>
  </Link>
->>>>>>> gallery-mobile-fixes
  </div>
           <p className="text-xs sm:text-sm text-muted-foreground">
             &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
           </p>
-           <p className="text-xs text-muted-foreground mt-1">
-              EDM is a registered 501(c)(3) non-profit organization.
-            </p>
         </div>
       </div>
     </footer>

@@ -145,13 +145,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       setUser(data.user);
-      toast({ title: 'Login Successful', description: 'Welcome back!' });
-
+      
       const redirectUrl = searchParams?.get('redirect') || '/';
-      router.push(redirectUrl);
-      await new Promise(resolve => setTimeout(resolve, 150));
-      router.refresh();
       setLoading(false);
+      
+      // Use setTimeout to ensure state updates have propagated
+      setTimeout(() => {
+        toast({ title: 'Login Successful', description: 'Welcome back!' });
+        router.push(redirectUrl);
+        router.refresh();
+      }, 100);
+      
       return { user: data.user, error: null };
 
     } catch (e: any) {

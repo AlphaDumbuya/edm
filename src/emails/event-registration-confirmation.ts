@@ -34,7 +34,7 @@ export function eventRegistrationConfirmationEmail({
         </div>
         <p>We look forward to seeing you there! If you have any questions, reply to this email or contact our team.</p>
         <hr style="margin: 32px 0; border: none; border-top: 1px solid #e5e7eb;" />
-        <p style="font-size: 13px; color: #666;">EDM Events Team<br/>Empowering Dreams Ministries</p>
+        <p style="font-size: 13px; color: #666;">EDM Events Team<br/>Evangelism Discipleship Mission</p>
       </div>
     `,
     text: `Thank you for registering, ${name}!
@@ -50,6 +50,6 @@ ${event.description.replace(/<[^>]+>/g, '')}
 
 We look forward to seeing you there! If you have any questions, reply to this email or contact our team.
 
-EDM Events Team\nEmpowering Dreams Ministries`
+EDM Events Team\nEvangelism Discipleship Mission`
   };
 }

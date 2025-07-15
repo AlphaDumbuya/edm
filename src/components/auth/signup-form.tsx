@@ -102,7 +102,7 @@ export default function SignupForm() {
             <Label htmlFor="name">Full Name</Label>
             <Input
               id="name"
-              placeholder="John Doe"
+              placeholder="Enter your full name"
               {...form.register('name')}
               disabled={isLoading}
             />
@@ -115,7 +115,7 @@ export default function SignupForm() {
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="Enter your email address"
               {...form.register('email')}
               disabled={isLoading}
             />
@@ -143,7 +143,7 @@ export default function SignupForm() {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
+              placeholder="Create a secure password"
               {...form.register('password')}
               disabled={isLoading}
               autoComplete="new-password"
@@ -192,7 +192,7 @@ export default function SignupForm() {
             <Input
               id="confirmPassword"
               type={showConfirmPassword ? 'text' : 'password'}
-              placeholder="••••••••"
+              placeholder="Confirm your password"
               {...form.register('confirmPassword')}
               disabled={isLoading}
               autoComplete="new-password"

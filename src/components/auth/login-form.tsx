@@ -89,7 +89,7 @@ export default function LoginForm() {
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="Enter your email address"
               {...form.register('email')}
               disabled={isLoading}
               className={loginError.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
@@ -107,7 +107,7 @@ export default function LoginForm() {
               <Input
                 id="password"
                 type={showPassword ? 'text' : 'password'}
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 {...form.register('password')}
                 disabled={isLoading}
                 className={`pr-10 ${loginError.password ? 'border-red-500 focus-visible:ring-red-500' : ''}`}

@@ -42,7 +42,7 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
                 </tr>
                 <tr>
                   <td style="background: #f0f4f8; text-align: center; padding: 18px 0; color: #888; font-size: 0.95rem; border-top: 1px solid #e0e6ed;">
-                    &copy; ${new Date().getFullYear()} Evangelical Diaspora Mission. All rights reserved.
+                    &copy; ${new Date().getFullYear()} Evangelism Discipleship Mission. All rights reserved.
                   </td>
                 </tr>
               </table>
@@ -51,7 +51,7 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
         </table>
       </div>
     `,
-    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${event.date}\nTime: ${event.time}\n${event.isVirtual === 'true' || event.isVirtual === true ? `Type: Online (A join link will be sent to you 1 hour before the event)` : `Location: ${event.location}`}\nWe look forward to seeing you!\n\nEDM Team\nEvangelical Diaspora Mission`,
+    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${event.date}\nTime: ${event.time}\n${event.isVirtual === 'true' || event.isVirtual === true ? `Type: Online (A join link will be sent to you 1 hour before the event)` : `Location: ${event.location}`}\nWe look forward to seeing you!\n\nEDM Team\nEvangelism Discipleship Mission`,
   };
   try {
     await transporter.sendMail(mailOptions);

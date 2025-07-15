@@ -41,11 +41,7 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       <Link
         href={href}
         className="block relative w-full h-32 sm:h-40 group"
-<<<<<<< HEAD
-        legacyBehavior>
-=======
       >
->>>>>>> gallery-mobile-fixes
         {post.imageUrl && (
           <Image
             src={post.imageUrl}
