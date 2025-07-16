@@ -64,11 +64,22 @@ export default function MarifaSchoolPage() {
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center gap-4 pt-4 border-t">
-                <Link href="/donate?reason=marifa_school_project" legacyBehavior>
-                  <Button>
-                    <HeartHandshake className="mr-2 h-5 w-5" /> Support School Building Project
-                  </Button>
-                </Link>
+                <div className="flex gap-3">
+                  <Link href="/donate?reason=marifa_school_project" legacyBehavior>
+                    <Button>
+                      <HeartHandshake className="mr-2 h-5 w-5" />
+                      <span className="hidden sm:inline">Support School Building Project</span>
+                      <span className="sm:hidden">Donate Now</span>
+                    </Button>
+                  </Link>
+                  <Link href="https://www.edmmission.org" legacyBehavior>
+                    <Button variant="outline">
+                      <Mail className="mr-2 h-5 w-5" />
+                      <span className="hidden sm:inline">Contact Us</span>
+                      <span className="sm:hidden">Contact</span>
+                    </Button>
+                  </Link>
+                </div>
                 <div>
                   <p className="text-sm text-muted-foreground">For more information about the school project, please contact:</p>
                   <p className="text-sm font-medium text-foreground">Edwin Kargbo</p>
@@ -130,9 +141,29 @@ export default function MarifaSchoolPage() {
       <section className="text-center py-8">
        <Link href="/donate?reason=marifa_school_project" legacyBehavior>
          <Button size="lg" variant="default">
-           <HeartHandshake className="mr-2 h-5 w-5" /> Donate to Support the School Project
+           <HeartHandshake className="mr-2 h-5 w-5" />
+           <span className="hidden sm:inline">Donate to Support the School Project</span>
+           <span className="sm:hidden">Support Our School</span>
          </Button>
        </Link>
+     </section>
+
+     <section className="py-12 bg-muted/50 rounded-lg">
+       <div className="container max-w-3xl mx-auto text-center space-y-6 px-4">
+         <h2 className="text-2xl font-bold text-foreground">Ready to Make a Personal Impact?</h2>
+         <p className="text-muted-foreground">
+           We're excited to explore how your passion and skills can align with EDM's mission in Sierra Leone or Oregon. 
+           If you have questions or want to discuss involvement, please reach out.
+         </p>
+         <div>
+           <Link href="https://www.edmmission.org" legacyBehavior>
+             <Button size="lg" variant="secondary">
+               <Mail className="mr-2 h-5 w-5" />
+               Contact Us
+             </Button>
+           </Link>
+         </div>
+       </div>
      </section>
     </div>
   );
