@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
+import { emailService } from '@/lib/email/emailService';
 import prisma from '@/lib/db/prisma'; // Correct import for prisma client
+import type { Notification, Prisma } from '@prisma/client';
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,18 +10,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
 
-    // Configure nodemailer with Brevo/Sendinblue SMTP
-    const transporter = nodemailer.createTransport({
-      host: process.env.SMTP_HOST,
-      port: Number(process.env.SMTP_PORT),
-      secure: process.env.SMTP_SECURE === 'true',
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD,
-      },
-    });
-
-    await transporter.sendMail({
+    // Send email using the email service
+    await emailService.sendMail({
       from: `${process.env.EMAIL_FROM_NAME || 'EDM Contact'} <${process.env.EMAIL_FROM}>`,
       to: process.env.ADMIN_EMAIL || 'contact@edmmission.org',
       subject: `[EDM Contact] ${subject}`,
@@ -37,14 +28,16 @@ export async function POST(req: NextRequest) {
       }
     });
     // Create notification for each admin
-    await Promise.all(admins.map(admin =>
-      prisma.notification.create({
-        data: {
-          userId: admin.id,
-          message: `Contact form submitted: ${name} (${email}) - ${subject}`,
-        },
-      })
-    ));
+    const notifications = await Promise.all(admins.map(admin => {
+      const notificationData: Prisma.NotificationUncheckedCreateInput = {
+        userId: admin.id,
+        message: `Contact form submitted: ${name} (${email}) - ${subject}`,
+      };
+      
+      return prisma.notification.create({
+        data: notificationData,
+      });
+    }));
 
     return NextResponse.json({ success: true });
   } catch (error) {

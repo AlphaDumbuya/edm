@@ -1,14 +1,4 @@
-import nodemailer from 'nodemailer';
-
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+import { emailService } from './emailService';
 
 export async function sendEventReminderEmail({ name, email, event }: { name: string; email: string; event: any }) {
   const mailOptions = {
@@ -53,5 +43,5 @@ export async function sendEventReminderEmail({ name, email, event }: { name: str
     `,
     text: `Reminder: ${event.title} is starting soon!\n\nHi ${name},\nThis is a reminder for ${event.title}.\nDate: ${event.date}\nTime: ${event.time}\n${event.isVirtual === 'true' || event.isVirtual === true ? `Online Event Link: ${event.onlineLink}` : `Location: ${event.location}`}\n\nEDM Team\nEvangelical Diaspora Mission`,
   };
-  await transporter.sendMail(mailOptions);
+  await emailService.sendMail(mailOptions);
 }
