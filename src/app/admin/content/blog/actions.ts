@@ -17,32 +17,27 @@ export async function createBlogPostAction(formData: FormData) {
       throw new Error("Missing required fields");
     }
 
-    // Create the blog post directly using the database function
-    const newBlogPost = await createBlogPost({
-      title,
-      slug,
-      content,
-      published,
-      authorId,
-      imageUrl: imageUrl || undefined,
-    });
+  // Try to use the current server's origin for fetch
+  let baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  if (!baseUrl) {
+    if (typeof window === 'undefined') {
+      // On the server, try to infer from headers (Node.js only)
+      const { headers } = require('next/headers');
+      const host = headers().get('host');
+      const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http';
+      baseUrl = `${protocol}://${host}`;
+    } else {
+      baseUrl = window.location.origin;
+    }
+  }
 
-    // Create audit log entry
-    await createAuditLogEntry({
-      userId: authorId,
-      action: "Created Blog Post",
-      entityType: "BlogPost",
-      entityId: newBlogPost.id,
-      details: { title, slug, published, imageUrl },
-    });
-
-    // Revalidate the blog pages
-    revalidatePath("/blog");
-    revalidatePath("/admin/content/blog");
-
-    return newBlogPost;
-  } catch (error) {
-    console.error("Error creating blog post:", error);
-    throw error instanceof Error ? error : new Error("Failed to create blog post");
+  const res = await fetch(`${baseUrl}/api/admin/blog`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title, slug, content, published, imageUrl, authorId }),
+  });
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(error.error || "Failed to create blog post");
   }
 }

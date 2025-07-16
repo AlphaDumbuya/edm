@@ -8,23 +8,12 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Send, User, ShieldQuestion } from 'lucide-react';
-// import PrayerRequest type or interface instead of the component
 import type { PrayerRequestData } from '@/types/prayerRequest';
 import { useToast } from "@/hooks/use-toast";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 interface PrayerRequestFormProps {
   onSubmit: (request: Omit<PrayerRequestData, 'id' | 'createdAt' | 'updatedAt' | 'formattedFullDate'>) => void;
 }
-
-const prayerCategories = ["Healing", "Guidance", "Family", "Finances", "Protection", "Salvation", "Thanksgiving", "Missions", "EDM Projects", "Other"];
-
 
 export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) {
   const [email, setEmail] = useState(''); // Add state for email
@@ -32,7 +21,6 @@ export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) 
   const [requestText, setRequestText] = useState('');
   const [isPublic, setIsPublic] = useState(true);
   const [isAnonymous, setIsAnonymous] = useState(false);
-  const [category, setCategory] = useState('');
   const { toast } = useToast();
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -46,18 +34,15 @@ export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) 
       return;
     }
     onSubmit({
-      title: name,
-      body: requestText,
-      authorName: isAnonymous ? undefined : name.trim() || undefined,
-      authorEmail: email.trim() || undefined,
-      published: isPublic,
-      category: category || undefined,
+      name: isAnonymous || !name.trim() ? 'Anonymous' : name,
+      request: requestText,
+      isPublic,
+      email, // Use 'email' key to match PrayerRequestData
     });
     setName('');
     setRequestText('');
     setIsPublic(true);
     setIsAnonymous(false);
-    setCategory('');
     setEmail('');
     toast({
       title: "Prayer Request Submitted",
@@ -110,17 +95,16 @@ export default function PrayerRequestForm({ onSubmit }: PrayerRequestFormProps) 
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="category" className="text-sm sm:text-base">Category (Optional)</Label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger className="w-full text-sm sm:text-base">
-                <SelectValue placeholder="Select a category" />
-              </SelectTrigger>
-              <SelectContent>
-                {prayerCategories.map(cat => (
-                  <SelectItem key={cat} value={cat} className="text-sm sm:text-base">{cat}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Label htmlFor="email" className="text-sm sm:text-base">Your Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="text-sm sm:text-base"
+            />
           </div>
 
           <div className="flex items-start space-x-2">

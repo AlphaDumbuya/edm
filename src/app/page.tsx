@@ -208,14 +208,10 @@ export default async function Home() {
 								center, the EDM Marifa School (now operational), future Bible
 								school, lodging, recreation facilities, a chapel, and more.
 							</p>
-							<div className="relative w-full aspect-video rounded-md overflow-hidden shadow-md">
-								<Image
-									src="https://source.unsplash.com/random/600x350/?school,campus,africa,building,community"
-									alt="EDM Campus Vision"
-									fill
-									className="object-cover"
-								/>
-							</div>
+							<div className="relative w-full aspect-video rounded-md overflow-hidden shadow-md flex flex-col items-center justify-center bg-muted">
+    <Target className="w-16 h-16 text-primary mb-2" />
+    <span className="text-sm text-muted-foreground text-center px-2">Future campus rendering or illustration coming soon</span>
+  </div>
 						</CardContent>
 					</Card>
 

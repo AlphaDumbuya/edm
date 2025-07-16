@@ -109,7 +109,7 @@ export default function GetInvolvedPartnerPage() {
 							</p>
 						</CardContent>
 						<CardContent className="pt-2 sm:pt-4 pb-4 sm:pb-6 text-center border-t">
-							<Link href={opportunity.link}>
+							<Link href={opportunity.link} legacyBehavior>
 								<Button className="w-full sm:w-auto text-xs sm:text-sm">
 									Learn More{' '}
 									<ArrowRight className="ml-2 h-3 w-3 sm:h-4 sm:w-4" />
@@ -130,7 +130,7 @@ export default function GetInvolvedPartnerPage() {
 					organizational goals can align with EDM's mission. Reach out to our
 					partnership team to start a conversation.
 				</p>
-				<Link href="mailto:partnerships@edm.org?subject=Partnership%20Inquiry">
+				<Link href="/contact" legacyBehavior>
 					<Button size="default" className="w-full sm:w-auto text-sm sm:text-base">
 						<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Our
 						Partnership Team

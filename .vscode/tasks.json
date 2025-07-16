@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run Event Reminders",
+			"type": "shell",
+			"command": "npx tsx scripts/send-event-reminders.ts",
+			"isBackground": true,
+			"group": "test",
+			"problemMatcher": []
+		}
+	]
+}

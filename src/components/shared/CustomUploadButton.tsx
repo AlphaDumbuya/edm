@@ -26,7 +26,7 @@ const CustomUploadButton: React.FC<CustomUploadButtonProps> = ({
 
 
   return (
-    <Button onClick={handleClick} className={className}>
+    <Button onClick={handleClick} className={className} type="button">
       Upload Image
     </Button>
   );

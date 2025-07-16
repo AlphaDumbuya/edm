@@ -32,6 +32,11 @@ export default async function GalleryPage() {
         subtitle="See the impact of Evangelism, Discipleship, and Missions in Sierra Leone. Find photos, videos, and downloadable resources."
         icon={Camera}
       />
+      {/* DEBUG: Show fetched photos data
+      Remove or comment out in production
+      <pre className="bg-gray-100 text-xs p-2 overflow-x-auto max-w-full border rounded mb-4">
+        {JSON.stringify(photos, null, 2)}
+      </pre> */}
       <Tabs defaultValue="photos" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-3 md:w-3/4 lg:w-1/2 mx-auto">
           <TabsTrigger value="photos" className="flex items-center gap-2">

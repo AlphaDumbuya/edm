@@ -1,4 +1,3 @@
-
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -23,7 +22,7 @@ export default function EvangelismPage() {
         </div>
         <div className="rounded-lg overflow-hidden shadow-xl h-80 relative">
           <Image
-            src="https://code-alpha-image-gallary.vercel.app/images/edm30.jpg"
+            src="https://code-alpha-image-gallary.vercel.app/images/edm27.jpg"
             alt="Man reading a book beside people"
             layout="fill"
             objectFit="cover"
