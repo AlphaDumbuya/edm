@@ -76,6 +76,15 @@ export default function IndividualPartnershipPage() {
         </Card>
 
         <Card className="shadow-lg hover:shadow-xl transition-shadow">
+          <div className="relative h-40 w-full overflow-hidden">
+            <Image
+              src="https://media.istockphoto.com/id/1218194403/photo/mediation-intermediary-between-people-conflict-resolution-and-consensus-building-influential.webp?a=1&b=1&s=612x612&w=0&k=20&c=-42ApnPI3KiWd3XHZaw3ZU7mQT-660cWm8oeEFxt3Xg="
+              alt="EDM Ambassador Program - Leadership and Delegation"
+              layout="fill"
+              objectFit="cover"
+              className="transition-transform duration-300 hover:scale-105"
+            />
+          </div>
           <CardHeader className="p-4 sm:p-6">
             <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
               <Volume2 className="h-7 w-7 sm:h-8 sm:w-8 text-primary" />
@@ -87,10 +96,8 @@ export default function IndividualPartnershipPage() {
               Be a voice for EDM's work in Sierra Leone and our Oregon connections within your community. Share stories and opportunities for involvement.
             </p>
             <div className="text-center mt-3">
-                <Link
-                  href="mailto:ambassador@edm.org?subject=Ambassador%20Inquiry"
-                >
-                     <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
+                <Link href="/get-involved/ambassador">
+                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
                 </Link>
             </div>
           </CardContent>
@@ -120,9 +127,7 @@ export default function IndividualPartnershipPage() {
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We're excited to explore how your passion and skills can align with EDM's mission in Sierra Leone or Oregon. If you have questions or want to discuss involvement, please reach out.
         </p>
-        <Link
-          href="mailto:individuals@edm.org?subject=Individual%20Partnership%20Inquiry"
-        >
+        <Link href="/contact">
           <Button size="lg" className="text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
           </Button>
