@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEventRegistrationEmail } from '../../../../lib/email/sendEventRegistrationEmail';
 import { createEventRegistration } from '../../../../lib/db/eventRegistrations';
+import prisma from '@/lib/prisma'; // Import prisma client
 
 export async function POST(req: NextRequest) {
   let input = null;
@@ -12,6 +13,21 @@ export async function POST(req: NextRequest) {
     }
     // Save registration to DB
     await createEventRegistration({ name, email, eventId: event.id });
+    // Fetch all admin and super admin users
+    const admins = await prisma.user.findMany({
+      where: {
+        role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+      }
+    });
+    // Create notification for each admin
+    await Promise.all(admins.map(admin =>
+      prisma.notification.create({
+        data: {
+          userId: admin.id,
+          message: `Event signup: ${name} (${email}) for event ${event.title}`,
+        },
+      })
+    ));
     // Send confirmation email
     await sendEventRegistrationEmail({ name, email, event });
     return NextResponse.json({ success: true });

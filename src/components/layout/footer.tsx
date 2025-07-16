@@ -93,29 +93,34 @@ export default function Footer({ className = "" }: { className?: string }) {
             </div>
           </div>
         </div>
-        <div className="mt-8 md:mt-12 border-t border-border pt-6 md:pt-8 text-center">
- <div className="flex flex-col sm:flex-row justify-center items-center gap-2 sm:gap-4 mb-1 sm:mb-2">
- <Link
-   href="/terms-and-conditions"
-   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
- >
-   <span>
-     <FileText size={14} className="mr-1" /> Terms & Conditions
-   </span>
- </Link>
+        <div className="mt-8 md:mt-12 border-t border-border pt-6 md:pt-8 w-full">
+          <div className="flex flex-col items-center gap-2 w-full sm:flex-row sm:justify-center sm:gap-4 mb-2">
+            <Link
+              href="/terms-and-conditions"
+              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
+            >
+              <span className="flex items-center justify-center w-full">
+                <FileText size={14} className="mr-1" /> Terms & Conditions
+              </span>
+            </Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
- <Link
-   href="/privacy-policy"
-   className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
- >
-   <span>
-     <ShieldAlert size={14} className="mr-1" /> Privacy Policy
-   </span>
- </Link>
- </div>
-          <p className="text-xs sm:text-sm text-muted-foreground">
-            &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
-          </p>
+            <Link
+              href="/privacy-policy"
+              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
+            >
+              <span className="flex items-center justify-center w-full">
+                <ShieldAlert size={14} className="mr-1" /> Privacy Policy
+              </span>
+            </Link>
+          </div>
+          <div className="flex flex-col items-center gap-1 w-full">
+            <p className="text-xs sm:text-sm text-muted-foreground text-center break-words w-full">
+              &copy; {currentYear} Evangelism, Discipleship, Missions (EDM). All rights reserved.
+            </p>
+            <p className="text-xs text-muted-foreground text-center break-words w-full">
+              EDM is a registered 501(c)(3) non-profit organization.
+            </p>
+          </div>
         </div>
       </div>
     </footer>

@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Send, User, Briefcase, CalendarDays, PhoneIcon, MailIcon, ShieldQuestion } from 'lucide-react'; 
+import { Send, User, Briefcase, CalendarDays, PhoneIcon, MailIcon, ShieldQuestion, CheckCircle } from 'lucide-react'; 
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
@@ -56,6 +55,7 @@ type VolunteerFormValues = z.infer<typeof volunteerFormSchema>;
 export default function VolunteerSignupForm() {
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
   const form = useForm<VolunteerFormValues>({
     resolver: zodResolver(volunteerFormSchema),
     defaultValues: {
@@ -70,16 +70,48 @@ export default function VolunteerSignupForm() {
 
   const onSubmit = async (data: VolunteerFormValues) => {
     setIsSubmitting(true);
-    console.log('Volunteer signup data:', data);
-    // Simulate form submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    toast({
-      title: 'Volunteer Interest Submitted!',
-      description: 'Thank you for your interest in volunteering with EDM. We will be in touch soon.',
-    });
-    form.reset();
+    try {
+      const res = await fetch('/api/volunteer', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error('Failed to submit');
+      setSubmitted(true);
+      toast({
+        title: 'Volunteer Interest Submitted!',
+        description: 'Thank you for your interest in volunteering with EDM. We will be in touch soon.',
+      });
+      form.reset();
+    } catch (err) {
+      toast({
+        title: 'Error',
+        description: 'Failed to submit volunteer form. Please try again later.',
+        variant: 'destructive',
+      });
+    }
     setIsSubmitting(false);
   };
+
+  if (submitted) {
+    return (
+      <Card className="w-full shadow-xl border-primary/20 text-center py-12 px-6">
+        <CheckCircle className="mx-auto text-green-600 mb-4" size={48} />
+        <h2 className="text-2xl font-bold mb-2 text-primary">Thank you for volunteering!</h2>
+        <p className="text-lg mb-4 text-gray-700">
+          Your interest in serving with <span className="font-semibold">Evangelical Diaspora Mission</span> has been received.<br />
+          Our team will review your submission and reach out to you soon.<br />
+          We appreciate your willingness to make a difference!
+        </p>
+        <div className="text-sm text-gray-500 mb-2">
+          If you have questions, please contact us at <a href="mailto:info@edm-sl.org" className="text-blue-600 underline">info@edm-sl.org</a>.
+        </div>
+        <div className="mt-6">
+          <Button onClick={() => setSubmitted(false)} variant="outline">Submit Another Response</Button>
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Form {...form}>

@@ -15,6 +15,7 @@ import {
   Phone,
   User,
   LucideProps,
+  ChevronDown,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -43,7 +44,7 @@ import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import { cn } from "@/lib/utils";
 
 // ListItem Component
-interface ListItemProps {
+interface ListItemProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   className?: string;
   title: string;
   children: React.ReactNode;
@@ -54,22 +55,20 @@ const ListItem = React.forwardRef<React.ElementRef<typeof Link>, ListItemProps>(
   ({ className, title, children, href, ...props }, ref) => {
     return (
       <li>
-        <NavigationMenuLink asChild>
-          <Link
-            ref={ref}
-            href={href}
-            className={cn(
-              "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary",
-              className
-            )}
-            {...props}
-          >
-            <div className="text-sm font-medium leading-none">{title}</div>
-            <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-              {children}
-            </p>
-          </Link>
-        </NavigationMenuLink>
+        <Link
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-popover-foreground bg-popover border border-dashed border-primary", // force visible text and border
+            className
+          )}
+          href={href}
+          {...props}
+        >
+          <span>
+            <div className="text-sm font-medium leading-none text-popover-foreground">{title}</div>
+            <p className="line-clamp-2 text-sm leading-snug text-popover-foreground">{children}</p>
+          </span>
+        </Link>
       </li>
     );
   }
@@ -106,58 +105,58 @@ const mainNavItems: NavItem[] = [
     title: "About",
     icon: Info,
     links: [
-      { href: "/about", title: "Our Story & Foundations", description: "EDM's history, beliefs, and structure in Sierra Leone and Oregon." },
-      { href: "/about/what-we-believe", title: "What We Believe", description: "Our core doctrinal statements." },
-      { href: "/events", title: "Events", description: "Upcoming and past events organized by EDM." },
-      { href: "/international-board", title: "International Board", description: "Meet our leadership team for Sierra Leone and Oregon." },
+      { href: "/about", title: "Our Story", description: "EDM's history, beliefs, and structure." },
+      { href: "/about/what-we-believe", title: "Beliefs", description: "Our core doctrinal statements." },
+      { href: "/events", title: "Events", description: "Upcoming and past events." },
+      { href: "/international-board", title: "Board", description: "Meet our leadership team." },
     ],
   },
   {
     title: "The Mission",
     icon: Target,
     href: "/the-mission",
-    description: "Our overall mission, vision, and goals for Sierra Leone and Oregon.",
+    description: "Our mission, vision, and goals.",
   },
   {
     title: "Ministries",
     icon: HeartHandshake,
     links: [
-      { href: "/ministries", title: "Ministries Overview", description: "Explore all EDM ministry areas." },
-      { href: "/ministries/evangelism", title: "Evangelism", description: "Sharing the Gospel through various outreaches in Sierra Leone." },
-      { href: "/ministries/discipleship", title: "Discipleship", description: "Training believers to become strong and mature in their faith." },
-      { href: "/ministries/education", title: "Education", description: "Providing quality education to children." },
-      { href: "/ministries/missions-outreach", title: "Missions Outreach", description: "Local and international mission efforts." },
+      { href: "/ministries", title: "Overview", description: "Explore all ministries." },
+      { href: "/ministries/evangelism", title: "Evangelism", description: "Sharing the Gospel." },
+      { href: "/ministries/discipleship", title: "Discipleship", description: "Training believers." },
+      { href: "/ministries/education", title: "Education", description: "Quality education." },
+      { href: "/ministries/missions-outreach", title: "Outreach", description: "Mission efforts." },
     ],
   },
   {
     title: "Get Involved",
     icon: Users,
     links: [
-      { href: "/get-involved", title: "Get Involved Overview", description: "Discover ways to contribute to EDM." },
-      { href: "/get-involved/volunteer", title: "Volunteer", description: "Offer your time and skills to support our work." },
-      { href: "/get-involved/partner", title: "Partner", description: "Learn about partnership opportunities with individuals, churches, and organizations." },
-      { href: "/get-involved/prayer", title: "Prayer", description: "Join us in prayer for our ministry and the people of Sierra Leone." },
+      { href: "/get-involved", title: "Overview", description: "Ways to contribute." },
+      { href: "/get-involved/volunteer", title: "Volunteer", description: "Offer your time and skills." },
+      { href: "/get-involved/partner", title: "Partner", description: "Partnership opportunities." },
+      { href: "/get-involved/prayer", title: "Prayer", description: "Join us in prayer." },
     ],
   },
   {
     title: "Donate",
     icon: DollarSign,
     href: "/donate",
-    description: "Support our work financially in Sierra Leone and Oregon.",
+    description: "Support our work.",
   },
   {
     title: "News & Media",
     icon: Newspaper,
     links: [
-      { href: "/news", title: "News & Updates", description: "Latest articles, reports, and testimonies from Sierra Leone." },
-      { href: "/gallery", title: "Media Gallery", description: "View photos and videos from our events and ministries." },
+      { href: "/news", title: "News", description: "Latest articles and reports." },
+      { href: "/gallery", title: "Gallery", description: "Photos and videos." },
     ],
   },
   {
     title: "Contact",
     icon: Phone,
     href: "/contact",
-    description: "Reach out to EDM teams in Sierra Leone or Oregon.",
+    description: "Reach out to EDM.",
   },
 ];
 
@@ -165,6 +164,8 @@ export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, signOutAuth, loading } = useAuth();
   const [isClient, setIsClient] = useState(false);
+  const [openMenu, setOpenMenu] = useState<number | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<number | null>(null);
   const typedUser = user as AuthUserType | null;
 
   const getInitials = (name?: string | null, email?: string | null) => {
@@ -175,75 +176,86 @@ export default function Navbar() {
     return email?.[0].toUpperCase() || "U";
   };
 
+  const toggleMenu = (idx: number) => {
+    setOpenMenu((prev) => (prev === idx ? null : idx));
+  };
+
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   return (
-    <header className="bg-white shadow sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-        <Link href="/" className="flex items-center gap-2">
-          <span className="flex items-center gap-2">
-            <div className="h-8 w-8 md:h-10 md:w-10 relative">
-              <Image
-                src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
-                alt="EDM Logo"
-                fill
-                className="object-contain"
-              />
-            </div>
-            <span className="text-xl font-bold">EDM</span>
-          </span>
+    <header className="bg-background shadow sticky top-0 z-50 transition-colors">
+      <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+        {/* Logo + EDM text always together */}
+        <Link href="/" className="flex items-center gap-2 min-w-max">
+          <div className="h-8 w-8 md:h-10 md:w-10 relative">
+            <Image
+              src="https://code-alpha-image-gallary.vercel.app/edm-logo.png"
+              alt="EDM Logo"
+              fill
+              sizes="(max-width: 768px) 32px, 40px"
+              className="object-contain"
+            />
+          </div>
+          <span className="text-xl font-bold ml-1 md:ml-2">EDM</span>
         </Link>
 
-        {/* Desktop Nav */}
-        <div className="hidden lg:flex flex-1 justify-center">
-          <NavigationMenu>
-            <NavigationMenuList className="flex items-center gap-1">
-              {mainNavItems.map((item) =>
-                item.links ? (
-                  <NavigationMenuItem key={item.title}>
-                    <NavigationMenuTrigger className="h-10 px-4 hover:bg-primary/10 hover:text-primary data-[state=open]:bg-primary/10 data-[state=open]:text-primary">
-                      <div className="flex items-center gap-1">
-                        {isClient && item.icon && <item.icon size={16} />}
-                        {item.title}
-                      </div>
-                    </NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <div className="w-[400px] lg:w-[500px] bg-white p-4 rounded-md border shadow-lg">
-                        <ul className="grid gap-3 md:grid-cols-2">
-                          {item.links.map((link) => (
-                            <ListItem
-                              key={link.title}
-                              title={link.title}
+        {/* Desktop Nav - Improved Spacing and Alignment */}
+        <nav className="hidden lg:flex flex-1 items-center justify-center gap-2">
+          {mainNavItems.map((item, i) => (
+            <div
+              key={i}
+              className="relative"
+              onMouseEnter={() => setOpenDropdown(i)}
+              onMouseLeave={() => setOpenDropdown(null)}
+            >
+              {item.links ? (
+                <>
+                  <button
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground transition-colors"
+                    type="button"
+                    tabIndex={0}
+                    aria-expanded={openDropdown === i}
+                  >
+                    {item.icon && <item.icon size={16} className="inline-block" />}
+                    <span>{item.title}</span>
+                    <svg className="ml-1 w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+                  </button>
+                  {openDropdown === i && (
+                    <div className="absolute left-1/2 -translate-x-1/2 top-full w-72 bg-popover text-popover-foreground rounded-lg shadow-lg border border-border transition-all z-50">
+                      <ul className="py-2">
+                        {item.links.map((link) => (
+                          <li key={link.href}>
+                            <Link
                               href={link.href}
+                              className="block px-4 py-3 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                              onClick={() => setOpenDropdown(null)}
                             >
-                              {link.description}
-                            </ListItem>
-                          ))}
-                        </ul>
-                      </div>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                ) : (
-                  <NavigationMenuItem key={item.title}>
-                    <NavigationMenuLink asChild>
-                      <Link href={item.href || "#"} className={cn(navigationMenuTriggerStyle(), "h-10 px-4 hover:bg-primary/10 hover:text-primary")}>
-                        <div className="flex items-center gap-1">
-                          {isClient && item.icon && <item.icon size={16} />}
-                          {item.title}
-                        </div>
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                )
+                              <div className="font-semibold">{link.title}</div>
+                              <div className="text-sm text-muted-foreground">{link.description}</div>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              ) : (
+                <Link
+                  href={item.href || '#'}
+                  className="px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+                >
+                  {item.icon && <item.icon size={16} className="inline-block mr-1" />}
+                  {item.title}
+                </Link>
               )}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
+            </div>
+          ))}
+        </nav>
 
-        {/* Desktop Auth Buttons */}
-        <div className="hidden lg:flex items-center gap-2">
+        {/* Desktop Auth Buttons/User */}
+        <div className="hidden lg:flex items-center gap-2 min-w-max">
           {!loading && typedUser ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -320,22 +332,61 @@ export default function Navbar() {
             <SheetContent side="left" className="w-64 overflow-y-auto sm:max-w-sm">
               <SheetHeader className="mb-6">
                 <SheetTitle>
-                  <Link
-                    href="/"
-                    className="flex items-center gap-2"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    <span className="flex items-center gap-2">
-                      <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
-                      <span className="text-lg font-bold">EDM</span>
-                    </span>
+                  <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+                    <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
+                    <span className="text-lg font-bold">EDM</span>
                   </Link>
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-4">
                 {mainNavItems.map((item: NavItem, i) => (
                   <div key={i}>
-                    {item.href ? (
+                    {item.links ? (
+                      <>
+                        <button
+                          className="flex items-center gap-2 text-lg font-semibold mb-2 w-full justify-between focus:outline-none"
+                          onClick={() => toggleMenu(i)}
+                          aria-expanded={openMenu === i}
+                        >
+                          <span className="flex items-center gap-2">
+                            {isClient && item.icon && <item.icon size={16} />}
+                            {item.title}
+                          </span>
+                          <ChevronDown className={`transition-transform ${openMenu === i ? "rotate-180" : "rotate-0"}`} size={18} />
+                        </button>
+                        {openMenu === i && (
+                          <ul className="ml-4 space-y-2 border-l pl-4">
+                            {item.links.map((link, j) => (
+                              <div key={j}>
+                                <Link
+                                  href={link.href}
+                                  className="text-base font-medium hover:text-primary transition-colors"
+                                  onClick={() => setMobileMenuOpen(false)}
+                                >
+                                  {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
+                                  {link.title}
+                                </Link>
+                                {link.links && (
+                                  <ul className="ml-4 space-y-2 border-l pl-4 mt-2">
+                                    {link.links.map((subLink, k) => (
+                                      <li key={k}>
+                                        <Link
+                                          href={subLink.href}
+                                          className="text-sm hover:text-primary transition-colors"
+                                          onClick={() => setMobileMenuOpen(false)}
+                                        >
+                                          {subLink.title}
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            ))}
+                          </ul>
+                        )}
+                      </>
+                    ) : item.href ? (
                       <Link
                         href={item.href}
                         className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
@@ -346,45 +397,7 @@ export default function Navbar() {
                           {item.title}
                         </span>
                       </Link>
-                    ) : (
-                      <>
-                        <h3 className="flex items-center gap-2 text-lg font-semibold mb-2">
-                          {isClient && item.icon && <item.icon size={16} />}
-                          {item.title}
-                        </h3>
-                        <ul className="ml-4 space-y-2 border-l pl-4">
-                          {item.links && item.links.map((link, j) => (
-                            <div key={j}>
-                              <Link
-                                href={link.href}
-                                className="text-base font-medium hover:text-primary transition-colors"
-                                onClick={() => setMobileMenuOpen(false)}
-                              >
-                                <span className="flex items-center">
-                                  {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
-                                  {link.title}
-                                </span>
-                              </Link>
-                              {link.links && (
-                                <ul className="ml-4 space-y-2 border-l pl-4 mt-2">
-                                  {link.links.map((subLink, k) => (
-                                    <li key={k}>
-                                      <Link
-                                        href={subLink.href}
-                                        className="text-sm hover:text-primary transition-colors"
-                                        onClick={() => setMobileMenuOpen(false)}
-                                      >
-                                        {subLink.title}
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ))}
-                        </ul>
-                      </>
-                    )}
+                    ) : null}
                   </div>
                 ))}
               </nav>

@@ -26,7 +26,7 @@ model User {
   auditLogs                AuditLog[]
   blogPosts                BlogPost[]
   newsArticles             NewsArticle[]
-  Notification             Notification[]
+  notifications            Notification[]
   sessions                 Session[]
 }
 
@@ -67,24 +67,19 @@ model Event {
   imageUrl           String?
   isVirtual          Boolean             @default(false)
   onlineLink         String?
-  cancelled          Boolean             @default(false)
   eventRegistrations EventRegistration[]
-
-  @@index([date, cancelled])
 }
 
 model EventRegistration {
-  id        String             @id @default(uuid()) @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   name      String
   email     String
-  eventId   String             @db.Uuid
-  createdAt DateTime           @default(now())
-  updatedAt DateTime           @updatedAt
-  status    RegistrationStatus @default(CONFIRMED)
-  event     Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId   String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
-  @@index([status])
 }
 
 model AuditLog {
@@ -135,7 +130,7 @@ model PrayerRequest {
   updatedAt   DateTime    @updatedAt
   published   Boolean     @default(true)
   category    String?
-  PrayerLog   PrayerLog[]
+  prayerLogs  PrayerLog[]
 }
 
 model News {
@@ -165,27 +160,18 @@ model Media {
   meta      Json?
 }
 
-model Notification {
-  id        String   @id @db.Uuid
-  userId    String   @db.Uuid
-  message   String
-  createdAt DateTime @default(now())
-  read      Boolean  @default(false)
-  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
 model PrayerLog {
-  id              String        @id
+  id              String        @id @default(uuid())
   prayerRequestId String        @db.Uuid
   prayedByUserId  String?
   prayedByIp      String?
   prayerText      String?
   createdAt       DateTime      @default(now())
-  PrayerRequest   PrayerRequest @relation(fields: [prayerRequestId], references: [id], onDelete: Cascade)
+  prayerRequest   PrayerRequest @relation(fields: [prayerRequestId], references: [id], onDelete: Cascade)
 }
 
 model Testimonial {
-  id        String   @id @db.Uuid
+  id        String   @id @default(uuid()) @db.Uuid
   name      String
   message   String
   createdAt DateTime @default(now())
@@ -193,7 +179,7 @@ model Testimonial {
 }
 
 model Volunteer {
-  id              String   @id @db.Uuid
+  id              String   @id @default(uuid()) @db.Uuid
   name            String
   email           String
   phone           String?
@@ -203,16 +189,19 @@ model Volunteer {
   createdAt       DateTime @default(now())
 }
 
+model Notification {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @db.Uuid
+  message   String
+  createdAt DateTime @default(now())
+  read      Boolean  @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
 enum UserRole {
   SUPER_ADMIN
   ADMIN
   EDITOR
   VIEWER
   USER
-}
-
-enum RegistrationStatus {
-  PENDING
-  CONFIRMED
-  CANCELLED
 }

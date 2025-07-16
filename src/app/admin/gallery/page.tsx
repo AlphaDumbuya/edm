@@ -1,9 +1,12 @@
 "use client";
 import { useEffect, useState } from 'react';
+import { RotateCw } from 'lucide-react';
 import GalleryAdminForm from './upload-form';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogHeader, DialogTitle, DialogDescription, DialogClose } from '@/components/ui/dialog';
+import { DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import RestrictedButton from '@/components/admin/RestrictedButton';
 
 // Define the MediaItem type
 interface MediaItem {
@@ -23,6 +26,9 @@ interface MediaItem {
 }
 
 export default function AdminGalleryPage() {
+  const { data: session, status } = useSession();
+  const role = session?.user?.role || "VIEWER";
+
   const [media, setMedia] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -49,16 +55,7 @@ export default function AdminGalleryPage() {
       setLoading(false);
     }
   };
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await fetchMedia();
-    setIsRefreshing(false);
-  };
-
-  useEffect(() => {
-    fetchMedia();
-  }, []);
+  useEffect(() => { fetchMedia(); }, []);
 
   // Get unique categories and events for dropdowns
   const categories = Array.from(new Set(media.map(m => m.category).filter(Boolean)));
@@ -73,159 +70,195 @@ export default function AdminGalleryPage() {
     return true;
   });
 
+  // Pagination logic
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 12;
+  const totalPages = Math.ceil(filteredMedia.length / itemsPerPage);
+  const paginatedMedia = filteredMedia.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
   return (
-    <div className="space-y-8 max-w-5xl mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Gallery Management</h1>
-      <div className="bg-card p-6 rounded-lg shadow-md mb-8">
+    <div className="w-full max-w-7xl mx-auto px-2 sm:px-6 py-4 sm:py-8 flex flex-col gap-6">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between gap-2 w-full">
+        <h1 className="text-xl sm:text-3xl font-bold w-full sm:w-auto text-left mt-4 mb-2">Gallery Management</h1>
+        <div className="flex w-full sm:w-auto justify-end">
+          <button
+            className="flex items-center gap-1 px-1.5 py-0.5 sm:px-4 sm:py-2 bg-gray-800 text-gray-100 rounded hover:bg-gray-700 border border-gray-700 transition font-medium shadow w-auto justify-center text-[10px] whitespace-nowrap"
+            onClick={fetchMedia}
+            title="Refresh gallery list"
+            disabled={loading}
+          >
+            <RotateCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            Refresh
+          </button>
+        </div>
+      </div>
+      {/* Upload Form */}
+      <div className="bg-gray-900 text-gray-100 p-3 sm:p-6 rounded-lg shadow-md border border-gray-700">
         <GalleryAdminForm />
       </div>
-      <div>
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Current Gallery Media</h2>
-          <Button
-            onClick={handleRefresh}
-            disabled={isRefreshing}
-            variant="outline"
-            size="sm"
-            className="flex items-center gap-2"
-          >
-            <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-            {isRefreshing ? 'Refreshing...' : 'Refresh'}
-          </Button>
+      {/* Filters and Media */}
+      <div className="flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4 w-full">
+          <div className="grid grid-cols-2 gap-2 w-full sm:flex sm:flex-row sm:gap-4">
+            <select className="border border-gray-700 bg-gray-900 text-gray-100 rounded px-2 py-1 text-xs sm:text-sm w-full" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
+              <option value="all">All Types</option>
+              <option value="photo">Photo</option>
+              <option value="video">Video</option>
+            </select>
+            <select className="border border-gray-700 bg-gray-900 text-gray-100 rounded px-2 py-1 text-xs sm:text-sm w-full" value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
+              <option value="all">All Categories</option>
+              {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+            </select>
+            <select className="border border-gray-700 bg-gray-900 text-gray-100 rounded px-2 py-1 text-xs sm:text-sm w-full" value={eventFilter} onChange={e => setEventFilter(e.target.value)}>
+              <option value="all">All Events</option>
+              {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
+            </select>
+            <select className="border border-gray-700 bg-gray-900 text-gray-100 rounded px-2 py-1 text-xs sm:text-sm w-full" value={visibilityFilter} onChange={e => setVisibilityFilter(e.target.value)}>
+              <option value="all">All Visibility</option>
+              <option value="visible">Visible</option>
+              <option value="hidden">Hidden</option>
+            </select>
+          </div>
         </div>
-        {/* Filter Controls */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          <select className="border rounded px-3 py-2" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
-            <option value="all">All Types</option>
-            <option value="photo">Photo</option>
-            <option value="video">Video</option>
-          </select>
-          <select className="border rounded px-3 py-2" value={categoryFilter} onChange={e => setCategoryFilter(e.target.value)}>
-            <option value="all">All Categories</option>
-            {categories.map(cat => <option key={cat} value={cat}>{cat}</option>)}
-          </select>
-          <select className="border rounded px-3 py-2" value={eventFilter} onChange={e => setEventFilter(e.target.value)}>
-            <option value="all">All Events</option>
-            {events.map(ev => <option key={ev} value={ev}>{ev}</option>)}
-          </select>
-          <select className="border rounded px-3 py-2" value={visibilityFilter} onChange={e => setVisibilityFilter(e.target.value)}>
-            <option value="all">All Visibility</option>
-            <option value="visible">Visible</option>
-            <option value="hidden">Hidden</option>
-          </select>
-        </div>
-        {loading ? (
-          <div className="text-center text-muted-foreground">Loading...</div>
-        ) : error ? (
-          <div className="text-center text-red-500">{error}</div>
-        ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredMedia.length === 0 && <p className="col-span-full text-muted-foreground text-center">No media found for selected filters.</p>}
-            {filteredMedia.map(item => (
-              <div key={item.id} className="rounded-lg bg-white dark:bg-gray-900 shadow-lg border hover:shadow-xl transition-shadow flex flex-col overflow-hidden">
-                {item.type === 'photo' && item.imageUrl && (
-                  <img src={item.imageUrl} alt={item.title} className="w-full h-48 object-cover" />
-                )}
-                {item.type === 'video' && item.videoUrl && (
-                  <div className="w-full h-48 bg-black flex items-center justify-center relative group">
-                    {/* Show YouTube thumbnail if possible */}
-                    {(() => {
-                      let youtubeId = '';
-                      if (item.videoUrl.includes('youtube.com/embed/')) {
-                        youtubeId = item.videoUrl.split('embed/')[1]?.split('?')[0];
-                      } else if (item.videoUrl.includes('youtu.be/')) {
-                        youtubeId = item.videoUrl.split('youtu.be/')[1]?.split('?')[0];
-                      } else if (item.videoUrl.includes('youtube.com')) {
-                        youtubeId = item.videoUrl.split('v=')[1]?.split('&')[0];
-                      }
-
-                      return youtubeId ? (
+        <div className="w-full">
+          {loading ? (
+            <div className="text-center text-gray-400">Loading...</div>
+          ) : error ? (
+            <div className="text-center text-red-400">{error}</div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full">
+              {paginatedMedia.length === 0 && <p className="col-span-full text-gray-400 text-center">No media found for selected filters.</p>}
+              {paginatedMedia.map(item => (
+                <div key={item.id} className="rounded-lg bg-gray-900 text-gray-100 shadow-lg border border-gray-700 hover:shadow-xl transition-shadow flex flex-col overflow-hidden w-full max-w-full sm:max-w-[300px] md:max-w-[300px] mx-auto">
+                  {/* Media Preview */}
+                  {item.type === 'photo' && item.imageUrl && (
+                    <div className="w-full aspect-[4/3] bg-black flex items-center justify-center">
+                      <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover rounded-t-lg" />
+                    </div>
+                  )}
+                  {item.type === 'video' && item.videoUrl && (
+                    <div className="w-full aspect-[4/3] bg-black flex items-center justify-center group relative">
+                      {/* Show YouTube thumbnail by default, play video on hover */}
+                      {item.videoUrl.includes('youtube') ? (
                         <>
                           <img
-                            src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${item.videoUrl.split('v=')[1]?.split('&')[0]}/hqdefault.jpg`}
                             alt={item.title}
-                            className="w-full h-full object-cover transition-opacity duration-200"
+                            className="w-full h-full object-cover absolute inset-0 transition-opacity duration-200 group-hover:opacity-0"
                           />
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
-                            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 16 16">
-                              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                              <path d="M6.271 5.055a.5.5 0 0 1 .52.038l3.5 2.5a.5.5 0 0 1 0 .814l-3.5 2.5A.5.5 0 0 1 6 10.5v-5a.5.5 0 0 1 .271-.445z"/>
-                            </svg>
-                          </div>
+                          <iframe
+                            src={`https://www.youtube.com/embed/${item.videoUrl.split('v=')[1]?.split('&')[0]}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1`}
+                            title={item.title}
+                            className="w-full h-full min-h-[200px] sm:min-h-[300px] md:min-h-[350px] absolute inset-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200"
+                            allow="autoplay; encrypted-media"
+                            allowFullScreen
+                          />
                         </>
                       ) : (
-                        <iframe src={item.videoUrl} title={item.title} className="w-full h-full" allowFullScreen />
-                      );
-                    })()}
-                  </div>
-                )}
-                <div className="p-4 flex-1 flex flex-col justify-between">
-                  <div>
-                    <div className="font-semibold text-base mb-1 truncate" title={item.title}>
-                      {item.title}
+                        <video
+                          src={item.videoUrl}
+                          className="w-full h-full object-cover absolute inset-0 transition-opacity duration-200 group-hover:opacity-100 opacity-0"
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          onMouseOver={(e: React.MouseEvent<HTMLVideoElement>) => (e.currentTarget as HTMLVideoElement).play()}
+                          onMouseOut={(e: React.MouseEvent<HTMLVideoElement>) => (e.currentTarget as HTMLVideoElement).pause()}
+                        />
+                      )}
+                      {/* Video icon overlay */}
+                      <div className="absolute top-2 right-2 bg-black/60 rounded-full p-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white opacity-80">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-7.5A2.25 2.25 0 003.75 5.25v13.5A2.25 2.25 0 006 21h7.5a2.25 2.25 0 002.25-2.25V15m3-6v6m0 0l-3-3m3 3l-3 3" />
+                        </svg>
+                      </div>
                     </div>
-                    <div className="text-xs text-muted-foreground mb-2">
-                      {item.date ? new Date(item.date).toLocaleDateString() : ''}
+                  )}
+                  {/* Card Content */}
+                  <div className="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+                    <div>
+                      <div className="font-semibold text-xs sm:text-base mb-1 truncate" title={item.title}>
+                        {item.title}
+                      </div>
+                      <div className="text-xs text-gray-400 mb-2">
+                        {item.date ? new Date(item.date).toLocaleDateString() : ''}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex gap-2 mt-2">
-                    <button
-                      className={`px-3 py-1 rounded text-xs font-semibold ${item.published ? 'bg-green-100 text-green-700 hover:bg-green-200' : 'bg-gray-200 text-gray-600 hover:bg-gray-300'}`}
-                      onClick={async () => {
-                        await fetch('/api/admin/gallery', {
-                          method: 'PATCH',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ id: item.id, published: !item.published }),
-                        });
-                        setMedia(m => m.map(med => med.id === item.id ? { ...med, published: !med.published } : med));
-                      }}
-                    >
-                      {item.published ? 'Unpublish' : 'Publish'}
-                    </button>
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="destructive" size="sm" onClick={() => setDeleteId(item.id)}>
-                          Delete
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Delete Media</DialogTitle>
-                          <DialogDescription>
-                            Are you sure you want to delete <span className="font-semibold">{item.title}</span>? This action cannot be undone.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <div className="flex justify-end gap-2 mt-6">
-                          <DialogClose asChild>
-                            <Button variant="outline" size="sm">Cancel</Button>
-                          </DialogClose>
-                          <Button
-                            variant="destructive"
-                            size="sm"
-                            disabled={deleting}
-                            onClick={async () => {
-                              setDeleting(true);
-                              await fetch('/api/admin/gallery', {
-                                method: 'DELETE',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({ id: item.id }),
-                              });
-                              setMedia(m => m.filter(med => med.id !== item.id));
-                              setDeleting(false);
-                              setDeleteId(null);
-                            }}
-                          >
-                            {deleting && deleteId === item.id ? 'Deleting...' : 'Delete'}
-                          </Button>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    <div className="flex flex-row gap-2 mt-2 items-center">
+                      <button
+                        className={`px-2 py-1 rounded font-bold text-xs shadow focus:outline-none focus:ring-2 transition-colors
+                          ${item.published
+                            ? 'bg-green-200 hover:bg-green-300 text-green-900 focus:ring-green-300'
+                            : 'bg-gray-200 hover:bg-gray-300 text-gray-900 focus:ring-gray-300'}
+                        `}
+                        title={item.published ? 'Unpublish' : 'Publish'}
+                        onClick={async () => {
+                          try {
+                            const res = await fetch(`/api/admin/gallery/${item.id}/publish`, {
+                              method: 'PATCH',
+                              headers: { 'Content-Type': 'application/json' },
+                              body: JSON.stringify({ published: !item.published })
+                            });
+                            if (!res.ok) throw new Error('Failed to update publish state');
+                            setMedia(prev => prev.map(m => m.id === item.id ? { ...m, published: !m.published } : m));
+                          } catch (err) {
+                            alert('Failed to update publish state');
+                          }
+                        }}
+                      >
+                        {item.published ? 'Unpublish' : 'Publish'}
+                      </button>
+                      <button
+                        className={`px-2 py-1 rounded bg-red-500 hover:bg-red-600 text-white font-bold text-xs shadow focus:outline-none focus:ring-2 focus:ring-red-400 ${deleting && deleteId === item.id ? 'opacity-50 cursor-not-allowed' : ''}`}
+                        title="Delete Media"
+                        onClick={async () => {
+                          if (deleting) return;
+                          setDeleteId(item.id);
+                          setDeleting(true);
+                          try {
+                            const res = await fetch(`/api/admin/gallery/${item.id}`, {
+                              method: 'DELETE',
+                            });
+                            if (!res.ok) throw new Error('Failed to delete media');
+                            setMedia(prev => prev.filter(m => m.id !== item.id));
+                          } catch (err) {
+                            alert('Failed to delete media');
+                          } finally {
+                            setDeleting(false);
+                            setDeleteId(null);
+                          }
+                        }}
+                      >
+                        {deleting && deleteId === item.id ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </div>
                   </div>
                 </div>
+              ))}
+            </div>
+          )}
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+              <div className="flex justify-center items-center gap-2 mt-6">
+                <button
+                  className="px-3 py-1 rounded bg-gray-200 text-gray-900 font-bold border border-gray-400 hover:bg-white disabled:opacity-50"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                >
+                  Previous
+                </button>
+                <span className="text-gray-100 font-semibold">Page {currentPage} of {totalPages}</span>
+                <button
+                  className="px-3 py-1 rounded bg-gray-200 text-gray-900 font-bold border border-gray-400 hover:bg-white disabled:opacity-50"
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                >
+                  Next
+                </button>
               </div>
-            ))}
+            )}
           </div>
-        )}
       </div>
     </div>
   );

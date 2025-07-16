@@ -58,7 +58,7 @@ export default function MediaItem({ item }: MediaItemProps) {
     <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <div className="relative w-full h-56 cursor-pointer group">
+          <div className="relative w-full aspect-square sm:aspect-video cursor-pointer group">
             {/* Show image for photos, or YouTube thumbnail for videos */}
             {item.type === 'photo' && item.imageUrl && (
               <Image
@@ -77,13 +77,13 @@ export default function MediaItem({ item }: MediaItemProps) {
                     src={`https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`}
                     alt={item.title}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105 bg-black"
+                    className="object-cover w-full h-full transition-transform duration-300 group-hover:scale-105 bg-black rounded-t"
                   />
                 ) : (
                   // Fallback: show a dark background with play icon
-                  <div className="absolute inset-0 bg-black flex items-center justify-center" />
+                  <div className="absolute inset-0 bg-black flex items-center justify-center w-full h-full rounded-t" />
                 )}
-                <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/30 w-full h-full rounded-t">
                   <PlayCircle className="h-16 w-16 text-white/80 group-hover:text-white transition-colors" />
                 </div>
               </>

@@ -3,7 +3,7 @@ import React from "react";
 export default function AdminFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className="w-full bg-gray-900 text-gray-200 border-t border-gray-800 py-4 px-6 flex flex-col md:flex-row items-center justify-between mt-auto">
+    <footer className="w-full bg-gray-900 text-gray-200 border-t border-gray-800 py-4 px-2 sm:px-6 flex flex-col md:flex-row items-center justify-between mt-auto">
       <div className="text-xs md:text-sm">
         <span className="font-semibold text-primary">EDM Admin Panel</span> &mdash; &copy; {year} Evangelism, Discipleship, Missions
       </div>

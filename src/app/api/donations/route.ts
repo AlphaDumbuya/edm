@@ -17,6 +17,21 @@ export async function POST(req: NextRequest) {
         campaign,
       },
     });
+    // Fetch all admin and super admin users
+    const admins = await prisma.user.findMany({
+      where: {
+        role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+      }
+    });
+    // Create notification for each admin
+    await Promise.all(admins.map(admin =>
+      prisma.notification.create({
+        data: {
+          userId: admin.id,
+          message: `New donation: ${donorName || 'Anonymous'} donated $${amount} via ${paymentMethod}${campaign ? ' to ' + campaign : ''}`,
+        },
+      })
+    ));
     return NextResponse.json({ success: true, donation });
   } catch (error) {
     console.error('Error saving donation:', error);
