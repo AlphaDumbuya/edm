@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import PageHeader from '@/components/shared/page-header';
+import PayPalButton from '@/components/donate/PayPalButton';
 
 export default function DonatePage() {
   const payPalHostedButtonId = "QQJUCWAXAX3JE";
@@ -97,7 +98,8 @@ export default function DonatePage() {
             <h3 className="text-base sm:text-lg md:text-xl font-semibold text-foreground border-b pb-2 flex items-center">
               <CreditCard className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Donate with PayPal
             </h3>
-            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">You can also support EDM's mission by donating via PayPal.</p>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-4">You can also support EDM's mission by donating via PayPal.</p>
+            <PayPalButton />
           </div>
 
           <div>

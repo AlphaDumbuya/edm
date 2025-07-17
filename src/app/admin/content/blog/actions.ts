@@ -36,8 +36,25 @@ export async function createBlogPostAction(formData: FormData) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ title, slug, content, published, imageUrl, authorId }),
   });
+
   if (!res.ok) {
     const error = await res.json();
     throw new Error(error.error || "Failed to create blog post");
+  }
+
+  // Create audit log entry
+  await createAuditLogEntry({
+    action: 'CREATE',
+    entityType: 'BLOG_POST',
+    entityId: slug,
+    details: `Created blog post: ${title}`,
+  });
+
+  revalidatePath('/admin/content/blog');
+  revalidatePath('/blog');
+  return { success: true };
+  } catch (error: any) {
+    console.error('Error creating blog post:', error);
+    throw new Error(error.message || 'Failed to create blog post');
   }
 }

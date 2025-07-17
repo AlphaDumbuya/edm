@@ -102,9 +102,6 @@ export default function TheMissionPage() {
             {/* The map will show key locations including EDM Marifa School and areas of future focus */}
  <MissionsMapClient mapId={''} />
           </CardContent>
-           <CardFooter className="p-2 sm:p-3 md:p-4 pt-2 sm:pt-3">
-            <p className="text-[10px] sm:text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations including EDM Marifa School and areas of future focus.</p>
-           </CardFooter>
         </Card>
       </section>
       <section>

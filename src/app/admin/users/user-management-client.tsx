@@ -2,7 +2,7 @@
 
 import { AppUser } from '@/lib/db/users';
 import { getAllUsersAction } from './actions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Table,
   TableBody,
@@ -61,26 +61,31 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({
   }, []);
 
   // Fetch users when search, filter, or page changes
-  useEffect(() => {
-    if (!mounted) return;
-    const fetchUsers = async () => {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (searchQuery) params.set('search', searchQuery);
-      if (roleFilter && roleFilter !== 'all') params.set('role', roleFilter);
-      if (currentPage > 1) params.set('page', currentPage.toString());
-      params.set('limit', usersPerPage.toString());
-      router.push(`?${params.toString()}`, { scroll: false });
-      const res = await fetch(`/api/admin/users?${params.toString()}`);
+  const fetchUsers = useCallback(async () => {
+    setLoading(true);
+    try {
+      const params = new URLSearchParams(searchParams.toString());
+      const page = parseInt(params.get('page') || '1');
+      const limit = usersPerPage;
+      const role = params.get('role') || undefined;
+      const search = params.get('search') || '';
+      const res = await fetch(`/api/admin/users?page=${page}&limit=${limit}&role=${role || ''}&search=${search}`);
       if (res.ok) {
         const data = await res.json();
         setUsers(data.users);
         setTotalUsers(data.totalCount);
       }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    } finally {
       setLoading(false);
-    };
+    }
+  }, [searchParams, usersPerPage, setUsers, setTotalUsers]);
+
+  useEffect(() => {
+    if (!mounted) return;
     fetchUsers();
-  }, [searchQuery, roleFilter, currentPage, usersPerPage, router, mounted]);
+  }, [mounted, fetchUsers]);
 
   const totalPages = Math.ceil(totalUsers / usersPerPage);
 
@@ -98,65 +103,29 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({
     setCurrentPage(page);
   };
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const offset = (currentPage - 1) * usersPerPage;
-      const response = await getAllUsersAction({
-        search: searchQuery,
-        role: roleFilter === 'all' ? undefined : roleFilter,
-        offset,
-        limit: usersPerPage,
-        orderBy: { createdAt: 'desc' }
-      });
-      
-      if (response.success && response.data) {
-        setUsers(response.data.users);
-        setTotalUsers(response.data.totalCount);
-      }
-    } catch (error) {
-      console.error('Failed to fetch users:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // Removed duplicate fetchUsers function to resolve redeclaration error.
 
-  const handleRefresh = async () => {
+  const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
+    setLoading(true);
     try {
       await fetchUsers();
     } finally {
       setIsRefreshing(false);
+      setLoading(false);
     }
-  };
+  }, [fetchUsers]);
 
   // Fetch users when search, filter, or pagination changes
   useEffect(() => {
     fetchUsers();
-  }, [searchQuery, roleFilter, currentPage]);
+  }, [fetchUsers]);
 
   const confirmDelete = async () => {
     if (selectedUserId) {
       await deleteUserAction(selectedUserId);
       window.location.reload();
     }
-  };
-
-  // Refresh handler
-  const handleRefresh = async () => {
-    setLoading(true);
-    const params = new URLSearchParams(searchParams.toString());
-    const page = parseInt(params.get('page') || '1');
-    const limit = usersPerPage;
-    const role = params.get('role') || undefined;
-    const search = params.get('search') || '';
-    const res = await fetch(`/api/admin/users?page=${page}&limit=${limit}&role=${role || ''}&search=${search}`);
-    if (res.ok) {
-      const data = await res.json();
-      setUsers(data.users);
-      setTotalUsers(data.totalCount);
-    }
-    setLoading(false);
   };
 
   return (

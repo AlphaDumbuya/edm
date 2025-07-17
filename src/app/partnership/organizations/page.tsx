@@ -110,9 +110,7 @@ export default function OrganizationPartnershipPage() {
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We are eager to collaborate with organizations and businesses that share our vision for transforming communities in Sierra Leone and supporting our US-based initiatives.
         </p>
-        <Link
-          href="/contact"
-          legacyBehavior>
+        <Link href="/contact" className="inline-block">
           <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Connect with Our Team
           </Button>

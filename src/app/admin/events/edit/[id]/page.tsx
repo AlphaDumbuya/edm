@@ -6,11 +6,8 @@ import { getEventById } from "@/lib/db/events";
 import { updateEventAction } from "@/app/admin/events/actions";
 import { useRouter } from 'next/navigation';
 
-import dynamic from 'next/dynamic';
-// Dynamically import ReactQuill with ssr: false
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import '/public/quill.snow.css';
 import { UploadButton } from "@/components/shared/UploadButton";
+import TipTapEditor from "@/components/TipTapEditor";
 
 // Define a type for the PageProps to match Next.js expected type
 interface PageProps {
@@ -136,10 +133,9 @@ export default function EditEventPage({ params }: { params: { id: string } }) {
         </div>
         <div>
           <label htmlFor="description" className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">Description</label>
-          <ReactQuill
+          <TipTapEditor
             value={description}
-            onChange={setDescription}
-            className="bg-white border border-gray-300 rounded-md min-h-[120px] sm:min-h-[180px] max-h-[32vh] overflow-y-auto"
+            onContentChange={setDescription}
           />
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">

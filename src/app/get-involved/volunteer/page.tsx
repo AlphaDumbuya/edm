@@ -148,7 +148,7 @@ export default function VolunteerPage() {
 					EDM&apos;s mission in Sierra Leone or Oregon. If you have questions or
 					want to discuss involvement, please reach out.
 				</p>
-				<Link href="/contact" legacyBehavior>
+				<Link href="/contact" className="inline-block">
 					<Button size="lg" className="text-sm sm:text-base">
 						<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
 					</Button>

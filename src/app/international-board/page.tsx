@@ -105,7 +105,7 @@ export default function InternationalBoardPage() {
   return (
     <div className="space-y-12">
       <PageHeader
-        title="EDM International Board & Leadership"
+        title="EDM Board & Leadership"
         subtitle="Meet the dedicated individuals providing strategic oversight and guidance for EDM's mission in Sierra Leone and our international partnerships, including those in Oregon, USA."
         icon={Globe}
       />
