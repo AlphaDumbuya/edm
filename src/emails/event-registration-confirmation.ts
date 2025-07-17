@@ -13,6 +13,8 @@ export function eventRegistrationConfirmationEmail({
     time?: string;
     location: string;
     description: string;
+    isVirtual?: boolean;
+    onlineLink?: string;
   };
 }) {
   return {
@@ -24,7 +26,8 @@ export function eventRegistrationConfirmationEmail({
         <table style="margin: 20px 0; border-collapse: collapse;">
           <tr><td style="font-weight: bold; padding: 4px 8px;">Event:</td><td style="padding: 4px 8px;">${event.title}</td></tr>
           <tr><td style="font-weight: bold; padding: 4px 8px;">Date:</td><td style="padding: 4px 8px;">${new Date(event.date).toLocaleDateString()}${event.time ? ' at ' + event.time : ''}</td></tr>
-          <tr><td style="font-weight: bold; padding: 4px 8px;">Location:</td><td style="padding: 4px 8px;">${event.location}</td></tr>
+          <tr><td style="font-weight: bold; padding: 4px 8px;">Location:</td><td style="padding: 4px 8px;">${event.isVirtual ? 'Virtual Event' : event.location}</td></tr>
+          ${event.isVirtual && event.onlineLink ? `<tr><td style="font-weight: bold; padding: 4px 8px;">Join Link:</td><td style="padding: 4px 8px;"><a href="${event.onlineLink}" style="color: #2563eb;">${event.onlineLink}</a></td></tr>` : ''}
         </table>
         <div style="margin-bottom: 20px;">
           <strong>Event Details:</strong>

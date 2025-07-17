@@ -17,20 +17,24 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
-// Define the Event type locally to match your event object structure
-interface Event {
-  id: string;
-  title: string;
-  description?: string;
-  date: string;
-  location: string;
-  imageUrl?: string;
-  isVirtual?: boolean;
-  onlineLink?: string;
-}
+import type { Event as DBEvent } from '@prisma/client';
 
+// Define the event type with nullable fields for component props
 interface EventCardProps {
-  event: Event;
+  event: {
+    id: string;
+    title: string;
+    description: string;
+    date: string;
+    time: string;
+    location: string;
+    imageUrl: string | null;
+    isVirtual: boolean;
+    onlineLink: string | null;
+    cancelled: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 }
 
 export default function EventCard({ event }: EventCardProps) {
@@ -47,19 +51,24 @@ export default function EventCard({ event }: EventCardProps) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name, email, event }),
       });
-      if (!res.ok) throw new Error('Failed to send registration email');
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.error || 'Failed to register for event');
+      }
       toast({
-        title: "Signup Successful!",
-        description: `You've been registered for ${event.title}.`,
+        title: "Registration Successful! ✨",
+        description: `You've been registered for "${event.title}". A confirmation email has been sent to ${email} with all the details.`,
+        duration: 5000,
       });
       setIsDialogOpen(false);
       setName('');
       setEmail('');
     } catch (err) {
       toast({
-        title: "Signup Failed",
-        description: "There was a problem sending your registration email.",
+        title: "Registration Failed",
+        description: err instanceof Error ? err.message : "There was a problem registering for the event. Please try again.",
         variant: "destructive",
+        duration: 7000,
       });
     }
   };

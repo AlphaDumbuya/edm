@@ -16,19 +16,31 @@ export async function getAllEvents(options?: {
   search?: string;
   offset?: number;
   limit?: number;
-  orderBy?: any; // Consider defining a more specific type
+  orderBy?: any;
+  includeExpired?: boolean; // Add option to include or exclude past events
 }) {
   try {
-    const { search, offset, limit, orderBy } = options || {};
+    const { search, offset, limit, orderBy, includeExpired = true } = options || {};
 
-    const where = search
-      ? {
-          OR: [
-            { title: { contains: search, mode: 'insensitive' as const } },
-            { description: { contains: search, mode: 'insensitive' as const } },
-          ],
-        }
-      : {};
+    // Start with basic where clause
+    let where: any = {};
+
+    // If we don't want expired events, add date filter
+    if (!includeExpired) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Set to start of day
+      where.date = {
+        gte: today
+      };
+    }
+
+    // Add search filters if provided
+    if (search) {
+      where.OR = [
+        { title: { contains: search, mode: 'insensitive' as const } },
+        { description: { contains: search, mode: 'insensitive' as const } },
+      ];
+    }
 
     console.log('getAllEvents - limit:', limit);
     console.log('getAllEvents - search:', search);
@@ -41,6 +53,20 @@ export async function getAllEvents(options?: {
         skip: offset,
         take: limit,
         orderBy,
+        select: {
+          id: true,
+          title: true,
+          description: true,
+          date: true,
+          time: true,
+          location: true,
+          imageUrl: true,
+          isVirtual: true,
+          onlineLink: true,
+          cancelled: true,
+          createdAt: true,
+          updatedAt: true,
+        },
       }),
       prisma.event.count({
         where,

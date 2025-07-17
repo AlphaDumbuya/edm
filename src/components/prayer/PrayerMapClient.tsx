@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import { useGoogleMaps } from '@/contexts/google-maps-context';
 
 interface PrayerMapClientProps {
   locations: { lat: number; lng: number; label: string }[];
@@ -7,7 +8,6 @@ interface PrayerMapClientProps {
 }
 
 const PrayerMapClient: React.FC<PrayerMapClientProps> = ({ locations, zoom = 10 }) => {
-  const libraries = useMemo(() => ['places'], []);
   const mapContainerStyle = useMemo(() => ({
     width: '100%',
     height: '300px',
@@ -21,10 +21,7 @@ const PrayerMapClient: React.FC<PrayerMapClientProps> = ({ locations, zoom = 10 
     return { lat, lng };
   }, [locations]);
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    libraries: libraries as any,
-  });
+  const { isLoaded, loadError } = useGoogleMaps();
 
   if (loadError) return <div>Error loading map</div>;
   if (!isLoaded) return <div>Loading map...</div>;

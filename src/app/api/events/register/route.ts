@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sendEventRegistrationEmail } from '../../../../lib/email/sendEventRegistrationEmail';
 import { createEventRegistration } from '../../../../lib/db/eventRegistrations';
 import prisma from '@/lib/prisma'; // Import prisma client
+import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
   let input = null;
@@ -23,6 +24,7 @@ export async function POST(req: NextRequest) {
     await Promise.all(admins.map(admin =>
       prisma.notification.create({
         data: {
+          id: crypto.randomUUID(), // Add unique ID for each notification
           userId: admin.id,
           message: `Event signup: ${name} (${email}) for event ${event.title}`,
         },

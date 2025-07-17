@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { emailService } from '@/lib/email/emailService';
 import prisma from '@/lib/db/prisma'; // Correct import for prisma client
 import type { Notification, Prisma } from '@prisma/client';
+import crypto from 'crypto';
 
 export async function POST(req: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function POST(req: NextRequest) {
     // Create notification for each admin
     const notifications = await Promise.all(admins.map(admin => {
       const notificationData: Prisma.NotificationUncheckedCreateInput = {
+        id: crypto.randomUUID(), // Add unique ID for each notification
         userId: admin.id,
         message: `Contact form submitted: ${name} (${email}) - ${subject}`,
       };

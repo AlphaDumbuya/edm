@@ -58,7 +58,7 @@ const ListItem = React.forwardRef<React.ElementRef<typeof Link>, ListItemProps>(
         <Link
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground text-popover-foreground bg-popover border border-dashed border-primary", // force visible text and border
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary text-popover-foreground bg-popover border border-dashed border-primary", // force visible text and border
             className
           )}
           href={href}
@@ -213,7 +213,7 @@ export default function Navbar() {
               {item.links ? (
                 <>
                   <button
-                    className="flex items-center gap-1 px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground transition-colors"
+                    className="flex items-center gap-1 px-2 py-1 rounded-md text-base font-medium hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary transition-colors"
                     type="button"
                     tabIndex={0}
                     aria-expanded={openDropdown === i}
@@ -229,7 +229,7 @@ export default function Navbar() {
                           <li key={link.href}>
                             <Link
                               href={link.href}
-                              className="block px-4 py-3 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
+                              className="block px-4 py-3 rounded-md text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors cursor-pointer"
                               onClick={() => setOpenDropdown(null)}
                             >
                               <div className="font-semibold">{link.title}</div>
@@ -244,7 +244,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href={item.href || '#'}
-                  className="px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
+                  className="px-2 py-1 rounded-md text-base font-medium hover:bg-primary/10 hover:text-primary transition-colors"
                 >
                   {item.icon && <item.icon size={16} className="inline-block mr-1" />}
                   {item.title}

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import {
   Table,
   TableBody,
@@ -39,8 +39,9 @@ interface PrayerRequest {
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
-  published: boolean;
   category: string | null;
+  authorName: string | null;
+  authorEmail: string | null;
 }
 
 function PrayerRequestsContent(): React.ReactNode {
@@ -69,15 +70,6 @@ function PrayerRequestsContent(): React.ReactNode {
   const [prayerRequestToDelete, setPrayerRequestToDelete] = useState<string | null>(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await fetchPrayerRequests();
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
 
   const handleDeleteClick = (prayerRequestId: string) => {
     setPrayerRequestToDelete(prayerRequestId);
@@ -128,25 +120,13 @@ function PrayerRequestsContent(): React.ReactNode {
     router.push(`?${params.toString()}`);
   }, [searchTerm, publishedFilter, currentPage, router]);
 
-  // Refresh handler
-  const handleRefresh = () => {
+  // Refresh handler using the existing fetch function
+  const handleRefresh = useCallback(() => {
     setLoading(true);
-    getAllPrayerRequestsAction({
-      search: searchQuery,
-      status: statusFilter,
-      offset: (currentPage - 1) * itemsPerPage,
-      limit: itemsPerPage,
-      orderBy: { createdAt: 'desc' },
-    }).then(result => {
-      if (result.success && result.data) {
-        setPrayerRequests(result.data.prayerRequests);
-        setTotalPrayerRequests(result.data.totalCount);
-      } else {
-        setError(result.error || 'An unknown error occurred during fetching.');
-      }
+    fetchPrayerRequests().finally(() => {
       setLoading(false);
     });
-  };
+  }, [fetchPrayerRequests]);
 
   return (
     <div>
@@ -273,8 +253,6 @@ function PrayerRequestsContent(): React.ReactNode {
     </div>
   );
 }
-
-import { Suspense } from 'react';
 
 export default function PrayerRequestsPage() {
   return (

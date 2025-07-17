@@ -102,8 +102,8 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --accent: 220 100% 96%; /* Light blue for nav hover background */
-    --accent-foreground: 20 14.3% 4.1%; /* Dark gray/navy for nav hover text in light mode */
+    --accent: var(--primary); /* Use primary color for accent to ensure consistency */
+    --accent-foreground: var(--primary-foreground);
   }
 
   .dark {
@@ -162,6 +162,19 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Navigation styles */
+@layer components {
+  .nav-link-base {
+    @apply px-2 py-1 rounded-md text-base font-medium transition-colors;
+    @apply hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary;
+  }
+  
+  .nav-button-base {
+    @apply flex items-center gap-1 px-2 py-1 rounded-md text-base font-medium transition-colors;
+    @apply hover:bg-primary/10 hover:text-primary focus:bg-primary/10 focus:text-primary;
   }
 }
 

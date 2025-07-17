@@ -1,12 +1,12 @@
 import React, { useMemo } from 'react';
-import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { useGoogleMaps } from '@/contexts/google-maps-context';
 
 export interface MissionsMapClientProps {
   mapId: string;
 }
 
 const MissionsMapClient = ({ mapId }: MissionsMapClientProps) => {
-  const libraries = useMemo(() => ['places'], []);
   const mapContainerStyle = useMemo(() => ({
     width: '100%',
     height: '400px', // Adjust height as needed
@@ -22,13 +22,7 @@ const MissionsMapClient = ({ mapId }: MissionsMapClientProps) => {
     lng: (sierraLeoneHQ.lng + usOffice.lng) / 2,
   }), [sierraLeoneHQ, usOffice]);
 
-  const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    libraries: libraries as any,
-  });
-
-  // DEBUG: Show API key in console
-  console.log('MissionsMapClient API KEY:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
+  const { isLoaded, loadError } = useGoogleMaps();
 
   const [activeMarker, setActiveMarker] = React.useState<string | null>(null);
 
