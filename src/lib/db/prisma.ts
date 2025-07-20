@@ -1,13 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 
 const prismaClientSingleton = () => {
-  console.log('Initializing Prisma Client with DATABASE_URL:', 
-    process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')); // Log URL with hidden credentials
+  // In production, try the direct URL first
+  const connectionUrl = process.env.NODE_ENV === 'production' 
+    ? process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL
+    : process.env.DATABASE_URL;
+
+  console.log('Initializing Prisma Client with URL:', 
+    connectionUrl?.replace(/\/\/.*:.*@/, '//****:****@'),
+    'Environment:', process.env.NODE_ENV); // Log URL with hidden credentials and environment
     
   const prisma = new PrismaClient({
     datasources: {
       db: {
-        url: process.env.DATABASE_URL
+        url: connectionUrl
       },
     },
     log: ['query', 'error', 'warn'],
@@ -15,22 +21,35 @@ const prismaClientSingleton = () => {
   });
 
   // Create a function to handle retries
-  async function withRetry<T>(operation: () => Promise<T>): Promise<T> {
-    let retries = 3;
+  async function withRetry<T>(operation: () => Promise<T>, retryCount = 3): Promise<T> {
     let lastError: Error | unknown;
-    
-    while (retries > 0) {
+    let backoffTime = 1000; // Start with 1 second
+
+    for (let attempt = 1; attempt <= retryCount; attempt++) {
       try {
         return await operation();
-      } catch (error) {
+      } catch (error: any) {
         lastError = error;
-        console.error(`Database operation failed, retries left: ${retries - 1}`, error);
-        retries--;
-        if (retries > 0) {
-          await new Promise(resolve => setTimeout(resolve, 1000 * (4 - retries)));
+        
+        // Log detailed error information
+        console.error(`Database operation failed (Attempt ${attempt}/${retryCount}):`, {
+          error: error.message,
+          code: error.code,
+          meta: error.meta,
+          stack: error.stack?.split('\n').slice(0, 3),
+          connectionUrl: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@'),
+          environment: process.env.NODE_ENV
+        });
+
+        if (attempt < retryCount) {
+          // Exponential backoff with jitter
+          const jitter = Math.random() * 1000;
+          await new Promise(resolve => setTimeout(resolve, backoffTime + jitter));
+          backoffTime *= 2; // Double the backoff time for next attempt
         }
       }
     }
+    
     throw lastError;
   }
 
@@ -43,21 +62,41 @@ const prismaClientSingleton = () => {
 
 // Function to test database connection
 export async function testConnection() {
+  const client = prismaClientSingleton();
   try {
-    const client = prismaClientSingleton();
+    console.log('Environment:', {
+      NODE_ENV: process.env.NODE_ENV,
+      DATABASE_URL: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@'),
+      DIRECT_URL: process.env.DIRECT_DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')
+    });
+    
     console.log('Testing database connection...');
-    await client.$connect();
+    await withRetry(() => client.$connect(), 5);
+    
     console.log('Connection established, testing query...');
-    await client.$queryRaw`SELECT 1`;
+    withRetry(async () => {
+      const result = await client.$queryRaw`SELECT current_timestamp, version()`;
+      console.log('Database info:', result);
+      return result;
+    }, 3);
+    
     console.log('Query successful, disconnecting...');
     await client.$disconnect();
     return true;
-  } catch (error) {
+  } catch (error: any) {
     console.error('Database connection test failed:', {
-      error,
-      url: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')
+      error: error.message,
+      code: error.code,
+      meta: error.meta,
+      stack: error.stack?.split('\n').slice(0, 3)
     });
     return false;
+  } finally {
+    try {
+      await client.$disconnect();
+    } catch (e) {
+      console.error('Error disconnecting:', e);
+    }
   }
 }
 
@@ -72,3 +111,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 export default prisma;
+function withRetry<T>(operation: () => Promise<T>, retryCount = 3): Promise<T> {
+  throw new Error('Function not implemented.');
+}
+
