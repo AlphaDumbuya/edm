@@ -1,5 +1,7 @@
 generator client {
   provider = "prisma-client-js"
+  // Ensure Prisma Client is compatible with Edge Runtime
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
