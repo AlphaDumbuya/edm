@@ -1,13 +1,42 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient | undefined
+const prismaClientSingleton = () => {
+  console.log('Initializing Prisma Client with DATABASE_URL:', 
+    process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')); // Log URL with hidden credentials
+    
+  return new PrismaClient({
+    datasources: {
+      db: {
+        url: process.env.DATABASE_URL
+      },
+    },
+    log: ['query', 'error', 'warn'],
+    errorFormat: 'pretty',
+  });
+};
+
+// Function to test database connection
+export async function testConnection() {
+  try {
+    const client = prismaClientSingleton();
+    await client.$connect();
+    await client.$queryRaw`SELECT 1`;
+    await client.$disconnect();
+    return true;
+  } catch (error) {
+    console.error('Database connection test failed:', error);
+    return false;
+  }
 }
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient()
+declare global {
+  var prisma: ReturnType<typeof prismaClientSingleton> | undefined;
+}
+
+const prisma = global.prisma ?? prismaClientSingleton();
 
 if (process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma
+  global.prisma = prisma;
 }
 
 export default prisma;

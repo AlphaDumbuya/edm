@@ -106,19 +106,25 @@ export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
 export async function createUser(email: string, plainPassword_1: string, name?: string): Promise<PrismaUser | null> {
   try {
     console.log('Starting user creation process for:', email);
+    
+    // Test database connection first
+    try {
+      await prisma.$connect();
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('Database connection test successful');
+    } catch (error: any) {
+      console.error('Database connection test failed:', {
+        error: error,
+        errorMessage: error.message,
+        DATABASE_URL: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')
+      });
+      throw new Error(`Database connection failed: ${error.message || 'Unknown error'}`);
+    }
+    
     const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
     console.log('Password hashed successfully');
     const emailVerificationToken = randomBytes(32).toString('hex');
     console.log('Generated verification token');
-    
-    // Test database connection before creating user
-    try {
-      await prisma.$queryRaw`SELECT 1`;
-      console.log('Database connection test successful');
-    } catch (dbError) {
-      console.error('Database connection test failed:', dbError);
-      throw new Error('Database connection failed');
-    }
     
     console.log('Attempting to create user in database...');
     const user = await prisma.user.create({
