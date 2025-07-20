@@ -54,9 +54,10 @@ export async function findUserById(id: string): Promise<AppUser | null> {
 }
 
 export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
-  data: any;
-  data: any;
-  success: any; users: AppUser[], totalCount: number 
+  data: AppUser[];
+  success: boolean;
+  users: AppUser[];
+  totalCount: number;
 }> {
   const { search, role, offset, limit, orderBy } = options;
 
@@ -85,10 +86,20 @@ export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
       take: limit,
     });
     const totalCount = await prisma.user.count({ where });
-    return { users, totalCount };
+    return { 
+      data: users,
+      success: true,
+      users, 
+      totalCount 
+    };
   } catch (error) {
     console.error('Error fetching users:', error);
-    return { users: [], totalCount: 0 };
+    return { 
+      data: [],
+      success: false,
+      users: [], 
+      totalCount: 0 
+    };
   }
 }
 
