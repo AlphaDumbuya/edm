@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import prisma from '../db/prisma';
 
 export async function getAllBlogPosts(options?: {
@@ -27,17 +28,13 @@ export async function getAllBlogPosts(options?: {
       skip: offset,
       take: limit,
       orderBy: orderBy || { createdAt: 'desc' },
-      select: {
-        id: true,
-        title: true,
-        slug: true,
-        content: true,
-        authorId: true,
-        createdAt: true,
-        updatedAt: true,
-        published: true,
-        imageUrl: true,
-        author: { select: { name: true } },
+      include: {
+        author: {
+          select: {
+            name: true,
+            email: true
+          }
+        }
       },
     });
 
@@ -81,7 +78,7 @@ export async function getBlogPostBySlug(slug: string) {
     });
     return blogPost;
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+    if (error instanceof PrismaClientKnownRequestError) {
       if (error.code === 'P2025') {
         console.error(`Blog post with slug "${slug}" not found.`);
         return null; // Return null if the blog post is not found

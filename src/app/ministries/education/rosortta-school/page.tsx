@@ -11,32 +11,33 @@ import Link from 'next/link';
 
 export default function RosorttaSchoolPage() {
   return (
-    <div className="space-y-12 w-full max-w-none px-0">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-lg p-3 sm:p-6 flex flex-col md:flex-row items-center md:items-start text-center md:text-left mb-8 w-full gap-6">
-        <div className="flex-1 w-full">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary mb-2 break-words leading-tight">
-            Rosortta School: Building Brighter Futures
-          </h1>
-          <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mb-4">
-            Empowering children in Sanda Tenraren chiefdom, Karene District, Sierra Leone, with access to quality education and hope for a better tomorrow.
-          </p>
-        </div>
-        <Image
-          src="https://code-alpha-image-gallary.vercel.app/rosetta1.jpg"
-          alt="Rosortta School Hero"
-          width={320}
-          height={200}
-          className="rounded-lg shadow-md border-4 border-white mx-auto md:mx-0"
-        />
-      </section>
+    <div className="container py-8">
+      <div className="space-y-12 w-full max-w-none">
+        {/* Hero Section */}
+        <section className="relative bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl shadow-lg p-3 sm:p-6 flex flex-col md:flex-row items-center md:items-start text-center md:text-left mb-8 w-full gap-6">
+          <div className="flex-1 w-full">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-primary mb-2 break-words leading-tight">
+              Rosortta School: Building Brighter Futures
+            </h1>
+            <p className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mb-4">
+              Empowering children in Sanda Tenraren chiefdom, Karene District, Sierra Leone, with access to quality education and hope for a better tomorrow.
+            </p>
+          </div>
+          <Image
+            src="https://code-alpha-image-gallary.vercel.app/rosetta1.jpg"
+            alt="Rosortta School Hero"
+            width={320}
+            height={200}
+            className="rounded-lg shadow-md border-4 border-white mx-auto md:mx-0"
+          />
+        </section>
 
-      {/* Existing PageHeader and main card... */}
-      <PageHeader
-        title="EDM Rosortta School"
-        subtitle="A new mission project under construction in Sanda Tenraren chiefdom, Karene District (North West Province), Sierra Leone."
-        icon={Building}
-      />
+        {/* Existing PageHeader and main card... */}
+        <PageHeader
+          title="EDM Rosortta School"
+          subtitle="A new mission project under construction in Sanda Tenraren chiefdom, Karene District (North West Province), Sierra Leone."
+          icon={Building}
+        />
       <section>
         <Card className="shadow-xl overflow-hidden w-full">
           <div className="grid grid-cols-1 md:grid-cols-3 w-full">
@@ -181,6 +182,7 @@ export default function RosorttaSchoolPage() {
           </Button>
         </div>
       </section>
+      </div>
     </div>
   );
 }
