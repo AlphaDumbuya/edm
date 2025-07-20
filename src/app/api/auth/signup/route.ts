@@ -85,7 +85,23 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: 'Signup successful! Please check your email and verify your account before logging in.' }, { status: 200 });
   } catch (error: any) {
-    console.error('Signup API error:', error);
-    return NextResponse.json({ error: error.message || 'Internal server error' }, { status: 500 });
+    // Log detailed error information
+    console.error('Signup API error:', {
+      error: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack,
+      prismaError: error.cause
+    });
+
+    // Return a more specific error message based on the error type
+    if (error.code === 'P2002') {
+      return NextResponse.json({ error: 'Email already exists' }, { status: 409 });
+    }
+
+    return NextResponse.json({ 
+      error: error.message || 'Internal server error',
+      code: error.code || 'UNKNOWN'
+    }, { status: 500 });
   }
 }
