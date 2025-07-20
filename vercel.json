@@ -1,18 +1,25 @@
 {
   "version": 2,
-  "buildCommand": "npx prisma generate && next build",
-  "outputDirectory": ".next",
-  "installCommand": "npm install",
   "framework": "nextjs",
+  "buildCommand": "npm install && npx prisma generate && next build",
+  "outputDirectory": ".next",
   "regions": ["sin1"],
   "functions": {
     "app/api/**/*.ts": {
       "memory": 1024,
-      "maxDuration": 10
+      "maxDuration": 30
+    }
+  },
+  "build": {
+    "env": {
+      "PRISMA_GENERATE_DATAPROXY": "true"
     }
   },
   "env": {
     "VERCEL": "1",
-    "NEXT_PUBLIC_VERCEL_ENV": "production"
+    "NODE_VERSION": "20.x",
+    "NEXT_PUBLIC_VERCEL_ENV": "production",
+    "VERCEL_POSTGRES_PRISMA_URL": "postgres://default:YOUR_PASSWORD@ep-sparkling-shadow-a952uo39.gwc.azure.neon.tech/verceldb?pgbouncer=true&connect_timeout=15&sslmode=require",
+    "POSTGRES_URL_NON_POOLING": "postgres://default:YOUR_PASSWORD@ep-sparkling-shadow-a952uo39.gwc.azure.neon.tech/verceldb?sslmode=require&connect_timeout=15"
   }
 }
