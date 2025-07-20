@@ -5,11 +5,27 @@ import { sendMail } from '@/lib/email/sendMail';
 
 export async function POST(req: NextRequest) {
   try {
+    console.log('Starting volunteer signup process...');
     const data = await req.json();
+    console.log('Received volunteer data:', { 
+      ...data, 
+      // Only show first character of phone number for privacy
+      phone: data.phone ? `${data.phone.charAt(0)}...` : undefined 
+    });
     const { name, email, phone, areasOfInterest, availability, message } = data;
     if (!name || !email || !areasOfInterest || !availability) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+    console.log('Validating database connection...');
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('Database connection successful');
+    } catch (dbError) {
+      console.error('Database connection failed:', dbError);
+      throw new Error('Database connection failed');
+    }
+
+    console.log('Creating volunteer record...');
     // Store volunteer signup
     const volunteer = await prisma.volunteer.create({
       data: {
@@ -21,6 +37,7 @@ export async function POST(req: NextRequest) {
         message,
       },
     });
+    console.log('Volunteer record created successfully:', { id: volunteer.id });
     // Log to audit log for admin notification
     const auditLog = await prisma.auditLog.create({
       data: {
@@ -40,9 +57,32 @@ export async function POST(req: NextRequest) {
     console.log('Sending volunteer confirmation email to:', email, 'subject:', subject);
     await sendMail({ to: email, subject, html, text });
     return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Volunteer signup error:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+  } catch (error: any) {
+    console.error('Volunteer signup error:', {
+      message: error.message,
+      code: error.code,
+      meta: error.meta,
+      name: error.name,
+      stack: error.stack
+    });
+
+    // Return more specific error messages
+    if (error.code === 'P2002') {
+      return NextResponse.json({ 
+        error: 'You have already signed up as a volunteer with this email address' 
+      }, { status: 409 });
+    }
+
+    if (error.message === 'Database connection failed') {
+      return NextResponse.json({ 
+        error: 'Unable to connect to the database. Please try again later.' 
+      }, { status: 503 });
+    }
+
+    return NextResponse.json({ 
+      error: 'Internal server error. Please try again later.',
+      code: error.code || 'UNKNOWN'
+    }, { status: 500 });
   }
 }
 
