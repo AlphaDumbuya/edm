@@ -5,6 +5,8 @@ import { getAllEvents } from '@/lib/db/events';
 import type { Prisma } from '@prisma/client';
 type EventWithoutRelations = Omit<Prisma.EventGetPayload<{}>, 'eventRegistrations'>;
 
+export const dynamic = 'force-dynamic';
+
 export default async function EventsPage() {
   // Get events that haven't expired yet
   const eventData = await getAllEvents({ includeExpired: false });
