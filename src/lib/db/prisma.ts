@@ -1,19 +1,28 @@
 import { PrismaClient } from '@prisma/client';
 
 const prismaClientSingleton = () => {
-  // In production, try the direct URL first
+  // Always try direct URL first in production
   const connectionUrl = process.env.NODE_ENV === 'production' 
-    ? process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL
+    ? process.env.DIRECT_DATABASE_URL 
     : process.env.DATABASE_URL;
 
-  console.log('Initializing Prisma Client with URL:', 
-    connectionUrl?.replace(/\/\/.*:.*@/, '//****:****@'),
-    'Environment:', process.env.NODE_ENV); // Log URL with hidden credentials and environment
+  if (!connectionUrl) {
+    throw new Error('Database connection URL is not set');
+  }
+
+  // Convert postgresql:// to postgres:// if needed
+  const normalizedUrl = connectionUrl.replace(/^postgresql:\/\//, 'postgres://');
+
+  console.log('Initializing Prisma Client:', { 
+    url: normalizedUrl.replace(/\/\/.*:.*@/, '//****:****@'),
+    env: process.env.NODE_ENV,
+    isDirect: !normalizedUrl.includes('-pooler')
+  });
     
   const prisma = new PrismaClient({
     datasources: {
       db: {
-        url: connectionUrl
+        url: normalizedUrl
       },
     },
     log: ['query', 'error', 'warn'],
