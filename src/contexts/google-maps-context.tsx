@@ -22,9 +22,17 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
   
   console.log('API Key:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY); // Debug log
   
+  // Debug logs for environment variable
+  useEffect(() => {
+    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+      console.error('Google Maps API key is not set in environment variables');
+    }
+  }, []);
+
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
+    version: "weekly"
   });
 
   useEffect(() => {
