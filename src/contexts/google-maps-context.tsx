@@ -32,7 +32,10 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
-    version: "weekly"
+    version: "weekly",
+    region: 'SL',
+    language: 'en',
+    preventGoogleFontsLoading: true
   });
 
   useEffect(() => {
