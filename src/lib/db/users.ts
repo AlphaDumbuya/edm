@@ -107,19 +107,25 @@ export async function createUser(email: string, plainPassword_1: string, name?: 
   try {
     console.log('Starting user creation process for:', email);
     
-    // Test database connection first
-    try {
-      await prisma.$connect();
-      await prisma.$queryRaw`SELECT 1`;
-      console.log('Database connection test successful');
-    } catch (error: any) {
-      console.error('Database connection test failed:', {
-        error: error,
-        errorMessage: error.message,
-        DATABASE_URL: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@')
+    // No need to test connection explicitly - Prisma handles this
+    // Instead, wrap the operation in a transaction for atomicity
+    const result = await prisma.$transaction(async (tx) => {
+      const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
+      const emailVerificationToken = randomBytes(32).toString('hex');
+      
+      return tx.user.create({
+        data: {
+          email,
+          hashedPassword,
+          name: name || null,
+          emailVerified: false,
+          emailVerificationToken,
+        },
       });
-      throw new Error(`Database connection failed: ${error.message || 'Unknown error'}`);
-    }
+    }, {
+      maxWait: 10000, // 10s max wait time
+      timeout: 15000, // 15s timeout
+    });
     
     const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
     console.log('Password hashed successfully');

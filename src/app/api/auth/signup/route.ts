@@ -37,13 +37,38 @@ export async function POST(req: NextRequest) {
     }
 
     console.log('Creating user...');
-    const newUser = await createUser(email, password, name);
-    console.log('User creation result:', { 
-      success: !!newUser, 
-      userId: newUser?.id,
-      userEmail: newUser?.email,
-      hasToken: !!newUser?.emailVerificationToken
-    });
+    let newUser;
+    try {
+      newUser = await createUser(email, password, name);
+      console.log('User creation result:', { 
+        success: !!newUser, 
+        userId: newUser?.id,
+        userEmail: newUser?.email,
+        hasToken: !!newUser?.emailVerificationToken
+      });
+    } catch (error: any) {
+      console.error('User creation error:', {
+        message: error.message,
+        code: error.code,
+        meta: error.meta
+      });
+      
+      // Handle specific database errors
+      if (error.code === 'P2002') {
+        return NextResponse.json({ error: 'Email already in use' }, { status: 409 });
+      }
+      
+      // Handle connection errors
+      if (error.code === 'P1001' || error.code === 'P1002') {
+        return NextResponse.json({ 
+          error: 'Database connection error, please try again' 
+        }, { status: 503 });
+      }
+      
+      return NextResponse.json({ 
+        error: 'An unexpected error occurred' 
+      }, { status: 500 });
+    }
     
     if (!newUser) {
       console.error('User creation failed without throwing an error');
