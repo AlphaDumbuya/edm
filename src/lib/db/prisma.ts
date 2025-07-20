@@ -12,6 +12,20 @@ const prismaClientSingleton = () => {
     },
     log: ['query', 'error', 'warn'],
     errorFormat: 'pretty',
+    __internal: {
+      engine: {
+        connectionTimeout: 20000, // 20 seconds
+        pollInterval: 100,
+        retry: {
+          max: 3,
+          backoff: {
+            type: 'exponential',
+            min: 1000,
+            max: 5000
+          }
+        }
+      }
+    }
   });
 };
 
