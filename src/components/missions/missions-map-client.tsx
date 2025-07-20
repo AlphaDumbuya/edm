@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { useGoogleMaps } from '@/contexts/google-maps-context';
 
@@ -26,17 +26,51 @@ const MissionsMapClient = ({ mapId }: MissionsMapClientProps) => {
 
   const [activeMarker, setActiveMarker] = React.useState<string | null>(null);
 
+  useEffect(() => {
+    console.log('MissionsMapClient loading status:', { isLoaded, loadError }); // Debug log
+  }, [isLoaded, loadError]);
+
   if (loadError) {
-    return <div>Error loading maps</div>;
+    console.error('Error loading maps:', loadError);
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
+        <div className="text-center">
+          <p className="text-red-500 mb-2">Error loading maps</p>
+          <p className="text-sm text-gray-600">{loadError.message}</p>
+        </div>
+      </div>
+    );
   }
 
   if (!isLoaded) {
-    return <div>Loading Maps...</div>;
+    console.log('Maps still loading in MissionsMapClient'); // Debug log
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
+        <div className="text-center">
+          <p className="text-gray-600">Loading Maps...</p>
+          <div className="mt-2 w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <GoogleMap mapContainerStyle={mapContainerStyle} center={center} zoom={3}>
-      <Marker position={usOffice} onClick={() => setActiveMarker('us')} />
+    <GoogleMap 
+      mapContainerStyle={mapContainerStyle} 
+      center={center} 
+      zoom={3}
+      options={{
+        mapTypeControl: false,
+        streetViewControl: false,
+        fullscreenControl: true,
+        gestureHandling: 'cooperative'
+      }}
+    >
+      <Marker 
+        position={usOffice} 
+        onClick={() => setActiveMarker('us')}
+        title="EDM USA Office"
+      />
       {activeMarker === 'us' && (
         <InfoWindow position={usOffice} onCloseClick={() => setActiveMarker(null)}>
           <div style={{ minWidth: 120 }}>

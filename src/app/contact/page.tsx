@@ -20,7 +20,14 @@ import PrayerMapEmbed from '@/components/prayer/PrayerMapEmbed';
 
 const MissionsMapClient = dynamic<MissionsMapClientProps>(() => import('@/components/missions/missions-map-client'), {
   ssr: false,
-  loading: () => <div style={{ height: '400px', width: '100%', background: 'hsl(var(--muted))', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>Loading Map...</div>,
+  loading: () => (
+    <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
+      <div className="text-center">
+        <p className="text-gray-600">Loading Map...</p>
+        <div className="mt-2 w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    </div>
+  ),
 });
 
 const contactFormSchema = z.object({

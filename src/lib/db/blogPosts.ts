@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import prisma from '../db/prisma';
 
@@ -11,7 +10,12 @@ export async function getAllBlogPosts(options?: {
 }) {
   const { search, offset, limit, orderBy, publishedOnly } = options || {};
 
-  let where: any = {};
+  type WhereClause = {
+    OR?: Array<{ title: { contains: string; mode: 'insensitive' } } | { content: { contains: string; mode: 'insensitive' } }>;
+    published?: boolean;
+  };
+
+  let where: WhereClause = {};
   if (search) {
     where.OR = [
       { title: { contains: search, mode: 'insensitive' } },
