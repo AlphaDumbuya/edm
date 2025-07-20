@@ -1,13 +1,6 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse, type NextRequest } from 'next/server';
 
-// Define middleware function with monitoring
-export function middleware(request: NextRequest) {
-  // Skip monitoring for static files and images
-  if (request.nextUrl.pathname.match(/\.(js|css|png|jpg|jpeg|gif|ico)$/)) {
-    return NextResponse.next();
-  }
-
+export async function middleware(request: NextRequest) {
   const requestStart = Date.now();
   
   // Create a response
@@ -24,11 +17,9 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Configure matcher to include API routes but exclude static files
 export const config = {
   matcher: [
     '/api/:path*',
-    '/((?!_next|static|public|favicon.ico).*)',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
   ],
-};
-
+}

@@ -1,10 +1,15 @@
 import { PrismaClient } from '@prisma/client';
 
 const prismaClientSingleton = () => {
-  // Always try direct URL first in production
-  const connectionUrl = process.env.NODE_ENV === 'production' 
-    ? process.env.DIRECT_DATABASE_URL 
-    : process.env.DATABASE_URL;
+  // In production, use pooled connection for web requests and direct connection for background jobs
+  let connectionUrl;
+  if (process.env.NODE_ENV === 'production') {
+    // Check if this is a background process/job
+    const isBackgroundJob = process.env.IS_BACKGROUND_JOB === 'true';
+    connectionUrl = isBackgroundJob ? process.env.DIRECT_DATABASE_URL : process.env.DATABASE_URL;
+  } else {
+    connectionUrl = process.env.DATABASE_URL;
+  }
 
   if (!connectionUrl) {
     throw new Error('Database connection URL is not set');
@@ -40,6 +45,18 @@ const prismaClientSingleton = () => {
       } catch (error: any) {
         lastError = error;
         
+        // Check if this is a connection error that we should retry
+        const shouldRetry = error.code === 'P1001' || // Connection error
+                           error.code === 'P1002' || // Connection timed out
+                           error.code === 'P1017' || // Server closed the connection
+                           error.code === 'P1024' || // Connection pool timeout
+                           error.code === 'P2023' || // Inconsistent column data
+                           error.code === 'P2034';   // Transaction rollback
+
+        if (!shouldRetry) {
+          throw error; // Don't retry on other types of errors
+        }
+        
         // Log detailed error information
         console.error(`Database operation failed (Attempt ${attempt}/${retryCount}):`, {
           error: error.message,
@@ -47,7 +64,8 @@ const prismaClientSingleton = () => {
           meta: error.meta,
           stack: error.stack?.split('\n').slice(0, 3),
           connectionUrl: process.env.DATABASE_URL?.replace(/\/\/.*:.*@/, '//****:****@'),
-          environment: process.env.NODE_ENV
+          environment: process.env.NODE_ENV,
+          retryIn: `${backoffTime}ms`
         });
 
         if (attempt < retryCount) {
