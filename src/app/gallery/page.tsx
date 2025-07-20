@@ -13,6 +13,8 @@ type Media = {
   videoUrl?: string;
 };
 
+export const dynamic = 'force-dynamic';
+
 export default async function GalleryPage() {
   const photos = (await getGalleryPhotos()).map((item: any) => ({
     ...item,
