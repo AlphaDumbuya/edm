@@ -94,8 +94,22 @@ export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
 
 export async function createUser(email: string, plainPassword_1: string, name?: string): Promise<PrismaUser | null> {
   try {
+    console.log('Starting user creation process for:', email);
     const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
+    console.log('Password hashed successfully');
     const emailVerificationToken = randomBytes(32).toString('hex');
+    console.log('Generated verification token');
+    
+    // Test database connection before creating user
+    try {
+      await prisma.$queryRaw`SELECT 1`;
+      console.log('Database connection test successful');
+    } catch (dbError) {
+      console.error('Database connection test failed:', dbError);
+      throw new Error('Database connection failed');
+    }
+    
+    console.log('Attempting to create user in database...');
     const user = await prisma.user.create({
       data: {
         email,
@@ -106,10 +120,21 @@ export async function createUser(email: string, plainPassword_1: string, name?: 
       },
     });
     return user;
-  } catch (error) {
-    console.error('Error creating user:', error);
-    // Consider more specific error handling, e.g., for unique constraint violation on email
-    return null;
+  } catch (error: any) {
+    console.error('Error creating user:', {
+      error: error.message,
+      code: error.code,
+      meta: error.meta,
+      name: error.name,
+      stack: error.stack
+    });
+
+    // Throw specific errors for better handling
+    if (error.code === 'P2002') {
+      throw new Error('Email already exists');
+    }
+    
+    throw error; // Re-throw the error to be handled by the API route
   }
 }
 

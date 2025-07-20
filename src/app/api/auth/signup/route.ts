@@ -9,7 +9,10 @@ import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
   try {
-    const { email, password, name } = await req.json();
+    console.log('Starting signup process...');
+    const body = await req.json();
+    console.log('Request body received:', { ...body, password: '[REDACTED]' });
+    const { email, password, name } = body;
 
     if (!email || !password || !name) {
       return NextResponse.json({ error: 'All fields required' }, { status: 400 });
@@ -33,9 +36,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Email already in use' }, { status: 409 });
     }
 
+    console.log('Creating user...');
     const newUser = await createUser(email, password, name);
-    console.log('User after creation:', newUser); // Debug: check if token is present
+    console.log('User creation result:', { 
+      success: !!newUser, 
+      userId: newUser?.id,
+      userEmail: newUser?.email,
+      hasToken: !!newUser?.emailVerificationToken
+    });
+    
     if (!newUser) {
+      console.error('User creation failed without throwing an error');
       return NextResponse.json({ error: 'User creation failed' }, { status: 500 });
     }
 
