@@ -36,6 +36,8 @@ interface QuickLink {
   href: string;
 }
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboardPage() {
   // Fetch real counts
   const [totalDonations, totalUsers, recentPrayerRequests] = await Promise.all([
