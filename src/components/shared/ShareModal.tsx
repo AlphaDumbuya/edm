@@ -22,23 +22,32 @@ export default function ShareModal({ url, title, description }: ShareModalProps)
   const [isOpen, setIsOpen] = React.useState(false);
   const [copied, setCopied] = React.useState(false);
   const [canShare, setCanShare] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
 
+  // Only run on client-side
   useEffect(() => {
-    // Check for Web Share API support in a safe way
-    if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
-      setCanShare('share' in navigator);
-    }
-  }, []);
-
-  // Handle any cleanup when component unmounts
-  useEffect(() => {
-    return () => {
-      // Cleanup any timeouts or event listeners
-      if (copied) {
-        setCopied(false);
+    setMounted(true);
+    
+    // Check for Web Share API support
+    const checkShareSupport = () => {
+      try {
+        if (typeof window !== 'undefined' && 
+            typeof navigator !== 'undefined' && 
+            'share' in navigator) {
+          setCanShare(true);
+        }
+      } catch (err) {
+        console.error('Error checking share support:', err);
+        setCanShare(false);
       }
     };
-  }, [copied]);
+
+    checkShareSupport();
+
+    return () => {
+      setMounted(false);
+    };
+  }, []);
 
   useEffect(() => {
     if (copied) {

@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { LoadScriptProps, useLoadScript } from '@react-google-maps/api';
+import { Loading, ErrorMessage } from '@/components/ui/loading';
 
 interface GoogleMapsContextType {
   isLoaded: boolean;
@@ -20,8 +21,21 @@ const libraries: LoadScriptProps['libraries'] = ['places'];
 export function GoogleMapsProvider({ children }: { children: React.ReactNode }) {
   const [initialized, setInitialized] = useState(false);
   
-  // Check if API key exists
-  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+  const [mounted, setMounted] = useState(false);
+
+  // Initialize on client side only
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Don't render anything until mounted on client
+  if (!mounted) {
+    return null;
+  }
+
+  // Check if API key exists (client-side only)
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+  if (!apiKey) {
     console.error('Google Maps API key is not set in environment variables');
     return (
       <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
@@ -33,9 +47,9 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     );
   }
 
-  // Load Google Maps script
+  // Load Google Maps script (client-side only)
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
+    googleMapsApiKey: apiKey,
     libraries,
     version: "weekly",
     region: 'SL',
@@ -43,44 +57,31 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     preventGoogleFontsLoading: true
   });
 
-  // Log loading status
+  // Handle initialization and loading status
   useEffect(() => {
-    if (isLoaded) {
-      console.log('Google Maps script loaded successfully');
-    }
-    if (loadError) {
-      console.error('Google Maps script failed to load:', loadError);
-    }
-  }, [isLoaded, loadError]);
-
-  useEffect(() => {
-    console.log('Maps loading status:', { isLoaded, loadError }); // Debug log
+    const status = { isLoaded, loadError, initialized };
+    
     if (isLoaded && !initialized) {
+      console.log('Google Maps initialized successfully');
       setInitialized(true);
     }
-  }, [isLoaded, initialized]);
+    
+    if (loadError) {
+      console.error('Google Maps failed to load:', {
+        error: loadError.message,
+        name: loadError.name,
+        stack: loadError.stack
+      });
+    }
+  }, [isLoaded, loadError, initialized]);
 
   if (!isLoaded) {
-    return (
-      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
-        <div className="text-center">
-          <p className="text-gray-600">Loading Maps...</p>
-          <div className="mt-2 w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      </div>
-    );
+    return <Loading message="Loading Google Maps..." />;
   }
 
   if (loadError) {
     console.error('Error loading Google Maps:', loadError);
-    return (
-      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
-        <div className="text-center text-red-500">
-          <p>Error loading Google Maps</p>
-          <p className="text-sm mt-2">{loadError.message}</p>
-        </div>
-      </div>
-    );
+    return <ErrorMessage message={loadError.message || 'Failed to load Google Maps'} />;
   }
 
   return (
