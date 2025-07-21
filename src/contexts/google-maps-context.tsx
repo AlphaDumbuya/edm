@@ -19,37 +19,15 @@ export const useGoogleMaps = () => useContext(GoogleMapsContext);
 const libraries: LoadScriptProps['libraries'] = ['places'];
 
 export function GoogleMapsProvider({ children }: { children: React.ReactNode }) {
-  const [initialized, setInitialized] = useState(false);
-  
+  // State declarations - always declare hooks at the top level
   const [mounted, setMounted] = useState(false);
+  const [initialized, setInitialized] = useState(false);
+  const [hasApiKey, setHasApiKey] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Initialize on client side only
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Don't render anything until mounted on client
-  if (!mounted) {
-    return null;
-  }
-
-  // Check if API key exists (client-side only)
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
-  if (!apiKey) {
-    console.error('Google Maps API key is not set in environment variables');
-    return (
-      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
-        <div className="text-center text-red-500">
-          <p>Google Maps configuration error</p>
-          <p className="text-sm mt-2">Missing API key</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Load Google Maps script (client-side only)
+  // Load script hook - must be called unconditionally
   const { isLoaded, loadError } = useLoadScript({
-    googleMapsApiKey: apiKey,
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
     version: "weekly",
     region: 'SL',
@@ -57,33 +35,57 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     preventGoogleFontsLoading: true
   });
 
-  // Handle initialization and loading status
+  // Check API key and set mounted state
   useEffect(() => {
-    const status = { isLoaded, loadError, initialized };
-    
-    if (isLoaded && !initialized) {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) {
+      console.error('Google Maps API key is not set in environment variables');
+      setError('Google Maps configuration error: Missing API key');
+    } else {
+      setHasApiKey(true);
+    }
+    setMounted(true);
+  }, []);
+
+  // Handle Maps initialization
+  useEffect(() => {
+    if (mounted && isLoaded && !initialized) {
       console.log('Google Maps initialized successfully');
       setInitialized(true);
     }
-    
-    if (loadError) {
+  }, [mounted, isLoaded, initialized]);
+
+  // Handle load errors
+  useEffect(() => {
+    if (mounted && loadError) {
       console.error('Google Maps failed to load:', {
         error: loadError.message,
         name: loadError.name,
         stack: loadError.stack
       });
+      setError(loadError.message || 'Failed to load Google Maps');
     }
-  }, [isLoaded, loadError, initialized]);
+  }, [mounted, loadError]);
+
+  // Early return for client-side only
+  if (!mounted) {
+    return null;
+  }
+
+  // Handle error states
+  if (error) {
+    return <ErrorMessage message={error} />;
+  }
+
+  if (!hasApiKey) {
+    return <ErrorMessage message="Google Maps configuration error: Missing API key" />;
+  }
 
   if (!isLoaded) {
     return <Loading message="Loading Google Maps..." />;
   }
 
-  if (loadError) {
-    console.error('Error loading Google Maps:', loadError);
-    return <ErrorMessage message={loadError.message || 'Failed to load Google Maps'} />;
-  }
-
+  // Render the provider with children
   return (
     <GoogleMapsContext.Provider value={{ isLoaded, loadError }}>
       {children}
