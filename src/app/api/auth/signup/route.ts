@@ -31,20 +31,32 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: `Password must contain ${failed.message}` }, { status: 400 });
     }
 
+    console.log('Checking for existing user...');
     const existingUser = await findUserByEmail(email);
     if (existingUser) {
-      return NextResponse.json({ error: 'Email already in use' }, { status: 409 });
+      console.log('Email already registered:', email);
+      return NextResponse.json({ 
+        error: 'This email is already registered. Please login or use a different email address.',
+        code: 'EMAIL_EXISTS'
+      }, { status: 409 });
     }
 
     console.log('Creating user...');
     let newUser;
     try {
       newUser = await createUser(email, password, name);
-      console.log('User creation result:', { 
-        success: !!newUser, 
-        userId: newUser?.id,
-        userEmail: newUser?.email,
-        hasToken: !!newUser?.emailVerificationToken
+      if (!newUser) {
+        console.error('User creation failed - returned null');
+        return NextResponse.json({ 
+          error: 'Failed to create user account',
+          code: 'CREATE_FAILED'
+        }, { status: 500 });
+      }
+      
+      console.log('User created successfully:', { 
+        userId: newUser.id,
+        email: newUser.email,
+        hasToken: !!newUser.emailVerificationToken
       });
     } catch (error: any) {
       console.error('User creation error:', {

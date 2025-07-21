@@ -14,18 +14,25 @@ export default function GooglePrayerMap({ locations }: { locations: PrayerLocati
   useEffect(() => {
     if (!isLoaded || !window.google || !mapRef.current) return;
     
+    // Default to Sierra Leone center if no locations
+    const defaultCenter = { lat: 8.484, lng: -13.234 };
+    const center = locations.length > 0 ? locations[0] : defaultCenter;
+    
     const map = new window.google.maps.Map(mapRef.current, {
-      center: locations[0] || { lat: 8.484, lng: -13.234 },
-      zoom: 2,
+      center,
+      zoom: locations.length > 0 ? 2 : 6, // Closer zoom if no locations
     });
     
-    locations.forEach(loc => {
-      new window.google.maps.Marker({
-        position: { lat: loc.lat, lng: loc.lng },
-        map,
-        title: loc.label,
+    if (locations.length > 0) {
+      // Add markers only if we have locations
+      locations.forEach(loc => {
+        new window.google.maps.Marker({
+          position: { lat: loc.lat, lng: loc.lng },
+          map,
+          title: loc.label,
+        });
       });
-    });
+    }
   }, [locations, isLoaded]);
 
   if (loadError) return <div>Error loading map</div>;

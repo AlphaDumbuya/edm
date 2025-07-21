@@ -17,11 +17,20 @@ export interface AppUser {
 }
 
 export async function findUserByEmail(email: string): Promise<PrismaUser | null> {
+  if (!email) {
+    console.warn('findUserByEmail called with empty email');
+    return null;
+  }
+  
   try {
+    const normalizedEmail = email.toLowerCase().trim();
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { email: normalizedEmail },
     });
-    console.log('[findUserByEmail] User fetched from DB:', user);
+    console.log('[findUserByEmail] User search result:', { 
+      email: normalizedEmail, 
+      found: !!user 
+    });
     return user;
   } catch (error) {
     console.error('Error finding user by email:', error);
@@ -103,21 +112,39 @@ export async function getAllUsers(options: GetAllUsersOptions = {}): Promise<{
   }
 }
 
-export async function createUser(email: string, plainPassword_1: string, name?: string): Promise<PrismaUser | null> {
+export async function createUser(email: string, plainPassword: string, name?: string): Promise<PrismaUser | null> {
+  if (!email || !plainPassword) {
+    console.error('createUser called with missing required fields');
+    return null;
+  }
+
   try {
-    console.log('Starting user creation process for:', email);
+    const normalizedEmail = email.toLowerCase().trim();
+    console.log('Starting user creation process for:', normalizedEmail);
     
-    // No need to test connection explicitly - Prisma handles this
-    // Instead, wrap the operation in a transaction for atomicity
-    const result = await prisma.$transaction(async (tx) => {
-      const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
+    // Wrap everything in a transaction for atomicity
+    const user = await prisma.$transaction(async (tx) => {
+      // Double-check for existing user within transaction
+      const existing = await tx.user.findUnique({
+        where: { email: normalizedEmail },
+        select: { id: true }
+      });
+      
+      if (existing) {
+        throw new Error('EMAIL_EXISTS');
+      }
+
+      const hashedPassword = await bcrypt.hash(plainPassword, 10);
+      console.log('Password hashed successfully');
+      
       const emailVerificationToken = randomBytes(32).toString('hex');
+      console.log('Generated verification token');
       
       return tx.user.create({
         data: {
-          email,
+          email: normalizedEmail,
           hashedPassword,
-          name: name || null,
+          name: name?.trim() || null,
           emailVerified: false,
           emailVerificationToken,
         },
@@ -126,22 +153,13 @@ export async function createUser(email: string, plainPassword_1: string, name?: 
       maxWait: 10000, // 10s max wait time
       timeout: 15000, // 15s timeout
     });
-    
-    const hashedPassword = await bcrypt.hash(plainPassword_1, 10);
-    console.log('Password hashed successfully');
-    const emailVerificationToken = randomBytes(32).toString('hex');
-    console.log('Generated verification token');
-    
-    console.log('Attempting to create user in database...');
-    const user = await prisma.user.create({
-      data: {
-        email,
-        hashedPassword,
-        name: name || null,
-        emailVerified: false,
-        emailVerificationToken,
-      },
+
+    console.log('User created successfully:', {
+      id: user.id,
+      email: user.email,
+      hasToken: !!user.emailVerificationToken
     });
+    
     return user;
   } catch (error: any) {
     console.error('Error creating user:', {

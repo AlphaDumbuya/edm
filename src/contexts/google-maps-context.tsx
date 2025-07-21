@@ -20,14 +20,18 @@ const libraries: LoadScriptProps['libraries'] = ['places'];
 export function GoogleMapsProvider({ children }: { children: React.ReactNode }) {
   const [initialized, setInitialized] = useState(false);
   
-  console.log('API Key:', process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY); // Debug log
-  
-  // Debug logs for environment variable
-  useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
-      console.error('Google Maps API key is not set in environment variables');
-    }
-  }, []);
+  // Check if API key exists
+  if (!process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY) {
+    console.error('Google Maps API key is not set in environment variables');
+    return (
+      <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
+        <div className="text-center text-red-500">
+          <p>Google Maps configuration error</p>
+          <p className="text-sm mt-2">Missing API key</p>
+        </div>
+      </div>
+    );
+  }
 
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
@@ -45,8 +49,7 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     }
   }, [isLoaded, initialized]);
 
-  if (!initialized && !isLoaded) {
-    console.log('Maps not initialized yet'); // Debug log
+  if (!isLoaded) {
     return (
       <div className="flex items-center justify-center h-[400px] bg-gray-100 rounded-lg">
         <div className="text-center">

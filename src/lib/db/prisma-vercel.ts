@@ -3,10 +3,12 @@ import { PrismaClient } from '@prisma/client';
 function getConnectionParams() {
   // Base configuration
   const params = new URLSearchParams({
-    'connect_timeout': '30',
-    'pool_timeout': '30',
-    'socket_timeout': '30',
+    'connect_timeout': '15',
+    'pool_timeout': '15',
+    'socket_timeout': '15',
     'statement_cache_size': '0', // Disable statement cache to prevent memory issues
+    'sslmode': 'require', // Force SSL
+    'application_name': 'edm_vercel',
   });
 
   // Vercel-specific optimizations
@@ -23,11 +25,25 @@ function getConnectionParams() {
 }
 
 function createPrismaClient() {
+  // Use DIRECT_DATABASE_URL in production for better reliability
+  const connectionString = process.env.NODE_ENV === 'production'
+    ? process.env.DIRECT_DATABASE_URL
+    : process.env.DATABASE_URL;
+
   // Get base URL without query parameters
-  const baseUrl = process.env.DATABASE_URL?.split('?')[0];
+  const baseUrl = connectionString?.split('?')[0];
   if (!baseUrl) {
-    throw new Error('DATABASE_URL is not set');
+    throw new Error('Database URL is not set');
   }
+
+  // Log environment info (masked)
+  console.log('Database initialization:', {
+    env: process.env.NODE_ENV,
+    isVercel: process.env.VERCEL === '1',
+    region: process.env.VERCEL_REGION,
+    hasDirectUrl: !!process.env.DIRECT_DATABASE_URL,
+    hasUrl: !!process.env.DATABASE_URL,
+  });
 
   // Add our optimized parameters
   const params = getConnectionParams();

@@ -15,19 +15,31 @@ const prismaClientSingleton = () => {
     throw new Error('Database connection URL is not set');
   }
 
-  // Convert postgresql:// to postgres:// if needed
-  const normalizedUrl = connectionUrl.replace(/^postgresql:\/\//, 'postgres://');
+  // Parse the connection URL to add necessary parameters
+  const url = new URL(connectionUrl);
+  
+  // Add connection parameters if they don't exist
+  const params = new URLSearchParams(url.search);
+  if (!params.has('connect_timeout')) params.set('connect_timeout', '20');
+  if (!params.has('pool_timeout')) params.set('pool_timeout', '20');
+  if (!params.has('socket_timeout')) params.set('socket_timeout', '20');
+  if (!params.has('application_name')) params.set('application_name', 'edm_app');
+  if (!params.has('max_connections')) params.set('max_connections', '5');
+  
+  // Reconstruct the URL with updated parameters
+  url.search = params.toString();
+  const enhancedUrl = url.toString();
 
   console.log('Initializing Prisma Client:', { 
-    url: normalizedUrl.replace(/\/\/.*:.*@/, '//****:****@'),
+    url: enhancedUrl.replace(/\/\/.*:.*@/, '//****:****@'),
     env: process.env.NODE_ENV,
-    isDirect: !normalizedUrl.includes('-pooler')
+    isDirect: !enhancedUrl.includes('-pooler')
   });
     
   const prisma = new PrismaClient({
     datasources: {
       db: {
-        url: normalizedUrl
+        url: enhancedUrl
       },
     },
     log: ['query', 'error', 'warn'],
@@ -44,10 +56,23 @@ const prismaClientSingleton = () => {
         return await operation();
       } catch (error: any) {
         lastError = error;
+        console.error(`Attempt ${attempt} failed:`, {
+          code: error.code,
+          message: error.message,
+          target: error?.meta?.target
+        });
         
-        // Check if this is a connection error that we should retry
-        const shouldRetry = error.code === 'P1001' || // Connection error
-                           error.code === 'P1002' || // Connection timed out
+        // Determine if we should retry based on error type
+        const shouldRetry = 
+          error.code === 'P1001' || // Authentication failed
+          error.code === 'P1002' || // Connection timed out
+          error.code === 'P1008' || // Operations timeout
+          error.code === 'P1017' || // Server closed the connection
+          error.code === 'P2024' || // Connection pool timeout
+          error.name === 'PrismaClientInitializationError' ||
+          error.message?.includes('timeout') ||
+          error.message?.includes('Connection refused') ||
+          error.message?.includes('Connection terminated')
                            error.code === 'P1017' || // Server closed the connection
                            error.code === 'P1024' || // Connection pool timeout
                            error.code === 'P2023' || // Inconsistent column data
