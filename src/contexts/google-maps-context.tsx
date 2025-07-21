@@ -33,6 +33,7 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     );
   }
 
+  // Load Google Maps script
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || '',
     libraries,
@@ -41,6 +42,16 @@ export function GoogleMapsProvider({ children }: { children: React.ReactNode }) 
     language: 'en',
     preventGoogleFontsLoading: true
   });
+
+  // Log loading status
+  useEffect(() => {
+    if (isLoaded) {
+      console.log('Google Maps script loaded successfully');
+    }
+    if (loadError) {
+      console.error('Google Maps script failed to load:', loadError);
+    }
+  }, [isLoaded, loadError]);
 
   useEffect(() => {
     console.log('Maps loading status:', { isLoaded, loadError }); // Debug log

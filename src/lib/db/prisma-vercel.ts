@@ -3,23 +3,32 @@ import { PrismaClient } from '@prisma/client';
 function getConnectionParams() {
   // Base configuration
   const params = new URLSearchParams({
-    'connect_timeout': '15',
-    'pool_timeout': '15',
-    'socket_timeout': '15',
+    'connect_timeout': '20',
+    'pool_timeout': '10',
+    'socket_timeout': '20',
     'statement_cache_size': '0', // Disable statement cache to prevent memory issues
     'sslmode': 'require', // Force SSL
     'application_name': 'edm_vercel',
+    'options': '--cluster=ep-green-darkness-abzix6ii', // Add cluster option for Neon
+    'schema': 'public', // Ensure correct schema
   });
 
   // Vercel-specific optimizations
   if (process.env.VERCEL === '1') {
     params.set('pgbouncer', 'true'); // Enable pgBouncer mode
     params.set('connection_limit', '1'); // Limit connections in serverless
-    params.set('pool_timeout', '20'); // Shorter pool timeout for serverless
+    params.set('pool_timeout', '10'); // Shorter pool timeout for serverless
+    params.set('application_name', 'edm_vercel_prod');
   } else {
-    params.set('max_connections', '5'); // More connections for non-serverless
-    params.set('pool_timeout', '30'); // Longer pool timeout for non-serverless
+    params.set('max_connections', '3'); // Fewer connections for non-serverless
+    params.set('pool_timeout', '20'); // Longer pool timeout for non-serverless
+    params.set('application_name', 'edm_vercel_dev');
   }
+  
+  // Add SSL parameters for Neon
+  params.set('sslcert', 'neondb_root_cert'); // Neon's root certificate
+  params.set('ssl', 'true');
+  params.set('sslmode', 'verify-full');
 
   return params;
 }

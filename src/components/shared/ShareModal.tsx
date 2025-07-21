@@ -24,9 +24,21 @@ export default function ShareModal({ url, title, description }: ShareModalProps)
   const [canShare, setCanShare] = React.useState(false);
 
   useEffect(() => {
-    // Check for Web Share API support
-    setCanShare(typeof navigator !== 'undefined' && 'share' in navigator);
+    // Check for Web Share API support in a safe way
+    if (typeof window !== 'undefined' && typeof navigator !== 'undefined') {
+      setCanShare('share' in navigator);
+    }
   }, []);
+
+  // Handle any cleanup when component unmounts
+  useEffect(() => {
+    return () => {
+      // Cleanup any timeouts or event listeners
+      if (copied) {
+        setCopied(false);
+      }
+    };
+  }, [copied]);
 
   useEffect(() => {
     if (copied) {
