@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma-vercel';
 import { volunteerConfirmationEmail } from '@/emails/volunteer-confirmation';
 import { sendMail } from '@/lib/email/sendMail';
 
@@ -18,7 +18,8 @@ export async function POST(req: NextRequest) {
     }
     console.log('Validating database connection...');
     try {
-      await prisma.$queryRaw`SELECT 1`;
+      // Test connection by attempting to connect
+      await prisma.$connect();
       console.log('Database connection successful');
     } catch (dbError) {
       console.error('Database connection failed:', dbError);

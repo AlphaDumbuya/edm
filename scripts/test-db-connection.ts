@@ -1,7 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import prisma from '../src/lib/db/prisma-vercel';
 
 async function testConnection() {
-  const prisma = new PrismaClient();
 
   try {
     console.log('Testing database connection...');

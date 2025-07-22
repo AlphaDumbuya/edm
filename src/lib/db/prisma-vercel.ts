@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient as PrismaClientType } from '.prisma/client';
 
 function getConnectionParams() {
   // Base configuration
@@ -9,7 +9,6 @@ function getConnectionParams() {
     'statement_cache_size': '0', // Disable statement cache to prevent memory issues
     'sslmode': 'require', // Force SSL
     'application_name': 'edm_vercel',
-    'options': '--cluster=ep-green-darkness-abzix6ii', // Add cluster option for Neon
     'schema': 'public', // Ensure correct schema
   });
 
@@ -26,10 +25,14 @@ function getConnectionParams() {
   }
   
   // Add SSL parameters for Neon
-  params.set('sslcert', 'neondb_root_cert'); // Neon's root certificate
+  // In development, we'll use a less strict SSL mode
+  if (process.env.NODE_ENV === 'development') {
+    params.set('sslmode', 'prefer');
+  } else {
+    params.set('sslmode', 'verify-full');
+  }
+  
   params.set('ssl', 'true');
-  params.set('sslmode', 'verify-full');
-
   return params;
 }
 
@@ -59,7 +62,7 @@ function createPrismaClient() {
   const url = `${baseUrl}?${params.toString()}`;
 
   // Create client with logging in development
-  const prisma = new PrismaClient({
+  const prisma = new PrismaClientType({
     log: process.env.NODE_ENV === 'development' 
       ? ['query', 'error', 'warn']
       : ['error'],
