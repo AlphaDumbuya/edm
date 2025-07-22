@@ -151,16 +151,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         data = JSON.parse(responseText);
       } catch (jsonError) {
         const errorMsg = `Login failed: Server returned an invalid response.`;
+        console.error('Login parse error:', { responseText, error: jsonError });
         setError(errorMsg);
         toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
         setLoading(false);
         return { user: null, error: errorMsg };
       }
 
+      console.log('Login response:', { status: response.status, data });
+
       if (!response.ok) {
         const errorMsg = data.error || `Login failed: ${response.statusText}`;
         setError(errorMsg);
-        toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
+        
+        // Handle specific error cases
+        if (response.status === 403 && errorMsg.includes('verify')) {
+          toast({ 
+            title: 'Email Not Verified', 
+            description: 'Please check your email and verify your account to login.',
+            variant: 'destructive'
+          });
+          router.push('/auth/verify?sent=1');
+        } else if (response.status === 401) {
+          toast({ 
+            title: 'Invalid Credentials', 
+            description: 'Please check your email and password.',
+            variant: 'destructive'
+          });
+        } else {
+          toast({ title: 'Login Failed', description: errorMsg, variant: 'destructive' });
+        }
+        
         setLoading(false);
         return { user: null, error: errorMsg };
       }
