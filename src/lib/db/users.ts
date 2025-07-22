@@ -42,6 +42,7 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
         hashedPassword: true,
         emailVerified: true,
         emailVerificationToken: true,
+        role: true,
       }
     });
 
@@ -231,20 +232,75 @@ export async function deleteUser(userId: string): Promise<PrismaUser | null> {
   }
 }
 
-export async function updateUser(userId: string, data: { name?: string | null; email?: string; role?: string }): Promise<PrismaUser | null> {
+export async function updateUser(userId: string, data: { name?: string | null; email?: string; role?: string; emailVerified?: boolean }): Promise<PrismaUser | null> {
   try {
     const updateData: any = { ...data };
     if (updateData.role && typeof updateData.role === 'string') {
       // Ensure role is a valid enum value
       updateData.role = updateData.role.toUpperCase();
     }
+    
     const updatedUser = await prisma.user.update({
       where: { id: userId },
       data: updateData,
     });
+    
+    console.log('User updated:', {
+      id: updatedUser.id,
+      emailVerified: updatedUser.emailVerified,
+      role: updatedUser.role,
+      updatedFields: Object.keys(data)
+    });
+    
     return updatedUser;
   } catch (error) {
     console.error('Error updating user:', error);
+    return null;
+  }
+}
+
+export async function setEmailVerified(userId: string, verified: boolean = true): Promise<PrismaUser | null> {
+  try {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { 
+        emailVerified: verified,
+        ...(verified ? { emailVerificationToken: null } : {})
+      }
+    });
+    console.log('Email verification status updated:', {
+      userId,
+      email: user.email,
+      verified,
+      success: true
+    });
+    return user;
+  } catch (error) {
+    console.error('Error updating email verification status:', error);
+    return null;
+  }
+}
+
+export async function setUserRole(userId: string, role: string): Promise<PrismaUser | null> {
+  try {
+    const normalizedRole = role.toUpperCase();
+    console.log('Setting user role:', { userId, role: normalizedRole });
+    
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { role: normalizedRole }
+    });
+    
+    console.log('User role updated:', {
+      userId,
+      email: user.email,
+      role: user.role,
+      success: true
+    });
+    
+    return user;
+  } catch (error) {
+    console.error('Error updating user role:', error);
     return null;
   }
 }

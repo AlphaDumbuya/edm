@@ -69,18 +69,26 @@ export default function SignupForm() {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
-    setIsLoading(true);
-    const { error } = await signUp(data.email, data.password, data.name);
-    setIsLoading(false);
-
-    if (error) {
+    try {
+      setIsLoading(true);
+      const { error } = await signUp(data.email, data.password, data.name);
+      if (error) {
+        toast({
+          title: 'Signup Failed',
+          description: error,
+          variant: 'destructive',
+        });
+      }
+      // Auth context handles success toast and redirect
+    } catch (err: any) {
       toast({
         title: 'Signup Failed',
-        description: error,
+        description: err.message || 'An unexpected error occurred',
         variant: 'destructive',
       });
-    } 
-    // No redirect here; context handles it
+    } finally {
+      setIsLoading(false);
+    }
  };
 
   const password = form.watch('password');

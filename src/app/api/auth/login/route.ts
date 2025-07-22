@@ -15,6 +15,13 @@ export async function POST(req: NextRequest) {
     }
 
     const user = await findUserByEmail(email);
+    console.log('Login attempt:', {
+      email,
+      userFound: !!user,
+      emailVerified: user?.emailVerified,
+      hasPassword: !!user?.hashedPassword
+    });
+
     if (!user) {
       return NextResponse.json({ error: 'Invalid email.' }, { status: 401 });
     }
@@ -30,27 +37,47 @@ export async function POST(req: NextRequest) {
     }
 
     if (!user.emailVerified) {
+      console.log('Login blocked - Email not verified:', {
+        email,
+        emailVerified: user.emailVerified,
+        hasVerificationToken: !!user.emailVerificationToken
+      });
       return NextResponse.json({ error: 'Please verify your email before logging in.' }, { status: 403 });
     }
 
     // Password is valid, create session
+    console.log('Creating session for verified user:', {
+      email: user.email,
+      id: user.id,
+      role: user.role,
+      emailVerified: user.emailVerified
+    });
+
     const sessionPayload = {
       userId: user.id,
       email: user.email,
       name: user.name,
-      role: user.role, // Include the user's role
-      // emailVerified: user.emailVerified, // Include if you have email verification
+      role: user.role,
+      emailVerified: user.emailVerified
     };
 
-    const encryptedSession = await encrypt(sessionPayload);
+    try {
+      const encryptedSession = await encrypt(sessionPayload);
+      console.log('Session encrypted successfully');
 
-    (await cookies()).set('session', encryptedSession, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: SESSION_MAX_AGE,
-      path: '/',
-      sameSite: 'lax',
-    });
+      const cookieStore = await cookies();
+      cookieStore.set('session', encryptedSession, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: SESSION_MAX_AGE,
+        path: '/',
+        sameSite: 'lax',
+      });
+      console.log('Session cookie set successfully');
+    } catch (err) {
+      console.error('Error setting session:', err);
+      throw err;
+    }
 
     const { hashedPassword, ...userWithoutPassword } = user;
 
