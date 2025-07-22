@@ -43,7 +43,7 @@ function createPrismaClient() {
     : process.env.DATABASE_URL;
 
   // Handle Prisma Accelerate URL specially as it doesn't need additional parameters
-  if (connectionString?.startsWith('prisma://')) {
+  if (connectionString?.startsWith('prisma://') || connectionString?.startsWith('prisma+postgres://')) {
     return new PrismaClientType({
       log: ['error'],
       datasources: {
@@ -61,6 +61,12 @@ function createPrismaClient() {
   }
 
   // Log environment info (masked)
+  const urlType = connectionString?.startsWith('prisma://') || connectionString?.startsWith('prisma+postgres://')
+    ? 'accelerate'
+    : connectionString?.includes('pooler')
+    ? 'pooled'
+    : 'direct';
+
   console.log('Database initialization:', {
     env: process.env.NODE_ENV,
     isVercel: process.env.VERCEL === '1',
@@ -68,7 +74,9 @@ function createPrismaClient() {
     hasDirectUrl: !!process.env.DIRECT_DATABASE_URL,
     hasUrl: !!process.env.DATABASE_URL,
     hasAccelerateUrl: !!process.env.PRISMA_ACCELERATE_URL,
-    urlType: connectionString?.startsWith('prisma://') ? 'accelerate' : 'postgres'
+    urlType,
+    // Log a safe version of the connection string for debugging
+    connectionPrefix: connectionString?.split('://')[0],
   });
 
   // Add our optimized parameters for PostgreSQL connections
