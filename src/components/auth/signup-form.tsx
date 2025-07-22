@@ -69,23 +69,20 @@ export default function SignupForm() {
   });
 
   const onSubmit = async (data: SignupFormValues) => {
+    if (isLoading) return; // Prevent double submission
+    
     try {
       setIsLoading(true);
       const { error } = await signUp(data.email, data.password, data.name);
+      
+      // Let auth context handle both success and error cases
       if (error) {
-        toast({
-          title: 'Signup Failed',
-          description: error,
-          variant: 'destructive',
-        });
+        // Auth context already shows the toast, no need to show it here
+        form.reset(); // Reset form on error
       }
-      // Auth context handles success toast and redirect
     } catch (err: any) {
-      toast({
-        title: 'Signup Failed',
-        description: err.message || 'An unexpected error occurred',
-        variant: 'destructive',
-      });
+      // This catch block is for unexpected errors not handled by signUp
+      console.error('Unexpected signup error:', err);
     } finally {
       setIsLoading(false);
     }

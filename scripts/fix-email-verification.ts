@@ -1,5 +1,4 @@
 // scripts/fix-email-verification.ts
-import { PrismaClient } from '@prisma/client';
 import { findUserByEmail, setEmailVerified } from '../src/lib/db/users';
 
 async function main() {

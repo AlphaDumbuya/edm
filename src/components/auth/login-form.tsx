@@ -49,21 +49,47 @@ export default function LoginForm() {
     setIsLoading(false);
 
     if (error) {
-      if (error.toLowerCase().includes('password')) {
+      if (error.toLowerCase().includes('verify')) {
+        setLoginError({ email: true });
+        setLoginErrorMsg('Please verify your email before logging in.');
+        toast({
+          title: 'Email Not Verified',
+          description: (
+            <div className="space-y-2">
+              <p>Your email needs to be verified before logging in.</p>
+              <Button variant="outline" size="sm" asChild className="w-full mt-2">
+                <Link href="/auth/verify">Resend Verification Email</Link>
+              </Button>
+            </div>
+          ),
+          variant: 'destructive',
+          duration: 10000,
+        });
+      } else if (error.toLowerCase().includes('password')) {
         setLoginError({ password: true });
         setLoginErrorMsg('Invalid password.');
+        toast({
+          title: 'Login Failed',
+          description: 'Invalid password.',
+          variant: 'destructive',
+        });
       } else if (error.toLowerCase().includes('email')) {
         setLoginError({ email: true });
         setLoginErrorMsg('Invalid email address.');
+        toast({
+          title: 'Login Failed',
+          description: 'Invalid email address.',
+          variant: 'destructive',
+        });
       } else {
         setLoginError({ email: true, password: true });
         setLoginErrorMsg('Invalid email or password.');
+        toast({
+          title: 'Login Failed',
+          description: 'Invalid email or password.',
+          variant: 'destructive',
+        });
       }
-      toast({
-        title: 'Login Failed',
-        description: 'Invalid email or password.',
-        variant: 'destructive',
-      });
     } else {
       toast({
         title: 'Login Successful',
