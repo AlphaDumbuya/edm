@@ -32,7 +32,21 @@ export async function POST(req: NextRequest) {
     }
 
     console.log('Checking for existing user...');
-    const existingUser = await findUserByEmail(email);
+    let existingUser;
+    try {
+      existingUser = await findUserByEmail(email);
+    } catch (error: any) {
+      console.error('Error checking for existing user:', {
+        error: error.message,
+        code: error.code,
+        meta: error.meta
+      });
+      return NextResponse.json({ 
+        error: 'Unable to verify email availability. Please try again.',
+        code: 'DATABASE_ERROR'
+      }, { status: 500 });
+    }
+
     if (existingUser) {
       console.log('Email already registered:', email);
       return NextResponse.json({ 

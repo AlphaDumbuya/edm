@@ -2,10 +2,9 @@
 // src/lib/db/users.ts
 import prisma from './prisma-client';
 import bcrypt from 'bcryptjs';
-import { Prisma } from '@prisma/client';
 import { randomBytes } from 'crypto';
-// @ts-ignore
-type PrismaUser = Prisma.User; // Import User type from Prisma namespace
+// Use the type from the Prisma client instance
+type PrismaUser = typeof prisma.user extends { findUnique: (args: any) => Promise<infer T> } ? T : never;
 
 // @ts-ignore
 // Define a slightly simplified User type for application use if needed, or use PrismaUser directly
@@ -23,18 +22,44 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
   }
   
   try {
+    // Test connection first
+    console.log('Testing database connection...');
+    await prisma.$connect();
+    console.log('Database connection successful');
+
     const normalizedEmail = email.toLowerCase().trim();
+    console.log('Looking up user with email:', normalizedEmail);
+    
+    // Add explicit select to minimize data transfer
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true,
+      }
     });
+
     console.log('[findUserByEmail] User search result:', { 
       email: normalizedEmail, 
-      found: !!user 
+      found: !!user,
+      userData: user ? {
+        id: user.id,
+        createdAt: user.createdAt,
+      } : null
     });
+
     return user;
-  } catch (error) {
-    console.error('Error finding user by email:', error);
-    return null;
+  } catch (error: any) {
+    console.error('Error finding user by email:', {
+      error: error.message,
+      code: error.code,
+      meta: error.meta,
+      stack: error.stack?.split('\n').slice(0, 3)
+    });
+    // Re-throw the error to handle it in the signup route
+    throw error;
   }
 }
 
@@ -123,7 +148,7 @@ export async function createUser(email: string, plainPassword: string, name?: st
     console.log('Starting user creation process for:', normalizedEmail);
     
     // Wrap everything in a transaction for atomicity
-    const user = await prisma.$transaction(async (tx) => {
+    const user = await prisma.$transaction(async (tx: { user: { findUnique: (arg0: { where: { email: string; }; select: { id: boolean; }; }) => any; create: (arg0: { data: { email: string; hashedPassword: string; name: string | null; emailVerified: boolean; emailVerificationToken: string; }; }) => any; }; }) => {
       // Double-check for existing user within transaction
       const existing = await tx.user.findUnique({
         where: { email: normalizedEmail },
