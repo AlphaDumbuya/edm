@@ -82,35 +82,55 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         body: JSON.stringify({ email, password: password_1, name })
       });
 
-      if (response.redirected || (response.status >= 300 && response.status < 400)) {
-        setUser(null);
-        result = { user: null, error: null };
-      } else if (!response.ok) {
-        const data = await response.json();
+      const data = await response.json();
+
+      if (!response.ok) {
         const errorMessage = data.error || `Signup failed: ${response.statusText}`;
+        console.log('Signup failed:', { status: response.status, error: errorMessage });
         setError(errorMessage);
-        return { user: null, error: errorMessage };
+        result = { user: null, error: errorMessage };
+        
+        // Show toast for specific errors
+        if (response.status === 409) {
+          toast({ 
+            title: 'Email Already Registered', 
+            description: 'Please login or use a different email address.',
+            variant: 'destructive'
+          });
+        } else {
+          toast({ 
+            title: 'Signup Failed', 
+            description: errorMessage,
+            variant: 'destructive'
+          });
+        }
       } else {
-        const data = await response.json();
-        console.log('Successful signup response data:', data);
-        console.log('User state set:', data.user);
+        console.log('Signup successful:', data);
         setUser(data.user || null);
         result = { user: data.user || null, error: null };
+        
+        // Only show success toast and redirect if actually successful
+        toast({ 
+          title: 'Signup Successful', 
+          description: 'Please check your email and verify your account before logging in.'
+        });
+        router.push('/auth/verify?sent=1');
       }
 
     } catch (e: any) {
       const errorMessage = e.message || 'An error occurred during signup.';
+      console.error('Signup error:', e);
       setError(errorMessage);
-      toast({ title: 'Signup Failed', description: errorMessage, variant: 'destructive' });
       result = { user: null, error: errorMessage };
+      toast({ 
+        title: 'Signup Failed', 
+        description: errorMessage,
+        variant: 'destructive'
+      });
     } finally {
       setLoading(false);
-      if (result.error === null) {
-        console.log('Signup successful, preparing redirect and toast'); // Add this line
-        toast({ title: 'Signup Successful', description: 'Please check your email and verify your account before logging in.' });
-        router.push('/auth/verify?sent=1');
-      }
     }
+    
     return result;
   };
 
