@@ -1,10 +1,11 @@
 /// <reference types="@prisma/client" />
 // src/lib/db/users.ts
-import prisma from './prisma-client';
+import prisma from './prisma-vercel';
 import bcrypt from 'bcryptjs';
 import { randomBytes } from 'crypto';
-// Use the type from the Prisma client instance
-type PrismaUser = typeof prisma.user extends { findUnique: (args: any) => Promise<infer T> } ? T : never;
+import { PrismaClient } from '.prisma/client';
+
+type PrismaUser = NonNullable<Awaited<ReturnType<PrismaClient['user']['findUnique']>>>;
 
 // @ts-ignore
 // Define a slightly simplified User type for application use if needed, or use PrismaUser directly
@@ -30,7 +31,7 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
     const normalizedEmail = email.toLowerCase().trim();
     console.log('Looking up user with email:', normalizedEmail);
     
-    // Add explicit select to minimize data transfer
+    // Add explicit select to include necessary fields
     const user = await prisma.user.findUnique({
       where: { email: normalizedEmail },
       select: {
@@ -38,6 +39,9 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
         email: true,
         name: true,
         createdAt: true,
+        hashedPassword: true,
+        emailVerified: true,
+        emailVerificationToken: true,
       }
     });
 
@@ -47,6 +51,8 @@ export async function findUserByEmail(email: string): Promise<PrismaUser | null>
       userData: user ? {
         id: user.id,
         createdAt: user.createdAt,
+        emailVerified: user.emailVerified,
+        hasPassword: !!user.hashedPassword
       } : null
     });
 
