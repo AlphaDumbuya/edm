@@ -37,12 +37,24 @@ function getConnectionParams() {
 }
 
 function createPrismaClient() {
-  // Use DIRECT_DATABASE_URL in production for better reliability
+  // In production, use Prisma Accelerate URL if available, then fallback to DIRECT_URL, then DATABASE_URL
   const connectionString = process.env.NODE_ENV === 'production'
-    ? process.env.DIRECT_DATABASE_URL
+    ? process.env.PRISMA_ACCELERATE_URL || process.env.DIRECT_DATABASE_URL || process.env.DATABASE_URL
     : process.env.DATABASE_URL;
 
-  // Get base URL without query parameters
+  // Handle Prisma Accelerate URL specially as it doesn't need additional parameters
+  if (connectionString?.startsWith('prisma://')) {
+    return new PrismaClientType({
+      log: ['error'],
+      datasources: {
+        db: {
+          url: connectionString,
+        },
+      },
+    });
+  }
+
+  // For regular database URLs, get base URL without query parameters
   const baseUrl = connectionString?.split('?')[0];
   if (!baseUrl) {
     throw new Error('Database URL is not set');
@@ -55,9 +67,11 @@ function createPrismaClient() {
     region: process.env.VERCEL_REGION,
     hasDirectUrl: !!process.env.DIRECT_DATABASE_URL,
     hasUrl: !!process.env.DATABASE_URL,
+    hasAccelerateUrl: !!process.env.PRISMA_ACCELERATE_URL,
+    urlType: connectionString?.startsWith('prisma://') ? 'accelerate' : 'postgres'
   });
 
-  // Add our optimized parameters
+  // Add our optimized parameters for PostgreSQL connections
   const params = getConnectionParams();
   const url = `${baseUrl}?${params.toString()}`;
 

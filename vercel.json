@@ -1,13 +1,18 @@
 {
   "version": 2,
   "framework": "nextjs",
-  "buildCommand": "npm install && npx prisma generate && next build",
+  "buildCommand": "npm install && npx prisma generate --no-engine && next build",
   "outputDirectory": ".next",
   "regions": ["sin1"],
   "functions": {
     "app/api/**/*.ts": {
       "memory": 1024,
       "maxDuration": 30
-}
-}
+    }
+  },
+  "build": {
+    "env": {
+      "PRISMA_GENERATE_DATAPROXY": "true"
+    }
+  }
 }
