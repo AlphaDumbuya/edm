@@ -14,10 +14,17 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { type, title, imageUrl, videoUrl, date } = body;
+    const {
+      type, title, imageUrl, videoUrl, date,
+      description, category, altText, location, photographer, eventName
+    } = body;
+    // Always set published true for new uploads
+    const published = true;
     if (!type || !title || (type === 'photo' && !imageUrl) || (type === 'video' && !videoUrl)) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+    // Store extra fields in meta JSON
+    const meta = { description, category, altText, location, photographer, eventName };
     const media = await prisma.media.create({
       data: {
         type,
@@ -25,6 +32,8 @@ export async function POST(req: NextRequest) {
         imageUrl: type === 'photo' ? imageUrl : null,
         videoUrl: type === 'video' ? videoUrl : null,
         date: date ? new Date(date) : new Date(),
+        published,
+        meta,
       },
     });
     return NextResponse.json(media, { status: 201 });

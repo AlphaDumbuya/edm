@@ -21,10 +21,10 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
       console.log("Upload complete for userId:", metadata.tempUserId);
-      console.log("file url", file.url);
+      console.log("file ufsUrl", file.ufsUrl);
 
       // !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-      return { uploadedBy: metadata.tempUserId, fileUrl: file.url };
+      return { uploadedBy: metadata.tempUserId, ufsUrl: file.ufsUrl };
     }),
   
   // Example route for gallery images, allowing multiple files
@@ -34,8 +34,8 @@ export const ourFileRouter = {
       return { uploaderInfo: "gallery-upload" };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      console.log("Gallery image upload complete:", file.url);
-      return { uploadedBy: metadata.uploaderInfo, fileUrl: file.url };
+      console.log("Gallery image upload complete:", file.ufsUrl);
+      return { uploadedBy: metadata.uploaderInfo, ufsUrl: file.ufsUrl };
     }),
 
 } satisfies FileRouter;

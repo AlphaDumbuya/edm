@@ -4,7 +4,7 @@ import { useRef, useEffect } from 'react';
 import { useState } from 'react';
 import Link from 'next/link'; // Keep Link
 import { usePathname, } from 'next/navigation';
-import { Settings, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
+import { Settings, LogOut, LayoutDashboard, UserCircle, Home } from 'lucide-react';
 import { Button, buttonVariants, } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/contexts/auth-context';
@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { MenuIcon, XIcon } from 'lucide-react'; // Import icons for the toggle button
 
 const navItems = [
-  { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
+  { href: '/dashboard', label: 'Dashboard', icon: Home },
   { href: '/dashboard/profile', label: 'Profile', icon: UserCircle },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings },
   { href: '/admin', label: 'Admin Dashboard', icon: LayoutDashboard },
@@ -98,8 +98,8 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
           </button>
         </div>
         <div className="text-center py-4">
-          <Avatar className="h-20 w-20 mx-auto mb-2 border-2 border-primary">
-            <AvatarImage src={user?.photoURL || undefined} alt={user?.name || user?.email || 'User'} />
+          <Avatar className="h-12 w-12 mx-auto mb-2 border-2 border-primary">
+            <AvatarImage src={user?.image || user?.photoURL || undefined} alt={user?.name || user?.email || 'User'} />
             <AvatarFallback>{user ? getInitials(user.name, user.email) : 'U'}</AvatarFallback>
           </Avatar>
           <h2 className="text-lg font-semibold text-sidebar-foreground truncate">{user?.name || user?.email || 'User'}</h2>
@@ -110,11 +110,6 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
             {filteredNavItems.map(item => (
               <li key={item.href} className="cursor-pointer">
                 <Link
-                  onClick={() => {
-                    if (window.innerWidth < 1024) {
-                      setIsOpen(false);
-                    }
-                  }}
                   href={item.href}
                   className={cn(
                     buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
@@ -123,7 +118,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
                       ? 'bg-primary text-white shadow-md'
                       : 'hover:bg-muted hover:text-primary text-sidebar-foreground'
                   )}
-                  legacyBehavior>
+                >
                   <span className="flex items-center gap-2 cursor-pointer">
                     {item.icon && <item.icon className="h-5 w-5" />}
                     {item.label}
@@ -155,6 +150,7 @@ interface User {
   email?: string | null;
   name?: string | null;
   photoURL?: string | null;
+  image?: string | null;
   role?: string | null; // Add role property
   // Add any other fields you expect on the user object
 }

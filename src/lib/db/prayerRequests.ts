@@ -10,6 +10,7 @@ export interface GetAllPrayerRequestsOptions {
   orderBy?: {
     createdAt?: 'asc' | 'desc';
   };
+  published?: boolean; // Added published filter
 }
 
 export async function getAllPrayerRequests(options?: GetAllPrayerRequestsOptions) {
@@ -39,6 +40,10 @@ export async function getAllPrayerRequests(options?: GetAllPrayerRequestsOptions
 
     if (options?.category) {
       where.category = options.category;
+    }
+
+    if (typeof options?.published === 'boolean') {
+      where.published = options.published;
     }
 
     const [prayerRequests, totalCount] = await prisma.$transaction([
@@ -75,12 +80,12 @@ export async function createPrayerRequest(data: {
   body: string;
   authorName?: string;
   authorEmail?: string;
-  published?: boolean;
-  category?: string;
 }) {
   try {
     const newPrayerRequest = await prisma.prayerRequest.create({
-      data,
+      data: {
+        ...data
+      },
     });
     return newPrayerRequest;
   } catch (error) {

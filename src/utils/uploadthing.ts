@@ -1,12 +1,5 @@
-import { createUploadthing, type FileRouter } from "uploadthing/server";
+import { generateUploadButton, generateUploadDropzone } from "@uploadthing/react";
+import type { OurFileRouter } from "@/app/api/uploadthing/core";
 
-export const ourFileRouter = {
-  imageUploader: createUploadthing()
-    // @ts-ignore
-    .onUploadComplete(async ({ file }) => {
-      // handle the uploaded file here
-      return { url: file.url };
-    }),
-} satisfies FileRouter;
-
-export type OurFileRouter = typeof ourFileRouter;
+export const UploadButton = generateUploadButton<OurFileRouter>();
+export const UploadDropzone = generateUploadDropzone<OurFileRouter>();

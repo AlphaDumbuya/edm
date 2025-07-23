@@ -111,8 +111,8 @@ export default function OrganizationPartnershipPage() {
           We are eager to collaborate with organizations and businesses that share our vision for transforming communities in Sierra Leone and supporting our US-based initiatives.
         </p>
         <Link
-          href="mailto:orgpartnerships@edm.org?subject=Organizational/Business%20Partnership%20Inquiry"
-        >
+          href="/contact"
+          legacyBehavior>
           <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Connect with Our Team
           </Button>

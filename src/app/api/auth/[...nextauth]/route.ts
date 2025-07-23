@@ -5,6 +5,12 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 
 // Import your user finding and password verification functions
 import { findUserByEmail, verifyPassword } from '@/lib/db/users'; // Assuming these functions exist
+import { prisma } from '@/lib/db'; // Import prisma client
+
+// Import type definitions
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+import type { User as NextAuthUser } from "next-auth";
 
 // Define a type for the user object from your database, including sensitive fields
 interface DatabaseUser {
@@ -66,6 +72,16 @@ export const authOptions = {
     })
   ],
   secret: process.env.NEXTAUTH_SECRET, // Add secret
+  callbacks: {
+    async session({ session, token, user }: { session: Session; token: JWT; user: NextAuthUser }) {
+      if (token?.sub) session.user = { ...session.user, id: token.sub };
+      return session;
+    },
+    async jwt({ token, user }: { token: JWT; user?: NextAuthUser }) {
+      if (user) token.sub = user.id;
+      return token;
+    },
+  },
 };
 
 const handler = NextAuth(authOptions);

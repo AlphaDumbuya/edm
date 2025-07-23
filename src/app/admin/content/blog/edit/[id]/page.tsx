@@ -172,47 +172,47 @@ export default function EditBlogPostPage() {
   if (!blogPost) return <p>No blog post found.</p>;
 
   return (
-    <div className="container mx-auto py-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Edit Blog Post: {blogPost.title}
-      </h1>
+    <div className="container mx-auto py-8 sm:py-12 bg-gray-900 text-gray-100 rounded-lg shadow-lg max-w-2xl w-full md:max-w-3xl lg:max-w-4xl xl:max-w-5xl">
+      <h1 className="text-2xl font-bold mb-8 tracking-tight text-center">Edit Blog Post: {blogPost.title}</h1>
 
-      <form onSubmit={handleUpdate} className="space-y-4">
+      <form onSubmit={handleUpdate} className="space-y-6 w-full max-w-2xl mx-auto px-2 sm:px-4 md:px-8">
         {currentUserId && (
           <input type="hidden" name="userId" value={currentUserId} />
         )}
         <input type="hidden" name="blogPostId" value={blogPost.id} />
 
         <div>
-          <Label htmlFor="title">Title</Label>
+          <Label htmlFor="title" className="text-gray-200">Title</Label>
           <Input
             id="title"
             name="title"
             value={formData.title}
             onChange={handleChange}
+            className="input-white-icons mt-1 block w-full rounded-md border border-gray-700 bg-gray-800 text-gray-100 shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-3 py-2 placeholder-gray-400"
             required
           />
         </div>
 
         <div>
-          <Label htmlFor="slug">Slug</Label>
+          <Label htmlFor="slug" className="text-gray-200">Slug</Label>
           <Input
             id="slug"
             name="slug"
             value={formData.slug}
             onChange={handleChange}
+            className="input-white-icons mt-1 block w-full rounded-md border border-gray-700 bg-gray-800 text-gray-100 shadow-sm focus:border-primary focus:ring-primary sm:text-sm px-3 py-2 placeholder-gray-400"
             required
           />
         </div>
 
         <div>
-          <Label htmlFor="coverImage">Cover Image</Label>
+          <Label htmlFor="coverImage" className="text-gray-200">Cover Image</Label>
           <UploadButton imageUrl={formData.imageUrl} setImageUrl={handleImageUrlChange} />
         </div>
 
         <div>
-          <Label htmlFor="content">Content</Label>
-          <div className="border rounded-md p-2">
+          <Label htmlFor="content" className="text-gray-200">Content</Label>
+          <div className="mt-1 border border-gray-700 rounded-md shadow-sm bg-gray-800">
             {isMounted && (
               <TipTapEditor
                 value={formData.content}
@@ -222,21 +222,22 @@ export default function EditBlogPostPage() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center">
           <Checkbox
             id="published"
             name="published"
             checked={formData.published}
             disabled={session?.user?.role === 'EDITOR'}
             onCheckedChange={handleCheckboxChange}
+            className="border-gray-700 bg-gray-800 text-primary"
           />
-          <Label htmlFor="published">Published</Label>
+          <Label htmlFor="published" className="ml-2 text-gray-200">Published</Label>
         </div>
 
         <input type="hidden" name="content" value={formData.content} />
         <input type="hidden" name="imageUrl" value={formData.imageUrl || ''} />
 
-        <Button type="submit" onClick={() => toast({ title: 'Updating...', description: 'Updating blog post...', variant: 'default' })}>Update Blog Post</Button>
+        <Button type="submit" className="w-full flex justify-center py-2 px-4 border border-primary rounded-md shadow-sm text-sm font-medium text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary" onClick={() => toast({ title: 'Updating...', description: 'Updating blog post...', variant: 'default' })}>Update Blog Post</Button>
       </form>
     </div>
   );

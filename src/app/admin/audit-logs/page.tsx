@@ -1,140 +1,114 @@
-'use client';
-
-import { useEffect, useState, useCallback } from 'react';
-import { type AuditLog } from '@prisma/client';
-import { Button } from '@/components/ui/button';
-import { RefreshCw } from 'lucide-react';
+"use client";
+import { useState, useEffect } from "react";
 
 export default function AuditLogPage() {
-  const [auditLogs, setAuditLogs] = useState<Array<AuditLog & { user: { email: string; name: string | null } | null }>>([]);
+  const [auditLogs, setAuditLogs] = useState<Array<{
+    id: string;
+    user?: { email?: string } | null;
+    entityType: string;
+    entityId?: string | null;
+    action: string;
+    timestamp: string;
+    details?: any;
+  }>>([]);
   const [loading, setLoading] = useState(true);
-  const [isRefreshing, setIsRefreshing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const logsPerPage = 10;
+  const totalPages = Math.ceil(auditLogs.length / logsPerPage);
 
-  const fetchAuditLogs = useCallback(async () => {
-    try {
-      const res = await fetch('/api/admin/audit-logs');
+  const fetchAuditLogs = async () => {
+    setLoading(true);
+    // Ensure cookies are sent for authentication
+    const res = await fetch("/api/admin/audit-logs", {
+      credentials: "include"
+    });
+    if (res.ok) {
       const data = await res.json();
-      setAuditLogs(data);
-    } catch (err) {
-      console.error('Failed to fetch audit logs:', err);
+      setAuditLogs(data.auditLogs || []);
     }
-  }, []);
-
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    await fetchAuditLogs();
-    setIsRefreshing(false);
+    setLoading(false);
   };
 
   useEffect(() => {
-    fetchAuditLogs().finally(() => setLoading(false));
-  }, [fetchAuditLogs]);
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      const details = document.querySelectorAll('details[open]');
-      details.forEach(detail => {
-        if (!detail.contains(event.target as Node)) {
-          detail.removeAttribute('open');
-        }
-      });
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    fetchAuditLogs();
   }, []);
 
-  if (loading) {
-    return (
-      <div className="container mx-auto py-8 px-4">
-        <h1 className="text-2xl font-bold mb-6">Audit Log</h1>
-        <div className="flex items-center justify-center p-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-        </div>
-      </div>
-    );
-  }
+  // Pagination logic
+  const paginatedLogs = auditLogs.slice((currentPage - 1) * logsPerPage, currentPage * logsPerPage);
 
   return (
-    <div className="container mx-auto py-8 px-4">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Audit Log</h1>
-        <Button
-          onClick={handleRefresh}
-          disabled={isRefreshing}
-          variant="outline"
-          size="sm"
-          className="flex items-center gap-2"
-        >
-          <RefreshCw className={`h-4 w-4 ${isRefreshing ? 'animate-spin' : ''}`} />
-          {isRefreshing ? 'Refreshing...' : 'Refresh'}
-        </Button>
-      </div>
-
-      {auditLogs.length === 0 ? (
-        <p>No audit log entries found.</p>
-      ) : (
-        <div className="overflow-x-auto rounded-lg border border-gray-200 shadow">
-          <table className="min-w-full bg-white">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">User</th>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Type</th>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">ID</th>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Action</th>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider whitespace-nowrap">Time</th>
-                <th className="py-3 px-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {auditLogs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="py-3 px-4 text-sm max-w-[200px] truncate" title={log.user?.email || 'Unknown User'}>
-                    {log.user?.email || 'Unknown User'}
-                  </td>
-                  <td className="py-3 px-4 text-sm whitespace-nowrap">{log.entityType}</td>
-                  <td className="py-3 px-4 text-sm font-mono text-xs max-w-[100px] truncate" title={log.entityId || '-'}>
-                    {log.entityId || '-'}
-                  </td>
-                  <td className="py-3 px-4 text-sm whitespace-nowrap">{log.action}</td>
-                  <td className="py-3 px-4 text-sm whitespace-nowrap">
-                    {new Date(log.timestamp).toLocaleString()}
-                  </td>
-                  <td className="py-3 px-4 text-sm">
-                    {log.details ? (
-                      <details className="group relative">
-                        <summary className="cursor-pointer text-blue-600 hover:text-blue-800">
-                          View Details
-                        </summary>
-                        <div className="absolute z-50 left-0 mt-2 w-96 max-w-[calc(100vw-2rem)] bg-white border border-gray-200 rounded-lg shadow-lg">
-                          <div className="p-4 max-h-[80vh] overflow-y-auto">
-                            <div className="flex justify-between items-start mb-2">
-                              <h4 className="text-sm font-semibold">Log Details</h4>
-                              <button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  const details = e.currentTarget.closest('details');
-                                  if (details) details.removeAttribute('open');
-                                }}
-                                className="text-gray-500 hover:text-gray-700"
-                              >
-                                ×
-                              </button>
-                            </div>
-                            <pre className="text-xs bg-gray-50 p-3 rounded-md overflow-x-auto whitespace-pre-wrap break-words">
-                              {JSON.stringify(log.details, null, 2)}
-                            </pre>
-                          </div>
-                        </div>
-                      </details>
-                    ) : (
-                      'N/A'
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    <div className="container mx-auto py-2 sm:py-8 px-1 sm:px-4">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center sm:justify-between mb-4 gap-2 w-full">
+        <h1 className="text-lg sm:text-2xl font-bold w-full sm:w-auto text-left mt-4 mb-2">Audit Log</h1>
+        <div className="flex w-full sm:w-auto justify-end">
+          <button
+            className="flex items-center gap-2 px-2 py-1 sm:px-4 sm:py-2 bg-gray-800 text-gray-100 rounded hover:bg-gray-700 border border-gray-700 transition font-medium shadow w-auto justify-center"
+            title="Refresh audit log list"
+            onClick={fetchAuditLogs}
+            disabled={loading}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M20 20v-5h-.581m-2.638 2.638A7.974 7.974 0 0112 20c-4.418 0-8-3.582-8-8 0-1.657.507-3.197 1.382-4.462m2.638-2.638A7.974 7.974 0 0112 4c4.418 0 8 3.582 8 8 0-1.657-.507-3.197-1.382 4.462" />
+            </svg>
+            Refresh
+          </button>
         </div>
+      </div>
+      {loading ? (
+        <p className="text-gray-400 text-xs sm:text-sm">Loading...</p>
+      ) : auditLogs.length === 0 ? (
+        <p className="text-gray-400 text-xs sm:text-sm">No audit log entries found.</p>
+      ) : (
+        <>
+          <div className="w-full mx-auto text-xs sm:text-sm" style={{ overflowX: 'auto' }}>
+            <table className="min-w-full w-full bg-gray-900 text-gray-100 border border-gray-700 text-xs sm:text-sm">
+              <thead className="bg-gray-800 text-gray-200">
+                <tr>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">User ID</th>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">Entity Type</th>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">Entity ID</th>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">Action</th>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">Timestamp</th>
+                  <th className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm">Details</th>
+                </tr>
+              </thead>
+              <tbody>
+                {paginatedLogs.map((log) => (
+                  <tr key={log.id} className="hover:bg-gray-800">
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 break-all max-w-[120px] xs:max-w-none text-xs sm:text-sm">{log.user?.email || 'Unknown User'}</td>
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 break-all max-w-[80px] xs:max-w-none text-xs sm:text-sm">{log.entityType}</td>
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 break-all max-w-[80px] xs:max-w-none text-xs sm:text-sm">{log.entityId || '-'}</td>
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 break-all max-w-[80px] xs:max-w-none text-xs sm:text-sm">{log.action}</td>
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 break-all max-w-[120px] xs:max-w-none text-xs sm:text-sm">{new Date(log.timestamp).toLocaleString()}</td>
+                    <td className="py-1 px-2 sm:py-2 sm:px-4 border-b border-gray-700 text-xs sm:text-sm break-all max-w-[160px] xs:max-w-none">
+                      {log.details ? (
+                        <pre className="whitespace-pre-wrap text-gray-300 text-xs sm:text-sm">{JSON.stringify(log.details, null, 2)}</pre>
+                      ) : ('N/A')}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          {/* Pagination controls */}
+          <div className="flex flex-row items-center justify-between gap-4 mt-4 w-full max-w-lg mx-auto">
+            <button
+              className="px-4 py-2 rounded bg-gray-800 text-gray-100 border border-gray-700 font-medium shadow disabled:opacity-50"
+              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+              disabled={currentPage === 1}
+            >
+              Previous
+            </button>
+            <span className="text-gray-300 text-sm text-center flex-1">Page {currentPage} of {totalPages}</span>
+            <button
+              className="px-4 py-2 rounded bg-gray-800 text-gray-100 border border-gray-700 font-medium shadow disabled:opacity-50"
+              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

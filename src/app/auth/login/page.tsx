@@ -1,5 +1,4 @@
-'use client';
-
+// src/app/auth/login/page.tsx
 import LoginForm from '@/components/auth/login-form';
 import PageHeader from '@/components/shared/page-header';
 import { LogIn } from 'lucide-react';
