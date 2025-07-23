@@ -16,7 +16,7 @@ interface Session {
 
 // 1. Specify protected and public routes
 const protectedRoutes = ['/dashboard', '/dashboard/profile', '/dashboard/settings'];
-const publicRoutes = ['/login', '/auth/signup', '/auth/forgot-password', '/'];
+const publicRoutes = ['/login', '/auth/login', '/auth/signup', '/auth/forgot-password', '/'];
 // Make sure all your admin paths start with /admin
 const adminRoutes = ['/admin', '/admin/events', '/admin/prayer-requests', '/admin/users'];
 
