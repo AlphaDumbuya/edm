@@ -3,7 +3,7 @@
 A comprehensive web platform for EDM's mission work in Sierra Leone and Oregon, USA.
 
 <!-- Last updated: July 23, 2025 -->
-<!-- Trigger redeploy: July 23, 2025 2:30:00 PM -->
+<!-- Trigger redeploy: July 23, 2025 3:30:00 PM -->
 
 ## Overview
 
