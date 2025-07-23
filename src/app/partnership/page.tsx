@@ -126,7 +126,7 @@ export default function PartnerPage() {
 				</p>
 				<Link href="/contact" legacyBehavior>
 					<Button size="lg">
-						<Mail className="mr-2 h-5 w-5" /> Contact Our Partnership Team
+						<Mail className="mr-2 h-5 w-5" /> Contact Us
 					</Button>
 				</Link>
 			</section>

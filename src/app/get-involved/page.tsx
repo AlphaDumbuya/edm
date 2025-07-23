@@ -114,15 +114,10 @@ export default function GetInvolvedPage() {
 				<p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
 					Your involvement is crucial to our success in Sierra Leone and Oregon. If you're inspired to join us or have questions, please don't hesitate to reach out.
 				</p>
-				<div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+				<div className="flex justify-center items-center">
 					<Link href="/contact">
 						<Button size="lg" className="text-sm sm:text-base">
 							<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
-						</Button>
-					</Link>
-					<Link href="/donate">
-						<Button size="lg" variant="default" className="text-sm sm:text-base">
-							Donate to Support EDM
 						</Button>
 					</Link>
 				</div>

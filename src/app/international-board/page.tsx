@@ -103,41 +103,41 @@ const executiveMembers = [
 
 export default function InternationalBoardPage() {
   return (
-    <div className="space-y-12">
+    <div className="space-y-8 sm:space-y-12 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto py-6 sm:py-8">
       <PageHeader
-        title="EDM International Board & Leadership"
+        title="EDM  Board & Leadership"
         subtitle="Meet the dedicated individuals providing strategic oversight and guidance for EDM's mission in Sierra Leone and our international partnerships, including those in Oregon, USA."
         icon={Globe}
       />
 
-      <section>
+      <section className="space-y-6 sm:space-y-8">
         <SectionTitle
           title="Guiding Our Global Vision"
           subtitle="Committed leaders serving EDM's mission with faith, integrity, and international perspective."
         />
-        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <LeaderProfile {...founderAndCEO} />
         </div>
       </section>
 
-      <section>
+      <section className="space-y-6 sm:space-y-8">
         <SectionTitle
           title="EDM Board Members Sierra Leone"
           subtitle="Dedicated leaders overseeing the ministry's operations and growth within Sierra Leone."
         />
-        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {boardMembersSierraLeone.map((member) => (
             <LeaderProfile key={member.name} {...member} />
           ))}
         </div>
       </section>
 
-      <section>
+      <section className="space-y-6 sm:space-y-8">
         <SectionTitle
           title="Executive Leadership"
           subtitle="Operational leaders steering the daily functions and strategy of EDM."
         />
-        <div className="grid md:grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           {executiveMembers.map((member) => (
             <LeaderProfile key={member.name} {...member} />
           ))}

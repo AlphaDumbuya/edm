@@ -46,7 +46,7 @@ export default function TheMissionPage() {
             </CardHeader>
             <CardContent className="p-4 sm:p-6">
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-3 sm:mb-4">
-                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school). This future Bible school is being established in partnership with Reformed Gospel Mission (ReGom) as the REGOM/EDM Bible Institute. <Link href="/ministries" className="text-primary hover:underline">Learn more about our ministries.</Link> lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
+                Our long-term vision includes building a dedicated campus for the body of Christ in Sierra Leone. This central hub will feature a retreat center, educational facilities (including the operational EDM Marifa Secondary School and a future Bible school). This future Bible school is being established in partnership with Reformed Gospel Mission (ReGom) as the REGOM/EDM Bible Institute. <Link href="/ministries" className="text-primary hover:underline inline-flex">Learn more about our ministries</Link> lodging facilities, recreational areas, a chapel, and more. It is designed to serve as a center for spiritual growth, discipleship training, educational advancement, and a base for extensive outreach ministries throughout Sierra Leone.
               </p>
               <div className="relative w-full aspect-video rounded-md shadow-md overflow-hidden flex flex-col items-center justify-center bg-muted">
                 <Building className="w-16 h-16 text-primary mb-2" />
@@ -99,11 +99,11 @@ export default function TheMissionPage() {
           </CardHeader>
           <CardContent className="p-0">
             {/* Content for future cities/regional impact can go here */}
-            {/* The map will show key locations including EDM Marifa School and areas of future focus */}
+            {/* The map shows EDM headquarters locations */}
  <MissionsMapClient mapId={''} />
           </CardContent>
            <CardFooter className="p-2 sm:p-3 md:p-4 pt-2 sm:pt-3">
-            <p className="text-[10px] sm:text-xs text-muted-foreground">Note: Map functionality requires a Google Maps API key. Markers indicate current key locations including EDM Marifa School and areas of future focus.</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground">Interactive map showing EDM headquarters in Sierra Leone and Portland, Oregon.</p>
            </CardFooter>
         </Card>
       </section>
@@ -113,14 +113,14 @@ export default function TheMissionPage() {
            <CardHeader className="p-4 sm:p-6">
                <CardTitle className="text-primary text-base sm:text-lg md:text-xl">Progress and Support Opportunities</CardTitle>
            </CardHeader>
-           <CardContent className="space-y-1.5 sm:space-y-2 p-4 sm:p-6 text-xs sm:text-sm md:text-base text-muted-foreground">
-               <p><strong className="text-foreground">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational!</p>
-               <p><strong className="text-foreground">Land Acquired:</strong> We praise God that land has been acquired for the main EDM campus and retreat center!</p>
-               <p><strong className="text-foreground">Van & Equipment:</strong> A van and musical instruments were shipped and have arrived in Freetown, enhancing our outreach capabilities. Your prayers and support for their effective deployment are appreciated.</p>
+           <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6 text-sm sm:text-base text-muted-foreground">
+               <p><strong className="text-foreground block sm:inline mb-1 sm:mb-0">EDM Marifa School Operational:</strong> We praise God that the EDM Marifa Secondary School is now operational!</p>
+               <p><strong className="text-foreground block sm:inline mb-1 sm:mb-0">Land Acquired:</strong> We praise God that land has been acquired for the main EDM campus and retreat center!</p>
+               <p><strong className="text-foreground block sm:inline mb-1 sm:mb-0">Van & Equipment:</strong> A van and musical instruments were shipped and have arrived in Freetown, enhancing our outreach capabilities. Your prayers and support for their effective deployment are appreciated.</p>
            </CardContent>
-           <CardFooter className="p-4 sm:p-6">
-               <Link href="/donate?reason=general_support" className={cn(buttonVariants({ variant: "default", size: "sm" }), "text-xs sm:text-sm")}>
-                Support Our Ongoing Work
+           <CardFooter className="px-4 sm:px-6 pb-4 sm:pb-6 pt-0">
+               <Link href="/donate?reason=current_projects" className={cn("w-full inline-flex", buttonVariants({ size: "lg", className: "w-full sm:w-auto" }))}>
+                   Support Our Ongoing Work
                </Link>
            </CardFooter>
         </Card>
@@ -135,7 +135,7 @@ export default function TheMissionPage() {
             <ShieldCheck className="h-3 w-3 sm:h-4 mr-1 text-primary" /> EDM is a registered 501(c)(3) non-profit organization.
           </p>
           <div className="text-center mt-4 sm:mt-6 md:mt-8">
-            <Link href="/donate" className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base")}>
+            <Link href="/donate" className={cn(buttonVariants({ variant: "default", size: "lg" }), "px-3 py-1.5 text-xs sm:text-sm sm:px-4 sm:py-2 md:px-6 md:text-base inline-flex")}>
               Support Our Mission
             </Link>
           </div>

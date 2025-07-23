@@ -408,14 +408,14 @@ export default function Navbar() {
                     <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>Dashboard</Button>
                   </Link>
                 ) : (
-                  <div className="space-y-2">
-                    <Link href="/auth/login">
-                      <Button variant="outline" className="w-full hover:bg-primary/10 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
+                  <div className="space-y-3">
+                    <Link href="/auth/login" className="block">
+                      <Button variant="outline" className="w-full h-10 text-sm hover:bg-primary/10 hover:text-primary" onClick={() => setMobileMenuOpen(false)}>
                         Sign In
                       </Button>
                     </Link>
-                    <Link href="/auth/signup">
-                      <Button variant="default" className="w-full" onClick={() => setMobileMenuOpen(false)}>
+                    <Link href="/auth/signup" className="block">
+                      <Button variant="default" className="w-full h-10 text-sm" onClick={() => setMobileMenuOpen(false)}>
                         Create Account
                       </Button>
                     </Link>

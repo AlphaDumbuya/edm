@@ -132,8 +132,7 @@ export default function GetInvolvedPartnerPage() {
 				</p>
 				<Link href="/contact" legacyBehavior>
 					<Button size="default" className="w-full sm:w-auto text-sm sm:text-base">
-						<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Our
-						Partnership Team
+						<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
 					</Button>
 				</Link>
 			</section>

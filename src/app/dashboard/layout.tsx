@@ -41,6 +41,19 @@ export default function DashboardLayout({
   // If loading is false and user exists, render the dashboard
   return (
     <div className="flex flex-col min-h-screen bg-muted/30">
+      {/* Mobile Header */}
+      <header className="lg:hidden flex items-center justify-between p-4 bg-background border-b sticky top-16 z-30">
+        <button 
+          onClick={() => setIsOpen(true)}
+          className="p-2 -ml-2 hover:bg-muted rounded-lg"
+          aria-label="Open menu"
+        >
+          <LayoutDashboard className="h-6 w-6" />
+        </button>
+        <h1 className="font-semibold text-lg">Dashboard</h1>
+        <div className="w-6" /> {/* Spacer for alignment */}
+      </header>
+      
       <div className="flex flex-1">
         <DashboardSidebar isOpen={isOpen} setIsOpen={setIsOpen} />
         <main className="flex-grow flex-1 p-4 sm:p-6 md:p-8 bg-background overflow-y-auto">

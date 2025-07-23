@@ -79,7 +79,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
       <aside
         className={cn(
           // On mobile: fixed, z-30, slide-in, top-[64px]; On desktop: sticky, static, z-auto
-          "left-0 w-64 bg-card border-r border-sidebar-border flex-col p-4 space-y-6 transition-transform duration-300 ease-in-out fixed top-[64px] z-30 lg:static lg:top-0 lg:z-auto lg:h-[calc(100vh-0px)] lg:flex",
+          "left-0 w-64 bg-card border-r border-sidebar-border flex-col p-4 space-y-6 transition-transform duration-300 ease-in-out fixed top-16 z-40 h-[calc(100vh-4rem)] lg:static lg:top-0 lg:z-auto lg:h-screen lg:flex",
           isOpen ? 'translate-x-0 flex' : '-translate-x-full hidden lg:translate-x-0 lg:flex'
         )}
         ref={sidebarRef}
@@ -111,6 +111,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
               <li key={item.href} className="cursor-pointer">
                 <Link
                   href={item.href}
+                  onClick={() => setIsOpen(false)}
                   className={cn(
                     buttonVariants({ variant: pathname === item.href ? 'default' : 'ghost', size: 'default' }),
                     'w-full flex items-center gap-2 justify-start text-left px-4 py-2 rounded-lg transition-colors',

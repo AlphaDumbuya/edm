@@ -94,28 +94,27 @@ export default async function Home() {
 						transforming lives in Sierra Leone, West Africa, with vital partnerships in
 						Oregon, USA.
 					</p>
-					<div className="flex justify-center items-center space-x-3">
-						<Button asChild>
+					<div className="flex justify-center items-center space-x-4">
+						<Button asChild size="sm" className="w-auto px-4 sm:px-6">
 							<Link
                                 href="/about"
-                                className={cn(
-									buttonVariants({ variant: 'default', size: 'sm' }),
-									'flex items-center gap-1 text-xs sm:text-sm md:text-base whitespace-nowrap'
-								)}
+                                className="flex items-center gap-1 text-xs sm:text-sm font-medium"
                                 >
-								<span className="flex items-center gap-1">
-									Our Story <ArrowRight className="ml-1 h-4 w-4" />
-								</span>
+								<span>Our Story</span>
+								<ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
 							</Link>
 						</Button>
-						<Link href="/donate">
-							<Button
-								size="sm"
-								className="bg-transparent border text-primary-foreground flex items-center gap-1 whitespace-nowrap"
-							>
-								Support EDM <HelpingHand className="ml-1 h-4 w-4" />
-							</Button>
-						</Link>
+						<Button
+							size="sm"
+							variant="outline"
+							className="w-auto px-4 sm:px-6 bg-transparent hover:bg-primary/10 text-primary-foreground"
+							asChild
+						>
+							<Link href="/donate" className="flex items-center gap-1 text-xs sm:text-sm font-medium">
+								<span>Support</span>
+								<HelpingHand className="h-3 w-3 sm:h-4 sm:w-4" />
+							</Link>
+						</Button>
 					</div>
 				</div>
 			</section>
@@ -145,19 +144,17 @@ export default async function Home() {
 								</p>
 							</CardContent>
 							<CardFooter className="p-4 sm:p-6 pt-2 border-t flex justify-center">
-								<Link
-									href={href}
-									className={cn(buttonVariants({ variant: 'link' }), 'text-sm')}
+								<Button
+									variant="ghost"
+									size="sm"
+									className="h-8 px-3 text-xs font-medium hover:bg-primary/5"
+									asChild
 								>
-									<span
-										className={cn(
-											buttonVariants({ variant: 'link' }),
-											'text-sm flex items-center gap-1'
-										)}
-									>
-										Learn More <ArrowRight className="ml-2 h-4 w-4" />
-									</span>
-								</Link>
+									<Link href={href} className="flex items-center gap-1">
+										Learn More 
+										<ArrowRight className="h-3 w-3" />
+									</Link>
+								</Button>
 							</CardFooter>
 						</Card>
 					))}
