@@ -1,7 +1,69 @@
-# EDM Project
+# EDM (Evangelism, Discipleship, Missions) Project
 
-<!-- Trigger redeploy: July 6, 2025 -->
+A comprehensive web platform for EDM's mission work in Sierra Leone and Oregon, USA.
 
-##
-// trigger redeploy Sun, Jul  6, 2025  3:30:25 PM
-// trigger redeploy Sun, Jul  6, 2025  4:20:00 PM
+<!-- Last updated: July 23, 2025 -->
+
+## Overview
+
+EDM (Evangelism, Discipleship, Missions) is a registered 501(c)(3) non-profit organization dedicated to spreading the Gospel, training disciples, and conducting missions work primarily in Sierra Leone, with key partnerships in Oregon, USA.
+
+## Features
+
+- **Mission Information**: Detailed information about EDM's vision, goals, and current projects
+- **Interactive Maps**: Visual representation of EDM's operational locations
+- **Donation System**: Secure platform for supporting EDM's work
+- **Event Management**: Registration and management for various ministry events
+- **News & Updates**: Regular updates about EDM's activities and achievements
+- **Prayer Requests**: System for submitting and managing prayer requests
+- **Admin Dashboard**: Comprehensive management interface for EDM staff
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript
+- **Styling**: Tailwind CSS, Shadcn/UI
+- **Backend**: Next.js API Routes, Prisma ORM
+- **Database**: PostgreSQL
+- **Authentication**: NextAuth.js
+- **Deployment**: Vercel
+- **Media Storage**: Uploadthing
+
+## Getting Started
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/AlphaDumbuya/edm_clone.git
+   ```
+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Set up environment variables:
+   - Copy `.env.example` to `.env`
+   - Fill in required environment variables
+
+4. Run database migrations:
+   ```bash
+   npx prisma migrate dev
+   ```
+
+5. Start the development server:
+   ```bash
+   npm run dev
+   ```
+
+The application will be available at `http://localhost:9003`
+
+## Contributing
+
+We welcome contributions! Please read our contributing guidelines before submitting pull requests.
+
+## License
+
+This project is proprietary and confidential. All rights reserved.
+
+## Contact
+
+For any inquiries about the project, please contact EDM administration.
