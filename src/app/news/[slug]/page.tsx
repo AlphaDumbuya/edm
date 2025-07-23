@@ -68,7 +68,7 @@ const PublicNewsArticlePage = async (context: NewsArticlePageProps) => {
         </a>
       </div>
       {/* Article Content */}
-      <article className="prose prose-lg dark:prose-invert mx-auto bg-white/90 dark:bg-black/30 p-6 rounded-lg shadow">
+      <article className="prose prose-lg mx-auto bg-white p-6 rounded-lg shadow dark:prose-invert dark:bg-black/30">
         <div dangerouslySetInnerHTML={{ __html: newsArticle.content }} />
       </article>
       {/* Related News Section */}

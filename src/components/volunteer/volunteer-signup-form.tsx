@@ -99,12 +99,12 @@ export default function VolunteerSignupForm() {
         <CheckCircle className="mx-auto text-green-600 mb-4" size={48} />
         <h2 className="text-2xl font-bold mb-2 text-primary">Thank you for volunteering!</h2>
         <p className="text-lg mb-4 text-gray-700">
-          Your interest in serving with <span className="font-semibold">Evangelical Diaspora Mission</span> has been received.<br />
-          Our team will review your submission and reach out to you soon.<br />
-          We appreciate your willingness to make a difference!
+          Your interest in serving with <span className="font-semibold">Evangelism Discipleship Missions</span> has been received.<br />
+          Our team will review your submission and match your skills with our current needs.<br />
+          You will receive a follow-up email or phone call within a few days.
         </p>
         <div className="text-sm text-gray-500 mb-2">
-          If you have questions, please contact us at <a href="mailto:info@edm-sl.org" className="text-blue-600 underline">info@edm-sl.org</a>.
+          If you have questions, please contact us at <a href="mailto:contact@edmmission.org" className="text-blue-600 underline">contact@edmmission.org</a>.
         </div>
         <div className="mt-6">
           <Button onClick={() => setSubmitted(false)} variant="outline">Submit Another Response</Button>

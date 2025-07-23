@@ -9,7 +9,7 @@ export function volunteerConfirmationEmail({ name, email, phone, areasOfInterest
   message?: string;
 }) {
   return {
-    subject: 'Thank You for Volunteering with EDM!',
+    subject: 'Thank You for Volunteering!',
     html: `
       <div style="font-family: 'Segoe UI', Arial, sans-serif; background: #f6f8fa; padding: 0; margin: 0;">
         <table width="100%" cellpadding="0" cellspacing="0" style="background: #f6f8fa; padding: 40px 0;">
@@ -24,10 +24,10 @@ export function volunteerConfirmationEmail({ name, email, phone, areasOfInterest
                 </tr>
                 <tr>
                   <td style="padding: 32px 40px 24px 40px;">
-                    <p style="font-size: 1.1rem; color: #222; margin-bottom: 18px;">Hi <strong>${name}</strong>,</p>
+                    <p style="font-size: 1.1rem; color: #222; margin-bottom: 18px;">Dear ${name},</p>
                     <p style="font-size: 1.1rem; color: #222; margin-bottom: 18px;">
-                      We are thrilled to receive your interest in volunteering with <strong>Evangelism Discipleship Missions (EDM)</strong>.
-                      Your willingness to serve is a blessing to our mission and the communities we support.
+                      Your interest in serving with Evangelical  Discipleship Missions has been received.
+                      Our team will review your submission and reach out to you soon.
                     </p>
                     <div style="margin: 32px 0 24px 0;">
                       <h2 style="font-size: 1.15rem; color: #003366; margin-bottom: 10px;">Your Volunteer Submission</h2>

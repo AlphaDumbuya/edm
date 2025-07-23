@@ -39,8 +39,9 @@ interface PrayerRequest {
   published: boolean;
   createdAt: Date;
   updatedAt: Date;
-  published: boolean;
   category: string | null;
+  authorName: string | null;
+  authorEmail: string | null;
 }
 
 function PrayerRequestsContent(): React.ReactNode {
@@ -128,25 +129,7 @@ function PrayerRequestsContent(): React.ReactNode {
     router.push(`?${params.toString()}`);
   }, [searchTerm, publishedFilter, currentPage, router]);
 
-  // Refresh handler
-  const handleRefresh = () => {
-    setLoading(true);
-    getAllPrayerRequestsAction({
-      search: searchQuery,
-      status: statusFilter,
-      offset: (currentPage - 1) * itemsPerPage,
-      limit: itemsPerPage,
-      orderBy: { createdAt: 'desc' },
-    }).then(result => {
-      if (result.success && result.data) {
-        setPrayerRequests(result.data.prayerRequests);
-        setTotalPrayerRequests(result.data.totalCount);
-      } else {
-        setError(result.error || 'An unknown error occurred during fetching.');
-      }
-      setLoading(false);
-    });
-  };
+  // Refresh is handled by the handleRefresh function defined above
 
   return (
     <div>

@@ -121,18 +121,9 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({
     }
   };
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    try {
-      await fetchUsers();
-    } finally {
-      setIsRefreshing(false);
-    }
-  };
-
   // Fetch users when search, filter, or pagination changes
   useEffect(() => {
-    fetchUsers();
+    handleRefresh();
   }, [searchQuery, roleFilter, currentPage]);
 
   const confirmDelete = async () => {
@@ -144,19 +135,22 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({
 
   // Refresh handler
   const handleRefresh = async () => {
-    setLoading(true);
-    const params = new URLSearchParams(searchParams.toString());
-    const page = parseInt(params.get('page') || '1');
-    const limit = usersPerPage;
-    const role = params.get('role') || undefined;
-    const search = params.get('search') || '';
-    const res = await fetch(`/api/admin/users?page=${page}&limit=${limit}&role=${role || ''}&search=${search}`);
-    if (res.ok) {
-      const data = await res.json();
-      setUsers(data.users);
-      setTotalUsers(data.totalCount);
+    setIsRefreshing(true);
+    try {
+      const params = new URLSearchParams(searchParams.toString());
+      const page = parseInt(params.get('page') || '1');
+      const limit = usersPerPage;
+      const role = params.get('role') || undefined;
+      const search = params.get('search') || '';
+      const res = await fetch(`/api/admin/users?page=${page}&limit=${limit}&role=${role || ''}&search=${search}`);
+      if (res.ok) {
+        const data = await res.json();
+        setUsers(data.users);
+        setTotalUsers(data.totalCount);
+      }
+    } finally {
+      setIsRefreshing(false);
     }
-    setLoading(false);
   };
 
   return (

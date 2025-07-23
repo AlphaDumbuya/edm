@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         subtitle={`By ${blogPost.author?.name || 'Unknown Author'} on ${format(new Date(blogPost.createdAt), 'PPP')}`}
         icon={BookOpenText}
       />
-      <article className="prose prose-lg dark:prose-invert mx-auto bg-white/90 dark:bg-black/30 p-6 rounded-lg shadow">
+      <article className="prose prose-lg mx-auto bg-white p-6 rounded-lg shadow dark:prose-invert dark:bg-black/30">
         <div dangerouslySetInnerHTML={{ __html: blogPost.content }} />
       </article>
       {/* Related Blogs Section */}

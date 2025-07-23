@@ -1,7 +1,7 @@
 // src/components/auth/login-form.tsx
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
@@ -32,6 +32,18 @@ export default function LoginForm() {
   const { toast } = useToast();
   const router = useRouter();
   const searchParams = useSearchParams(); // Call useSearchParams here
+  
+  // Show success toast if redirected from verification
+  useEffect(() => {
+    const verified = searchParams?.get('verified');
+    if (verified === 'true') {
+      toast({
+        title: "Email Verified!",
+        description: "Your email has been verified successfully. You can now log in.",
+        duration: 5000,
+      });
+    }
+  }, [searchParams, toast]);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),

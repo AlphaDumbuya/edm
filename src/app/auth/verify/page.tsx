@@ -44,7 +44,7 @@ function VerifyPageContent() {
       return () => clearTimeout(timer);
     }
     if ((status === 'success' || (status === 'error' && message.includes('already verified'))) && redirectCountdown === 0) {
-      router.push('/login');
+      router.replace('/auth/login?verified=true');
     }
   }, [status, message, redirectCountdown, router]);
 

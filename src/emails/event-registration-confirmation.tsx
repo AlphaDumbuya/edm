@@ -38,12 +38,12 @@ export function eventRegistrationConfirmationEmail({
           <div style="background: #f1f5f9; padding: 16px; border-radius: 6px; font-size: 15px; line-height: 1.6;">${event.description}</div>
         </div>
         <div style="margin-bottom: 24px;">
-          <p style="margin: 0; font-size: 15px;">If you have any questions, reply to this email or contact our team at <a href="mailto:info@edm-sl.org" style="color: #2563eb; text-decoration: underline;">info@edm-sl.org</a>.</p>
+          <p style="margin: 0; font-size: 15px;">If you have any questions, reply to this email or contact our team at <a href="mailto:contact@edmmission.org" style="color: #2563eb; text-decoration: underline;">contact@edmmission.org</a>.</p>
         </div>
         <hr style="margin: 32px 0; border: none; border-top: 1px solid #e5e7eb;" />
         <div style="font-size: 13px; color: #666; text-align: center;">
-          EDM Events Team<br/>Evangelism Discipleship Mission<br/>
-          <a href="https://edm-sl.org" style="color: #2563eb; text-decoration: none;">edm-sl.org</a>
+          EDM Events Team<br/>Evangelism Discipleship Missions<br/>
+          <a href="https://edmmission.org" style="color: #2563eb; text-decoration: none;">edmmission.org</a>
         </div>
       </div>
     `,
@@ -57,10 +57,10 @@ Location: ${event.location}
 Event Details:
 ${event.description.replace(/<[^>]+>/g, '')}
 
-If you have any questions, reply to this email or contact our team at info@edm-sl.org.
+If you have any questions, reply to this email or contact our team at contact@edmmission.org.
 
 EDM Events Team
-Evangelism Discipleship Mission
-edm-sl.org`
+Evangelism Discipleship Missions
+edmmission.org`
   };
 }

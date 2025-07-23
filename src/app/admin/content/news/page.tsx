@@ -57,26 +57,6 @@ const NewsManagementPage = () => {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
     setSearchQuery(searchParams.get('search') || '');
-  // Refresh handler
-  const handleRefresh = async () => {
-    setLoading(true);
-    try {
-      const offset = (currentPage - 1) * itemsPerPage;
-      const { newsArticles: fetchedArticles, totalCount } = await getNewsArticlesAction({
-        search: searchQuery,
-        limit: itemsPerPage,
-        offset,
-        orderBy: { createdAt: 'desc' },
-      });
-      setNewsArticles(fetchedArticles);
-      setTotalNewsArticles(totalCount);
-    } catch (e: any) {
-      setError(e.message || "Error fetching news articles.");
-      console.error("Error fetching news articles:", e);
-    } finally {
-      setLoading(false);
-    }
-  };
     setCurrentPage(parseInt(searchParams.get('page') || '1'));
     setIsSearchParamsReady(true);
   }, []);
@@ -145,28 +125,6 @@ const NewsManagementPage = () => {
         setShowDeleteDialog(false);
         setNewsArticleToDeleteId(null);
       }
-    }
-  };
-
-
-  // Correct refresh handler for the button
-  const handleRefresh = async () => {
-    setLoading(true);
-    try {
-      const offset = (currentPage - 1) * itemsPerPage;
-      const { newsArticles: fetchedArticles, totalCount } = await getNewsArticlesAction({
-        search: searchQuery,
-        limit: itemsPerPage,
-        offset,
-        orderBy: { createdAt: 'desc' },
-      });
-      setNewsArticles(fetchedArticles);
-      setTotalNewsArticles(totalCount);
-    } catch (e: any) {
-      setError(e.message || "Error fetching news articles.");
-      console.error("Error fetching news articles:", e);
-    } finally {
-      setLoading(false);
     }
   };
 

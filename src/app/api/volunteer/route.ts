@@ -13,12 +13,13 @@ export async function POST(req: NextRequest) {
     // Store volunteer signup
     const volunteer = await prisma.volunteer.create({
       data: {
+        id: crypto.randomUUID(),
         name,
         email,
-        phone,
+        phone: phone || null,
         areasOfInterest,
         availability,
-        message,
+        message: message || null,
       },
     });
     // Log to audit log for admin notification

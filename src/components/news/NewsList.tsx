@@ -104,7 +104,7 @@ export function NewsList() {
       {/* Other News List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {news.slice(1).map((item) => (
-          <Card key={item.id} className="overflow-hidden">
+          <Card key={item.id} className="overflow-hidden bg-white dark:bg-gray-900 border-gray-200 dark:border-gray-700">
             <div className="relative aspect-video overflow-hidden">
               {item.coverImage ? (
                 <Image

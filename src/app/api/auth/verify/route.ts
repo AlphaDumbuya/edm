@@ -27,11 +27,38 @@ export async function GET(req: NextRequest) {
   }
   try {
     console.log('Attempting to verify user:', user.email, 'with id:', user.id);
-    const updatedUser = await prisma.user.update({
-      where: { id: user.id },
-      data: { emailVerified: true, emailVerificationToken: null },
+    
+    // Use a transaction to ensure both updates happen
+    const updatedUser = await prisma.$transaction(async (tx) => {
+      // First update: set email as verified
+      const verifiedUser = await tx.user.update({
+        where: { id: user.id },
+        data: { emailVerified: true }
+      });
+      
+      // Second update: clear the verification token
+      return await tx.user.update({
+        where: { id: user.id },
+        data: { emailVerificationToken: null }
+      });
     });
-    console.log('User verified successfully:', updatedUser.email, 'Status:', updatedUser.emailVerified);
+
+    // Double-check the update was successful
+    const verificationCheck = await prisma.user.findUnique({
+      where: { id: user.id },
+      select: { emailVerified: true, emailVerificationToken: true }
+    });
+
+    console.log('User verified successfully:', {
+      email: updatedUser.email,
+      verified: verificationCheck?.emailVerified,
+      token: verificationCheck?.emailVerificationToken
+    });
+
+    if (!verificationCheck?.emailVerified) {
+      throw new Error('Verification flag not set properly');
+    }
+
     return NextResponse.json({ message: 'Email verified successfully. You can now log in.' });
   } catch (err) {
     console.error('Error updating user verification status:', err);

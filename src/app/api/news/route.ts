@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import prisma from "src/lib/db/prisma";
-import { validate as validateUUID } from "uuid";
+import { validate as validateUUID, v4 as uuidv4 } from "uuid";
 
 export async function GET(request: Request) {
   try {
@@ -99,21 +99,35 @@ export async function POST(request: Request) {
     });
 
     // After creating news article, add notification
-    // Fetch all admin and super admin users
-    const admins = await prisma.user.findMany({
-      where: {
-        role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+    if (created.published) {
+      try {
+        // Fetch all admin and super admin users
+        const admins = await prisma.user.findMany({
+          where: {
+            role: { in: ['ADMIN', 'SUPER_ADMIN'] }
+          },
+          select: {
+            id: true
+          }
+        });
+        
+        if (admins.length > 0) {
+          // Create notifications for all admins at once
+
+          await prisma.notification.createMany({
+            data: admins.map(admin => ({
+              id: uuidv4(),
+              userId: admin.id,
+              message: `New news article published: ${title}`,
+              read: false
+            }))
+          });
+        }
+      } catch (notificationError) {
+        // Log the error but don't fail the request
+        console.error("Failed to create notifications:", notificationError);
       }
-    });
-    // Create notification for each admin
-    await Promise.all(admins.map(admin =>
-      prisma.notification.create({
-        data: {
-          userId: admin.id,
-          message: `New news article published`,
-        },
-      })
-    ));
+    }
 
     return NextResponse.json(created, { status: 201 });
   } catch (error) {

@@ -31,10 +31,32 @@ export default function CreateBlogPostPage() {
       });
       return;
     }
-    // Example logic for creating a blog post
-    // await createBlogPostAction({ title, slug, content, imageUrl, published });
-    // toast({ title: 'Success', description: 'Blog post created!' });
-    // router.push('/admin/content/blog');
+
+    try {
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('slug', slug || title.toLowerCase().replace(/\s+/g, '-'));
+      formData.append('content', content);
+      formData.append('published', published.toString());
+      formData.append('authorId', user.id);
+      if (imageUrl) {
+        formData.append('imageUrl', imageUrl);
+      }
+
+      await createBlogPostAction(formData);
+      toast({
+        title: 'Success',
+        description: 'Blog post created successfully!',
+      });
+      router.push('/admin/content/blog');
+    } catch (error) {
+      console.error('Error creating blog post:', error);
+      toast({
+        title: 'Error',
+        description: error instanceof Error ? error.message : 'Failed to create blog post',
+        variant: 'destructive',
+      });
+    }
   };
 
   return (
@@ -93,7 +115,7 @@ export default function CreateBlogPostPage() {
           <div>
             <button
               type="submit"
-            className="w-full flex justify-center py-2 px-4 border border-primary rounded-md shadow text-base font-bold text-gray-900 bg-yellow-300 hover:bg-yellow-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
+              className="w-full flex justify-center py-2 px-4 border border-primary rounded-md shadow text-base font-bold text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary"
             >
               Create Blog Post
             </button>
