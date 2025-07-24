@@ -36,7 +36,7 @@ EDM (Evangelism, Discipleship, Missions) is a registered 501(c)(3) non-profit or
 
 1. Clone the repository:
    ```bash
-   git clone [`https://github.com/AlphaDumbuya/edm_clone.git`](https://github.com/AlphaDumbuya/edm_clone.git)
+   git clone https://github.com/AlphaDumbuya/edm_clone.git
    ```
 
 2. Install dependencies:
@@ -73,7 +73,7 @@ EDM (Evangelism, Discipleship, Missions) is a registered 501(c)(3) non-profit or
    npm run dev
    ```
 
-The application will be available at [`http://localhost:9003`](http://localhost:9003)
+The application will be available at http://localhost:9003
 
 ## Contributing
 
