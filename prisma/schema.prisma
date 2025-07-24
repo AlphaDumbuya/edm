@@ -128,6 +128,7 @@ model PrayerRequest {
   authorEmail String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+  prayedAt    DateTime?   // When the prayer was last prayed for
   published   Boolean     @default(true)
   category    String?
   prayerLogs  PrayerLog[]

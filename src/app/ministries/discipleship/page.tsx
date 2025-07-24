@@ -88,11 +88,11 @@ export default function DiscipleshipPage() {
               <p className="text-muted-foreground">{project.description}</p>
             </CardContent>
             <CardFooter className="border-t pt-4">
-              <Link href={project.link} className="w-full" legacyBehavior>
-                <Button className="w-full" variant={project.link === '#' ? 'secondary' : 'default'} disabled={project.link === '#'}>
+              <Button className="w-full" variant={project.link === '#' ? 'secondary' : 'default'} disabled={project.link === '#'} asChild>
+                <Link href={project.link} className="w-full">
                   {project.link === '#' ? 'Coming Soon' : 'Learn More'} <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
+                </Link>
+              </Button>
             </CardFooter>
           </Card>
         ))}

@@ -103,12 +103,12 @@ export default function PartnerPage() {
 							</p>
 						</CardContent>
 						<CardContent className="pt-4 pb-6 text-center">
-							<Link href={opportunity.href} legacyBehavior>
-								<Button className="w-full sm:w-auto" variant="outline">
+							<Button className="w-full sm:w-auto" variant="outline" asChild>
+								<Link href={opportunity.href}>
 									Learn More{' '}
 									<ArrowRight className="ml-2 h-4 w-4" />
-								</Button>
-							</Link>
+								</Link>
+							</Button>
 						</CardContent>
 					</Card>
 				))}
@@ -124,11 +124,11 @@ export default function PartnerPage() {
 					organizational goals can align with EDM's mission. Reach out to our
 					partnership team to start a conversation.
 				</p>
-				<Link href="/contact" legacyBehavior>
-					<Button size="lg">
+				<Button size="lg" asChild>
+					<Link href="/contact">
 						<Mail className="mr-2 h-5 w-5" /> Contact Us
-					</Button>
-				</Link>
+					</Link>
+				</Button>
 			</section>
 		</div>
 	);

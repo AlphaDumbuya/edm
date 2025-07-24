@@ -16,13 +16,11 @@ export default function DonatePage() {
 
   return (
     <div className="space-y-8 sm:space-y-12 md:space-y-16 px-2">
-
       <PageHeader
         title="Support EDM's Mission"
         subtitle="Your generosity fuels Evangelism, Discipleship, and Missions in Sierra Leone, West Africa, and supports our Oregon partnerships."
         icon={HelpingHand}
       />
-
       <section className="flex flex-col gap-6 sm:grid md:grid-cols-2 md:gap-12 items-center">
         <div className="space-y-2 sm:space-y-3 md:space-y-4">
           <SectionTitle title="Why Your Gift Matters" subtitle="Every contribution makes a difference" />
@@ -47,7 +45,6 @@ export default function DonatePage() {
           />
         </div>
       </section>
-
       <section>
         <SectionTitle title="Current Needs & Updates" subtitle="Help us move forward with these critical EDM projects" />
         <div className="flex flex-col gap-4 sm:grid md:grid-cols-1 lg:grid-cols-2 sm:gap-6 md:gap-8">
@@ -60,9 +57,9 @@ export default function DonatePage() {
             </CardHeader>
             <CardContent className="p-3 sm:p-4 md:p-6">
               <p className="text-xs sm:text-sm md:text-base text-muted-foreground text-center mb-2">Our EDM Marifa Secondary School is now operational! Your support helps us provide quality education, share the Gospel, and foster Christian fellowship in the Marifa community and surrounding villages.</p>
-              <Link href="/ministries/education/marifa-school">
-                <Button variant="outline" size="sm" className="text-[11px] sm:text-xs md:text-sm">Learn More & Support School</Button>
-              </Link>
+              <Button variant="outline" size="sm" className="text-[11px] sm:text-xs md:text-sm" asChild>
+                <Link href="/ministries/education/marifa-school">Learn More & Support School</Link>
+              </Button>
             </CardContent>
           </Card>
 
@@ -79,7 +76,6 @@ export default function DonatePage() {
           </Card>
         </div>
       </section>
-
       <section className="max-w-full sm:max-w-2xl mx-auto px-1">
         <SectionTitle title="Make a Secure Online Donation" subtitle="Empower our work in Sierra Leone and Oregon today" className="text-center" />
         <p className="text-center text-muted-foreground mb-4 text-xs sm:text-sm md:text-base">
@@ -88,7 +84,6 @@ export default function DonatePage() {
         <DonationFormWrapper />
         <p className="text-[10px] text-muted-foreground mt-3 text-center">All donations are processed securely. EDM is a registered 501(c)(3) non-profit organization committed to financial transparency.</p>
       </section>
-
       <section id="more-support-options" className="bg-card p-3 sm:p-6 md:p-8 lg:p-12 rounded-lg shadow-lg">
         <SectionTitle title="More Ways to Support EDM" subtitle="Beyond credit card donations" />
 
@@ -112,9 +107,9 @@ export default function DonatePage() {
               <p>USA</p>
             </address>
             <p className="text-xs sm:text-sm md:text-base text-muted-foreground">For donations to our Sierra Leone headquarters or other financial inquiries (stocks, planned giving), please contact us.</p>
-            <Link href="/contact">
-              <Button variant="outline" className="w-full sm:w-auto text-[11px] sm:text-xs md:text-sm">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Button>
-            </Link>
+            <Button variant="outline" className="w-full sm:w-auto text-[11px] sm:text-xs md:text-sm" asChild>
+              <Link href="/contact">Contact for Other Giving <ArrowRight className="ml-1 h-3 w-3 sm:h-4 sm:w-4" /></Link>
+            </Button>
           </div>
 
           <div>
@@ -123,30 +118,28 @@ export default function DonatePage() {
             </h3>
             <p className="text-xs sm:text-sm md:text-base text-muted-foreground">Financial gifts are vital, but there are many ways to support EDM's mission in Sierra Leone and Oregon. Consider volunteering your skills, joining our prayer network, or helping us spread the word.</p>
             <div className="space-y-2 sm:space-y-3">
-              <Link href="/get-involved/volunteer">
-                <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm"><Users className="mr-2 h-4 w-4" />Volunteer Opportunities</Button>
-              </Link>
-              <Link href="/get-involved/prayer">
-                <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm"><HelpingHand className="mr-2 h-4 w-4" />Join Our Prayer Wall</Button>
-              </Link>
-              <Link href="/get-involved/partner">
-                <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm"><Users className="mr-2 h-4 w-4" />Explore Partnerships</Button>
-              </Link>
+              <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm" asChild>
+                <Link href="/get-involved/volunteer"><Users className="mr-2 h-4 w-4" />Volunteer Opportunities</Link>
+              </Button>
+              <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm" asChild>
+                <Link href="/get-involved/prayer"><HelpingHand className="mr-2 h-4 w-4" />Join Our Prayer Wall</Link>
+              </Button>
+              <Button variant="outline" className="w-full justify-start text-[11px] sm:text-xs md:text-sm" asChild>
+                <Link href="/get-involved/partner"><Users className="mr-2 h-4 w-4" />Explore Partnerships</Link>
+              </Button>
             </div>
           </div>
         </div>
       </section>
-
       <section className="text-center py-4 sm:py-6 md:py-8">
         <div className="flex flex-col sm:flex-row items-center justify-center text-muted-foreground mb-2 sm:mb-3 sm:mb-4 text-[10px] sm:text-xs md:text-sm">
           <ShieldCheck className="h-3 w-3 sm:h-4 sm:w-4 md:h-5 md:w-5 mr-1 sm:mr-1.5 sm:mr-2 text-primary" />
           <p>EDM is a registered 501(c)(3) non-profit organization. We are committed to stewarding all resources with integrity for the advancement of the Gospel.</p>
         </div>
-        <Link href="/financial-transparency">
-          <Button variant="link" className="text-primary text-[11px] sm:text-xs md:text-sm">View Our Financial Transparency Policy</Button>
-        </Link>
+        <Button variant="link" className="text-primary text-[11px] sm:text-xs md:text-sm" asChild>
+          <Link href="/financial-transparency">View Our Financial Transparency Policy</Link>
+        </Button>
       </section>
-
     </div>
   );
 }

@@ -40,16 +40,15 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       </CardHeader>
       <Link
         href={href}
-        className="block relative w-full h-32 sm:h-40 group"
-      >
+        className="block relative w-full h-48 overflow-hidden group">
         {post.imageUrl && (
           <Image
             src={post.imageUrl}
             alt={post.title}
             fill={true}
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: 'cover' }}
             data-ai-hint={post.dataAiHint}
-            className="transition-transform duration-300 group-hover:scale-105"
+            className="transition-transform duration-300 group-hover:scale-105 object-center"
           />
         )}
       </Link>
@@ -65,7 +64,7 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
         <Link href={href} className="w-full">
-          <Button className="w-full text-sm" asChild>
+          <Button className="w-full text-sm">
             <span>
               Read More <ArrowRight className="ml-2 h-4 w-4" />
             </span>

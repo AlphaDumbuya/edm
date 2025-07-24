@@ -62,8 +62,7 @@ const ListItem = React.forwardRef<React.ElementRef<typeof Link>, ListItemProps>(
             className
           )}
           href={href}
-          {...props}
-        >
+          {...props}>
           <span>
             <div className="text-sm font-medium leading-none text-popover-foreground">{title}</div>
             <p className="line-clamp-2 text-sm leading-snug text-popover-foreground">{children}</p>
@@ -230,8 +229,7 @@ export default function Navbar() {
                             <Link
                               href={link.href}
                               className="block px-4 py-3 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer"
-                              onClick={() => setOpenDropdown(null)}
-                            >
+                              onClick={() => setOpenDropdown(null)}>
                               <div className="font-semibold">{link.title}</div>
                               <div className="text-sm text-muted-foreground">{link.description}</div>
                             </Link>
@@ -244,8 +242,7 @@ export default function Navbar() {
               ) : (
                 <Link
                   href={item.href || '#'}
-                  className="px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors"
-                >
+                  className="px-2 py-1 rounded-md text-base font-medium hover:bg-accent hover:text-accent-foreground transition-colors">
                   {item.icon && <item.icon size={16} className="inline-block mr-1" />}
                   {item.title}
                 </Link>
@@ -332,7 +329,10 @@ export default function Navbar() {
             <SheetContent side="left" className="w-64 overflow-y-auto sm:max-w-sm">
               <SheetHeader className="mb-6">
                 <SheetTitle>
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)}>
+                  <Link
+                    href="/"
+                    className="flex items-center gap-2"
+                    onClick={() => setMobileMenuOpen(false)}>
                     <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={32} height={32} className="h-8 w-8" />
                     <span className="text-lg font-bold">EDM</span>
                   </Link>
@@ -361,8 +361,7 @@ export default function Navbar() {
                                 <Link
                                   href={link.href}
                                   className="text-base font-medium hover:text-primary transition-colors"
-                                  onClick={() => setMobileMenuOpen(false)}
-                                >
+                                  onClick={() => setMobileMenuOpen(false)}>
                                   {isClient && link.icon && <link.icon size={16} className="inline mr-2" />}
                                   {link.title}
                                 </Link>
@@ -373,8 +372,7 @@ export default function Navbar() {
                                         <Link
                                           href={subLink.href}
                                           className="text-sm hover:text-primary transition-colors"
-                                          onClick={() => setMobileMenuOpen(false)}
-                                        >
+                                          onClick={() => setMobileMenuOpen(false)}>
                                           {subLink.title}
                                         </Link>
                                       </li>
@@ -390,8 +388,7 @@ export default function Navbar() {
                       <Link
                         href={item.href}
                         className="flex items-center gap-2 text-lg font-semibold whitespace-nowrap"
-                        onClick={() => setMobileMenuOpen(false)}
-                      >
+                        onClick={() => setMobileMenuOpen(false)}>
                         <span className="flex items-center gap-2">
                           {isClient && item.icon && <item.icon size={20} />}
                           {item.title}

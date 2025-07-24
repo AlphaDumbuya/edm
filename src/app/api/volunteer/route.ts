@@ -10,6 +10,10 @@ export async function POST(req: NextRequest) {
     if (!name || !email || !areasOfInterest || !availability) {
       return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
     }
+    
+    // Ensure areasOfInterest is an array
+    const areas = Array.isArray(areasOfInterest) ? areasOfInterest : [areasOfInterest];
+    
     // Store volunteer signup
     const volunteer = await prisma.volunteer.create({
       data: {
@@ -17,7 +21,7 @@ export async function POST(req: NextRequest) {
         name,
         email,
         phone: phone || null,
-        areasOfInterest,
+        areasOfInterest: areas,
         availability,
         message: message || null,
       },

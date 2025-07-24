@@ -140,9 +140,9 @@ export default function EventCard({ event }: EventCardProps) {
                   <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} className="col-span-3 text-xs sm:text-sm h-8 sm:h-9" required />
                 </div>
               </div>
-              <DialogFooter>
-                <Button type="button" onClick={() => setIsDialogOpen(false)}>Cancel</Button>
-                <Button type="submit">Sign Up</Button>
+              <DialogFooter className="flex flex-row gap-2 sm:gap-4 justify-end mt-4">
+                <Button type="button" onClick={() => setIsDialogOpen(false)} className="flex-1 sm:flex-initial min-w-[100px] whitespace-nowrap">Cancel</Button>
+                <Button type="submit" className="flex-1 sm:flex-initial min-w-[100px] whitespace-nowrap">Sign Up</Button>
               </DialogFooter>
             </form>
           </DialogContent>

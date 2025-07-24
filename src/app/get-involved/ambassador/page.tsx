@@ -56,7 +56,7 @@ export default function AmbassadorPage() {
         <li>Start making an impact in your circles!</li>
       </ol>
       <div className="text-center mt-8">
-        <Link href="/contact" legacyBehavior>
+        <Link href="/contact">
           <Button size="lg" className="text-base">
             <Mail className="mr-2 h-5 w-5" /> Contact Us About Ambassadorship
           </Button>

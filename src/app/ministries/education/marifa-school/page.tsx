@@ -110,11 +110,11 @@ export default function MarifaSchoolPage() {
                 </p>
               </CardContent>
               <CardFooter className="flex flex-col md:flex-row items-stretch md:items-center gap-2 sm:gap-4 pt-4 border-t w-full px-2 sm:px-4">
-                <Link href="/donate?reason=marifa_school_project" legacyBehavior>
-                  <Button size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-3 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full md:w-auto">
+                <Button size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-3 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full md:w-auto" asChild>
+                  <Link href="/donate?reason=marifa_school_project">
                     Donate to School Project
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
                 <div className="flex-1">
                   <p className="text-xs sm:text-sm text-muted-foreground">For more information about the school project, please contact:</p>
                   <p className="text-xs sm:text-sm font-medium text-foreground">Edwin Kargbo</p>
@@ -191,11 +191,11 @@ export default function MarifaSchoolPage() {
       {/* Enhanced CTA Section */}
       <section className="text-center py-6 sm:py-8 flex justify-center w-full">
        <div className="max-w-2xl w-full px-2 sm:px-0">
-         <Link href="/donate?reason=marifa_school_project" legacyBehavior>
-           <Button size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-3 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full">
+         <Button size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-3 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full" asChild>
+           <Link href="/donate?reason=marifa_school_project">
              Donate Now
-           </Button>
-         </Link>
+           </Link>
+         </Button>
        </div>
      </section>
     </div>

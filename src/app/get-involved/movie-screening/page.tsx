@@ -67,7 +67,7 @@ export default function MovieScreeningPage() {
           <blockquote className="italic text-muted-foreground">“The movie screening brought our whole village together. Many heard the Gospel for the first time, and several families started attending church. Thank you, EDM!”<br /><span className="block mt-2 font-semibold">— Local Pastor, Sierra Leone</span></blockquote>
         </div>
         <div className="text-center mt-8">
-          <Link href="/contact" legacyBehavior>
+          <Link href="/contact">
             <Button size="lg" className="text-base">
               <Mail className="mr-2 h-5 w-5" /> Contact Us to Host a Screening
             </Button>

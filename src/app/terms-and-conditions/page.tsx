@@ -2,28 +2,29 @@
 import PageHeader from '@/components/shared/page-header';
 import SectionTitle from '@/components/shared/section-title';
 import { FileText } from 'lucide-react';
+import Link from 'next/link';
 
 export default function TermsAndConditionsPage() {
   return (
-    <div className="space-y-12" style={{ display: 'none' }}>
+    <div className="space-y-8 sm:space-y-12 max-w-4xl mx-auto px-4 sm:px-6">
       <PageHeader
         title="Terms and Conditions"
         subtitle="Please read these terms and conditions carefully before using Our Service for our mission based in Sierra Leone with Oregon partnerships."
         icon={FileText}
       />
 
-      <section className="prose prose-lg max-w-none dark:prose-invert">
+      <section className="prose prose-lg max-w-none dark:prose-invert space-y-6">
         <SectionTitle title="Interpretation and Definitions" />
 
-        <h2>Interpretation</h2>
-        <p>
+        <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">Interpretation</h2>
+        <p className="text-base sm:text-lg text-muted-foreground mb-6">
           The words of which the initial letter is capitalized have meanings defined under the following conditions.
           The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
         </p>
 
-        <h2>Definitions</h2>
-        <p>For the purposes of these Terms and Conditions:</p>
-        <ul>
+        <h2 className="text-2xl font-semibold text-foreground mt-8 mb-4">Definitions</h2>
+        <p className="text-base sm:text-lg text-muted-foreground mb-4">For the purposes of these Terms and Conditions:</p>
+        <ul className="space-y-4 text-base sm:text-lg text-muted-foreground">
           <li>
             <strong>Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.
           </li>
@@ -46,7 +47,7 @@ export default function TermsAndConditionsPage() {
             <strong>Third-party Social Media Service</strong> means any services or content (including data, information, products or services) provided by a third-party that may be displayed, included or made available by the Service.
           </li>
           <li>
-            <strong>Website</strong> refers to EDM, accessible from [Your Website URL]
+            <strong>Website</strong> refers to EDM (Evangelism, Discipleship, Missions), our online platform dedicated to spreading the Gospel, training disciples, and conducting missions work in Sierra Leone and Oregon, USA, accessible at <a href="https://www.edmmission.org" className="text-primary hover:underline" target="_blank" rel="noopener noreferrer">https://www.edmmission.org</a>
           </li>
           <li>
             <strong>You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
@@ -166,13 +167,13 @@ export default function TermsAndConditionsPage() {
         </p>
 
         <SectionTitle title="Contact Us" />
-        <p>If you have any questions about these Terms and Conditions, You can contact us:</p>
-        <ul>
-          <li>By email: contact@edmmission.org</li>
-          <li>By visiting this page on our website: [Your Contact Page URL]</li>
+        <p className="text-base sm:text-lg text-muted-foreground mb-4">If you have any questions about these Terms and Conditions, You can contact us:</p>
+        <ul className="list-disc pl-6 space-y-2 text-base text-muted-foreground mb-8">
+          <li>By email: <a href="mailto:contact@edmmission.org" className="text-primary hover:underline">contact@edmmission.org</a></li>
+          <li>By visiting this page on our website: <Link href="/contact" className="text-primary hover:underline">https://www.edmmission.org/contact</Link></li>
           <li>By mail: 66 Main Grafton Road, Kossoh Town, Freetown, Sierra Leone</li>
         </ul>
-        <p className="mt-6 text-sm text-muted-foreground">Last updated: {new Date().toLocaleDateString()}</p>
+        <p className="mt-6 text-sm text-muted-foreground border-t pt-6">Last updated: {new Date().toLocaleDateString()}</p>
       </section>
     </div>
   );

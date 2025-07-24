@@ -118,8 +118,7 @@ export default function DashboardSidebar({ isOpen, setIsOpen }: { isOpen: boolea
                     pathname === item.href
                       ? 'bg-primary text-white shadow-md'
                       : 'hover:bg-muted hover:text-primary text-sidebar-foreground'
-                  )}
-                >
+                  )}>
                   <span className="flex items-center gap-2 cursor-pointer">
                     {item.icon && <item.icon className="h-5 w-5" />}
                     {item.label}

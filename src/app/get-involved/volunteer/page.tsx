@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, Heart, Wrench, Laptop, GraduationCap, Mail } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import VolunteerSignupForm from '@/components/volunteer/volunteer-signup-form';
 import { Button } from '@/components/ui/button';
 
 const volunteerAreas = [
@@ -128,31 +127,28 @@ export default function VolunteerPage() {
 				))}
 			</div>
 
-			<section className="text-center bg-card p-6 md:p-12 rounded-lg shadow-lg mt-12">
+			<section className="text-center bg-card p-8 md:p-12 rounded-lg shadow-lg mt-12">
 				<SectionTitle
-					title="Ready to Volunteer?"
-					subtitle="Fill out the form below to express your interest"
-					className="text-center"
+					title="Ready to Make an Impact?"
+					subtitle="Take the next step in your volunteer journey with EDM"
+					className="text-center mb-8"
 				/>
-				<div className="max-w-2xl mx-auto">
-					<VolunteerSignupForm />
-				</div>
-			</section>
-			<section className="text-center bg-card p-6 md:p-8 rounded-lg shadow-lg mt-8">
-				<SectionTitle
-					title="Ready to Make a Personal Impact?"
-					className="text-center"
-				/>
-				<p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto mb-6">
-					We&apos;re excited to explore how your passion and skills can align with
-					EDM&apos;s mission in Sierra Leone or Oregon. If you have questions or
-					want to discuss involvement, please reach out.
-				</p>
-				<Link href="/contact" legacyBehavior>
-					<Button size="lg" className="text-sm sm:text-base">
-						<Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
+				<div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-2xl mx-auto">
+					<Button size="lg" className="w-full sm:w-auto min-w-[200px]" asChild>
+						<Link href="/get-involved/volunteer/apply">
+							<Users className="mr-2 h-5 w-5" /> Apply to Volunteer
+						</Link>
 					</Button>
-				</Link>
+					<Button size="lg" className="w-full sm:w-auto min-w-[200px]" variant="outline" asChild>
+						<Link href="/contact">
+							<Mail className="mr-2 h-5 w-5" /> Contact Us
+						</Link>
+					</Button>
+				</div>
+				<p className="text-muted-foreground mt-6 max-w-xl mx-auto">
+					We&apos;re excited to explore how your passion and skills can align with
+					EDM&apos;s mission in Sierra Leone and Oregon. Sign up to volunteer or reach out with any questions.
+				</p>
 			</section>
 		</div>
 	);

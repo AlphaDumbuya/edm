@@ -51,13 +51,13 @@ const involvementOpportunities = [
 
 export default function GetInvolvedPage() {
 	return (
-		<div className="space-y-12 md:space-y-16">
-			<PageHeader
+        <div className="space-y-12 md:space-y-16">
+            <PageHeader
 				title="Get Involved with EDM"
 				subtitle="Join us in making a difference in Sierra Leone and Oregon through Evangelism, Discipleship, and Missions."
 				icon={Users}
 			/>
-			<section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
+            <section className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
 				<div className="space-y-3 md:space-y-4">
 					<SectionTitle title="Your Part in God's Work" />
 					<p className="text-base sm:text-lg text-muted-foreground">
@@ -76,8 +76,8 @@ export default function GetInvolvedPage() {
 					/>
 				</div>
 			</section>
-			<SectionTitle title="Ways to Engage with EDM" subtitle="Find how you can best contribute" className="text-center" />
-			<div className="grid md:grid-cols-2 gap-6 md:gap-8">
+            <SectionTitle title="Ways to Engage with EDM" subtitle="Find how you can best contribute" className="text-center" />
+            <div className="grid md:grid-cols-2 gap-6 md:gap-8">
 				{involvementOpportunities.map((opportunity) => (
 					<Card key={opportunity.title} className="flex flex-col shadow-lg hover:shadow-xl transition-shadow duration-300">
 						<div className="relative w-full h-48 sm:h-56">
@@ -109,7 +109,7 @@ export default function GetInvolvedPage() {
 					</Card>
 				))}
 			</div>
-			<section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mt-8 sm:mt-12">
+            <section className="text-center bg-card p-6 md:p-8 lg:p-12 rounded-lg shadow-lg mt-8 sm:mt-12">
 				<SectionTitle title="Ready to Take the Next Step?" className="text-center" />
 				<p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
 					Your involvement is crucial to our success in Sierra Leone and Oregon. If you're inspired to join us or have questions, please don't hesitate to reach out.
@@ -122,6 +122,6 @@ export default function GetInvolvedPage() {
 					</Link>
 				</div>
 			</section>
-		</div>
-	);
+        </div>
+    );
 }

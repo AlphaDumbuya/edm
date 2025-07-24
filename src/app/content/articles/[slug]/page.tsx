@@ -65,9 +65,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
         <PageHeader title="Article Not Found" icon={BookOpenText} />
         <p className="text-center text-muted-foreground">The article you are looking for does not exist or may have been moved.</p>
         <div className="text-center mt-8">
-          <Link href="/content" legacyBehavior>
-            <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub</Button>
-          </Link>
+          <Button variant="outline" asChild>
+            <Link href="/content">
+              <ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub
+            </Link>
+          </Button>
         </div>
       </div>
     );
@@ -97,9 +99,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
       )}
       <article className="prose prose-lg max-w-none dark:prose-invert" dangerouslySetInnerHTML={{ __html: article.content }} />
       <div className="text-center mt-12">
-        <Link href="/content" legacyBehavior>
-          <Button variant="outline"><ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub</Button>
-        </Link>
+        <Button variant="outline" asChild>
+          <Link href="/content">
+            <ArrowLeft className="mr-2 h-4 w-4" /> Back to EDM Content Hub
+          </Link>
+        </Button>
       </div>
     </div>
   );

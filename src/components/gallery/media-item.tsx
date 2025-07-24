@@ -81,7 +81,7 @@ export default function MediaItem({ item }: MediaItemProps) {
                   />
                 ) : (
                   // Fallback: show a dark background with play icon
-                  <div className="absolute inset-0 bg-black flex items-center justify-center w-full h-full rounded-t" />
+                  (<div className="absolute inset-0 bg-black flex items-center justify-center w-full h-full rounded-t" />)
                 )}
                 <div className="absolute inset-0 flex items-center justify-center bg-black/30 w-full h-full rounded-t">
                   <PlayCircle className="h-16 w-16 text-white/80 group-hover:text-white transition-colors" />

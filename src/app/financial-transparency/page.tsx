@@ -32,58 +32,60 @@ const financialPrinciples = [
 
 export default function FinancialTransparencyPage() {
   return (
-    <div className="space-y-16">
+    <div className="space-y-8 sm:space-y-12 md:space-y-16 px-4 sm:px-6">
       <PageHeader
         title="Financial Transparency"
         subtitle="Our Commitment to Accountability and Stewardship for work in Sierra Leone and Oregon"
         icon={ShieldCheck}
       />
-      <section className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="grid md:grid-cols-2 gap-6 sm:gap-8 md:gap-12 items-center">
         <div className="space-y-4">
           <SectionTitle title="Our Pledge to You" />
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             At EDM, we believe that financial transparency is a cornerstone of trust and faithful stewardship. We are deeply grateful for every gift entrusted to us for our work, primarily based in Sierra Leone with key partnerships in Oregon, USA. 
           </p>
-          <p className="text-lg text-muted-foreground">
+          <p className="text-base sm:text-lg text-muted-foreground">
             EDM is a registered 501(c)(3) non-profit organization. This page outlines our policies and practices regarding the financial management of your generous contributions, ensuring they are used to advance our mission of evangelism, discipleship, and missions.
           </p>
         </div>
-        <div className="rounded-lg overflow-hidden shadow-xl h-80"> {/* Added h-80 for consistent image height */}
+        <div className="rounded-lg overflow-hidden shadow-xl relative aspect-[4/3] max-w-[600px] w-full mx-auto">
           <Image
-            src="https://placehold.co/600x400.png"
-            alt="Financial documents related to Sierra Leone mission"
-            layout="fill"
-            objectFit="cover"
-            data-ai-hint="financial integrity sierra leone"
+            src="https://images.unsplash.com/photo-1639189702833-8de5ecf2ca8f?w=800&auto=format&fit=crop&q=80"
+            alt="Financial transparency and accountability"
+            fill
+            sizes="(max-width: 600px) 100vw, 600px"
+            className="object-cover"
+            priority
+            data-ai-hint="financial transparency accountability"
           />
         </div>
       </section>
       <section>
         <SectionTitle title="Core Financial Principles" className="text-center" />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 xs:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
           {financialPrinciples.map((principle) => (
-            <Card key={principle.title} className="text-center shadow-md hover:shadow-lg transition-shadow duration-300">
-              <CardHeader>
-                <div className="mx-auto bg-primary/10 p-3 rounded-full w-fit mb-3">
-                  <principle.icon className="h-8 w-8 text-primary" />
+            <Card key={principle.title} className="text-center shadow-md hover:shadow-lg transition-shadow duration-300 w-full">
+              <CardHeader className="p-4 sm:p-6">
+                <div className="mx-auto bg-primary/10 p-2 sm:p-3 rounded-full w-fit mb-3">
+                  <principle.icon className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
                 </div>
-                <CardTitle>{principle.title}</CardTitle>
+                <CardTitle className="text-base sm:text-lg">{principle.title}</CardTitle>
               </CardHeader>
-              <CardContent>
-                <p className="text-muted-foreground text-sm">{principle.description}</p>
+              <CardContent className="p-4 sm:p-6 pt-0">
+                <p className="text-muted-foreground text-xs sm:text-sm">{principle.description}</p>
               </CardContent>
             </Card>
           ))}
         </div>
       </section>
-      <section className="bg-card p-8 md:p-12 rounded-lg shadow-lg">
+      <section className="bg-card p-4 sm:p-8 md:p-12 rounded-lg shadow-lg">
         <SectionTitle title="How Your Donations Are Utilized" />
-        <div className="grid md:grid-cols-2 gap-8 items-center">
+        <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
             <div>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-sm sm:text-base text-muted-foreground mb-4">
                     We strive to ensure that a significant majority of every donation goes directly to program services that fulfill our mission in Sierra Leone and support our Oregon partnerships. Our allocation model prioritizes:
                 </p>
-                <ul className="space-y-3 text-muted-foreground list-disc pl-5 mb-6">
+                <ul className="space-y-3 text-xs sm:text-sm text-muted-foreground list-disc pl-4 sm:pl-5 mb-6">
                     <li><strong>Sierra Leone Evangelism & Outreach:</strong> Funding for conferences in Freetown, mission trips within Sierra Leone, resource distribution, and local church support.</li>
                     <li><strong>Discipleship Programs (SL & OR):</strong> Developing materials, training leaders in Sierra Leone, and fostering discipleship networks with Oregon partners.</li>
                     <li><strong>Mission Support (Sierra Leone):</strong> Equipping and caring for our field missionaries and project teams in Sierra Leone.</li>
@@ -95,10 +97,10 @@ export default function FinancialTransparencyPage() {
                 </p>
             </div>
             <div className="flex justify-center items-center">
-                <div className="w-full max-w-sm p-6 border rounded-lg bg-background text-center">
-                    <BarChart3 className="h-16 w-16 text-primary mx-auto mb-4" />
-                    <p className="text-lg font-semibold text-foreground">Focused Impact Allocation</p>
-                    <p className="text-sm text-muted-foreground">
+                <div className="w-full max-w-sm p-4 sm:p-6 border rounded-lg bg-background text-center">
+                    <BarChart3 className="h-12 w-12 sm:h-16 sm:w-16 text-primary mx-auto mb-3 sm:mb-4" />
+                    <p className="text-base sm:text-lg font-semibold text-foreground">Focused Impact Allocation</p>
+                    <p className="text-xs sm:text-sm text-muted-foreground mt-2">
                         (Illustrative: 85% Program Services for SL/OR, 10% Admin, 5% Fundraising)
                     </p>
                     <p className="text-xs text-muted-foreground mt-2">Actual figures in annual report.</p>
@@ -108,50 +110,54 @@ export default function FinancialTransparencyPage() {
       </section>
       <section>
         <SectionTitle title="Access to Financial Information" />
-        <p className="text-lg text-muted-foreground mb-6 max-w-3xl mx-auto text-center">
+        <p className="text-base sm:text-lg text-muted-foreground mb-6 max-w-3xl mx-auto text-center px-4">
           EDM is committed to providing our partners with access to our financial information for our Sierra Leone operations and Oregon collaborations. We believe this transparency builds trust and demonstrates our accountability.
         </p>
-        <div className="grid md:grid-cols-2 gap-8">
-          <Card className="shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center"><FileText className="mr-2 h-6 w-6 text-primary" /> Annual Reports</CardTitle>
+        <div className="grid md:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
+          <Card className="shadow-md w-full">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center text-base sm:text-lg"><FileText className="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Annual Reports</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <p className="text-sm sm:text-base text-muted-foreground mb-4">
                 Our annual reports provide a comprehensive overview of our activities, impact, and financial performance for the preceding fiscal year, focusing on Sierra Leone and Oregon.
               </p>
-              <Button variant="outline" disabled>
+              <Button variant="outline" disabled className="w-full sm:w-auto">
                 View 2023 Annual Report (PDF - Coming Soon)
               </Button>
             </CardContent>
           </Card>
-          <Card className="shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center"><Mail className="mr-2 h-6 w-6 text-primary" /> Financial Inquiries</CardTitle>
+          <Card className="shadow-md w-full">
+            <CardHeader className="p-4 sm:p-6">
+              <CardTitle className="flex items-center text-base sm:text-lg"><Mail className="mr-2 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Financial Inquiries</CardTitle>
             </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-4">
+            <CardContent className="p-4 sm:p-6 pt-0">
+              <p className="text-sm sm:text-base text-muted-foreground mb-4">
                 If you have specific questions about our finances or how donations are used for our Sierra Leone and Oregon work, please contact our finance department.
               </p>
-              <Link href="mailto:finance@edm.org" legacyBehavior>
-                <Button variant="default">Contact Finance Team</Button>
-              </Link>
+              <Button variant="default" className="w-full sm:w-auto" asChild>
+                <Link
+                  href="mailto:finance@edm.org"
+                  className="w-full block sm:w-auto">Contact Finance Team</Link>
+              </Button>
             </CardContent>
           </Card>
         </div>
-         <p className="text-sm text-muted-foreground mt-8 text-center">
+         <p className="text-xs sm:text-sm text-muted-foreground mt-6 sm:mt-8 text-center px-4">
             EDM is a registered 501(c)(3) non-profit organization in Sierra Leone. All financial information is managed in accordance with applicable laws and regulations.
         </p>
       </section>
-      <section className="text-center py-8">
-        <p className="text-lg text-muted-foreground mb-6">
+      <section className="text-center py-6 sm:py-8">
+        <p className="text-base sm:text-lg text-muted-foreground mb-4 sm:mb-6 px-4">
           Your trust and partnership are invaluable to us. Thank you for supporting the mission of EDM in Sierra Leone and Oregon.
         </p>
-        <Link href="/donate" legacyBehavior>
-          <Button size="lg" variant="default">
+        <Button size="lg" variant="default" className="w-full sm:w-auto" asChild>
+          <Link
+            href="/donate"
+            className="w-full sm:w-auto inline-block px-4">
             Support Our Mission
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </section>
     </div>
   );

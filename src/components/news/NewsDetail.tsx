@@ -81,7 +81,7 @@ export function NewsDetail({ newsId }: NewsDetailProps) {
         <p className="text-muted-foreground mb-6">
           The news article you're looking for could not be found.
         </p>
-        <Button asChild>
+        <Button>
           <Link href="/news">
             <span>
               <ArrowLeft className="mr-2 h-4 w-4" />

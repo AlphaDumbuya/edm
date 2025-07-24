@@ -153,11 +153,11 @@ export default function AboutPage() {
  </section>
 
       <section className="text-center">
-        <Link href="/about/what-we-believe" legacyBehavior>
-          <Button variant="default" size="lg">
+        <Button variant="default" size="lg" asChild>
+          <Link href="/about/what-we-believe">
             What We Believe
-          </Button>
-        </Link>
+          </Link>
+        </Button>
      </section>
     </div>
   );

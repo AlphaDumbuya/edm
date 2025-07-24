@@ -95,26 +95,26 @@ export default async function Home() {
 						Oregon, USA.
 					</p>
 					<div className="flex justify-center items-center space-x-4">
-						<Button asChild size="sm" className="w-auto px-4 sm:px-6">
-							<Link
-                                href="/about"
-                                className="flex items-center gap-1 text-xs sm:text-sm font-medium"
-                                >
-								<span>Our Story</span>
-								<ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
-							</Link>
-						</Button>
-						<Button
-							size="sm"
-							variant="outline"
-							className="w-auto px-4 sm:px-6 bg-transparent hover:bg-primary/10 text-primary-foreground"
-							asChild
-						>
-							<Link href="/donate" className="flex items-center gap-1 text-xs sm:text-sm font-medium">
-								<span>Support</span>
-								<HelpingHand className="h-3 w-3 sm:h-4 sm:w-4" />
-							</Link>
-						</Button>
+						<Link href="/about">
+							<Button size="sm" className="w-auto px-4 sm:px-6">
+								<span className="flex items-center gap-1 text-xs sm:text-sm font-medium">
+									Our Story
+									<ArrowRight className="h-3 w-3 sm:h-4 sm:w-4" />
+								</span>
+							</Button>
+						</Link>
+						<Link href="/donate">
+							<Button
+								size="sm"
+								variant="outline"
+								className="w-auto px-4 sm:px-6 bg-transparent hover:bg-primary/10 text-primary-foreground"
+							>
+								<span className="flex items-center gap-1 text-xs sm:text-sm font-medium">
+									Support
+									<HelpingHand className="h-3 w-3 sm:h-4 sm:w-4" />
+								</span>
+							</Button>
+						</Link>
 					</div>
 				</div>
 			</section>
@@ -148,11 +148,12 @@ export default async function Home() {
 									variant="ghost"
 									size="sm"
 									className="h-8 px-3 text-xs font-medium hover:bg-primary/5"
-									asChild
-								>
-									<Link href={href} className="flex items-center gap-1">
-										Learn More 
-										<ArrowRight className="h-3 w-3" />
+									asChild>
+									<Link href={href}>
+										<span className="flex items-center gap-1">
+											Learn More 
+											<ArrowRight className="h-3 w-3" />
+										</span>
 									</Link>
 								</Button>
 							</CardFooter>

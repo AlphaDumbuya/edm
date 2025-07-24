@@ -48,17 +48,17 @@ const ministryAreas = [
 
 export default function MinistriesPage() {
 	return (
-		<div className="space-y-12">
-			<PageHeader
+        <div className="space-y-12">
+            <PageHeader
 				title="Our Ministries"
 				subtitle="Exploring the diverse ways EDM serves through Evangelism, Discipleship, Missions, and Education."
 				icon={HeartHandshake}
 			/>
-			<SectionTitle
+            <SectionTitle
 				title="Core Ministry Areas"
 				subtitle="Fulfilling the Great Commission in Sierra Leone & Oregon"
 			/>
-			<div className="grid md:grid-cols-2 gap-8">
+            <div className="grid md:grid-cols-2 gap-8">
 				{ministryAreas.map((area) => (
 					<Card
 						key={area.title}
@@ -93,6 +93,6 @@ export default function MinistriesPage() {
 					</Card>
 				))}
 			</div>
-		</div>
-	);
+        </div>
+    );
 }

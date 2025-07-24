@@ -110,18 +110,18 @@ export default function ChurchPartnershipPage() {
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We believe in the power of the local church. Let's explore how your congregation can join hands with EDM to make a lasting impact in Sierra Leone and Oregon.
         </p>
-        <Link
-          href="/contact"
-          legacyBehavior>
-          <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base">
+        <Button size="lg" className="w-full sm:w-auto text-sm sm:text-base" asChild>
+          <Link href="/contact">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Discuss Church Partnership
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </section>
       <div className="text-center mt-8 md:mt-12">
-        <Link href="/get-involved/partner">
-          <Button variant="outline" size="sm" className="text-xs sm:text-sm"><ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview</Button>
-        </Link>
+        <Button variant="outline" size="sm" className="text-xs sm:text-sm" asChild>
+          <Link href="/get-involved/partner">
+            <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview
+          </Link>
+        </Button>
       </div>
     </div>
   );

@@ -30,17 +30,17 @@ export default function DashboardPage() {
               <div className="font-medium text-lg break-all">{user?.email || 'N/A'}</div>
             </div>
           </div>
-          <Link href="/dashboard/profile">
-            <Button variant="outline" className="mt-2">
+          <Button variant="outline" className="mt-2" asChild>
+            <Link href="/dashboard/profile">
               <span className="mr-2"><svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19.5 3 21l1.5-4L16.5 3.5Z"/></svg></span>
               Edit Profile
-            </Button>
-          </Link>
+            </Link>
+          </Button>
         </div>
       </div>
-      <Link href="/" className="mt-8">
-        <Button variant="ghost">Back to Homepage</Button>
-      </Link>
+      <Button variant="ghost" className="mt-8" asChild>
+        <Link href="/">Back to Homepage</Link>
+      </Button>
     </div>
   );
 }

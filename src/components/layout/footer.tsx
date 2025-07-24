@@ -13,7 +13,7 @@ export default function Footer({ className = "" }: { className?: string }) {
       <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
           <div className="space-y-2">
-            <Link href="/" className="flex items-center gap-2">
+            <Link href="/" className="inline-block">
               <span className="flex items-center gap-2">
                 <Image src="https://code-alpha-image-gallary.vercel.app/edm-logo.png" alt="EDM Logo" width={40} height={40} className="h-10 w-10" />
                 <span className="text-lg md:text-xl font-bold text-primary">EDM</span>
@@ -97,18 +97,16 @@ export default function Footer({ className = "" }: { className?: string }) {
           <div className="flex flex-col items-center gap-2 w-full sm:flex-row sm:justify-center sm:gap-4 mb-2">
             <Link
               href="/terms-and-conditions"
-              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-            >
-              <span className="flex items-center justify-center w-full">
+              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center justify-center">
+              <span className="flex items-center">
                 <FileText size={14} className="mr-1" /> Terms & Conditions
               </span>
             </Link>
             <span className="hidden sm:inline text-muted-foreground">|</span>
             <Link
               href="/privacy-policy"
-              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center"
-            >
-              <span className="flex items-center justify-center w-full">
+              className="text-xs sm:text-sm text-muted-foreground hover:text-primary transition-colors flex items-center justify-center">
+              <span className="flex items-center">
                 <ShieldAlert size={14} className="mr-1" /> Privacy Policy
               </span>
             </Link>

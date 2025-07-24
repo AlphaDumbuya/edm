@@ -157,7 +157,6 @@ function PrayerRequestsContent(): React.ReactNode {
           </button>
         </div>
       </div>
-
       {error ? (
         <p className="text-red-500">{error}</p>
       ) : prayerRequests.length === 0 ? (
@@ -224,9 +223,7 @@ function PrayerRequestsContent(): React.ReactNode {
           </Table>
         </>
       )}
-
       {/* Pagination Controls (implement actual logic/buttons for navigation here) */}
-
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
         <AlertDialogContent>

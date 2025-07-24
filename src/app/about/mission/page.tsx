@@ -116,9 +116,9 @@ export default function OurMissionPage() {
                <p><strong className="text-foreground">Van & Equipment Arrived:</strong> The van and musical instruments have arrived in Freetown and are being prepared for ministry use. These are vital for our outreach efforts.</p>
            </CardContent>
            <CardFooter className="p-4 sm:p-6">
-               <Link href="/donate?reason=current_projects" legacyBehavior>
-                   <Button variant="default" size="sm" className="text-xs sm:text-sm">Help Support These Initiatives</Button>
-               </Link>
+               <Button variant="default" size="sm" className="text-xs sm:text-sm" asChild>
+                   <Link href="/donate?reason=current_projects">Help Support These Initiatives</Link>
+               </Button>
            </CardFooter>
         </Card>
       </section>
@@ -128,9 +128,9 @@ export default function OurMissionPage() {
           We invite you to partner with EDM. Whether through prayer, financial support for our work in Sierra Leone and Oregon, or volunteering your time and talents, you can be a part of this life-changing work. Together, we can make a lasting difference.
         </p>
         <div className="text-center mt-6 md:mt-8">
-          <Link href="/donate" legacyBehavior>
-            <Button size="lg" variant="default" className="text-sm sm:text-base">Support Our Mission</Button>
-          </Link>
+          <Button size="lg" variant="default" className="text-sm sm:text-base" asChild>
+            <Link href="/donate">Support Our Mission</Link>
+          </Button>
         </div>
       </section>
     </div>

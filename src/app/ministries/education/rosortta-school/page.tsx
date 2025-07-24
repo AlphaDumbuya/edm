@@ -111,19 +111,20 @@ export default function RosorttaSchoolPage() {
               </CardContent>
 
               <CardFooter className="flex flex-col md:flex-row items-stretch md:items-center gap-4 pt-4 border-t w-full">
-                <Link href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00" passHref legacyBehavior>
-                  <Button
-                    size="sm"
-                    className="text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full md:w-auto"
-                  >
+                <Button
+                  size="sm"
+                  className="text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/90 w-full md:w-auto"
+                  asChild
+                >
+                  <Link href="https://donate.stripe.com/dRm5kEe6L0p8eLHc5aeAg00">
                     Donate to School Project
-                  </Button>
-                </Link>
-                <Link href="/contact" legacyBehavior>
-                  <Button variant="outline" size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 w-full md:w-auto">
+                  </Link>
+                </Button>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm md:text-base font-semibold px-4 sm:px-6 py-2 sm:py-3 w-full md:w-auto" asChild>
+                  <Link href="/contact">
                     Contact About Partnership
-                  </Button>
-                </Link>
+                  </Link>
+                </Button>
               </CardFooter>
             </div>
           </div>

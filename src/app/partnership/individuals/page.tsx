@@ -49,9 +49,9 @@ export default function IndividualPartnershipPage() {
               Commit to praying for our missionaries in Sierra Leone, projects in both regions, and the unreached. Join our prayer network for specific updates.
             </p>
             <div className="text-center mt-3">
-                <Link href="/get-involved/prayer">
-                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">Join Prayer Wall</Button>
-                </Link>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm" asChild>
+                    <Link href="/get-involved/prayer">Join Prayer Wall</Link>
+                </Button>
             </div>
           </CardContent>
         </Card>
@@ -68,9 +68,9 @@ export default function IndividualPartnershipPage() {
               Offer time and talents for Sierra Leone projects (local/remote) or assist Oregon-based support efforts. Skills like admin, design, or IT are valuable.
             </p>
              <div className="text-center mt-3">
-                <Link href="/get-involved/volunteer">
-                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">Volunteer Sign-up</Button>
-                </Link>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm" asChild>
+                    <Link href="/get-involved/volunteer">Volunteer Sign-up</Link>
+                </Button>
             </div>
           </CardContent>
         </Card>
@@ -96,9 +96,9 @@ export default function IndividualPartnershipPage() {
               Be a voice for EDM's work in Sierra Leone and our Oregon connections within your community. Share stories and opportunities for involvement.
             </p>
             <div className="text-center mt-3">
-                <Link href="/get-involved/ambassador" legacyBehavior>
-                    <Button variant="outline" size="sm" className="text-xs sm:text-sm">Learn About Ambassadorship</Button>
-                </Link>
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm" asChild>
+                    <Link href="/get-involved/ambassador">Learn About Ambassadorship</Link>
+                </Button>
             </div>
           </CardContent>
         </Card>
@@ -115,9 +115,9 @@ export default function IndividualPartnershipPage() {
               Your financial contributions directly support our evangelism, discipleship, and mission projects in Sierra Leone, and our collaborative work with Oregon partners.
             </p>
             <div className="text-center">
-              <Link href="/donate">
-                <Button size="lg" className="text-sm sm:text-base">Donate Now</Button>
-              </Link>
+              <Button size="lg" className="text-sm sm:text-base" asChild>
+                <Link href="/donate">Donate Now</Link>
+              </Button>
             </div>
           </CardContent>
         </Card>
@@ -127,18 +127,18 @@ export default function IndividualPartnershipPage() {
         <p className="text-base sm:text-lg text-muted-foreground max-w-xl md:max-w-2xl mx-auto mb-6 md:mb-8">
           We're excited to explore how your passion and skills can align with EDM's mission in Sierra Leone or Oregon. If you have questions or want to discuss involvement, please reach out.
         </p>
-        <Link
-          href="/contact"
-          legacyBehavior>
-          <Button size="lg" className="text-sm sm:text-base">
+        <Button size="lg" className="text-sm sm:text-base" asChild>
+          <Link href="/contact">
             <Mail className="mr-2 h-4 w-4 sm:h-5 sm:w-5" /> Contact Us
-          </Button>
-        </Link>
+          </Link>
+        </Button>
       </section>
       <div className="text-center mt-8 md:mt-12">
-        <Link href="/get-involved/partner">
-          <Button variant="outline" size="sm" className="text-xs sm:text-sm"><ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview</Button>
-        </Link>
+        <Button variant="outline" size="sm" className="text-xs sm:text-sm" asChild>
+          <Link href="/get-involved/partner">
+            <ArrowLeft className="mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Back to Partnership Overview
+          </Link>
+        </Button>
       </div>
     </div>
   );
