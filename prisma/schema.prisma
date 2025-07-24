@@ -55,6 +55,17 @@ model BlogPost {
   author    User     @relation(fields: [authorId], references: [id])
 }
 
+model SentReminder {
+  id        String   @id @default(uuid()) @db.Uuid
+  eventId   String   @db.Uuid
+  type      String   // '24h', '1h', '30m'
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, type])
+}
+
 model Event {
   id                 String              @id @default(uuid()) @db.Uuid
   title              String
@@ -68,6 +79,7 @@ model Event {
   isVirtual          Boolean             @default(false)
   onlineLink         String?
   eventRegistrations EventRegistration[]
+  sentReminders      SentReminder[]
 }
 
 model EventRegistration {

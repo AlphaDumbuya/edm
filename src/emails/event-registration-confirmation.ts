@@ -13,6 +13,8 @@ export function eventRegistrationConfirmationEmail({
     time?: string;
     location: string;
     description: string;
+    isVirtual?: boolean;
+    onlineLink?: string | null;
   };
 }) {
   return {
@@ -24,8 +26,12 @@ export function eventRegistrationConfirmationEmail({
         <table style="margin: 20px 0; border-collapse: collapse;">
           <tr><td style="font-weight: bold; padding: 4px 8px;">Event:</td><td style="padding: 4px 8px;">${event.title}</td></tr>
           <tr><td style="font-weight: bold; padding: 4px 8px;">Date:</td><td style="padding: 4px 8px;">${new Date(event.date).toLocaleDateString()}${event.time ? ' at ' + event.time : ''}</td></tr>
-          <tr><td style="font-weight: bold; padding: 4px 8px;">Location:</td><td style="padding: 4px 8px;">${event.location}</td></tr>
+          <tr><td style="font-weight: bold; padding: 4px 8px;">Location:</td><td style="padding: 4px 8px;">${event.isVirtual ? 'Virtual Event' : event.location}</td></tr>
         </table>
+        ${event.isVirtual ? `
+        <div style="margin: 20px 0; padding: 12px; border-radius: 6px; background-color: #f0f9ff; border: 1px solid #e0f2fe;">
+          <p style="margin: 0; color: #0369a1;">📱 This is a virtual event. You will receive the join link in your reminder email.</p>
+        </div>` : ''}
         <div style="margin-bottom: 20px;">
           <strong>Event Details:</strong>
           <div style="background: #f8fafc; padding: 12px; border-radius: 6px; margin-top: 6px;">
@@ -43,7 +49,8 @@ Your registration for the following event has been received:
 
 Event: ${event.title}
 Date: ${new Date(event.date).toLocaleDateString()}${event.time ? ' at ' + event.time : ''}
-Location: ${event.location}
+Location: ${event.isVirtual ? 'Virtual Event' : event.location}
+${event.isVirtual ? '\nThis is a virtual event. You will receive the join link in your reminder email.\n' : ''}
 
 Event Details:
 ${event.description.replace(/<[^>]+>/g, '')}
