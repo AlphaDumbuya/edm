@@ -28,7 +28,7 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
     console.log('Generating news link with slug:', post.slug);
   }
   return (
-    <Card className="flex flex-col overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300 h-full w-full mb-4 p-0 sm:p-0 rounded-lg border border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-900">
+    <Card className="flex flex-col overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 h-full w-full mb-4 p-0 sm:p-0 rounded-lg border border-border bg-card transform hover:-translate-y-1">
       <CardHeader className="p-3 sm:p-4 flex flex-col">
         <Link href={`/news/${post.slug}`}>
           <CardTitle className="text-lg sm:text-xl hover:text-primary transition-colors line-clamp-2">{post.title}</CardTitle>
@@ -40,16 +40,21 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       </CardHeader>
       <Link
         href={href}
-        className="block relative w-full h-48 overflow-hidden group">
+        className="block relative w-full h-48 sm:h-52 md:h-56 overflow-hidden group">
         {post.imageUrl && (
-          <Image
-            src={post.imageUrl}
-            alt={post.title}
-            fill={true}
-            style={{ objectFit: 'cover' }}
-            data-ai-hint={post.dataAiHint}
-            className="transition-transform duration-300 group-hover:scale-105 object-center"
-          />
+          <div className="relative w-full h-full">
+            <Image
+              src={post.imageUrl}
+              alt={post.title}
+              fill={true}
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority={true}
+              style={{ objectFit: 'contain', objectPosition: 'center' }}
+              data-ai-hint={post.dataAiHint}
+              className="transition-transform duration-300 group-hover:scale-102 rounded-none bg-muted/10"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
         )}
       </Link>
       <CardContent className="p-3 sm:p-4 flex-grow">
@@ -64,10 +69,9 @@ export default function BlogPostCard({ post, itemType = 'blog' }: NewsPostCardPr
       </CardContent>
       <CardFooter className="p-3 sm:p-4 border-t">
         <Link href={href} className="w-full">
-          <Button className="w-full text-sm">
-            <span>
-              Read More <ArrowRight className="ml-2 h-4 w-4" />
-            </span>
+          <Button className="w-full text-sm flex items-center justify-center space-x-2 whitespace-nowrap">
+            <span>Read More</span>
+            <ArrowRight className="h-4 w-4 flex-shrink-0" />
           </Button>
         </Link>
       </CardFooter>

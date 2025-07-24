@@ -72,7 +72,7 @@ function ResetPasswordPageInner() {
       const data = await res.json();
       if (res.ok) {
         setSuccess("Your password has been reset. You can now log in.");
-        setTimeout(() => router.push("/login"), 3000);
+        setTimeout(() => router.push("/auth/login"), 3000);
       } else {
         setError(data.error || "Failed to reset password.");
       }
