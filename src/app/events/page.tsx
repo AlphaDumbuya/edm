@@ -3,11 +3,21 @@ import EventCard from '@/components/events/event-card';
 import { CalendarDays } from 'lucide-react';
 import { getAllEventsAction } from '../admin/events/actions';
 
+export const revalidate = 0; // Add revalidation at the page level
+
 export default async function EventsPage() {
   const eventData = await getAllEventsAction();
 
+  // Format and sort events
+  const formattedEvents = eventData.events.map(event => ({
+    ...event,
+    date: event.date.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
+    imageUrl: event.imageUrl || undefined, // Convert null to undefined
+    onlineLink: event.onlineLink || undefined, // Convert null to undefined
+  }));
+
   // Sort events by date in ascending order
-  const sortedEvents = eventData.events.sort((a, b) => {
+  const sortedEvents = formattedEvents.sort((a, b) => {
     const dateA = new Date(a.date).getTime();
     const dateB = new Date(b.date).getTime();
     return dateA - dateB;

@@ -43,6 +43,17 @@ export async function createEventAction(formData: FormData) {
       action: 'Created Event',
       entityType: 'Event',
     });
+
+    // Revalidate the events page
+    try {
+      const revalidateRes = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/revalidate?path=/events&secret=${process.env.REVALIDATION_SECRET}`);
+      if (!revalidateRes.ok) {
+        console.error('Failed to revalidate events page:', await revalidateRes.text());
+      }
+    } catch (revalidateError) {
+      console.error('Error revalidating events page:', revalidateError);
+    }
+
     // Removed redirect('/admin/events') to avoid NEXT_REDIRECT error
   } catch (error) {
     console.error('Error creating event:', error);
