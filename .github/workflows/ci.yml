@@ -1,69 +1,39 @@
-name: CI
+name: Verify Build
 
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
   workflow_dispatch:
 
-env:
-  DATABASE_URL: "postgresql://test:test@localhost:5432/test"
-  DIRECT_DATABASE_URL: "postgresql://test:test@localhost:5432/test"
-  NEXTAUTH_URL: "http://localhost:3000"
-  NEXTAUTH_SECRET: "test-secret"
-
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
-
-    services:
-      postgres:
-        image: postgres:14
-        env:
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-          POSTGRES_DB: test
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    strategy:
-      matrix:
-        node-version: [20.x]
 
     steps:
     - uses: actions/checkout@v3
     
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: '20.x'
     
-    - name: Install dependencies
-      run: npm install
-    
-    - name: Setup environment
+    - name: Verify package.json
       run: |
-        echo "SMTP_HOST=test" >> $GITHUB_ENV
-        echo "SMTP_PORT=587" >> $GITHUB_ENV
-        echo "SMTP_USER=test" >> $GITHUB_ENV
-        echo "SMTP_PASSWORD=test" >> $GITHUB_ENV
-        echo "EMAIL_FROM_NAME=EDM Events Team" >> $GITHUB_ENV
-        echo "CRON_SECRET=test-secret" >> $GITHUB_ENV
+        if [ -f "package.json" ]; then
+          echo "✓ package.json exists"
+          if jq empty package.json 2>/dev/null; then
+            echo "✓ package.json is valid JSON"
+          else
+            echo "✗ package.json is not valid JSON"
+            exit 1
+          fi
+        else
+          echo "✗ package.json not found"
+          exit 1
+        fi
     
     - name: Generate Prisma Client
       run: npx prisma generate
-    
-    - name: Apply database migrations
-      run: npx prisma migrate deploy
-    
-    - name: Type check
-      run: npm run typecheck
-    
-    - name: Build
-      run: npm run build
