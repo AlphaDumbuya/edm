@@ -1,0 +1,24 @@
+enum ReminderStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model EventReminder {
+  id           String         @id @default(uuid()) @db.Uuid
+  event        Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  eventId      String        @db.Uuid
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String        @db.Uuid
+  scheduledFor DateTime
+  status       ReminderStatus @default(PENDING)
+  type         String        // "24h" | "1h" | "30m"
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  sentAt       DateTime?
+  error        String?
+
+  @@index([eventId])
+  @@index([userId])
+  @@index([status, scheduledFor])
+}

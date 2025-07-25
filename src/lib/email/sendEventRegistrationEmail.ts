@@ -34,7 +34,7 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
                     <table style="margin: 24px 0 32px 0; width: 100%; background: #f0f4f8; border-radius: 8px;">
                       <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Date:</strong> ${event.date}</td></tr>
                       <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Time:</strong> ${event.time}</td></tr>
-                      ${event.isVirtual === 'true' || event.isVirtual === true ? `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online (A join link will be sent in a reminder email before the event)</td></tr>` : `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Location:</strong> ${event.location}</td></tr>`}
+                      ${event.isVirtual === 'true' || event.isVirtual === true ? `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online Event</td></tr><tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Join Link:</strong> ${event.onlineLink}</td></tr>` : `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Location:</strong> ${event.location}</td></tr>`}
                     </table>
                     <div style="font-size: 1rem; color: #444; margin-bottom: 24px;">${event.description ? event.description : ''}</div>
                     <p style="font-size: 1rem; color: #222;">We look forward to seeing you at the event!<br/>Blessings,<br/><strong>EDM Team</strong></p>

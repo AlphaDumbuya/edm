@@ -24,7 +24,6 @@ To transform lives through evangelism, create robust discipleship structures, an
 - **Donation System**: Secure platform for supporting EDM's work
 - **Event Management**: 
   - Registration and management for various ministry events
-  - Automated email reminders (24h, 1h, and 30m before events)
   - Special handling for virtual events with secure join links
 - **News & Updates**: Regular updates about EDM's activities and achievements
 - **Prayer Requests**: System for submitting and managing prayer requests
