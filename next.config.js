@@ -6,6 +6,13 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    serverActions: true,
+  },
+  webpack: (config) => {
+    config.externals = [...config.externals, 'pg-native'];
+    return config;
+  },
   images: {
     remotePatterns: [
       {

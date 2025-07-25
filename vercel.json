@@ -1,0 +1,19 @@
+{
+  "version": 2,
+  "buildCommand": "npm run vercel-build",
+  "framework": "nextjs",
+  "crons": [
+    {
+      "path": "/api/cron/event-reminders",
+      "schedule": "*/5 * * * *"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_VERCEL_ENV": "production"
+  },
+  "git": {
+    "deploymentEnabled": {
+      "main": true
+    }
+  }
+}
