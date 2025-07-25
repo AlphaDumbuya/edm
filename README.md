@@ -2,12 +2,20 @@
 
 A comprehensive web platform for EDM's mission work in Sierra Leone and Oregon, USA.
 
-<!-- Last updated: July 24, 2025 -->
-<!-- Trigger redeploy: July 24, 2025 10:00:00 PM -->
+<!-- Last updated: July 25, 2025 -->
 
 ## Overview
 
-EDM (Evangelism, Discipleship, Missions) is a registered 501(c)(3) non-profit organization dedicated to spreading the Gospel, training disciples, and conducting missions work primarily in Sierra Leone, with key partnerships in Oregon, USA.
+EDM (Evangelism, Discipleship, Missions) is a registered 501(c)(3) non-profit organization dedicated to spreading the Gospel, training disciples, and conducting missions work primarily in Sierra Leone, with key partnerships in Oregon, USA. Our platform serves as a central hub for all EDM activities, communications, and resource management.
+
+### Our Mission
+To transform lives through evangelism, create robust discipleship structures, and engage in impactful missions work across Sierra Leone and beyond.
+
+### Key Focus Areas
+- **Evangelism**: Spreading the Gospel through various outreach programs
+- **Discipleship**: Training and equipping believers through structured programs
+- **Missions**: Conducting and supporting mission work in Sierra Leone
+- **Bible School**: Operating the ReGom/EDM Bible Institute for theological education
 
 ## Features
 
