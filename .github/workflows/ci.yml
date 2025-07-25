@@ -3,9 +3,8 @@ name: Verify Build
 on:
   push:
     branches: [ main ]
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
@@ -43,9 +42,10 @@ jobs:
       
     - name: Generate Prisma Client
       run: npx prisma generate
-      
+      env:
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    
     - name: Build
-      run: npm run build
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
         NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
@@ -54,3 +54,13 @@ jobs:
         UPLOADTHING_SECRET: ${{ secrets.UPLOADTHING_SECRET }}
         UPLOADTHING_APP_ID: ${{ secrets.UPLOADTHING_APP_ID }}
         NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+        UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
+        SMTP_HOST: ${{ secrets.SMTP_HOST }}
+        SMTP_PORT: ${{ secrets.SMTP_PORT }}
+        SMTP_USER: ${{ secrets.SMTP_USER }}
+        SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+        EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+        NEXT_PUBLIC_ORG_NAME: ${{ secrets.NEXT_PUBLIC_ORG_NAME }}
+      run: |
+        echo "Starting build..."
+        npm run build || (echo "Build failed" && exit 1)
