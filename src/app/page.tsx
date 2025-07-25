@@ -107,7 +107,7 @@ export default async function Home() {
 							<Button
 								size="sm"
 								variant="outline"
-								className="w-auto px-4 sm:px-6 bg-transparent hover:bg-primary/10 text-primary-foreground"
+								className="w-auto px-4 sm:px-6 bg-transparent hover:bg-primary text-primary-foreground hover:text-primary-foreground"
 							>
 								<span className="flex items-center gap-1 text-xs sm:text-sm font-medium">
 									Support

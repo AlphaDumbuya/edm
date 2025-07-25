@@ -17,9 +17,25 @@ const DashboardLineChart: React.FC<DashboardLineChartProps> = ({ data, label }) 
         <XAxis dataKey="name" stroke="#ccc" />
         <YAxis stroke="#ccc" />
         <Tooltip />
-        <Line type="monotone" dataKey="value" stroke="#fbbf24" strokeWidth={3} dot={false} />
+        <Line type="monotone" dataKey="value" stroke="#3B82F6" strokeWidth={3} dot={false} />
       </LineChart>
     </ResponsiveContainer>
+    {/* Progress bar below chart */}
+    {data && data.length > 0 && (
+      (() => {
+        const max = Math.max(...data.map(d => d.value));
+        const current = data[data.length - 1].value;
+        const percent = max > 0 ? Math.round((current / max) * 100) : 0;
+        return (
+          <div className="mt-4 w-full h-3 bg-gray-700 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-blue-500 transition-all duration-500"
+              style={{ width: `${percent}%` }}
+            />
+          </div>
+        );
+      })()
+    )}
   </div>
 );
 

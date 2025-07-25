@@ -13,6 +13,16 @@ const founderAndCEO = {
   location: 'Sierra Leone',
 };
 
+const vicePresident = {
+  name: 'Philip Konteh',
+  role: 'Vice President, EDM',
+  bio: 'As Vice President of EDM, Philip brings valuable leadership and vision to support our mission. His dedication to evangelism and discipleship strengthens our impact across Sierra Leone and our international partnerships.',
+  imageUrl: 'https://code-alpha-image-gallary.vercel.app/images/vp.png',
+  dataAiHint: 'Philip Konteh Vice President EDM',
+  contact: 'philipkonteh@edm.org',
+  location: 'Sierra Leone',
+};
+
 const countryDirector = {
   name: 'Pastor Dominic Dumbuya',
   role: 'Country Director, Sierra Leone',
@@ -117,6 +127,7 @@ export default function InternationalBoardPage() {
         />
         <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
           <LeaderProfile {...founderAndCEO} />
+          <LeaderProfile {...vicePresident} />
         </div>
       </section>
 

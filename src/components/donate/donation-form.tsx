@@ -48,6 +48,10 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [name, setName] = useState('');
+  
+  const handlePayPalRedirect = () => {
+    window.open('https://www.paypal.com/donate/?hosted_button_id=3P7G7PYAUF96N', '_blank');
+  };
   const [email, setEmail] = useState('');
   const [error, setError] = useState<string | null>(null);
 
@@ -160,9 +164,30 @@ export default function DonationForm({ clientSecret, donationAmount, onSuccessfu
         )}
         {isProcessing ? 'Processing...' : `Donate $${(donationAmount / 100).toFixed(2)}`}
       </Button>
-      <p className="text-xs text-muted-foreground text-center flex items-center justify-center">
+      <p className="text-xs text-muted-foreground text-center flex items-center justify-center mb-6">
         <Lock className="h-3 w-3 mr-1" /> Secure payment powered by Stripe.
       </p>
+
+      <div className="relative flex items-center justify-center">
+        <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t border-muted" />
+        </div>
+        <span className="relative px-3 text-sm text-muted-foreground bg-background">
+          Or donate with
+        </span>
+      </div>
+
+      <Button
+        type="button"
+        variant="outline"
+        onClick={handlePayPalRedirect}
+        className="w-full flex items-center justify-center gap-2 py-2.5 sm:py-3 mt-6 bg-[#0070ba] hover:bg-[#005ea6] text-white border-0"
+      >
+        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M20.067 8.478c.492.315.844.827.983 1.481.157.736.132 1.404-.161 2.041-.294.637-.796 1.154-1.485 1.551-.764.44-1.713.656-2.847.656h-2.72l-.641 3.997h-2.084l.641-3.997H9.014l-.641 3.997H6.289l1.923-12h7.759c1.163 0 2.009.227 2.535.682.526.455.79 1.068.79 1.839 0 .819-.265 1.539-.795 2.159-.53.62-1.256 1.029-2.179 1.224.857.032 1.523.226 1.996.583zm-6.562-3.997h-2.359l-.682 4.258h2.359c.935 0 1.661-.174 2.179-.521.518-.347.777-.832.777-1.454 0-.566-.185-1.004-.554-1.314-.37-.31-.917-.466-1.642-.466l.002-.503z"/>
+        </svg>
+        <span className="text-base sm:text-lg font-semibold">Donate with PayPal</span>
+      </Button>
     </form>
   );
 }

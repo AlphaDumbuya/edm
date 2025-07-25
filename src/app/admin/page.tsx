@@ -52,7 +52,7 @@ export default async function AdminDashboardPage() {
     getAllPrayerRequests({ limit: 1, orderBy: { createdAt: 'desc' } }),
   ]);
   const latestDonation = donationsRes.donations[0];
-  const latestUser = usersRes.users[0];
+  const latestUser = usersRes.data.users[0];
   const latestPrayer = prayerRes.prayerRequests[0];
 
   // Remove the old notifications array and only use audit logs for notifications
@@ -101,15 +101,34 @@ export default async function AdminDashboardPage() {
 
   // Generate real user growth data (users registered per month for the past 12 months)
   const userGrowthMap = new Map<string, number>();
-  const allUsersRes = await getAllUsers({ orderBy: { createdAt: 'asc' }, limit: 10000 });
-  allUsersRes.users.forEach((user: any) => {
+  const allUsersRes = await getAllUsers({ orderBy: { createdAt: 'asc' } });
+  
+  // Get the date range for the last 12 months
+  const today = new Date();
+  const months = [];
+  for (let i = 11; i >= 0; i--) {
+    const date = new Date(today.getFullYear(), today.getMonth() - i, 1);
+    const key = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    months.push(key);
+    userGrowthMap.set(key, 0); // Initialize all months with 0
+  }
+
+  // Count users per month
+  allUsersRes.data.users.forEach((user: any) => {
     const date = user.createdAt ? new Date(user.createdAt) : null;
     if (date) {
       const key = date.toLocaleString('default', { month: 'short', year: 'numeric' });
-      userGrowthMap.set(key, (userGrowthMap.get(key) || 0) + 1);
+      if (userGrowthMap.has(key)) {
+        userGrowthMap.set(key, (userGrowthMap.get(key) || 0) + 1);
+      }
     }
   });
-  const userGrowthData = Array.from(userGrowthMap.entries()).map(([name, value]) => ({ name, value }));
+
+  // Create the data array in chronological order
+  const userGrowthData = months.map(month => ({
+    name: month,
+    value: userGrowthMap.get(month) || 0
+  }));
 
   // Generate real monthly donations data (sum of donations per month for the past 12 months)
   const monthlyDonationsMap = new Map<string, number>();
@@ -124,7 +143,7 @@ export default async function AdminDashboardPage() {
   const monthlyDonationsData = Array.from(monthlyDonationsMap.entries()).map(([name, value]) => ({ name, value }));
   // Generate real traffic data by location (user registrations by country)
   const countryMap = new Map<string, number>();
-  allUsersRes.users.forEach((user: any) => {
+  allUsersRes.data.users.forEach((user: any) => {
     const country = user.country || 'Other';
     countryMap.set(country, (countryMap.get(country) || 0) + 1);
   });
@@ -182,18 +201,18 @@ export default async function AdminDashboardPage() {
   return (
     <AdminDashboardClientLayout name={userName}>
       <div className="mx-auto mt-0 bg-gray-900 min-h-screen p-2 sm:p-4 md:p-8 w-full">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 w-full">
-          <DashboardStatsCard value={totalMonthlyDonations} label={`Total Donations (${monthName})`} icon={<span className="text-4xl font-bold text-yellow-400">$</span>} className="w-full" />
-          <DashboardStatsCard value={totalUsers} label="Total Users" icon={<svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20h6M3 20h5v-2a4 4 0 0 1 3-3.87M16 3.13a4 4 0 0 1 0 7.75M8 3.13a4 4 0 0 0 0 7.75"/></svg>} className="w-full" />
-          <DashboardStatsCard value={events.length} label="Active Events" icon={<svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg>} className="w-full" />
-          <DashboardStatsCard value={totalDonations} label="Total Transactions" icon={<svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3 0 1.657 1.343 3 3 3s3-1.343 3-3c0-1.657-1.343-3-3-3zm0 0V4m0 0C7.582 4 4 7.582 4 12c0 4.418 3.582 8 8 8s8-3.582 8-8c0-4.418-3.582-8-8-8z"/></svg>} className="w-full" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 auto-rows-fr">
+          <DashboardStatsCard value={totalMonthlyDonations} label={`Total Donations (${monthName})`} icon={<span className="text-4xl font-bold text-yellow-400">$</span>} />
+          <DashboardStatsCard value={totalUsers} label="Total Users" icon={<svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20h6M3 20h5v-2a4 4 0 0 1 3-3.87M16 3.13a4 4 0 0 1 0 7.75M8 3.13a4 4 0 0 0 0 7.75"/></svg>} />
+          <DashboardStatsCard value={events.length} label="Active Events" icon={<svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2z"/></svg>} />
+          <DashboardStatsCard value={totalDonations} label="Total Transactions" icon={<svg className="w-8 h-8 text-purple-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 8c-1.657 0-3 1.343-3 3 0 1.657 1.343 3 3 3s3-1.343 3-3c0-1.657-1.343-3-3-3zm0 0V4m0 0C7.582 4 4 7.582 4 12c0 4.418 3.582 8 8 8s8-3.582 8-8c0-4.418-3.582-8-8-8z"/></svg>} />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 mb-8">
           <DashboardLineChart data={userGrowthData} label="Total Users" />
           <DashboardBarChart data={monthlyDonationsData} label="Total Donations" />
           <DashboardPieChart data={trafficData} label="Traffic by Location" />
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 md:gap-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-6">
           <DashboardActivityFeed items={activityFeed} />
           <DashboardSystemAlerts items={systemAlerts} />
         </div>

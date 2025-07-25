@@ -1,14 +1,27 @@
 import { UserManagementClient } from './user-management-client';
 import { getAllUsersAction } from './actions';
 import { Suspense } from 'react';
+import { AppUser } from '@/lib/db/users';
 
-const UserManagementPage = async () => {
-  const response = await getAllUsersAction({
-    limit: 10,
-    orderBy: { createdAt: 'desc' }
-  });
-  const initialUsers = response.success && response.data ? response.data.users : [];
-  const initialTotalCount = response.success && response.data ? response.data.totalCount : 0;
+export default async function UserManagementPage() {
+  let users: AppUser[] = [];
+  let totalCount = 0;
+
+  try {
+    const response = await getAllUsersAction({
+      limit: 10,
+      orderBy: { createdAt: 'desc' }
+    });
+
+    if (response.success && response.data) {
+      users = response.data.users;
+      totalCount = response.data.totalCount;
+    } else {
+      console.error('Failed to fetch users:', response);
+    }
+  } catch (error) {
+    console.error('Error in UserManagementPage:', error);
+  }
 
   return (
     <section className="w-full min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-800 flex flex-col items-center py-4 px-2 sm:px-4">
@@ -18,13 +31,15 @@ const UserManagementPage = async () => {
           <span className="text-xs text-gray-400 font-medium">Admin Panel</span>
         </header>
         <main className="w-full">
+          {users.length === 0 && <div className="text-red-400 text-center py-4">No users found. {totalCount === 0 ? 'Failed to load users. Please try again later.' : ''}</div>}
           <Suspense fallback={<div className="text-gray-400 text-sm">Loading...</div>}>
-            <UserManagementClient initialUsers={initialUsers} initialTotalCount={initialTotalCount} />
+            <UserManagementClient 
+              initialUsers={users || []} 
+              initialTotalCount={totalCount || 0} 
+            />
           </Suspense>
         </main>
       </div>
     </section>
   );
-};
-
-export default UserManagementPage;
+}

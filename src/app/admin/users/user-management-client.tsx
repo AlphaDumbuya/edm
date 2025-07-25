@@ -2,7 +2,7 @@
 
 import { AppUser } from '@/lib/db/users';
 import { getAllUsersAction } from './actions';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -26,91 +26,101 @@ import { useSession } from 'next-auth/react';
 import { RefreshCw } from 'lucide-react';
 
 interface UserManagementClientProps {
-  initialUsers: AppUser[];
-  initialTotalCount: number;
+  initialUsers?: AppUser[];
+  initialTotalCount?: number;
 }
 
+// Cache interface
+interface CacheEntry {
+  users: AppUser[];
+  totalCount: number;
+  timestamp: number;
+}
+
+interface QueryKey {
+  search: string;
+  role?: string;
+  page: number;
+  limit: number;
+}
+
+// Create a cache with a 5-minute expiry
+const cache = new Map<string, CacheEntry>();
+const CACHE_EXPIRY = 2 * 60 * 1000; // 2 minutes in milliseconds - reduced to ensure fresher data
+
+const createQueryKey = (params: QueryKey): string => {
+  return `${params.search}-${params.role || 'all'}-${params.page}-${params.limit}`;
+};
+
 export const UserManagementClient: React.FC<UserManagementClientProps> = ({
-  initialUsers,
-  initialTotalCount,
+  initialUsers = [],
+  initialTotalCount = 0,
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams() || new URLSearchParams();
 
-  const [users, setUsers] = useState<AppUser[]>(initialUsers);
-  const [totalUsers, setTotalUsers] = useState(initialTotalCount);
+  const [users, setUsers] = useState<AppUser[]>(Array.isArray(initialUsers) ? initialUsers : []);
+  const [totalUsers, setTotalUsers] = useState(typeof initialTotalCount === 'number' ? initialTotalCount : 0);
   const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(searchParams?.get('search') || '');
   const [roleFilter, setRoleFilter] = useState<string | undefined>(searchParams?.get('role') ?? undefined);
-  const [currentPage, setCurrentPage] = useState(parseInt(searchParams?.get('page') ?? '1'));
+  const [currentPage, setCurrentPage] = useState(parseInt(searchParams?.get('page') ?? '1', 10) || 1);
   const [usersPerPage] = useState(10);
-  const [mounted, setMounted] = useState(false);
   const { data: session, status } = useSession();
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const initialSearch = searchParams?.get('search');
-    if (initialSearch) {
-      setSearchQuery(initialSearch);
-    }
-  }, [searchParams]); // Added searchParams to dependencies since we're using it
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  // Debounce search timeout
+  const searchTimeoutRef = React.useRef<NodeJS.Timeout>();
 
-  // Fetch users when search, filter, or page changes
-  useEffect(() => {
-    if (!mounted) return;
-    const fetchUsers = async () => {
-      setLoading(true);
-      const params = new URLSearchParams();
-      if (searchQuery) params.set('search', searchQuery);
-      if (roleFilter && roleFilter !== 'all') params.set('role', roleFilter);
-      if (currentPage > 1) params.set('page', currentPage.toString());
-      params.set('limit', usersPerPage.toString());
-      router.push(`?${params.toString()}`, { scroll: false });
-      const res = await fetch(`/api/admin/users?${params.toString()}`);
-      if (res.ok) {
-        const data = await res.json();
-        setUsers(data.users);
-        setTotalUsers(data.totalCount);
+  const fetchUsers = useCallback(async (
+    search: string,
+    role: string | undefined,
+    page: number,
+    limit: number,
+    ignoreCache = false
+  ) => {
+    const queryKey = createQueryKey({ search, role, page, limit });
+    
+    // Check cache first
+    if (!ignoreCache) {
+      const cached = cache.get(queryKey);
+      if (cached && (Date.now() - cached.timestamp) < CACHE_EXPIRY) {
+        setUsers(cached.users);
+        setTotalUsers(cached.totalCount);
+        return;
       }
-      setLoading(false);
-    };
-    fetchUsers();
-  }, [searchQuery, roleFilter, currentPage, usersPerPage, router, mounted]);
+    }
 
-  const totalPages = Math.ceil(totalUsers / usersPerPage);
-
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
-  };
-
-  const handleRoleFilterChange = (value: string | undefined) => {
-    setRoleFilter(value);
-    setCurrentPage(1);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const fetchUsers = async () => {
     setLoading(true);
     try {
-      const offset = (currentPage - 1) * usersPerPage;
+      // Update URL params
+      const params = new URLSearchParams();
+      if (search) params.set('search', search);
+      if (role && role !== 'all') params.set('role', role);
+      if (page > 1) params.set('page', page.toString());
+      params.set('limit', limit.toString());
+      
+      // Update URL without causing a reload
+      router.push(`?${params.toString()}`, { scroll: false });
+
       const response = await getAllUsersAction({
-        search: searchQuery,
-        role: roleFilter === 'all' ? undefined : roleFilter,
-        offset,
-        limit: usersPerPage,
+        search,
+        role: role === 'all' ? undefined : role,
+        offset: (page - 1) * limit,
+        limit,
         orderBy: { createdAt: 'desc' }
       });
-      
+
       if (response.success && response.data) {
+        // Update cache
+        cache.set(queryKey, {
+          users: response.data.users,
+          totalCount: response.data.totalCount,
+          timestamp: Date.now()
+        });
+
         setUsers(response.data.users);
         setTotalUsers(response.data.totalCount);
       }
@@ -119,39 +129,77 @@ export const UserManagementClient: React.FC<UserManagementClientProps> = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [router]);
 
-  // Fetch users when search, filter, or pagination changes
-  useEffect(() => {
-    handleRefresh();
-  }, [searchQuery, roleFilter, currentPage]);
+  // Memoize total pages calculation
+  const totalPages = useMemo(() => Math.ceil(totalUsers / usersPerPage), [totalUsers, usersPerPage]);
 
-  const confirmDelete = async () => {
-    if (selectedUserId) {
-      await deleteUserAction(selectedUserId);
-      window.location.reload();
+  // Debounced search handler
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchQuery(value);
+    
+    // Clear existing timeout
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
     }
-  };
 
-  // Refresh handler
-  const handleRefresh = async () => {
+    // Set new timeout
+    searchTimeoutRef.current = setTimeout(() => {
+      setCurrentPage(1);
+      fetchUsers(value, roleFilter, 1, usersPerPage, false);
+    }, 500); // 500ms debounce - increased to reduce database load
+  }, [roleFilter, usersPerPage, fetchUsers]);
+
+  const handleRoleFilterChange = useCallback((value: string | undefined) => {
+    setRoleFilter(value);
+    setCurrentPage(1);
+    fetchUsers(searchQuery, value, 1, usersPerPage, false);
+  }, [searchQuery, usersPerPage, fetchUsers]);
+
+  const handlePageChange = useCallback((page: number) => {
+    setCurrentPage(page);
+    fetchUsers(searchQuery, roleFilter, page, usersPerPage, false);
+  }, [searchQuery, roleFilter, usersPerPage, fetchUsers]);
+
+  // Initial fetch and URL sync effect
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const initialSearch = params.get('search') || '';
+    const initialRole = params.get('role') || undefined;
+    const initialPage = parseInt(params.get('page') || '1', 10);
+    
+    // Only fetch if we have different values than the initial props
+    if (initialUsers.length === 0 || 
+        initialSearch !== '' || 
+        initialRole !== undefined || 
+        initialPage !== 1) {
+      fetchUsers(initialSearch, initialRole, initialPage, usersPerPage, false);
+    }
+  }, []); // Empty dependency array - only run once on mount
+
+  const handleRefresh = useCallback(async () => {
     setIsRefreshing(true);
     try {
-      const params = new URLSearchParams(searchParams.toString());
-      const page = parseInt(params.get('page') || '1');
-      const limit = usersPerPage;
-      const role = params.get('role') || undefined;
-      const search = params.get('search') || '';
-      const res = await fetch(`/api/admin/users?page=${page}&limit=${limit}&role=${role || ''}&search=${search}`);
-      if (res.ok) {
-        const data = await res.json();
-        setUsers(data.users);
-        setTotalUsers(data.totalCount);
-      }
+      await fetchUsers(searchQuery, roleFilter, currentPage, usersPerPage, true);
     } finally {
       setIsRefreshing(false);
     }
-  };
+  }, [searchQuery, roleFilter, currentPage, usersPerPage, fetchUsers]);
+
+  const confirmDelete = useCallback(async () => {
+    if (!selectedUserId) return;
+    
+    try {
+      await deleteUserAction(selectedUserId);
+      // Refresh the current page
+      await fetchUsers(searchQuery, roleFilter, currentPage, usersPerPage, true);
+      setShowDeleteDialog(false);
+      setSelectedUserId(null);
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+    }
+  }, [selectedUserId, searchQuery, roleFilter, currentPage, usersPerPage, fetchUsers]);
 
   return (
     <div className="w-full max-w-full sm:max-w-xs md:max-w-2xl lg:max-w-4xl mx-auto py-4 sm:py-6 md:py-10 px-2 sm:px-4 md:px-8 bg-gray-900 text-gray-100 rounded-lg shadow-lg border border-gray-800 flex flex-col gap-4 text-xs sm:text-sm md:text-base max-w-full overflow-x-auto">

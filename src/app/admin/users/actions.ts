@@ -26,7 +26,8 @@ export async function getAllUsersAction(options: GetAllUsersOptions) {
       where.role = options.role;
     }
 
-    const [users, totalCount] = await Promise.all([
+    // Use a single query with count
+    const [users, totalCount] = await prisma.$transaction([
       prisma.user.findMany({
         where,
         skip: options.offset || 0,
@@ -40,8 +41,10 @@ export async function getAllUsersAction(options: GetAllUsersOptions) {
           createdAt: true,
         },
       }),
-      prisma.user.count({ where })
-    ]);
+      prisma.user.count({ where }),
+    ], {
+      isolationLevel: 'ReadUncommitted' // Use a lower isolation level for better performance
+    });
 
     return {
       success: true,

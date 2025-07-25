@@ -28,36 +28,65 @@ export type NewsArticleWithAuthor = Omit<PrismaNewsArticle, 'authorId'> & {
 
 export async function getAllNewsArticles(publishedOnly: boolean = true): Promise<NewsArticleWithAuthor[]> {
   const { default: prisma } = await import('./prisma');
-  try {
-    const articles = await prisma.newsArticle.findMany({
-      where: publishedOnly ? { published: true } : {},
-      orderBy: { createdAt: 'desc' },
-    });
-
-    const enriched = await Promise.all(
-      articles.map(async (article) => {
-        const author = await prisma.user.findUnique({
-          where: { id: article.authorId },
-          select: { id: true, name: true, email: true, image: true },
+  
+  async function fetchArticlesWithRetry(): Promise<NewsArticleWithAuthor[]> {
+    const maxRetries = 3;
+    let attempt = 0;
+    let lastError: Error | null = null;
+    
+    while (attempt < maxRetries) {
+      try {
+        const articles = await prisma.$transaction(async (tx) => {
+          const results = await tx.newsArticle.findMany({
+            where: publishedOnly ? { published: true } : {},
+            orderBy: { createdAt: 'desc' },
+            include: {
+              author: {
+                select: {
+                  id: true,
+                  name: true,
+                  email: true,
+                  image: true,
+                },
+              },
+            },
+          });
+          
+          return results.map((article: any) => ({
+            ...article,
+            author: article.author || {
+              id: 'unknown',
+              name: 'Unknown Author',
+              email: 'unknown@example.com',
+              image: null,
+            }
+          }));
+        }, {
+          timeout: 15000, // 15 second timeout for the transaction
         });
-
-        return {
-          ...article,
-          author: author || {
-            id: 'unknown',
-            name: 'Unknown Author',
-            email: 'unknown@example.com',
-            image: null,
-          },
-        };
-      })
-    );
-
-    return enriched;
-  } catch (err) {
+        
+        return articles;
+      } catch (error) {
+        lastError = error as Error;
+        attempt++;
+        
+        if (attempt === maxRetries) {
+          console.error('Failed to fetch news articles after', maxRetries, 'attempts:', error);
+          throw error;
+        }
+        
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+      }
+    }
+    
+    throw lastError || new Error('Failed to fetch news articles');
+  }
+  
+  return fetchArticlesWithRetry().catch(err => {
     console.error('Error fetching all news articles:', err);
     return [];
-  }
+  });
 }
 
 export async function getNewsArticleById(id: string): Promise<NewsArticleWithAuthor | null> {

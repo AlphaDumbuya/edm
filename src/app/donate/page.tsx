@@ -92,7 +92,31 @@ export default function DonatePage() {
             <h3 className="text-base sm:text-lg md:text-xl font-semibold text-foreground border-b pb-2 flex items-center">
               <CreditCard className="mr-3 h-5 w-5 sm:h-6 sm:w-6 text-primary" /> Donate with PayPal
             </h3>
-            <p className="text-xs sm:text-sm md:text-base text-muted-foreground">You can also support EDM's mission by donating via PayPal.</p>
+            <p className="text-xs sm:text-sm md:text-base text-muted-foreground mb-3 sm:mb-4">You can also support EDM's mission by donating via PayPal.</p>
+            <div className="flex justify-center sm:justify-start">
+              <a 
+                href="https://www.paypal.com/donate/?hosted_button_id=3P7G7PYAUF96N" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 sm:gap-2 
+                  px-4 sm:px-6 
+                  py-2.5 sm:py-3 
+                  text-xs sm:text-sm md:text-base 
+                  font-semibold text-white 
+                  bg-[#0070ba] hover:bg-[#003087] 
+                  rounded-md 
+                  transition-all duration-200
+                  shadow-md hover:shadow-lg 
+                  w-[90%] sm:w-auto
+                  hover:scale-[1.02] active:scale-[0.98]"
+              >
+                <svg className="h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.067 8.478c.492.315.844.827.983 1.481.157.736.132 1.404-.161 2.041-.294.637-.796 1.154-1.485 1.551-.764.44-1.713.656-2.847.656h-2.72l-.641 3.997h-2.084l.641-3.997H9.014l-.641 3.997H6.289l1.923-12h7.759c1.163 0 2.009.227 2.535.682.526.455.79 1.068.79 1.839 0 .819-.265 1.539-.795 2.159-.53.62-1.256 1.029-2.179 1.224.857.032 1.523.226 1.996.583zm-6.562-3.997h-2.359l-.682 4.258h2.359c.935 0 1.661-.174 2.179-.521.518-.347.777-.832.777-1.454 0-.566-.185-1.004-.554-1.314-.37-.31-.917-.466-1.642-.466l.002-.503z"/>
+                </svg>
+                <span className="whitespace-nowrap">Donate with PayPal</span>
+                <ExternalLink className="h-3.5 w-3.5 sm:h-4 sm:w-4 ml-0.5 sm:ml-1 flex-shrink-0" />
+              </a>
+            </div>
           </div>
 
           <div>

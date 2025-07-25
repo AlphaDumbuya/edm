@@ -7,73 +7,122 @@ import { Menu, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminThemeToggle from "@/components/admin/AdminThemeToggle";
 import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/auth-context';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function AdminLayoutClient({ children }: { children: React.ReactNode }) {
+  // All hooks must be called in the same order on every render
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { data: session, status } = useSession();
-  const role = session?.user?.role;
-
-  // Move all hooks to the top before any conditional returns
   const [showRoleNotice, setShowRoleNotice] = useState(false);
   const [roleNotice, setRoleNotice] = useState<string | null>(null);
 
+  const { data: session, status } = useSession({ required: true });
+  const router = useRouter();
+  const { signOutAuth } = useAuth();
 
-  // Theme and background setup (single useEffect for all DOM side effects)
+  // Derived state using useMemo
+  const role = React.useMemo(() => session?.user?.role, [session?.user?.role]);
+  
+  // Permissions memoization
+  const permissions = React.useMemo(() => ({
+    canManageUsers: role === 'SUPER_ADMIN',
+    canEditContent: ['SUPER_ADMIN', 'ADMIN', 'EDITOR'].includes(role || ''),
+    canDeleteContent: ['SUPER_ADMIN', 'ADMIN'].includes(role || ''),
+    canViewContent: true
+  }), [role]);
+
+  const handleLogout = React.useCallback(async () => {
+    await signOutAuth();
+    router.push('/');
+  }, [signOutAuth, router]);
+
+
+  // Theme setup effect
   React.useEffect(() => {
-    document.documentElement.classList.remove('dark');
-    localStorage.setItem('admin-theme', 'light');
-    // Ensure the dark gradient covers the entire window
-    document.documentElement.classList.add('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800');
-    document.body.classList.add('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800', 'text-gray-100');
+    const setupTheme = () => {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('admin-theme', 'light');
+      document.documentElement.classList.add('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800');
+      document.body.classList.add('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800', 'text-gray-100');
+    };
+
+    setupTheme();
+    
     return () => {
       document.documentElement.classList.remove('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800');
       document.body.classList.remove('bg-gradient-to-br', 'from-gray-900', 'via-gray-950', 'to-gray-800', 'text-gray-100');
     };
   }, []);
 
-  useEffect(() => {
-    let notice = null;
-    if (role === 'VIEWER') {
-      notice = 'You are logged in as a Viewer. You can browse and view all admin content, but you do not have permission to create, edit, or delete anything.';
-    } else if (role === 'EDITOR') {
-      notice = 'You are logged in as an Editor. You can create and edit content, but you cannot delete or manage users.';
-    } else if (role === 'ADMIN') {
-      notice = 'You are logged in as an Admin. You can create, edit, and delete content, but you cannot manage users and roles.';
-    }
-    setRoleNotice(notice);
-    if (notice && !window.sessionStorage.getItem(`role-notice-dismissed-${role}`)) {
+  // Role notice effect
+  React.useEffect(() => {
+    if (!role) return;
+
+    const notices = {
+      VIEWER: 'You are logged in as a Viewer. You can browse and view all admin content, but you do not have permission to create, edit, or delete anything.',
+      EDITOR: 'You are logged in as an Editor. You can create and edit content, but you cannot delete or manage users.',
+      ADMIN: 'You are logged in as an Admin. You can create, edit, and delete content, but you cannot manage users and roles.'
+    };
+
+    const notice = notices[role as keyof typeof notices];
+    const storageKey = `role-notice-dismissed-${role}`;
+    const noticeDismissed = window.sessionStorage.getItem(storageKey);
+
+    if (notice && !noticeDismissed) {
+      setRoleNotice(notice);
       setShowRoleNotice(true);
     }
   }, [role]);
 
-  // Role-based restriction
+  // Permission enforcement callback
+  const enforcePermission = React.useCallback((action: string) => {
+    if (!role) return null;
+
+    const permissionMap = {
+      manageUsers: role === 'SUPER_ADMIN',
+      edit: ['SUPER_ADMIN', 'ADMIN', 'EDITOR'].includes(role),
+      delete: ['SUPER_ADMIN', 'ADMIN'].includes(role)
+    };
+
+    const messages = {
+      manageUsers: 'Only Super Admins can manage users and roles.',
+      edit: 'You do not have permission to edit content based on your role.',
+      delete: 'You do not have permission to delete content based on your role.'
+    };
+
+    if (action in permissionMap && !permissionMap[action as keyof typeof permissionMap]) {
+      return (
+        <div className="p-8 text-center text-red-600">
+          Access denied: {messages[action as keyof typeof messages]}
+        </div>
+      );
+    }
+    return null;
+  }, [role]);
+
+  // Early returns for loading and access control
   if (status === 'loading') {
     return <div>Loading...</div>;
   }
-  // Allow VIEWER to access admin layout, restrict only if role is missing or invalid
+
   if (!role || !['ADMIN', 'SUPER_ADMIN', 'EDITOR', 'VIEWER'].includes(role)) {
-    return <div className="p-8 text-center text-red-600">Access denied: You do not have permission to view this page.</div>;
+    return (
+      <div className="p-8 text-center text-red-600">
+        Access denied: You do not have permission to view this page.
+      </div>
+    );
   }
-
-  // Role-based permissions
-  const canManageUsers = role === 'SUPER_ADMIN';
-  const canEditContent = role === 'SUPER_ADMIN' || role === 'ADMIN' || role === 'EDITOR';
-  const canDeleteContent = role === 'SUPER_ADMIN' || role === 'ADMIN';
-  const canViewContent = true;
-
-  // Helper to enforce permissions in child components
-  const enforcePermission = (action: string) => {
-    if (action === 'manageUsers' && !canManageUsers) {
-      return <div className="p-8 text-center text-red-600">Access denied: Only Super Admins can manage users and roles.</div>;
-    }
-    if (action === 'edit' && !canEditContent) {
-      return <div className="p-8 text-center text-red-600">Access denied: You do not have permission to edit content based on your role.</div>;
-    }
-    if (action === 'delete' && !canDeleteContent) {
-      return <div className="p-8 text-center text-red-600">Access denied: You do not have permission to delete content based on your role.</div>;
-    }
-    return null;
-  };
 
   // Only the admin navbar and sidebar are rendered here. The public site header/navbar is not included.
   // (No duplicate useEffect for theme/background setup)
@@ -104,19 +153,37 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <div className="h-full flex flex-col pt-8">
             <AdminSidebar onLinkClick={() => {}} />
             <div className="mt-auto mb-4 px-6">
-              <button
-                className="w-full flex items-center justify-center gap-1 py-1.5 px-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm shadow"
-                style={{ minHeight: 0, minWidth: 0 }}
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.location.href = '/api/auth/signout';
-                  }
-                }}
-                title="Logout"
-              >
-                <LogOut className="w-4 h-4" />
-                <span className="font-medium">Logout</span>
-              </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    className="w-full flex items-center justify-center gap-1 py-1.5 px-2 bg-red-600 text-white rounded hover:bg-red-700 transition text-sm shadow"
+                    style={{ minHeight: 0, minWidth: 0 }}
+                    title="Logout"
+                  >
+                    <LogOut className="w-4 h-4" />
+                    <span className="font-medium">Logout</span>
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-gray-900 border border-gray-800">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-xl font-semibold text-gray-100">Confirm Logout</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      Are you sure you want to logout from the admin dashboard? You'll need to sign in again to access the administrative features.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100 border-gray-700">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 text-white hover:bg-red-700"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </aside>
@@ -132,18 +199,36 @@ export default function AdminLayoutClient({ children }: { children: React.ReactN
           <div className="h-full flex flex-col">
             <AdminSidebar onLinkClick={() => setIsSidebarOpen(false)} />
             <div className="mt-auto mb-4 px-6">
-              <button
-                className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition shadow"
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.location.href = '/api/auth/signout';
-                  }
-                }}
-                title="Logout"
-              >
-                <LogOut className="w-5 h-5" />
-                <span className="font-semibold">Logout</span>
-              </button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <button
+                    className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition shadow"
+                    title="Logout"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span className="font-semibold">Logout</span>
+                  </button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-gray-900 border border-gray-800">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle className="text-xl font-semibold text-gray-100">Confirm Logout</AlertDialogTitle>
+                    <AlertDialogDescription className="text-gray-400">
+                      Are you sure you want to logout from the admin dashboard? You'll need to sign in again to access the administrative features.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-gray-100 border-gray-700">
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction 
+                      className="bg-red-600 text-white hover:bg-red-700"
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
           </div>
         </aside>
