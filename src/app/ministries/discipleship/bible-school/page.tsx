@@ -224,8 +224,8 @@ export default function BibleSchoolPage() {
               Follow these steps to complete your application to the ReGom/EDM Bible Institute:
             </p>
             <ol className="list-decimal list-inside text-sm text-muted-foreground space-y-2">
-              <li>Complete and submit the <a href="/ministries/discipleship/bible-school/application" className="text-blue-600 hover:underline">online application form</a>.</li>
-              <li>Request official transcripts and letters of recommendation to be sent directly to the admissions office.</li>
+              <li>Contact the admissions office to begin the application process.</li>
+              <li>Submit required documents including transcripts and letters of recommendation.</li>
               <li>Participate in an interview with the admissions committee (if required).</li>
               <li>Upon acceptance, follow the instructions for enrollment and orientation.</li>
             </ol>
@@ -254,7 +254,7 @@ export default function BibleSchoolPage() {
             <CardContent className="p-4">
               <h3 className="text-xl font-semibold mb-2">Application Process</h3>
               <p className="text-sm text-muted-foreground text-left">
-                The application process involves submitting all required documents, followed by an interview with the admissions committee. Accepted applicants will receive detailed information regarding enrollment and orientation.
+                To apply, please contact our administrative office. They will guide you through the application process and provide information about required documents and next steps.
               </p>
             </CardContent>
           </Card>

@@ -27,13 +27,13 @@ const discipleshipFocusAreas = [
       'Connecting mature believers with newer ones for personal guidance, accountability, and encouragement, fostering a culture of relational discipleship in Sierra Leone.',
   },
   {
-    title: 'Curriculum & Materials',
+    title: 'Growth Pathways',
     icon: BookOpen,
     description:
       'A structured pathway for spiritual growth, covering foundational Christian doctrines, spiritual disciplines, and practical Christian living for believers in Sierra Leone.',
   },
   {
-    title: 'Curriculum & Materials',
+    title: 'Training Resources',
     icon: UserCheck,
     description:
       'Developing and providing culturally relevant, Bible-based discipleship materials for individuals, small groups, and leadership training in Sierra Leone.',
