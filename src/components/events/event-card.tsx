@@ -106,7 +106,7 @@ export default function EventCard({ event }: EventCardProps) {
               <UserPlus className="mr-2 h-4 w-4" /> Sign Up / Details
             </Button>
           </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px] bg-card">
+          <DialogContent className="sm:max-w-[425px] bg-card max-h-[80vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="text-primary flex items-center text-lg sm:text-xl">
                 <Info className="mr-2 h-5 w-5" /> {event.title}
