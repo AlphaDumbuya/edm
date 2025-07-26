@@ -1,13 +1,31 @@
-import prisma from '../db/prisma';
+import { prisma } from '../db/prisma';
+import { EventReminderService } from '@/lib/services/event-reminder-service.new';
 
 export async function createEventRegistration({ name, email, eventId }: { name: string; email: string; eventId: string }) {
-  return prisma.eventRegistration.create({
+  // Find or create user by email
+  let user = await prisma.user.findUnique({ where: { email } });
+  if (!user) {
+    user = await prisma.user.create({
+      data: {
+        email,
+        name,
+        hashedPassword: '', // No password required for event signup
+      },
+    });
+  }
+
+  const registration = await prisma.eventRegistration.create({
     data: {
       name,
       email,
       eventId,
     },
   });
+
+  // Automatically create reminders for this registration using user.id
+  await EventReminderService.createRemindersForRegistration(eventId, user.id);
+
+  return registration;
 }
 
 export async function getEventRegistrationsForEvent(eventId: string) {

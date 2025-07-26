@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "src/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { validate as validateUUID, v4 as uuidv4 } from "uuid";
 
 export async function GET(request: Request) {

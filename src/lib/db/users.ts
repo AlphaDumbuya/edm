@@ -1,6 +1,6 @@
 /// <reference types="@prisma/client" />
 // src/lib/db/users.ts
-import prisma from './prisma';
+import { prisma } from './prisma';
 import bcrypt from 'bcryptjs';
 import { Prisma } from '@prisma/client';
 import { randomBytes } from 'crypto';

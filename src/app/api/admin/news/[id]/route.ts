@@ -1,6 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { isAdminServer } from "@/helpers/isAdminServer";
-import prisma from "src/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 // import { utapi } from "@/utils/utapi"; // Commented out as per previous instruction
 
 // Fix dynamic API route signature for Next.js app directory

@@ -1,16 +1,24 @@
-import nodemailer from 'nodemailer';
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: process.env.SMTP_SECURE === 'true',
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+import { sendBrevoEmail } from './sendBrevoEmail';
 
 export async function sendEventRegistrationEmail({ name, email, event }: { name: string; email: string; event: any }) {
+  // Calculate time until event (in minutes)
+  const eventDate = new Date(event.date);
+  const [hours, minutes] = event.time.split(':').map(Number);
+  eventDate.setHours(hours, minutes, 0, 0);
+  const now = new Date();
+  const timeDiffMinutes = Math.floor((eventDate.getTime() - now.getTime()) / 60000);
+
+  // Format time in am/pm
+  const formattedTime = eventDate.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+
+  // Determine if event is close (<= 60 min or <= 30 min)
+  const includeLink = event.isVirtual === 'true' || event.isVirtual === true ? (timeDiffMinutes <= 60) : false;
+
   const mailOptions = {
     from: `"${process.env.EMAIL_FROM_NAME}" <${process.env.ADMIN_EMAIL}>`,
     to: email,
@@ -33,8 +41,12 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
                     <p style="font-size: 1.05rem; color: #333; margin-bottom: 18px;">Thank you for registering for <strong>${event.title}</strong>!</p>
                     <table style="margin: 24px 0 32px 0; width: 100%; background: #f0f4f8; border-radius: 8px;">
                       <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Date:</strong> ${event.date}</td></tr>
-                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Time:</strong> ${event.time}</td></tr>
-                      ${event.isVirtual === 'true' || event.isVirtual === true ? `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online Event</td></tr><tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Join Link:</strong> ${event.onlineLink}</td></tr>` : `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Location:</strong> ${event.location}</td></tr>`}
+                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Time:</strong> ${formattedTime}</td></tr>
+                      ${event.isVirtual === 'true' || event.isVirtual === true
+                        ? includeLink
+                          ? `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online Event</td></tr><tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Join Link:</strong> <a href="${event.onlineLink}">${event.onlineLink}</a></td></tr>`
+                          : `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online Event</td></tr><tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><em>The join link will be sent in a reminder email before the event.</em></td></tr>`
+                        : `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Location:</strong> ${event.location}</td></tr>`}
                     </table>
                     <div style="font-size: 1rem; color: #444; margin-bottom: 24px;">${event.description ? event.description : ''}</div>
                     <p style="font-size: 1rem; color: #222;">We look forward to seeing you at the event!<br/>Blessings,<br/><strong>EDM Team</strong></p>
@@ -51,10 +63,19 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
         </table>
       </div>
     `,
-    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${event.date}\nTime: ${event.time}\n${event.isVirtual === 'true' || event.isVirtual === true ? `Type: Online (A join link will be sent in a reminder email before the event)` : `Location: ${event.location}`}\nWe look forward to seeing you!\n\nEDM Team\nEvangelism Discipleship Mission`,
+    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${event.date}\nTime: ${formattedTime}\n${event.isVirtual === 'true' || event.isVirtual === true
+      ? includeLink
+        ? `Type: Online Event\nJoin Link: ${event.onlineLink}`
+        : `Type: Online Event. The join link will be sent in a reminder email before the event.`
+      : `Location: ${event.location}`}\nWe look forward to seeing you!\n\nEDM Team\nEvangelism Discipleship Mission`,
   };
   try {
-    await transporter.sendMail(mailOptions);
+    await sendBrevoEmail({
+      to: email,
+      subject: mailOptions.subject,
+      html: mailOptions.html,
+      text: mailOptions.text,
+    });
   } catch (error) {
     console.error('sendEventRegistrationEmail error:', error);
     console.error('Email input:', { name, email, event });

@@ -1,4 +1,4 @@
-import prisma from './prisma';
+import { prisma } from './prisma';
 import { Prisma } from '@prisma/client';
 
 export interface GetAllPrayerRequestsOptions {
@@ -10,7 +10,6 @@ export interface GetAllPrayerRequestsOptions {
   orderBy?: {
     createdAt?: 'asc' | 'desc';
   };
-  published?: boolean; // Added published filter
 }
 
 export async function getAllPrayerRequests(options?: GetAllPrayerRequestsOptions) {

@@ -1,4 +1,5 @@
 import { NewsArticle as PrismaNewsArticle } from '@prisma/client';
+import { prisma } from './prisma';
 
 export type CreateNewsArticleData = {
   title: string;
@@ -27,7 +28,7 @@ export type NewsArticleWithAuthor = Omit<PrismaNewsArticle, 'authorId'> & {
 };
 
 export async function getAllNewsArticles(publishedOnly: boolean = true): Promise<NewsArticleWithAuthor[]> {
-  const { default: prisma } = await import('./prisma');
+  const { prisma } = await import('./prisma');
   
   async function fetchArticlesWithRetry(): Promise<NewsArticleWithAuthor[]> {
     const maxRetries = 3;
@@ -90,7 +91,6 @@ export async function getAllNewsArticles(publishedOnly: boolean = true): Promise
 }
 
 export async function getNewsArticleById(id: string): Promise<NewsArticleWithAuthor | null> {
-  const { default: prisma } = await import('./prisma');
   try {
     const article = await prisma.newsArticle.findUnique({
       where: { id },
@@ -109,7 +109,6 @@ export async function getNewsArticleById(id: string): Promise<NewsArticleWithAut
 }
 
 export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWithAuthor | null> {
-  const { default: prisma } = await import('./prisma');
   console.log('Fetching news article with slug:', slug);
   try {
     const article = await prisma.newsArticle.findUnique({
@@ -130,7 +129,6 @@ export async function getNewsArticleBySlug(slug: string): Promise<NewsArticleWit
 }
 
 export async function createNewsArticle(data: CreateNewsArticleData): Promise<PrismaNewsArticle | null> {
-  const { default: prisma } = await import('./prisma');
   try {
     return await prisma.newsArticle.create({
       data: {
@@ -148,7 +146,6 @@ export async function createNewsArticle(data: CreateNewsArticleData): Promise<Pr
 }
 
 export async function updateNewsArticle(id: string, data: UpdateNewsArticleData): Promise<PrismaNewsArticle | null> {
-  const { default: prisma } = await import('./prisma');
   try {
     return await prisma.newsArticle.update({
       where: { id },
@@ -161,7 +158,6 @@ export async function updateNewsArticle(id: string, data: UpdateNewsArticleData)
 }
 
 export async function deleteNewsArticle(id: string): Promise<PrismaNewsArticle | null> {
-  const { default: prisma } = await import('./prisma');
   try {
     return await prisma.newsArticle.delete({
       where: { id },

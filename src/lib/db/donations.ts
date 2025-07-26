@@ -1,4 +1,4 @@
-import prisma from '../db/prisma'; // Assuming your prisma client is exported from here
+import { prisma } from '../db/prisma';
 
 export async function getAllDonations(options: {
  search?: string;

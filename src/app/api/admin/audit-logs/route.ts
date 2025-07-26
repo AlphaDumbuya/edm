@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import { authOptions } from "@/lib/auth";
-import prisma from "@/lib/db/prisma";
+import { prisma } from "@/lib/db/prisma";
 import { Prisma } from '@prisma/client';
 import { cookies } from 'next/headers';
 

@@ -1,6 +1,6 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
-import prisma from "./db/prisma";
+import { prisma } from "./db/prisma";
 import type { NextAuthOptions } from "next-auth";
 import bcryptjs from "bcryptjs";
 // This is a no-op comment to trigger a file refresh.

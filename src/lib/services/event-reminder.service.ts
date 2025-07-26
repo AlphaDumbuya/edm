@@ -1,143 +1,168 @@
+import * as schedule from 'node-schedule';
 import { prisma } from '@/lib/db/prisma';
-import { formatEventTime } from '@/lib/utils/date';
-import { sendEmail } from '@/lib/email/sendEmail';
-import { ReminderStatus } from '@prisma/client';
+import { sendEventReminderEmail } from '@/lib/email/sendEventReminderEmail';
+import type { ReminderType } from '@/types/reminder';
+import type { Prisma } from '@prisma/client';
+
+type EventRegistrationWithEvent = Prisma.EventRegistrationGetPayload<{
+  include: { event: true }
+}>;
 
 export class EventReminderService {
-  static async createRemindersForRegistration(eventId: string, userId: string) {
-    const event = await prisma.event.findUnique({
-      where: { id: eventId },
-      include: { registrations: true }
-    });
-
-    if (!event) {
-      throw new Error('Event not found');
-    }
-
-    const eventDate = new Date(event.date);
-    
-    // Create reminders for different time intervals
-    const reminderTimes = [
-      { type: '24h', hours: 24 },
-      { type: '1h', hours: 1 },
-      { type: '30m', minutes: 30 }
-    ];
-
-    for (const reminder of reminderTimes) {
-      const scheduledFor = new Date(eventDate);
-      if (reminder.hours) {
-        scheduledFor.setHours(scheduledFor.getHours() - reminder.hours);
-      }
-      if (reminder.minutes) {
-        scheduledFor.setMinutes(scheduledFor.getMinutes() - reminder.minutes);
-      }
-
-      // Only create reminder if it's in the future
-      if (scheduledFor > new Date()) {
-        await prisma.eventReminder.create({
-          data: {
-            eventId,
-            userId,
-            type: reminder.type,
-            scheduledFor,
-            status: 'PENDING'
-          }
-        });
-      }
+  // Configure logging
+  private static log(message: string, data?: any) {
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${message}`);
+    if (data) {
+      console.log(JSON.stringify(data, null, 2));
     }
   }
 
-  static async processReminders() {
-    const now = new Date();
-    const pendingReminders = await prisma.eventReminder.findMany({
-      where: {
-        status: 'PENDING',
-        scheduledFor: {
-          lte: now
-        }
-      },
-      include: {
-        event: true,
-        user: true
-      }
-    });
+  private static logError(message: string, error: any) {
+    const timestamp = new Date().toISOString();
+    console.error(`[${timestamp}] ERROR: ${message}`);
+    console.error(error);
+  }
 
-    for (const reminder of pendingReminders) {
-      try {
-        const { event, user } = reminder;
+  private static REMINDER_SCHEDULES = [
+    { minutes: 60, type: '1hour' },    // 1 hour before
+    { minutes: 1440, type: '1day' },   // 24 hours before
+    { minutes: 10080, type: '1week' }  // 1 week before
+  ];
+
+  static async processReminders() {
+    try {
+      const now = new Date();
+      this.log('Starting reminder check');
+      
+      const scheduleWindows = this.REMINDER_SCHEDULES.map(schedule => ({
+        type: schedule.type,
+        minutes: schedule.minutes,
+        targetTime: new Date(now.getTime() + schedule.minutes * 60 * 1000).toISOString()
+      }));
+      
+      this.log('Checking for events in windows:', scheduleWindows);
+      
+      for (const schedule of this.REMINDER_SCHEDULES) {
+        const registrations = await this.getUpcomingEventRegistrations(schedule.minutes);
         
-        // Skip if event has passed
-        if (new Date(event.date) < now) {
-          await this.markReminderAs(reminder.id, 'FAILED', 'Event has already passed');
+        if (registrations.length === 0) {
+          this.log(`No events found needing ${schedule.type} reminders.`);
           continue;
         }
 
-        // Prepare email content
-        const emailContent = this.getEmailContent(reminder.type, {
-          eventTitle: event.title,
-          eventDate: formatEventTime(event.date),
-          userName: user.name || 'Participant',
-          eventLocation: event.location,
-          isVirtual: event.isVirtual,
-          onlineLink: event.onlineLink
-        });
+        this.log(`Found ${registrations.length} registrations needing ${schedule.type} reminders.`);
+        
+        for (const reg of registrations) {
+          const { name, email, event } = reg;
+          try {
+            await sendEventReminderEmail({ 
+              name, 
+              email, 
+              event,
+              reminderType: schedule.type as '1hour' | '1day' | '1week'
+            });
 
-        // Send email
-        await sendEmail({
-          to: user.email,
-          subject: `${reminder.type} Reminder: ${event.title}`,
-          html: emailContent,
-          text: emailContent.replace(/<[^>]*>/g, '')
-        });
+            await prisma.eventRegistration.update({
+              where: { id: reg.id },
+              data: {
+                reminderSentAt: new Date(),
+                lastReminderType: schedule.type
+              } as Prisma.EventRegistrationUpdateInput
+            });
 
-        // Mark as sent
-        await this.markReminderAs(reminder.id, 'SENT');
-      } catch (error) {
-        console.error(`Failed to process reminder ${reminder.id}:`, error);
-        await this.markReminderAs(reminder.id, 'FAILED', error.message);
+            this.log(`✅ Reminder sent successfully`, {
+              type: schedule.type,
+              email,
+              eventTitle: event.title,
+              eventDate: event.date,
+              eventTime: event.time,
+              isVirtual: event.isVirtual
+            });
+          } catch (error) {
+            this.logError(`Failed to send ${schedule.type} reminder`, error);
+          }
+        }
       }
+    } catch (error) {
+      this.logError('Error in processReminders', error);
     }
   }
 
-  private static async markReminderAs(
-    reminderId: string, 
-    status: ReminderStatus, 
-    error?: string
-  ) {
-    await prisma.eventReminder.update({
-      where: { id: reminderId },
-      data: {
-        status,
-        error,
-        sentAt: status === 'SENT' ? new Date() : undefined,
-        updatedAt: new Date()
+  static async getUpcomingEventRegistrations(minutesAhead: number = 60): Promise<EventRegistrationWithEvent[]> {
+    const now = new Date();
+
+    const registrations = await prisma.eventRegistration.findMany({
+      where: {
+        AND: [
+          // Only get active registrations
+          { status: 'REGISTERED' as const },
+          // Only get registrations that haven't received this type of reminder yet
+          {
+            OR: [
+              { reminderSentAt: null },
+              { 
+                AND: [
+                  { reminderSentAt: { not: null } },
+                  { lastReminderType: { not: minutesAhead === 60 ? '1hour' : minutesAhead === 1440 ? '1day' : '1week' } }
+                ]
+              }
+            ]
+          },
+          // Event must be in the future
+          {
+            event: {
+              date: {
+                gte: new Date(now.toISOString().split('T')[0])
+              }
+            }
+          }
+        ]
+      } as Prisma.EventRegistrationWhereInput,
+      include: { 
+        event: true 
+      }
+    });
+
+    // Filter events based on their actual date and time
+    return registrations.filter(reg => {
+      const eventDate = new Date(reg.event.date);
+      const [hours, minutes] = reg.event.time.split(':').map(Number);
+      eventDate.setHours(hours, minutes, 0, 0);
+      
+      const diffInMinutes = (eventDate.getTime() - now.getTime()) / (60 * 1000);
+      
+      // Log the time difference for debugging
+      this.log(`Event ${reg.event.title} is ${diffInMinutes} minutes away`);
+      
+      // For any reminder type: if the event is happening within the next 60 minutes
+      // send the reminder regardless of the exact timing window
+      if (diffInMinutes <= 60) {
+        return true;
+      }
+      
+      // Otherwise use more lenient time windows:
+      // For 1-hour reminders: between now and 90 minutes from now
+      // For 1-day reminders: between 22-26 hours from now
+      // For 1-week reminders: between 6.8-7.2 days from now
+      if (minutesAhead === 60) {
+        return diffInMinutes > 0 && diffInMinutes <= 90;
+      } else if (minutesAhead === 1440) {
+        return diffInMinutes > 1320 && diffInMinutes <= 1560;
+      } else {
+        return diffInMinutes > 9792 && diffInMinutes <= 10368;
       }
     });
   }
 
-  private static getEmailContent(
-    reminderType: string,
-    { eventTitle, eventDate, userName, eventLocation, isVirtual, onlineLink }: any
-  ) {
-    const timeUntil = reminderType === '24h' ? '24 hours' : 
-                      reminderType === '1h' ? '1 hour' : 
-                      '30 minutes';
+  static startScheduledJob() {
+    // Run the job every 5 minutes
+    schedule.scheduleJob('*/5 * * * *', async () => {
+      this.log('Running scheduled reminder check');
+      await this.processReminders();
+    });
 
-    return `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2>Event Reminder: ${eventTitle}</h2>
-        <p>Hello ${userName},</p>
-        <p>This is a reminder that your event starts in ${timeUntil}.</p>
-        <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border-radius: 5px;">
-          <p><strong>Event:</strong> ${eventTitle}</p>
-          <p><strong>Date & Time:</strong> ${eventDate}</p>
-          ${isVirtual 
-            ? `<p><strong>Online Link:</strong> ${onlineLink}</p>` 
-            : `<p><strong>Location:</strong> ${eventLocation}</p>`}
-        </div>
-        <p>We look forward to seeing you!</p>
-        <p>Best regards,<br>EDM Team</p>
-      </div>
-    `;
+    // Initial run
+    this.processReminders().catch((error) => this.logError('Error in initial reminder check', error));
   }
 }

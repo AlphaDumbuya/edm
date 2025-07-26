@@ -1,6 +1,6 @@
 // src/app/api/auth/resend-verification/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/lib/db/prisma';
+import { prisma } from '@/lib/db/prisma';
 // @ts-ignore
 import nodemailer from 'nodemailer';
 import { getVerificationEmailHtml } from '@/emails/verification-template';

@@ -28,6 +28,7 @@ model User {
   newsArticles             NewsArticle[]
   notifications            Notification[]
   sessions                 Session[]
+  eventReminders           EventReminder[]
 }
 
 model Session {
@@ -55,15 +56,29 @@ model BlogPost {
   author    User     @relation(fields: [authorId], references: [id])
 }
 
-model SentReminder {
-  id        String   @id @default(uuid()) @db.Uuid
-  eventId   String   @db.Uuid
-  type      String   // '24h', '1h', '30m'
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+enum ReminderStatus {
+  PENDING
+  SENT
+  FAILED
+}
+
+model EventReminder {
+  id           String         @id @default(uuid()) @db.Uuid
+  eventId      String         @db.Uuid
+  userId       String         @db.Uuid
+  type         String         // '24h', '1h', '30m'
+  scheduledFor DateTime
+  status       ReminderStatus
+  error        String?
+  sentAt       DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  event        Event          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([eventId, type])
+  @@index([userId])
+  @@index([status, scheduledFor])
 }
 
 model Event {
@@ -79,17 +94,25 @@ model Event {
   isVirtual          Boolean             @default(false)
   onlineLink         String?
   eventRegistrations EventRegistration[]
-  sentReminders      SentReminder[]
+  eventReminders     EventReminder[]
+}
+
+enum RegistrationStatus {
+  REGISTERED
+  CANCELLED
 }
 
 model EventRegistration {
-  id        String   @id @default(uuid()) @db.Uuid
-  name      String
-  email     String
-  eventId   String   @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  id               String             @id @default(uuid()) @db.Uuid
+  name             String
+  email            String
+  eventId          String             @db.Uuid
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  status           RegistrationStatus @default(REGISTERED)
+  reminderSentAt   DateTime?
+  lastReminderType String?            // '1hour', '1day', '1week'
+  event            Event              @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
 }

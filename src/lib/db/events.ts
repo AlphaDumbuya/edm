@@ -1,4 +1,4 @@
-import prisma from '../db/prisma'; // Assuming your prisma client is exported as default
+import { prisma } from '../db/prisma';
 // import { Event } from '@prisma/client'; // Removed because 'Event' is not exported from '@prisma/client'
 
 export interface CreateEventInput {
