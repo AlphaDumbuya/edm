@@ -1,4 +1,5 @@
 # EDM (Evangelism, Discipleship, Missions) Project
+_Note: Small edit to trigger a new commit._
 
 A comprehensive web platform for EDM's mission work in Sierra Leone and Oregon, USA.
 
