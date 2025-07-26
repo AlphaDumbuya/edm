@@ -4,14 +4,13 @@
   "framework": "nextjs",
   "env": {
     "NEXT_PUBLIC_VERCEL_ENV": "production"
-{
+  },
   "functions": [
     {
       "path": "/api/process-reminders",
       "schedule": "* * * * *"
-    }
-  ]
-}
+    },
+    {
       "path": "/api/reminders/process",
       "schedule": "* * * * *"
     }
