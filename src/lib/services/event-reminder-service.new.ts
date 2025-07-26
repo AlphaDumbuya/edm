@@ -1,4 +1,4 @@
-import { scheduleJob } from 'node-schedule';
+
 import { prisma } from '../db/prisma';
 import { sendEventReminderEmail } from '../email/sendEventReminderEmail';
 import type { ReminderType } from '../../types/reminder';
@@ -149,16 +149,7 @@ export class EventReminderService {
     });
   }
 
-  static startScheduledJob() {
-    // Run the job every 5 minutes
-    scheduleJob('*/5 * * * *', async () => {
-      this.log('Running scheduled reminder check');
-      await this.processReminders();
-    });
 
-    // Initial run
-    this.processReminders().catch((error) => this.logError('Error in initial reminder check', error));
-  }
 
   static async createRemindersForRegistration(eventId: string, userId: string): Promise<void> {
     try {
