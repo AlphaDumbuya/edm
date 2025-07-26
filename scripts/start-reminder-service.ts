@@ -1,3 +1,4 @@
+// Force commit: small change for sync issue
 import { EventReminderService } from '../src/lib/services/event-reminder-service.new';
 
 async function startReminderService() {
