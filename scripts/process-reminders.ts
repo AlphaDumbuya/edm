@@ -1,4 +1,8 @@
-import { EventReminderService } from '@/lib/services/event-reminder-service.new';
+import { EventReminderService } from '../src/lib/services/event-reminder-service.new';
 
-// Start the reminder service with automatic scheduling
-EventReminderService.startScheduledJob();
+// Process pending reminders
+async function processReminders() {
+  await EventReminderService.processReminders();
+}
+
+processReminders().catch(console.error);

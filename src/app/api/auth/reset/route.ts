@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 import nodemailer from 'nodemailer';
 import { resetPasswordEmail } from '@/emails/reset-password-template';
 

@@ -1,5 +1,5 @@
 import * as schedule from 'node-schedule';
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 import { sendEventReminderEmail } from '@/lib/email/sendEventReminderEmail';
 import type { ReminderType } from '@/types/reminder';
 import type { Prisma } from '@prisma/client';

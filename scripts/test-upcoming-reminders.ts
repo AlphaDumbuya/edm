@@ -1,5 +1,5 @@
-import { prisma } from '@/lib/db/prisma';
-import { EventReminderService } from '@/lib/services/event-reminder-service.new';
+import prisma from '../src/lib/db/prisma';
+import { EventReminderService } from '../src/lib/services/event-reminder-service.new';
 import { Event, EventReminder } from '@prisma/client';
 
 async function testUpcomingReminders() {

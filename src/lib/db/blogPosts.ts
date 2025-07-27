@@ -1,5 +1,5 @@
 import { Prisma } from '@prisma/client';
-import { prisma } from '../db/prisma';
+import prisma from '../db/prisma';
 
 export async function getAllBlogPosts(options?: {
   search?: string;

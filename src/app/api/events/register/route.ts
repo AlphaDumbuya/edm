@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendEventRegistrationEmail } from '../../../../lib/email/sendEventRegistrationEmail';
 import { createEventRegistration } from '../../../../lib/db/eventRegistrations';
-import { prisma } from '@/lib/db/prisma'; // Import prisma client
+import prisma from '@/lib/db/prisma'; // Import prisma client
 
 export async function POST(req: NextRequest) {
   let input = null;

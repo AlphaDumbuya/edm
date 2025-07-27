@@ -1,5 +1,5 @@
 
-import { prisma } from '../db/prisma';
+import prisma from '../db/prisma';
 import { sendEventReminderEmail } from '../email/sendEventReminderEmail';
 import type { ReminderType } from '../../types/reminder';
 import type { Prisma } from '@prisma/client';
@@ -45,12 +45,16 @@ export class EventReminderService {
       this.log('Checking for events in windows:', scheduleWindows);
       
       for (const schedule of this.REMINDER_SCHEDULES) {
+        this.log(`Checking for events needing ${schedule.type} reminders...`);
         const registrations = await this.getUpcomingEventRegistrations(schedule.minutes);
+        this.log(`Found ${registrations.length} events for ${schedule.type} reminders`);
         
         if (registrations.length === 0) {
           this.log(`No events found needing ${schedule.type} reminders.`);
           continue;
         }
+        
+        this.log(`Processing ${registrations.length} events for ${schedule.type} reminders:`, registrations);
 
         this.log(`Found ${registrations.length} registrations needing ${schedule.type} reminders.`);
         
@@ -110,11 +114,12 @@ export class EventReminderService {
               }
             ]
           } as Prisma.EventRegistrationWhereInput,
-          // Event must be in the future
+          // Event must be within the reminder window and in the future
           {
             event: {
               date: {
-                gte: new Date(now.toISOString().split('T')[0])
+                gte: now,
+                lt: new Date(now.getTime() + minutesAhead * 60 * 1000)
               }
             }
           }

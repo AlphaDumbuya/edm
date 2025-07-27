@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 import { EventReminderService } from '@/lib/services/event-reminder.service';
 
 // This endpoint is for testing only

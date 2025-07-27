@@ -1,4 +1,4 @@
-import { prisma } from './prisma';
+import prisma from './prisma';
 
 export async function getRecentAdminNotifications(limit = 10) {
   // Fetch recent audit logs (all key activities)

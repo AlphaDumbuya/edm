@@ -1,0 +1,1 @@
+import { prisma } from '../src/lib/db/prisma'; async function check() { const events = await prisma.event.findMany({ where: { createdAt: { gt: new Date(Date.now() - 3600000) } } }); console.log('Recent events:', JSON.stringify(events, null, 2)); } check().catch(console.error);

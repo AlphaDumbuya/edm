@@ -1,4 +1,4 @@
-import { prisma } from '../db/prisma';
+import prisma from '../db/prisma';
 import { EventReminderService } from '@/lib/services/event-reminder-service.new';
 
 export async function createEventRegistration({ name, email, eventId }: { name: string; email: string; eventId: string }) {

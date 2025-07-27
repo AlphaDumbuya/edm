@@ -1,5 +1,5 @@
 // src/lib/db/blog.ts
-import { prisma } from './prisma';
+import prisma from './prisma';
 import { BlogPost } from '@prisma/client';
 
 // Define a simplified BlogPost type for application use if needed

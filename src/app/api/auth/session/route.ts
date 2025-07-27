@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { decrypt, type SessionPayload } from '@/lib/auth/session';
 
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 export async function GET(req: NextRequest) {
   console.log('[/api/auth/session] GET request received.');
   const sessionCookie = (await cookies()).get('session')?.value;

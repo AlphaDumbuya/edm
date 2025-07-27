@@ -1,5 +1,5 @@
-import { prisma } from '@/lib/db/prisma';
-import { EventReminderService } from '@/lib/services/event-reminder-service.new';
+import prisma from '../src/lib/db/prisma';
+import { EventReminderService } from '../src/lib/services/event-reminder-service.new';
 
 async function testReminders() {
   try {
@@ -18,11 +18,37 @@ async function testReminders() {
 
     console.log('Created test event:', testEvent);
 
+    // Create or find user
+    let user = await prisma.user.findUnique({
+      where: { email: 'alphadumbuya7@gmail.com' }
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: 'alphadumbuya7@gmail.com',
+          name: 'Alpha Dumbuya',
+          hashedPassword: 'test-password-hash', // This is just for testing
+          role: 'USER'
+        }
+      });
+      console.log('Created user:', user);
+    }
+
+    // Create event registration
+    const registration = await prisma.eventRegistration.create({
+      data: {
+        eventId: testEvent.id,
+        name: 'Alpha Dumbuya',
+        email: 'alphadumbuya7@gmail.com',
+        status: 'REGISTERED'
+      }
+    });
+
+    console.log('Created event registration:', registration);
+
     // Create reminders for the event
-    await EventReminderService.createRemindersForRegistration(
-      testEvent.id,
-      'b39ff5cc-f159-46a3-b78f-10fac4618e5c' // Test user ID
-    );
+    await EventReminderService.createRemindersForRegistration(testEvent.id, user.id);
 
     console.log('Created reminders for test event');
 

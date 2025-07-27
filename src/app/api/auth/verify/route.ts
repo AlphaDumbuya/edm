@@ -1,6 +1,6 @@
 // src/app/api/auth/verify/route.ts
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/db/prisma';
+import prisma from '@/lib/db/prisma';
 
 export async function GET(req: NextRequest) {
   const token = req.nextUrl.searchParams.get('token');
