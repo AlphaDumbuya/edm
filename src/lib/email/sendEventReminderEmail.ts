@@ -11,25 +11,23 @@ export async function sendEventReminderEmail({
   event: any;
   reminderType?: '1week' | '1day' | '1hour' | '30min';
 }) {
-  // Parse the event date and time
-  const eventDate = new Date(event.date);
-  const [hours, minutes] = event.time.split(':').map(Number);
-  eventDate.setHours(hours, minutes, 0, 0);
+  // Parse the event date and time in UTC
+  const eventDate = new Date(event.date.toISOString().split('T')[0] + 'T' + event.time + '+00:00');
 
-// Format the date for display
-const formattedDate = eventDate.toLocaleDateString('en-US', {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric'
-});
+  // Format the date for display
+  const formattedDate = eventDate.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
 
-  // Format the time for display
-  const formattedTime = eventDate.toLocaleTimeString('en-US', {
+  // Format the time for display with timezone
+  const formattedTime = `${eventDate.toLocaleTimeString('en-US', {
     hour: 'numeric',
     minute: '2-digit',
     hour12: true
-  });
+  })} (${event.timezone})`;
 
   const oneWeekHtml = `We're excited that you'll be joining us for <strong>${event.title}</strong> in one week! Please mark your calendar and get ready for a wonderful experience.`;
   const oneDayHtml = `Just 24 hours to go! Your registered event <strong>${event.title}</strong> is happening tomorrow. We hope you're as excited as we are!`;
@@ -65,6 +63,7 @@ const formattedDate = eventDate.toLocaleDateString('en-US', {
       <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0;">
         <p style="margin: 5px 0;"><strong>Date:</strong> ${formattedDate}</p>
         <p style="margin: 5px 0;"><strong>Time:</strong> ${formattedTime}</p>
+        <p style="margin: 5px 0; font-size: 0.9em; color: #666;">All times shown in ${event.timezone}</p>
         ${event.isVirtual === 'true' || event.isVirtual === true
           ? (reminderType === '1hour' || reminderType === '30min'
               ? `<p style="margin: 5px 0;"><strong>Join Event:</strong> <a href="${event.onlineLink}">${event.onlineLink}</a></p>`
@@ -83,7 +82,7 @@ const formattedDate = eventDate.toLocaleDateString('en-US', {
         : reminderType === '1hour'
         ? oneHourText
         : thirtyMinText
-    }\n\nDate: ${formattedDate}\nTime: ${formattedTime}\n${
+    }\n\nDate: ${formattedDate}\nTime: ${formattedTime}\nAll times shown in ${event.timezone}\n\n${
       event.isVirtual === 'true' || event.isVirtual === true
         ? (reminderType === '1hour' || reminderType === '30min')
           ? `Join Event: ${event.onlineLink}`

@@ -2,10 +2,8 @@
 import { sendBrevoEmail } from './sendBrevoEmail';
 
 export async function sendEventRegistrationEmail({ name, email, event }: { name: string; email: string; event: any }) {
-  // Calculate time until event (in minutes)
-  const eventDate = new Date(event.date);
-  const [hours, minutes] = event.time.split(':').map(Number);
-  eventDate.setHours(hours, minutes, 0, 0);
+  // Calculate time until event (in minutes) using UTC
+  const eventDate = new Date(event.date + 'T' + event.time + '+00:00');
   const now = new Date();
   const timeDiffMinutes = Math.floor((eventDate.getTime() - now.getTime()) / 60000);
 
@@ -40,8 +38,8 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
                     <p style="font-size: 1.1rem; color: #222; margin-bottom: 18px;">Hi <strong>${name}</strong>,</p>
                     <p style="font-size: 1.05rem; color: #333; margin-bottom: 18px;">Thank you for registering for <strong>${event.title}</strong>!</p>
                     <table style="margin: 24px 0 32px 0; width: 100%; background: #f0f4f8; border-radius: 8px;">
-                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Date:</strong> ${event.date}</td></tr>
-                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Time:</strong> ${formattedTime}</td></tr>
+                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Date:</strong> ${new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td></tr>
+                      <tr><td style="padding: 12px 18px; font-size: 1rem; color: #003366;"><strong>Time:</strong> ${formattedTime} (${event.timezone || 'UTC'})</td></tr>
                       ${event.isVirtual === 'true' || event.isVirtual === true
                         ? includeLink
                           ? `<tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Type:</strong> Online Event</td></tr><tr><td style="padding: 12px 18px; font-size: 1rem; color: #0077cc;"><strong>Join Link:</strong> <a href="${event.onlineLink}">${event.onlineLink}</a></td></tr>`
@@ -63,7 +61,7 @@ export async function sendEventRegistrationEmail({ name, email, event }: { name:
         </table>
       </div>
     `,
-    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${event.date}\nTime: ${formattedTime}\n${event.isVirtual === 'true' || event.isVirtual === true
+    text: `Thank you for registering for ${event.title}!\n\nHi ${name},\nYour registration for ${event.title} is confirmed.\nDate: ${new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}\nTime: ${formattedTime} (${event.timezone || 'UTC'})\n${event.isVirtual === 'true' || event.isVirtual === true
       ? includeLink
         ? `Type: Online Event\nJoin Link: ${event.onlineLink}`
         : `Type: Online Event. The join link will be sent in a reminder email before the event.`

@@ -1,5 +1,16 @@
 // Professional event registration confirmation email template for EDM events
 
+interface Event {
+  title: string;
+  date: string;
+  time?: string;
+  timezone: string;
+  location: string;
+  description: string;
+  isVirtual?: boolean;
+  onlineLink?: string | null;
+}
+
 export function eventRegistrationConfirmationEmail({
   name,
   email,
@@ -7,15 +18,7 @@ export function eventRegistrationConfirmationEmail({
 }: {
   name: string;
   email: string;
-  event: {
-    title: string;
-    date: string;
-    time?: string;
-    location: string;
-    description: string;
-    isVirtual?: boolean;
-    onlineLink?: string | null;
-  };
+  event: Event;
 }) {
   return {
     subject: `Registration Confirmed: ${event.title}`,
@@ -25,7 +28,8 @@ export function eventRegistrationConfirmationEmail({
         <p>Your registration for the following event has been received:</p>
         <table style="margin: 20px 0; border-collapse: collapse;">
           <tr><td style="font-weight: bold; padding: 4px 8px;">Event:</td><td style="padding: 4px 8px;">${event.title}</td></tr>
-          <tr><td style="font-weight: bold; padding: 4px 8px;">Date:</td><td style="padding: 4px 8px;">${new Date(event.date).toLocaleDateString()}${event.time ? ' at ' + event.time : ''}</td></tr>
+          <tr><td style="font-weight: bold; padding: 4px 8px;">Date:</td><td style="padding: 4px 8px;">${new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</td></tr>
+          <tr><td style="font-weight: bold; padding: 4px 8px;">Time:</td><td style="padding: 4px 8px;">${event.time} (${event.timezone})</td></tr>
           <tr><td style="font-weight: bold; padding: 4px 8px;">Location:</td><td style="padding: 4px 8px;">${event.isVirtual ? 'Virtual Event' : event.location}</td></tr>
         </table>
         ${event.isVirtual ? `
@@ -48,7 +52,8 @@ export function eventRegistrationConfirmationEmail({
 Your registration for the following event has been received:
 
 Event: ${event.title}
-Date: ${new Date(event.date).toLocaleDateString()}${event.time ? ' at ' + event.time : ''}
+Date: ${new Date(event.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+Time: ${event.time} (${event.timezone})
 Location: ${event.isVirtual ? 'Virtual Event' : event.location}
 ${event.isVirtual ? '\nThis is a virtual event. You will receive the join link in your reminder email.\n' : ''}
 

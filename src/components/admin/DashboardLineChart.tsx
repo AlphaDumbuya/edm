@@ -15,9 +15,9 @@ const DashboardLineChart: React.FC<DashboardLineChartProps> = ({ data, label }) 
       <LineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#444" />
         <XAxis dataKey="name" stroke="#ccc" />
-        <YAxis stroke="#ccc" />
+        <YAxis stroke="#ccc" domain={[0, 'auto']} allowDecimals={false} />
         <Tooltip />
-        <Line type="monotone" dataKey="value" stroke="#3B82F6" strokeWidth={3} dot={false} />
+        <Line type="monotone" dataKey="value" stroke="#3B82F6" strokeWidth={3} dot={{ stroke: '#3B82F6', strokeWidth: 2, fill: '#1e293b' }} />
       </LineChart>
     </ResponsiveContainer>
     {/* Progress bar below chart */}

@@ -17,6 +17,7 @@ export default function CreateEventPage() {
     description: "",
     date: "",
     time: "",
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone, // Default to user's timezone
     location: "",
     isVirtual: false,
     onlineLink: "",
@@ -25,7 +26,7 @@ export default function CreateEventPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -91,6 +92,23 @@ export default function CreateEventPage() {
           <div className="flex flex-col gap-2 w-full">
             <label htmlFor="time" className="text-base font-semibold text-gray-300">Time</label>
             <Input id="time" name="time" type="time" value={form.time} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600 input-white-icons" />
+          </div>
+          <div className="flex flex-col gap-2 w-full">
+            <label htmlFor="timezone" className="text-base font-semibold text-gray-300">Timezone</label>
+            <select
+              id="timezone"
+              name="timezone"
+              value={form.timezone}
+              onChange={handleFormChange}
+              required
+              className="bg-gray-800 text-gray-100 border border-gray-700 text-base px-4 py-2 rounded-lg shadow focus:ring-2 focus:ring-blue-600"
+            >
+              {Intl.supportedValuesOf('timeZone').map((tz) => (
+                <option key={tz} value={tz}>
+                  {tz.replace(/_/g, ' ')}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         {!form.isVirtual && (

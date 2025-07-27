@@ -1,6 +1,7 @@
 "use client";
 import { useState } from 'react';
 import { UploadButton } from '@/components/shared/UploadButton';
+import { isValidVideoUrl, extractVideoId, getEmbedUrl } from '@/utils/video-url-helpers';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -53,6 +54,16 @@ export default function GalleryAdminForm() {
     setError(null);
     setSuccess(null);
     try {
+      // Process video URL if it's a video
+      let processedVideoUrl = videoUrl;
+      if (type === 'video' && videoUrl) {
+        const videoId = extractVideoId(videoUrl, videoSource);
+        if (!videoId) {
+          throw new Error('Invalid video URL. Please check the URL and try again.');
+        }
+        processedVideoUrl = getEmbedUrl(videoId, videoSource);
+      }
+
       const res = await fetch('/api/admin/gallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -63,10 +74,11 @@ export default function GalleryAdminForm() {
           category,
           imageUrl: type === 'photo' ? imageUrl : undefined,
           altText,
-          location,
+          location: type === 'video' ? videoLocation : location,
           photographer,
           eventName: eventName === 'other' ? customEventName : eventName,
-          videoUrl: type === 'video' ? videoUrl : undefined,
+          videoUrl: type === 'video' ? processedVideoUrl : undefined,
+          videoSource: type === 'video' ? videoSource : undefined,
           published,
         }),
       });
@@ -215,14 +227,33 @@ export default function GalleryAdminForm() {
                   <option value="youtube">YouTube</option>
                   <option value="tiktok">TikTok</option>
                   <option value="vimeo">Vimeo</option>
-                  <option value="facebook">Facebook</option>
-                  <option value="instagram">Instagram</option>
-                  <option value="other">Other</option>
+                  <option value="vimeo">Vimeo</option>
+                  <option value="tiktok">TikTok</option>
                 </select>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Video URL</label>
-                <input type="url" className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" value={videoUrl} onChange={e => setVideoUrl(e.target.value)} required placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" />
+                <input 
+                  type="url" 
+                  className="input w-full border border-gray-700 bg-gray-900 text-gray-100 rounded px-3 py-2 placeholder-gray-400" 
+                  value={videoUrl} 
+                  onChange={(e) => {
+                    const newUrl = e.target.value;
+                    setVideoUrl(newUrl);
+                    if (newUrl && !isValidVideoUrl(newUrl, videoSource)) {
+                      setError('Please enter a valid video URL');
+                    } else {
+                      setError(null);
+                    }
+                  }}
+                  required 
+                  placeholder="Paste the video URL here (YouTube, TikTok, Vimeo, etc.)" 
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  {videoSource === 'youtube' ? 'Example: https://www.youtube.com/watch?v=xxxxx or https://youtu.be/xxxxx' :
+                   videoSource === 'vimeo' ? 'Example: https://vimeo.com/xxxxx' :
+                   'Paste the full video URL'}
+                </p>
               </div>
               <div>
                 <label className="block text-sm font-semibold mb-1">Filmed At (Location)</label>

@@ -25,6 +25,8 @@ interface MediaItem {
   date?: string;
 }
 
+import { PlayCircle } from 'lucide-react';
+
 export default function AdminGalleryPage() {
   const { data: session, status } = useSession();
   const role = session?.user?.role || "VIEWER";
@@ -139,35 +141,93 @@ export default function AdminGalleryPage() {
                   )}
                   {item.type === 'video' && item.videoUrl && (
                     <div className="w-full aspect-[4/3] bg-black flex items-center justify-center group relative">
-                      {/* Show YouTube thumbnail by default, play video on hover */}
-                      {item.videoUrl.includes('youtube') ? (
+                      {item.videoUrl ? (
                         <>
-                          <img
-                            src={`https://img.youtube.com/vi/${item.videoUrl.split('v=')[1]?.split('&')[0]}/hqdefault.jpg`}
-                            alt={item.title}
-                            className="w-full h-full object-cover absolute inset-0 transition-opacity duration-200 group-hover:opacity-0"
-                          />
-                          <iframe
-                            src={`https://www.youtube.com/embed/${item.videoUrl.split('v=')[1]?.split('&')[0]}?autoplay=1&mute=1&controls=0&showinfo=0&rel=0&modestbranding=1`}
-                            title={item.title}
-                            className="w-full h-full min-h-[200px] sm:min-h-[300px] md:min-h-[350px] absolute inset-0 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto transition-opacity duration-200"
-                            allow="autoplay; encrypted-media"
-                            allowFullScreen
-                          />
+                          {/* YouTube Video Container */}
+                          <div className="absolute inset-0 bg-black">
+                            {(() => {
+                              try {
+                                let videoId = '';
+                                const url = item.videoUrl;
+                                
+                                if (url.includes('youtube.com/embed/')) {
+                                  videoId = url.split('/embed/')[1].split('?')[0];
+                                } else if (url.includes('youtube.com/watch')) {
+                                  videoId = new URL(url).searchParams.get('v') || '';
+                                } else if (url.includes('youtu.be/')) {
+                                  videoId = url.split('youtu.be/')[1].split('?')[0];
+                                }
+                                
+                                if (!videoId) throw new Error('Invalid video ID');
+                                
+                                return (
+                                  <img
+                                    src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
+                                    alt={item.title}
+                                    className="w-full h-full object-cover transition-opacity duration-200 group-hover:opacity-0"
+                                    onError={(e) => {
+                                      const target = e.target as HTMLImageElement;
+                                      target.onerror = null;
+                                      target.src = `https://img.youtube.com/vi/${videoId}/default.jpg`;
+                                    }}
+                                  />
+                                );
+                              } catch {
+                                return (
+                                  <div className="w-full h-full flex items-center justify-center">
+                                    <div className="text-gray-400 text-sm">Thumbnail not available</div>
+                                  </div>
+                                );
+                              }
+                            })()}
+                          </div>
+                          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                            {(() => {
+                              try {
+                                let embedUrl = '';
+                                const url = item.videoUrl;
+                                
+                                if (url.includes('youtube.com/embed/')) {
+                                  embedUrl = url;
+                                } else if (url.includes('youtube.com/watch')) {
+                                  const videoId = new URL(url).searchParams.get('v');
+                                  embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                                } else if (url.includes('youtu.be/')) {
+                                  const videoId = url.split('youtu.be/')[1].split('?')[0];
+                                  embedUrl = `https://www.youtube.com/embed/${videoId}`;
+                                } else {
+                                  throw new Error('Invalid YouTube URL');
+                                }
+
+                                return (
+                                  <iframe
+                                    src={`${embedUrl}?autoplay=1&mute=1&controls=1&showinfo=0&rel=0&modestbranding=1`}
+                                    title={item.title}
+                                    className="w-full h-full"
+                                    allow="autoplay; encrypted-media"
+                                    allowFullScreen
+                                  />
+                                );
+                              } catch {
+                                return (
+                                  <div className="w-full h-full flex items-center justify-center">
+                                    <div className="text-gray-400 text-sm">Video playback not available</div>
+                                  </div>
+                                );
+                              }
+                            })()}
+                          </div>
                         </>
                       ) : (
-                        <video
-                          src={item.videoUrl}
-                          className="w-full h-full object-cover absolute inset-0 transition-opacity duration-200 group-hover:opacity-100 opacity-0"
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          onMouseOver={(e: React.MouseEvent<HTMLVideoElement>) => (e.currentTarget as HTMLVideoElement).play()}
-                          onMouseOut={(e: React.MouseEvent<HTMLVideoElement>) => (e.currentTarget as HTMLVideoElement).pause()}
-                        />
+                        <div className="absolute inset-0 bg-black flex items-center justify-center">
+                          <div className="text-gray-400 text-sm">Video Preview Not Available</div>
+                        </div>
                       )}
-                      {/* Video icon overlay */}
+                      {/* Play button overlay */}
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <PlayCircle className="h-16 w-16 text-white/80 group-hover:opacity-0 transition-opacity" />
+                      </div>
+                      {/* Video type indicator */}
                       <div className="absolute top-2 right-2 bg-black/60 rounded-full p-1">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white opacity-80">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-7.5A2.25 2.25 0 003.75 5.25v13.5A2.25 2.25 0 006 21h7.5a2.25 2.25 0 002.25-2.25V15m3-6v6m0 0l-3-3m3 3l-3 3" />

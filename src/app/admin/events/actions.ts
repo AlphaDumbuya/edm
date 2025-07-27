@@ -15,22 +15,28 @@ export async function createEventAction(formData: FormData) {
   const description = formData.get('description') as string;
   const dateString = formData.get('date') as string;
   const time = formData.get('time') as string;
+  const timezone = formData.get('timezone') as string;
   const location = formData.get('location') as string;
   const imageUrl = formData.get('imageUrl') as string | null;
   const isVirtualRaw = formData.get('isVirtual');
   const isVirtual = isVirtualRaw === 'true';
   const onlineLink = formData.get('onlineLink') as string | undefined;
 
-  if (!title || !description || !dateString || !time || (!isVirtual && !location)) {
-    throw new Error('Missing required fields: title, description, date, time, or location (if not virtual).');
+  if (!title || !description || !dateString || !time || !timezone || (!isVirtual && !location)) {
+    throw new Error('Missing required fields: title, description, date, time, timezone, or location (if not virtual).');
   }
 
   try {
-    const date = new Date(dateString);
+    // Create a Date object with the correct date and time in the specified timezone
+    // Convert to UTC for storage
+    const eventDate = new Date(dateString + 'T' + time);
+    const timeZoneOffset = new Date(eventDate.toLocaleString('en-US', { timeZone: timezone })).getTimezoneOffset();
+    eventDate.setMinutes(eventDate.getMinutes() - timeZoneOffset);
+    
     await createEvent({
       title,
       description,
-      date,
+      date: eventDate,
       time,
       location,
       ...(imageUrl ? { imageUrl } : {}),
@@ -109,8 +115,12 @@ export async function updateEventAction(id: string, formData: FormData, userId: 
 
   if (title) updateData.title = title;
   if (description) updateData.description = description;
-  if (dateString) updateData.date = new Date(dateString);
-  if (time) updateData.time = time;
+  if (dateString && time) {
+    // Create a Date object with the correct date and time, using the local timezone
+    const eventDate = new Date(dateString + 'T' + time + '+00:00');
+    updateData.date = eventDate;
+    updateData.time = time;
+  }
   if (location) updateData.location = location;
   if (imageUrl !== undefined && imageUrl !== null) updateData.imageUrl = imageUrl;
   updateData.isVirtual = isVirtual;

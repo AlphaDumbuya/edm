@@ -10,6 +10,7 @@ type Event = {
   description: string;
   date: string;
   time: string;
+  timezone: string;
   location: string;
   imageUrl?: string;
   isVirtual?: boolean;
@@ -60,6 +61,15 @@ export default function EventsClientPage() {
   const { toast } = useToast();
 
   const role = session?.user?.role || "VIEWER";
+  
+  // Load events when the component mounts or when search params change
+  useEffect(() => {
+    const page = Number(searchParams?.get('page')) || 1;
+    const search = searchParams?.get('search') || "";
+    setCurrentPage(page);
+    setSearchQuery(search);
+    fetchEvents(page, search);
+  }, [searchParams]);
 
   const [loading, setLoading] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -71,7 +81,16 @@ export default function EventsClientPage() {
   const [showCreate, setShowCreate] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
   const [editEvent, setEditEvent] = useState<Event | null>(null);
-  const [form, setForm] = useState({ title: '', description: '', date: '', time: '', location: '', isVirtual: false, onlineLink: '' });
+  const [form, setForm] = useState({ 
+    title: '', 
+    description: '', 
+    date: '', 
+    time: '', 
+    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    location: '', 
+    isVirtual: false, 
+    onlineLink: '' 
+  });
   const [imageUrl, setImageUrl] = useState<string | null>("");
   const [error, setError] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -95,6 +114,7 @@ export default function EventsClientPage() {
       setDeleteDialogOpen(false);
       setEventToDelete(null);
       await fetchEvents(currentPage, searchQuery);
+      router.refresh(); // Refresh the page to update the server component
     } catch (err) {
       setError('Failed to delete event.');
     } finally {
@@ -106,10 +126,14 @@ export default function EventsClientPage() {
 
   // ...existing handlers and logic...
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = async (page: number) => {
+    if (page < 1 || (page > Math.ceil(totalEvents / itemsPerPage))) return;
+    
+    setCurrentPage(page);
     const params = new URLSearchParams(searchParams?.toString() || "");
     params.set("page", page.toString());
     router.push(`?${params.toString()}`);
+    await fetchEvents(page, searchQuery);
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -132,6 +156,7 @@ export default function EventsClientPage() {
       description: event.description,
       date: event.date ? new Date(event.date).toISOString().slice(0, 10) : '',
       time: event.time || '',
+      timezone: event.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
       location: event.location || '',
       isVirtual: event.isVirtual || false,
       onlineLink: event.onlineLink || '',
@@ -144,7 +169,7 @@ export default function EventsClientPage() {
     setShowEdit(false);
     setEditEvent(null);
   };
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
   const handleCreate = async (e: React.FormEvent) => {
@@ -191,6 +216,7 @@ export default function EventsClientPage() {
       toast({ title: 'Event updated!' });
       closeModals();
       await fetchEvents(currentPage, searchQuery);
+      router.refresh(); // Refresh the page to update the server component
     } catch (err) {
       setError('Failed to update event.');
     } finally {
@@ -263,6 +289,19 @@ export default function EventsClientPage() {
             </div>
             <Input name="date" type="date" value={form.date} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700" />
             <Input name="time" type="time" value={form.time} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700" />
+            <select
+              name="timezone"
+              value={form.timezone}
+              onChange={handleFormChange}
+              required
+              className="bg-gray-800 text-gray-100 border border-gray-700 rounded-md"
+            >
+              {Intl.supportedValuesOf('timeZone').map((tz) => (
+                <option key={tz} value={tz}>
+                  {tz.replace(/_/g, ' ')}
+                </option>
+              ))}
+            </select>
             {!form.isVirtual && (
               <Input name="location" placeholder="Location" value={form.location} onChange={handleFormChange} required className="bg-gray-800 text-gray-100 border-gray-700 placeholder-gray-400" />
             )}
@@ -371,7 +410,7 @@ export default function EventsClientPage() {
           <ChevronLeftIcon className="h-5 w-5" />
         </button>
         <span className="text-gray-300">
-          Page {currentPage} of {Math.ceil(totalEvents / itemsPerPage)}
+          Showing {events.length ? ((currentPage - 1) * itemsPerPage) + 1 : 0} to {Math.min(currentPage * itemsPerPage, totalEvents)} of {totalEvents} events
         </span>
         <button
           onClick={() => handlePageChange(currentPage + 1)}

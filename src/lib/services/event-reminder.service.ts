@@ -124,11 +124,10 @@ export class EventReminderService {
       }
     });
 
-    // Filter events based on their actual date and time
+    // Filter events based on their actual date and time, using UTC
     return registrations.filter(reg => {
-      const eventDate = new Date(reg.event.date);
-      const [hours, minutes] = reg.event.time.split(':').map(Number);
-      eventDate.setHours(hours, minutes, 0, 0);
+      // Parse the event date and time in UTC
+      const eventDate = new Date(reg.event.date.toISOString().split('T')[0] + 'T' + reg.event.time + '+00:00');
       
       const diffInMinutes = (eventDate.getTime() - now.getTime()) / (60 * 1000);
       

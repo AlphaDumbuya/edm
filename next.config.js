@@ -48,6 +48,12 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'media.istockphoto.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'v3u8qjb7ov.ufs.sh',
+        port: '',
+        pathname: '/**',
         port: '',
         pathname: '/**',
       },

@@ -40,7 +40,9 @@ export function UploadButton({ imageUrl, setImageUrl, onFileSelect }: UploadButt
           // Only use ufsUrl for the image URL (future-proof)
           const imgUrl = file?.ufsUrl || null;
           if (imgUrl) {
-            setImageUrl(imgUrl);
+            // Ensure the URL is absolute
+            const url = new URL(imgUrl);
+            setImageUrl(url.toString());
           }
         }}
         onUploadError={(error: { message: string }) => {

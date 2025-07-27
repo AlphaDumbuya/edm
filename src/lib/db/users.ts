@@ -13,13 +13,20 @@ export interface AppUser {
   id: string;
   email: string;
   name?: string | null;
+  createdAt?: Date | string;
   // Do not include hashedPassword in AppUser that might be sent to client
 }
 
-export async function findUserByEmail(email: string): Promise<PrismaUser | null> {
+export async function findUserByEmail(email: string): Promise<AppUser | null> {
   try {
     const user = await prisma.user.findUnique({
       where: { email },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true
+      }
     });
     console.log('[findUserByEmail] User fetched from DB:', user);
     return user;

@@ -48,9 +48,14 @@ export async function getAllEvents(options?: {
     ]);
     // Add console log for fetched events count
     console.log('getAllEvents - fetched events count:', events.length);
-    console.log('getAllEvents - fetched events count:', events.length);
 
-    return { events, totalEvents };
+    return {
+      events: events.map(event => ({
+        ...event,
+        date: event.date.toISOString()
+      })),
+      totalEvents
+    };
   } catch (error) {
     console.error('Error fetching events:', error);
     throw new Error('Failed to fetch events.');

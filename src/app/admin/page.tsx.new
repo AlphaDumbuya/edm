@@ -1,0 +1,208 @@
+import DashboardHeaderClient from '@/components/admin/DashboardHeaderClient';
+import React from 'react';
+import Link from 'next/link';
+import { getAllBlogPosts, getBlogPostCount } from '@/lib/db/blogPosts';
+import { getDonationCount, getAllDonations } from '@/lib/db/donations';
+import { getUserCount, getAllUsers } from '@/lib/db/users';
+import { getPrayerRequestCount, getAllPrayerRequests } from '@/lib/db/prayerRequests';
+import AdminNotificationBell, { Notification } from '@/components/admin/AdminNotificationBell';
+import AdminDashboardNotificationsClient from '@/components/admin/AdminDashboardNotificationsClient';
+import { getRecentAdminNotifications } from '@/lib/db/adminNotifications';
+import { getAllEvents } from '@/lib/db/events';
+import { getEventRegistrationsForEvent } from '@/lib/db/eventRegistrations';
+import { useSession } from 'next-auth/react';
+import SuperAdminMonthlyDonationsCard from '@/components/admin/SuperAdminMonthlyDonationsCard';
+import DashboardStatsCard from '@/components/admin/DashboardStatsCard';
+import DashboardLineChart from '@/components/admin/DashboardLineChart';
+import DashboardBarChart from '@/components/admin/DashboardBarChart';
+import DashboardPieChart from '@/components/admin/DashboardPieChart';
+import DashboardActivityFeed from '@/components/admin/DashboardActivityFeed';
+import DashboardSystemAlerts from '@/components/admin/DashboardSystemAlerts';
+import AdminDashboardOverlay from '@/components/admin/AdminDashboardOverlay';
+import AdminDashboardClientLayout from '@/components/admin/AdminDashboardClientLayout';
+import SuperAdminWelcomeMessage from '@/components/admin/SuperAdminWelcomeMessage';
+
+interface QuickLink {
+  id: number;
+  name: string;
+  href: string;
+}
+
+export default async function AdminDashboardPage() {
+  const [totalDonations, totalUsers, recentPrayerRequests] = await Promise.all([
+    getDonationCount(),
+    getUserCount(),
+    getPrayerRequestCount(),
+  ]);
+  const totalBlogPosts = await getBlogPostCount();
+
+  // Fetch users for recent activity and growth data
+  const usersRes = await getAllUsers({
+    limit: 1000,
+    orderBy: { createdAt: 'asc' }
+  });
+
+  // Calculate user growth data
+  const growthMap = new Map<string, number>();
+  let runningTotal = 0;
+  
+  usersRes.data.users
+    .filter(user => user.createdAt)
+    .sort((a, b) => {
+      const dateA = new Date(a.createdAt || 0);
+      const dateB = new Date(b.createdAt || 0);
+      return dateA.getTime() - dateB.getTime();
+    })
+    .forEach(user => {
+      if (!user.createdAt) return;
+      const date = new Date(user.createdAt);
+      const key = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      runningTotal += 1;
+      growthMap.set(key, runningTotal);
+    });
+
+  const growthData = Array.from(growthMap.entries()).map(([name, value]) => ({
+    name,
+    value
+  }));
+
+  // Fetch recent activity
+  const [donationsRes, prayerRes] = await Promise.all([
+    getAllDonations({ limit: 1, orderBy: { createdAt: 'desc' } }),
+    getAllPrayerRequests({ limit: 1, orderBy: { createdAt: 'desc' } }),
+  ]);
+
+  const latestDonation = donationsRes.donations[0];
+  const latestUser = usersRes.data.users[usersRes.data.users.length - 1]; // Get most recent user
+  const latestPrayer = prayerRes.prayerRequests[0];
+
+  // Fetch all relevant admin notifications (from audit logs)
+  const allNotifications = await getRecentAdminNotifications(10);
+
+  // Fetch all events and their participant counts
+  const eventsRes = await getAllEvents({ orderBy: { date: 'desc' } });
+  const events = eventsRes.events;
+
+  // For each event, get the participant count
+  const eventParticipantCounts = await Promise.all(
+    events.map(async (event) => {
+      const registrations = await getEventRegistrationsForEvent(event.id);
+      return {
+        event,
+        count: registrations.length,
+      };
+    })
+  );
+
+  // Calculate total donations for the current month
+  const now = new Date();
+  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+  const monthlyDonationsRes = await getAllDonations({
+    orderBy: { createdAt: 'desc' },
+    limit: 1000,
+  });
+
+  const totalMonthlyDonations = monthlyDonationsRes.donations
+    .filter(d => {
+      const date = new Date(d.date);
+      return date >= startOfMonth && date <= endOfMonth;
+    })
+    .reduce((sum, d) => sum + d.amount, 0);
+
+  const monthName = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+  
+  // Generate donation trend data
+  const donationTrendMap = new Map<string, number>();
+  monthlyDonationsRes.donations.forEach(donation => {
+    const date = new Date(donation.date);
+    const key = date.toLocaleString('default', { month: 'short', year: 'numeric' });
+    donationTrendMap.set(key, (donationTrendMap.get(key) || 0) + donation.amount);
+  });
+
+  const donationTrendData = Array.from(donationTrendMap.entries())
+    .map(([name, value]) => ({ name, value }))
+    .sort((a, b) => {
+      const dateA = new Date(a.name);
+      const dateB = new Date(b.name);
+      return dateA.getTime() - dateB.getTime();
+    });
+
+  const quickLinks: QuickLink[] = [
+    { id: 1, name: 'Manage Donations', href: '/admin/donations' },
+    { id: 2, name: 'Manage Users', href: '/admin/users' },
+    { id: 3, name: 'Manage Content', href: '/admin/content' },
+  ];
+
+  // Build activity feed from latest items
+  const activityFeed = [];
+  if (latestDonation) {
+    activityFeed.push({
+      id: latestDonation.id,
+      message: `New donation received from ${latestDonation.donorName || 'Anonymous'} ($${latestDonation.amount})`,
+      createdAt: new Date(latestDonation.createdAt).toISOString(),
+    });
+  }
+  if (latestUser) {
+    activityFeed.push({
+      id: latestUser.id,
+      message: `New user registered: ${latestUser.name || latestUser.email}`,
+      createdAt: latestUser.createdAt?.toISOString() || new Date().toISOString(),
+    });
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-950 text-white">
+      <div className="container mx-auto px-4 py-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <DashboardStatsCard
+            title="Total Users"
+            value={totalUsers.toString()}
+            trend="+12%"
+            trendDirection="up"
+          />
+          <DashboardStatsCard
+            title="Total Donations"
+            value={`$${totalDonations.toLocaleString()}`}
+            trend="+5%"
+            trendDirection="up"
+          />
+          <DashboardStatsCard
+            title="Prayer Requests"
+            value={recentPrayerRequests.toString()}
+            trend="+3%"
+            trendDirection="up"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+          {/* User Growth Chart */}
+          <div className="col-span-1">
+            <DashboardLineChart
+              data={growthData}
+              label="User Growth Over Time"
+            />
+          </div>
+          
+          {/* Donation Trends */}
+          <div className="col-span-1">
+            <DashboardLineChart
+              data={donationTrendData}
+              label="Donation Trends"
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-6">
+          <div className="col-span-2">
+            <DashboardActivityFeed activities={activityFeed} />
+          </div>
+          <div className="col-span-1">
+            <DashboardSystemAlerts notifications={allNotifications} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

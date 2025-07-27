@@ -66,7 +66,8 @@ export default function MediaItem({ item }: MediaItemProps) {
                 alt={item.title}
                 fill
                 data-ai-hint={item.dataAiHint}
-                className="transition-transform duration-300 group-hover:scale-105"
+                className="transition-transform duration-300 group-hover:scale-105 object-cover"
+                unoptimized={item.imageUrl.startsWith('https://v3u8qjb7ov.ufs.sh/')}
               />
             )}
             {item.type === 'video' && (
