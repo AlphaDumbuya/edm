@@ -3,6 +3,7 @@
 import { AppUser } from '@/lib/db/users';
 import { getAllUsersAction } from './actions';
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { useToast } from "@/components/ui/use-toast";
 import {
   Table,
   TableBody,
@@ -59,6 +60,7 @@ export function UserManagementClient({
 }: UserManagementClientProps) {
   const router = useRouter();
   const searchParams = useSearchParams() || new URLSearchParams();
+  const { toast } = useToast();
 
   const [users, setUsers] = useState<AppUser[]>(Array.isArray(initialUsers) ? initialUsers : []);
   const [totalUsers, setTotalUsers] = useState(typeof initialTotalCount === 'number' ? initialTotalCount : 0);
@@ -193,15 +195,36 @@ export function UserManagementClient({
     if (!selectedUserId) return;
     
     try {
-      await deleteUserAction(selectedUserId);
+      const result = await deleteUserAction(selectedUserId);
+      if (!result.success) {
+        // Handle the error response directly without throwing
+        toast({
+          title: "Cannot Delete User",
+          description: result.error || 'Failed to delete user',
+          variant: "destructive",
+        });
+        setShowDeleteDialog(false);
+        return;
+      }
       // Refresh the current page
       await fetchUsers(searchQuery, roleFilter, currentPage, usersPerPage, true);
       setShowDeleteDialog(false);
       setSelectedUserId(null);
+      // Show success toast
+      toast({
+        title: "User Deleted",
+        description: "The user has been successfully deleted.",
+        variant: "default",
+      });
     } catch (error) {
-      console.error('Failed to delete user:', error);
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
     }
-  }, [selectedUserId, searchQuery, roleFilter, currentPage, usersPerPage, fetchUsers]);
+  }, [selectedUserId, searchQuery, roleFilter, currentPage, usersPerPage, fetchUsers, toast]);
 
   return (
     <div className="w-full max-w-full sm:max-w-[95vw] lg:max-w-[90vw] 2xl:max-w-7xl mx-auto py-4 sm:py-6 px-2 sm:px-4 bg-gray-900 text-gray-100 rounded-lg shadow-lg border border-gray-800 overflow-y-auto max-h-[90vh]">
@@ -372,27 +395,29 @@ export function UserManagementClient({
 
         {/* Pagination */}
         <div className="w-full pt-4 mt-4 border-t border-gray-800">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2 w-full sm:w-auto">
+          <div className="flex flex-wrap items-center justify-between relative">
+            <div className="w-[100px] sm:w-auto">
               <Button
-                className="flex-1 sm:flex-none px-4 py-2 text-sm font-medium shadow"
+                className="min-w-[100px] px-4 py-2 text-sm font-medium shadow"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
                 Previous
               </Button>
+            </div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 text-center">
+              <span className="text-gray-300 text-sm font-medium whitespace-nowrap">
+                Page {currentPage} of {totalPages}
+              </span>
+            </div>
+            <div className="w-[100px] sm:w-auto text-right">
               <Button
-                className="flex-1 sm:flex-none px-4 py-2 text-sm font-medium shadow"
+                className="min-w-[100px] px-4 py-2 text-sm font-medium shadow"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
               >
                 Next
               </Button>
-            </div>
-            <div className="text-center">
-              <span className="text-gray-300 text-sm font-medium">
-                Page {currentPage} of {totalPages}
-              </span>
             </div>
           </div>
         </div>

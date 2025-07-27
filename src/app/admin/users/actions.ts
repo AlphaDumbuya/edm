@@ -64,6 +64,40 @@ export async function getAllUsersAction(options: GetAllUsersOptions) {
 
 export async function deleteUserAction(userId: string) {
   try {
+    // Check for all associated content
+    const [blogPosts, newsArticles, auditLogs, notifications] = await Promise.all([
+      prisma.blogPost.findMany({
+        where: { authorId: userId },
+        select: { id: true }
+      }),
+      prisma.newsArticle.findMany({
+        where: { authorId: userId },
+        select: { id: true }
+      }),
+      prisma.auditLog.findMany({
+        where: { userId: userId },
+        select: { id: true }
+      }),
+      prisma.notification.findMany({
+        where: { userId: userId },
+        select: { id: true }
+      })
+    ]);
+
+    const dependencies = [];
+    if (blogPosts.length > 0) dependencies.push('blog posts');
+    if (newsArticles.length > 0) dependencies.push('news articles');
+    if (auditLogs.length > 0) dependencies.push('audit logs');
+    if (notifications.length > 0) dependencies.push('notifications');
+
+    if (dependencies.length > 0) {
+      const items = dependencies.join(', ');
+      return {
+        success: false,
+        error: `Cannot delete user because they have associated ${items}. Please reassign or delete these items first.`
+      };
+    }
+
     await prisma.user.delete({
       where: { id: userId },
     });
@@ -72,6 +106,12 @@ export async function deleteUserAction(userId: string) {
     return { success: true };
   } catch (error) {
     console.error('Error deleting user:', error);
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'P2003') {
+      return { 
+        success: false, 
+        error: 'Cannot delete user because they have associated content that was not detected. Please contact support.' 
+      };
+    }
     return { success: false, error: 'Failed to delete user' };
   }
 }
