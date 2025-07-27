@@ -11,7 +11,7 @@ export default async function EventsPage() {
   // Format and sort events
   const formattedEvents = eventData.events.map(event => ({
     ...event,
-    date: event.date.toISOString().split('T')[0], // Convert Date to YYYY-MM-DD string
+    date: typeof event.date === 'string' ? event.date : new Date(event.date).toISOString().split('T')[0], // Handle both string and Date objects
     imageUrl: event.imageUrl || undefined, // Convert null to undefined
     onlineLink: event.onlineLink || undefined, // Convert null to undefined
   }));
