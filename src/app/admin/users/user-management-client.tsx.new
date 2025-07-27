@@ -1,0 +1,91 @@
+// Import all existing imports...
+import { useState, useEffect, useCallback, useMemo } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { deleteUserAction, getAllUsersAction } from "./actions";
+import { AppUser } from "@/lib/db/users";
+import { useToast } from "@/components/ui/use-toast";
+
+export function UserManagementClient({
+  initialUsers = [],
+  initialTotalCount = 0,
+}: UserManagementClientProps) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const { toast } = useToast();
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // ... keep all existing state and functions ...
+
+  const confirmDelete = useCallback(async () => {
+    if (!selectedUserId) return;
+    
+    try {
+      setIsDeleting(true);
+      const result = await deleteUserAction(selectedUserId);
+      
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to delete user');
+      }
+
+      // Show success message
+      toast({
+        title: "Success",
+        description: "User has been deleted successfully",
+        variant: "default",
+      });
+
+      // Close the dialog
+      setShowDeleteDialog(false);
+      setSelectedUserId(null);
+
+      // Refresh the users list
+      await fetchUsers(searchQuery, roleFilter, currentPage, usersPerPage, true);
+    } catch (error) {
+      console.error('Error deleting user:', error);
+      toast({
+        title: "Error",
+        description: error instanceof Error ? error.message : "Failed to delete user. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [selectedUserId, searchQuery, roleFilter, currentPage, usersPerPage, fetchUsers, toast]);
+
+  // ... keep all existing JSX ...
+
+  return (
+    <div>
+      {/* ... keep existing JSX ... */}
+      
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent className="bg-gray-900 text-gray-100 border border-gray-800">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete the user and remove their data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <div className="flex flex-row gap-2 justify-end flex-wrap sm:flex-nowrap">
+              <AlertDialogCancel 
+                className="bg-gray-700 text-gray-100 hover:bg-gray-600 min-w-max"
+                disabled={isDeleting}
+              >
+                Cancel
+              </AlertDialogCancel>
+              <AlertDialogAction 
+                className="bg-red-600 text-white hover:bg-red-700 min-w-max"
+                onClick={confirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </AlertDialogAction>
+            </div>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+}
